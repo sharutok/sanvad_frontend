@@ -1,0 +1,20 @@
+.radio-btn{
+    display:flex
+}
+
+.hr {
+    display: block;
+    border: 1px solid #ec6262;
+    margin: 1rem 1rem;
+    border-radius: 100%;
+}
+.vm-guest-container{
+    display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem;
+}
+.vm-button {
+    width: fit-content;
+    padding: 1rem;
+}

@@ -1,0 +1,50 @@
+.ts-component {
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  gap: 2rem;
+  padding: 1rem;
+}
+.ts-card {
+  align-items: center;
+  width: fit-content;
+  border: 1px dashed grey;
+}
+.ts-card-typo {
+  display: flex;
+  justify-content: center;
+  /* background-color: aqua; */
+}
+
+.ts-card-component {
+  margin: 1rem;
+  gap: 1rem;
+  display: grid;
+  justify-content: center;
+}
+.ts-container {
+  padding: 1rem;
+}
+.box-container {
+  width: 100%;
+}
+.box-component {
+  padding: 0.5rem;
+  margin: 5rem 0;
+  border: 1px solid rgb(199, 199, 199);
+  display: flex;
+  justify-content: center;
+}
+.ts-card:hover {
+  /* background-color: rgb(224, 224, 224); */
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.ts-button {
+  width: fit-content;
+  padding: 1rem;
+}
+
+.files {
+  overflow: auto;
+  height: 20rem;
+}

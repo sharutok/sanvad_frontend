@@ -1,0 +1,22 @@
+
+.user-managment-component {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+.textfield{
+    width: 10rem;
+}
+.hr{
+  display: block;
+    border: 1px solid #ec6262;
+    margin: 1rem 1rem;
+    border-radius: 100%;
+}
+
+.user-management-button{
+  width: fit-content;
+  padding: 1rem;
+}
+

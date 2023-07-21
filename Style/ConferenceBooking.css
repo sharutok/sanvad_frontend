@@ -1,0 +1,27 @@
+.conf-book-component {
+  display: grid;
+  grid-template-rows: repeat(3,3fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+.textfield {
+  width: 20rem;
+}
+
+.conf_book-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.conf-book-button {
+  width: fit-content;
+  padding: 0 1rem;
+}
+
+.hr {
+    display: block;
+    border: 1px solid #ec6262;
+    margin: 1rem 1rem;
+    border-radius: 100%;
+}
