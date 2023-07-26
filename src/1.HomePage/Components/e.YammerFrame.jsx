@@ -11,6 +11,7 @@ import Autoplay from 'embla-carousel-autoplay';
 
 
 export default function YammerFrame() {
+
     const { isLoading, error, data } = useQuery(['sales-data'], async () => { return await axios.get(api.yammer.get_data) })
     return (
         <div>
@@ -57,7 +58,7 @@ function ICarousels({ data }) {
     const autoplay = useRef(Autoplay({ delay: 2000 }));
 
     const { classes } = useStyles();
-    const slides = data.data.map((x, i) => (
+    const slides = data?.data.map((x, i) => (
         <Carousel.Slide key={i + 9} >
             <div>
                 <h2 className=''>{x.message}</h2>
@@ -89,7 +90,6 @@ function ICarousels({ data }) {
                         orientation="vertical"
                         height={200}
                         withIndicators
-                        // maw={320}
                         mx="auto"
                         className='bg-orange-400'
                         classNames={{

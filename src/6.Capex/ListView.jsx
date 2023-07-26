@@ -9,12 +9,16 @@ import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
 import { FaFileExcel } from 'react-icons/fa'
 import { FiSearch } from 'react-icons/fi'
 import { TextField } from '@mui/material';
-
 import BackArrow from '../Helper Components/SideComponent';
 import { Link } from 'react-router-dom';
+import { api } from '../Helper Components/Api';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 export default function ListView() {
-    const thead = ["Budget No", "Purpose code", "Purpose", "Line No", "Plant/Location", "Dept", "Capex Group", "Class", "Category (Nature of Asset)", "Asset description", "Details", "Rate", "Qty", "Uom", "Final Budget", "Remarks", "View", "Delete"]
+    // const thead = ["Budget No", "Purpose code", "Purpose", "Line No", "Plant/Location", "Dept", "Capex Group", "Class", "Category (Nature of Asset)", "Asset description", "Details", "Rate", "Qty", "Uom", "Final Budget", "Remarks", "View", "Delete"]
+    const thead = ["Budget No", "Purpose code", "Purpose", "Line No", "Dept", "Capex Group", "Class", "Category (Nature of Asset)", "Final Budget", "View", "Delete"]
+    const { isLoading, error, data } = useQuery(['sales-data'], async () => { return await axios.get(api.capex.get_data) })
     return (
         <div>
             <BackArrow title={"Capex Listings"} />
@@ -46,30 +50,36 @@ export default function ListView() {
                 } title={"Download Templete"} position={"top"} />
             </div>
             <Table thead={thead} tbody={
-                <tr >
-                    <td>"g.firs"</td>
-                    <td>"g.firs"</td>
-                    <td>"g.firs"</td>
-                    <td>"g.las"</td>
-                    <td>"g.las"</td>
-                    <td>"g.las"</td>
-                    <td>"g.depa"</td>
-                    <td>"g.depa"</td>
-                    <td>"g.depa"</td>
-                    <td>"g.plan"</td>
-                    <td>"g.plan"</td>
-                    <td>"g.plan"</td>
-                    <td>"g.organi"</td>
-                    <td>"g.organi"</td>
-                    <td>"g.organi"</td>
-                    <td>"g.user_"</td>
-                    <td>
-                        <Link to={`/capex/indvi/${"123qwx"}`}><GrFormView /></Link>
-                    </td>
-                    <td>
-                        <RiDeleteBin6Line />
-                    </td>
-                </tr>} />
+                data?.data.map((c, i) => {
+                    return (
+                        <tr key={i}>
+                            <td>{c.budget_no}</td>
+                            <td>{c.purpose_code}</td>
+                            <td>{c.purpose_description}</td>
+                            <td>{c.line_no}</td>
+                            {/* <td>{c.plant}</td> */}
+                            <td>{c.dept}</td>
+                            <td>{c.capex_group}</td>
+                            <td>{c.capex_class}</td>
+                            <td>{c.category}</td>
+                            {/* <td>{c.asset_description}</td> */}
+                            {/* <td>{c.details}</td> */}
+                            {/* <td>{c.rate}</td> */}
+                            {/* <td>{c.qty}</td> */}
+                            {/* <td>{c.uom}</td> */}
+                            <td>{c.final_budget}</td>
+                            {/* <td>{c.remarks}</td> */}
+                            <td>
+                                <Link to={`/capex/indvi/${c.id}`}><GrFormView /></Link>
+                            </td>
+                            <td>
+                                <RiDeleteBin6Line />
+                            </td>
+                        </tr>
+                    )
+                })
+            }
+            />
         </div>
     )
 }

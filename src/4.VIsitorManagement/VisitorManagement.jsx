@@ -25,7 +25,7 @@ function VisitorMangement() {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-                <BackArrow title={"Visitor's Management"} />
+                <BackArrow title={"Visitor's Management - New Application"} />
                 <div className='vm-guest-container'>
 
                     <TextField label="Person In-Charge*" disabled size={"small"}></TextField>

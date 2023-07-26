@@ -2,8 +2,7 @@ import React from 'react'
 import { FaUsers, FaIdBadge } from 'react-icons/fa';
 import { IoIosPaper } from "react-icons/io";
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-
+import '../../../Style/Policies.css'
 export default function Policies() {
     const icons = [
         {
@@ -17,13 +16,17 @@ export default function Policies() {
         <div>
             <h1>Policies</h1>
             <div className='flex justify-center'>
+
                 {icons.map((_icon) => {
                     return (
                         <div key={_icon.iconTitle} className='m-2'>
                             <Stack direction="row" spacing={2}>
-                                <Button style={{ color: "white", background: "grey" }} variant="outlined" startIcon={<_icon.icons size={40} />}>
-                                    {_icon.iconTitle}
-                                </Button>
+                                <button class="button-48" role="button">
+                                    <span class="text flex">
+                                        < _icon.icons color='#808285' size={30} />
+                                        <span className='mt-2 ml-2'>{_icon.iconTitle}</span>
+                                    </span>
+                                </button>
                             </Stack>
                         </div>
                     )

@@ -8,6 +8,10 @@ export const api = {
         post_data: `${link}/user-manage/create/`
     },
     yammer: {
-        get_data: `${link}/user-manage/yammer-api-feeds`
+        get_data: `${link}/yammer-feeds/posts/`
+    },
+    capex: {
+        get_data: `${link}/capex/get-all-data/`,
+        by_id: `${link}/capex`
     }
 }

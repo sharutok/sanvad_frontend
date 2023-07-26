@@ -24,6 +24,7 @@ import { useMutation } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab';
 const ErrorSchema = UserErrorSchema
 import { FiSave } from "react-icons/fi";
+import { Link } from 'react-router-dom';
 
 
 function CreateUserForm() {
@@ -53,9 +54,10 @@ function CreateUserForm() {
                 module_permission: usermanagement.module_permission
             });
             mutation.mutateAsync(data)
-            if (mutation.data.data.status === "200") {
-                setBtnSaving(true)
-            }
+            setBtnSaving(true)
+            setTimeout(() => {
+                window.location.href = "/user/management/list"
+            }, 1 * 1000)
 
         } catch (error) {
             console.log("err", error);
@@ -174,7 +176,7 @@ function CreateUserForm() {
                         loadingPosition="start"
                         startIcon={<FiSave />}
                     >
-                        <span>Save & Send Credentials to User</span>
+                        <span className='p-1'>Save & Send Credentials to User</span>
                     </LoadingButton>
                 </div> :
                 <div className='user-management-button'>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaUsers, FaIdBadge } from 'react-icons/fa';
 import { IoIosPaper } from "react-icons/io";
-
+import '../../../Style/ShortCutBtn.css'
 export default function ShortCutBtn() {
 
     const icons = [
@@ -18,14 +18,16 @@ export default function ShortCutBtn() {
     return (
         <div>
             <h1>Shortcuts</h1>
-            <div className='flex'>
+            <div className='flex gap-4'>
                 {icons.map((_icon) => {
                     return (
-                        <div key={_icon.iconTitle} className='m-2'>
-                            <_icon.icons className='text-[#ffffff] p-4 m-3 rounded-[5px] bg-[grey]' size={80} />
-                            <div className='text-center' >
-                                <p >{_icon.iconTitle}</p>
-                            </div>
+                        <div>
+                            <button class="button-4" role="button">
+                                <span >
+                                    < _icon.icons size={30} color='#808285' />
+                                    <span >{_icon.iconTitle}</span>
+                                </span>
+                            </button>
                         </div>
                     )
                 })}

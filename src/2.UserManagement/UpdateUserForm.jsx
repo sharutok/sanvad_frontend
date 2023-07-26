@@ -70,6 +70,7 @@ export default function UpdateUserForm() {
   }
 
   const onSubmit = async (submitData) => {
+
     const value = {
       ...usermanagement,
       first_name: getValues('first_name'),
@@ -77,7 +78,7 @@ export default function UpdateUserForm() {
       ph_no: getValues('ph_no'),
       gender: getValues('gender'),
       emerg_contact: getValues('emerg_contact'),
-      address: getValues('address'),
+      address: getValues('address'),  
       dob: moment(getValues('dob').$d).format('YYYY-MM-DD'),
       start_date: moment(getValues('start_date').$d).format('YYYY-MM-DD'),
       end_date: moment(getValues('end_date').$d).format('YYYY-MM-DD'),
@@ -100,8 +101,6 @@ export default function UpdateUserForm() {
   useEffect(() => {
     getData()
   }, [])
-
-
 
 
   return (

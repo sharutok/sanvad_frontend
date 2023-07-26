@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import { IoIosPaper } from "react-icons/io";
 import { MdCurrencyExchange, MdSettingsApplications } from "react-icons/md";
 import { AiOutlineLink } from "react-icons/ai";
+import { PiFlowArrowBold } from "react-icons/pi";
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -102,14 +103,18 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
     );
 }
 
-const mockdata = [
+const links = [
+    {
+        label: 'User Management',
+        icon: IconCalendarStats, mainlink: "/user/management/list"
+    },
     {
         label: 'Ticketing System',
         icon: IoIosPaper,
         mainlink: "/ticket/sys"
     },
     {
-        label: 'Conference Room Booking',
+        label: 'Conference Booking',
         icon: FaUsers,
         mainlink: "/conference/booking"
 
@@ -122,10 +127,6 @@ const mockdata = [
     {
         label: 'Capex',
         icon: MdCurrencyExchange, mainlink: "/capex/list"
-    },
-    {
-        label: 'Create/Manage Employees',
-        icon: IconCalendarStats, mainlink: "/user/management/list"
     },
     {
         label: 'Module Configurations',
@@ -147,6 +148,15 @@ const mockdata = [
             { label: 'DIGI-WCA', link: '/' },
         ],
     },
+    {
+        label: 'Workflow Configurations',
+        icon: PiFlowArrowBold,
+        mainlink: "",
+        links: [
+            { label: 'Ticketing System', link: '/' },
+            { label: 'Capex', link: '/' },
+        ],
+    },
 ];
 
 export default function NavbarLinksGroup() {
@@ -158,7 +168,7 @@ export default function NavbarLinksGroup() {
                 backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
             })}
         >
-            {mockdata.map((x, i) => {
+            {links.map((x, i) => {
                 return (
                     <div key={i}>
                         <Link to={!x?.links > 0 ? x.mainlink : ""}>

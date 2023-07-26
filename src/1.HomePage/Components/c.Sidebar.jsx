@@ -1,10 +1,4 @@
-import { useState } from 'react';
 import { Navbar, SegmentedControl, Text, createStyles, getStylesRef, rem } from '@mantine/core';
-import { FaUsers, FaIdBadge, FaUserCog, } from "react-icons/fa";
-import { TbReportMoney } from "react-icons/tb";
-import { MdCurrencyExchange, MdSettingsApplications } from "react-icons/md";
-import { Link, useNavigate } from 'react-router-dom'
-import { IoIosPaper } from "react-icons/io";
 
 import {
     IconLogout,
@@ -65,31 +59,9 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const tabs = {
-    Public: [
-        { link: '/ticket/sys', label: 'Ticketing System', icon: IoIosPaper },
-        { link: '/conference/booking', label: 'Conference Room Booking', icon: FaUsers },
-        { link: '/vistors/management', label: 'Visitor Management', icon: FaIdBadge },
-        { link: '', label: 'Capex', icon: MdCurrencyExchange },
-        { link: '/user/management/list', label: 'Create/Manage Employees', icon: FaUserCog },
-    ],
-    Private: [
-        { link: '/', label: 'Config', icon: MdSettingsApplications },
-    ],
-};
 
 export default function Sidebar() {
     const { classes, cx } = useStyles();
-    const [section, setSection] = useState('Public');
-    const [active, setActive] = useState('Billing');
-    const navigate = useNavigate()
-
-    const links = tabs[section].map((item) => (
-        <Link key={item.label} onClick={(event) => setActive(item.label)} className={cx(classes.link, { [classes.linkActive]: item.label === active })} to={item.link} >
-            <item.icon size={25} className={classes.linkIcon} stroke={1.5} />
-            <span>{item.label}</span>
-        </Link>
-    ));
 
     return (
         <div>
