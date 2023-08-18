@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, Progress, Card, createStyles } from '@mantine/core';
+import { AppContext } from '../App';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -22,12 +23,16 @@ const useStyles = createStyles((theme) => ({
         backgroundColor: theme.fn.rgba(theme.white, 0.4),
     },
 }));
+
+
 export default function BudgetBar() {
+    const { capex } = useContext(AppContext)
     const data = [
-        { A: 10, B: 20 },
-        { A: 10, B: 20 },
-        { A: 10, B: 20 }
+        { A: 100000, B: capex?.final_budget },
+        // { A: 10, B: 20 },
+        // { A: 10, B: 20 }
     ]
+    console.log(data);
     const { classes } = useStyles();
 
     return (
@@ -40,10 +45,10 @@ export default function BudgetBar() {
                                 Monthly goal
                             </Text>
                             <Text fz="lg" fw={500} className={classes.stats}>
-                                $5.431 / $10.000
+                                {`₹${Number(val.A).toLocaleString('en-IN')} / ₹${Number(val.B).toLocaleString('en-IN')} Crores`}
                             </Text>
                             <Progress
-                                value={54.31}
+                                value={(val.A / val.B) * 100}
                                 mt="md"
                                 size="lg"
                                 radius="xl"
@@ -53,22 +58,6 @@ export default function BudgetBar() {
                                 }}
                             />
                         </Card>
-                        {/* <Card
-                            withBorder
-                            radius="md"
-                            padding="xl"
-                            sx={(theme) => ({
-                                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-                            })}
-                        >
-                            <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
-                                Monthly goal
-                            </Text>
-                            <Text fz="lg" fw={500}>
-                                {`₹${val.A} / ₹${val.B}`}
-                            </Text>
-                            <Progress value={90} mt="md" size="lg" radius="xl" color='blue' />
-                        </Card> */}
                     </div>
                 )
 

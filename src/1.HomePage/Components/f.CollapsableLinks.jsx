@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
 
         '&:hover': {
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-            color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+            color: theme.colorScheme === 'dark' ? theme.white : theme.black, textDecoration: "none"
         },
     },
 
@@ -80,8 +80,8 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
                 <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
                     <Group position="apart" spacing={0}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <ThemeIcon variant="light" color='#808285' size={30}>
-                                <Icon color="white" size="1.1rem" />
+                            <ThemeIcon variant="light" color='#ffffff' size={30}>
+                                <Icon color="grey" size="1.5rem" />
                             </ThemeIcon>
                             <Box ml="md">{label}</Box>
                         </Box>
@@ -111,22 +111,23 @@ const links = [
     {
         label: 'Ticketing System',
         icon: IoIosPaper,
-        mainlink: "/ticket/sys"
+        mainlink: "/ticket/sys/list"
     },
     {
         label: 'Conference Booking',
         icon: FaUsers,
-        mainlink: "/conference/booking"
+        mainlink: "/conference/booking/list"
 
     },
     {
         label: 'Visitor Management',
         icon: FaIdBadge,
-        mainlink: "/vistors/management"
+        mainlink: "/vistors/management/list"
     },
     {
         label: 'Capex',
-        icon: MdCurrencyExchange, mainlink: "/capex/list"
+        icon: MdCurrencyExchange,
+        mainlink: "/capex/list"
     },
     {
         label: 'Module Configurations',
@@ -143,9 +144,10 @@ const links = [
         icon: AiOutlineLink,
         mainlink: "",
         links: [
-            { label: 'Product Certifcate Matrix', link: '/' },
-            { label: 'FPED KIOSK', link: '/' },
-            { label: 'DIGI-WCA', link: '/' },
+            { label: 'Product Certifcate Matrix', link: 'http://27.107.7.11:3040/home' },
+            { label: 'FPED KIOSK', link: 'http://27.107.7.11:3060/login' },
+            { label: 'DIGI-WCA (ADMIN)', link: 'http://27.107.7.11:3070/admin/login' },
+            { label: 'DIGI-WCA (USER)', link: 'http://27.107.7.11:3070/user/login' },
         ],
     },
     {

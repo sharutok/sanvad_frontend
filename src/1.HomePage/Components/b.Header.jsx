@@ -17,6 +17,7 @@ import {
     Collapse,
     ScrollArea,
     rem,
+    Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
@@ -29,7 +30,7 @@ import {
     IconChevronDown,
 } from '@tabler/icons-react';
 import IMAGES from '../../assets/Image/Image';
-
+import '../../../Style/Header.css'
 const useStyles = createStyles((theme) => ({
     link: {
         display: 'flex',
@@ -72,8 +73,7 @@ const useStyles = createStyles((theme) => ({
         marginTop: theme.spacing.sm,
         padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
         paddingBottom: theme.spacing.xl,
-        borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
-            }`,
+        borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]}`,
     },
 
     hiddenMobile: {
@@ -149,12 +149,16 @@ export default function HeaderMegaMenu() {
         <Box >
             <Header height={60} px="md">
                 <Group position="apart" sx={{ height: '100%' }}>
-                    <img src={IMAGES.ador_star_logo} alt="Ador" width={"50"} />
-                    <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+                    <div className='flex gap-2'>
+                        <img src={IMAGES.ador_logo} alt="Ador" width={"50"} />
+                        <Divider orientation='vertical' />
+                        <Title align="center" sx={(theme) => ({ fontFamily: `'Cinzel Decorative', cursive, ${theme.fontFamily}`, fontSize: "20px" })}> Sanvad</Title>
+                    </div>
+                    {/* <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
                         <a href="#" className={classes.link}>
                             Home
                         </a>
-                        {/* <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+                        <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
                             <HoverCard.Target>
                                 <a href="#" className={classes.link}>
                                     <Center inline>
@@ -184,14 +188,14 @@ export default function HeaderMegaMenu() {
                                     {links}
                                 </SimpleGrid>
                             </HoverCard.Dropdown>
-                        </HoverCard> */}
+                        </HoverCard>
                         <a href="#" className={classes.link}>
                             Resourses
                         </a>
                         <a href="#" className={classes.link}>
                             Policies
                         </a>
-                    </Group>
+                    </Group> */}
 
                     {/* <Group className={classes.hiddenMobile}>
                         <Button>Log Out</Button>

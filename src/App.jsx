@@ -47,12 +47,36 @@ function App() {
     module_permission: []
   })
 
+  const [capex, setCapex] = useState({
+    budget_no: "",
+    purpose_code: "",
+    category: "",
+    dept: "",
+    capex_class: "",
+    capex_group: "",
+    plant: "",
+    asset_description: "",
+    details: "",
+    final_budget: "",
+    line_no: "",
+    purpose_description: "",
+    qty: "",
+    rate: "",
+    uom: "",
+    remarks: "",
+  })
+
+  const [userLogin, setUserLogin] = useState({
+    email: "", password: ""
+  })
+
+
   const [count, setCount] = useState(10)
   const [page, setPage] = useState(10)
   const [btnSaving, setBtnSaving] = useState(false)
 
   const contextValue = {
-    usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving
+    usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, capex, setCapex, userLogin, setUserLogin
   }
 
   return (

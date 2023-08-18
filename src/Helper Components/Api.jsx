@@ -12,6 +12,32 @@ export const api = {
     },
     capex: {
         get_data: `${link}/capex/get-all-data/`,
-        by_id: `${link}/capex`
+        by_id: `${link}/capex`,
+        create: `${link}/capex/create/`
+    },
+    conference_booking: {
+        get_data: `${link}/conf-book/all`
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

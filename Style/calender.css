@@ -1,0 +1,30 @@
+@import "rsuite/dist/rsuite.css";
+
+/* #root {
+  padding: 10px;
+} */
+.calendar-todo-list {
+  text-align: left;
+  border: 1px black;
+  color:rgb(85, 85, 85);  
+  padding: 0;
+  list-style: none;
+}
+
+.calendar-todo-list li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-todo-item-badge {
+  vertical-align: top;
+  margin-top: 8px;
+  width: 6px;
+  height: 6px;
+}
+.calender{
+  height: auto;
+  font-size: larger;
+  border-radius: 10px;
+}

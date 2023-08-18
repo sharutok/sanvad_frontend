@@ -3,31 +3,30 @@ import { FaUsers, FaIdBadge } from 'react-icons/fa';
 import { IoIosPaper } from "react-icons/io";
 import Stack from '@mui/material/Stack';
 import '../../../Style/Policies.css'
+import { Link } from 'react-router-dom';
 export default function Policies() {
     const icons = [
         {
-            icons: FaUsers, iconTitle: "HR Policies",
+            icons: FaUsers, iconTitle: "HR Policies", path: ""
         }, {
-            icons: FaIdBadge, iconTitle: "IT Policies",
+            icons: FaIdBadge, iconTitle: "IT Policies", path: ""
         },
     ]
 
     return (
         <div>
-            <h1>Policies</h1>
-            <div className='flex justify-center'>
-
+            <span>Policies</span>
+            <div className='grid grid-cols-[repeat(3,1fr)] gap-10'>
                 {icons.map((_icon) => {
                     return (
-                        <div key={_icon.iconTitle} className='m-2'>
-                            <Stack direction="row" spacing={2}>
-                                <button class="button-48" role="button">
-                                    <span class="text flex">
-                                        < _icon.icons color='#808285' size={30} />
-                                        <span className='mt-2 ml-2'>{_icon.iconTitle}</span>
-                                    </span>
-                                </button>
-                            </Stack>
+                        <div className='text-center p-4 button1'>
+                            <Link to={_icon.path} className='flex justify-center '>
+                                < _icon.icons size={40} color='#808285' />
+                            </Link>
+
+                            <div className='pt-3'>
+                                <span>{_icon.iconTitle}</span>
+                            </div>
                         </div>
                     )
                 })}

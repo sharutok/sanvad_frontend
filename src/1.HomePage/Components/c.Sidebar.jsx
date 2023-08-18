@@ -1,9 +1,10 @@
-import { Navbar, SegmentedControl, Text, createStyles, getStylesRef, rem } from '@mantine/core';
+import { Navbar, Text, createStyles, getStylesRef, rem } from '@mantine/core';
 
 import {
     IconLogout,
 } from '@tabler/icons-react';
 import NavbarLinksGroup from './f.CollapsableLinks';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
     navbar: {
@@ -61,7 +62,11 @@ const useStyles = createStyles((theme) => ({
 
 
 export default function Sidebar() {
-    const { classes, cx } = useStyles();
+    const { classes } = useStyles();
+
+    function handleLogout(e) {
+
+    }
 
     return (
         <div>
@@ -77,16 +82,15 @@ export default function Sidebar() {
                         <NavbarLinksGroup />
                     </Navbar.Section>
 
-                    <Navbar.Section className={classes.footer}>
-                        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+                    {/* <Navbar.Section className={classes.footer}>
+                        <Link to={'/login'} className={classes.link} onClick={handleLogout}>
                             <IconLogout className={classes.linkIcon} stroke={1.5} />
                             <span>Logout</span>
-                        </a>
-                    </Navbar.Section>
+                        </Link>
+                    </Navbar.Section> */}
                 </Navbar>
             </div>
             <div>
-
             </div>
         </div>
     );

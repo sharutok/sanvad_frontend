@@ -1,0 +1,54 @@
+.background1 {
+  background: rgb(22, 106, 209);
+  background: linear-gradient(
+    0deg,
+    rgba(22, 106, 209, 0.05) 0%,
+    rgba(72, 144, 231, 0.05) 20%,
+    rgba(174, 210, 255, 0.05) 100%
+  );
+}
+.background2 {
+  background: rgb(22, 106, 209);
+  background: linear-gradient(
+    0deg,
+    rgba(22, 106, 209, 0.4) 0%,
+    rgba(72, 144, 231, 0.4) 50%,
+    rgba(174, 210, 255, 0.4) 100%
+  );
+}
+.background3 {
+  background: rgb(22, 106, 209);
+  background: linear-gradient(
+    0deg,
+    rgba(22, 106, 209, 0.6) 0%,
+    rgba(72, 144, 231, 0.6) 50%,
+    rgba(174, 210, 255, 0.6) 100%
+  );
+}
+.background4 {
+  background: rgb(22, 106, 209);
+  background: linear-gradient(
+    0deg,
+    rgba(22, 106, 209, 0.8) 0%,
+    rgba(72, 144, 231, 0.8) 50%,
+    rgba(174, 210, 255, 0.8) 100%
+  );
+}
+.background5 {
+  background: rgb(22, 106, 209);
+  background: linear-gradient(
+    0deg,
+    rgba(22, 106, 209, 1) 0%,
+    rgba(72, 144, 231, 1) 50%,
+    rgba(174, 210, 255, 1) 100%
+  );
+}
+.btn-background {
+  background: rgb(22, 106, 209);
+  background: linear-gradient(
+    94deg,
+    rgba(22, 106, 209, 1) 0%,
+    rgba(72, 144, 231, 1) 50%,
+    rgba(174, 210, 255, 1) 100%
+  );
+}

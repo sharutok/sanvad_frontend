@@ -4,12 +4,12 @@ export default function Table({ thead, tbody }) {
     return (
         <div>
             <div >
-                <table className='mt-5 ml-5'>
-                    <thead >
+                <table className='table'>
+                    <thead className='thead'>
                         <tr >
                             {thead.map((h, i) => {
                                 return (
-                                    <th key={i}>{h}</th>
+                                    <th className='th' key={i}>{h}</th>
                                 )
                             })}
                         </tr>

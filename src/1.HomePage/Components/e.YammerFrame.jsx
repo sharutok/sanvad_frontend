@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { api } from '../../Helper Components/Api'
-import Carousels from './d.Carousel'
 import moment from 'moment'
 import { AiOutlineLike } from 'react-icons/ai';
 import { createStyles, Card, getStylesRef, rem } from '@mantine/core';
@@ -20,7 +19,6 @@ export default function YammerFrame() {
         </div>
     )
 }
-
 
 
 const useStyles = createStyles((theme) => ({
@@ -43,6 +41,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     carouselIndicator: {
+        color: 'red',
         width: rem(10),
         height: rem(10),
         transition: 'width 250ms ease',
@@ -60,22 +59,24 @@ function ICarousels({ data }) {
     const { classes } = useStyles();
     const slides = data?.data.map((x, i) => (
         <Carousel.Slide key={i + 9} >
-            <div>
-                <h2 className=''>{x.message}</h2>
-                <Carousels x={x} />
-                <div className='flex'>
-                    <div className='flex'>
-                        <AiOutlineLike color="#3d3d3d" fontSize='20' />
-                        <h3 color='#3d3d3d' className='text-l'>{x.liked_by}</h3>
+            <div className=''>
+                <div className='text-center text-2xl p-1'>
+                    <span >{x.message}</span>
+                </div>
+                {/* <Carousels x={x} /> */}
+                <div className=''>
+                    <div className='flex px-5'>
+                        <AiOutlineLike color="#3d3d3d" fontSize='25' className='cursor-pointer' />
+                        <span color='#3d3d3d' className=' text-xl'>{x.liked_by}</span>
                     </div>
-                    <div className=''>
-                        <h4 color='#3d3d3d'>Posted on: {moment(x.created_at).format("DD MMMM YYYY")}</h4>
-                        <a href={x.web_url}>Click here...</a>
+                    <div className='mt-20 px-5 flex justify-between'>
+                        <span color='#3d3d3d'>Posted on: {moment(x.created_at).format("DD MMMM YYYY")}</span>
+                        <a href={x.web_url}>Click here for more...</a>
                     </div>
                 </div>
                 <br />
             </div>
-        </Carousel.Slide>
+        </Carousel.Slide >
     ));
 
     return (
@@ -83,15 +84,13 @@ function ICarousels({ data }) {
             <Card radius="md" withBorder>
                 <Card.Section >
                     <Carousel
-
                         plugins={[autoplay.current]}
                         onMouseEnter={autoplay.current.stop}
                         onMouseLeave={autoplay.current.reset}
-                        orientation="vertical"
+                        orientation="horizontal"
                         height={200}
                         withIndicators
                         mx="auto"
-                        className='bg-orange-400'
                         classNames={{
                             root: classes.carousel,
                             controls: classes.carouselControls,

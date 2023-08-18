@@ -94,14 +94,14 @@ function VisitorMangement() {
                     />
                 </div>
                 <div className='vm-guest-container'>
-                    <TextField label="Visitor's Name*" size={"small"} {...register('g_name')} error={!!errors.g_name} helperText={errors.g_name && errors.g_name.message} ></TextField>
-                    <TextField label="Visitor's Company*" size={"small"} {...register('g_company')} error={!!errors.g_company} helperText={errors.g_company && errors.g_company.message} ></TextField>
-                    <TextField label="Visitor's Mobile No*" size={"small"} {...register('g_mobile_no')} error={!!errors.g_mobile_no} helperText={errors.g_mobile_no && errors.g_mobile_no.message} ></TextField>
-                    <TextField label="Visitor's Designation*" size={"small"} {...register('g_desig')} error={!!errors.g_desig} helperText={errors.g_desig && errors.g_desig.message} ></TextField>
+                    <TextField label="Visitor's Name*" size={"small"} {...register('v_name')} error={!!errors.v_name} helperText={errors.v_name && errors.v_name.message} ></TextField>
+                    <TextField label="Visitor's Company*" size={"small"} {...register('v_company')} error={!!errors.v_company} helperText={errors.v_company && errors.v_company.message} ></TextField>
+                    <TextField label="Visitor's Mobile No*" size={"small"} {...register('v_mobile_no')} error={!!errors.v_mobile_no} helperText={errors.v_mobile_no && errors.v_mobile_no.message} ></TextField>
+                    <TextField label="Visitor's Designation*" size={"small"} {...register('v_desig')} error={!!errors.v_desig} helperText={errors.v_desig && errors.v_desig.message} ></TextField>
                     <TextField label="Visitor's Vehicle No*" size={"small"} {...register('veh_no')} error={!!errors.veh_no} helperText={errors.veh_no && errors.veh_no.message} ></TextField>
                     <TextField label="Visitor's Contact Info*" size={"small"} {...register('more_info')} error={!!errors.more_info} helperText={errors.more_info && errors.more_info.message} ></TextField>
                     <TextField label="Visitor's Reason For Vist*" size={"small"}{...register('reason_for_visit')} error={!!errors.reason_for_visit} helperText={errors.reason_for_visit && errors.reason_for_visit.message} ></TextField>
-                    <TextField label="Visitor's Assests*" size={"small"}{...register('g_asset')} error={!!errors.g_asset} helperText={errors.g_asset && errors.g_asset.message} ></TextField>
+                    <TextField label="Visitor's Assests*" size={"small"}{...register('v_asset')} error={!!errors.v_asset} helperText={errors.v_asset && errors.v_asset.message} ></TextField>
                 </div>
                 <span className='hr'></span>
                 <div className='vm-guest-container'>

@@ -6,7 +6,7 @@ export default function Tasks() {
     const thead = ["No", "Tickect No", "Role", "Name", "View"]
     return (
         <div>
-            <h1>Tasks/Remainder</h1>
+            <span>Tasks/Remainder</span>
             <Table thead={thead} tbody={
                 [...Array(10).keys()].map(g => {
                     return (

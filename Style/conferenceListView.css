@@ -1,0 +1,10 @@
+.indv{
+    padding: 1rem;
+}
+.indv:hover{
+    background-color: rgb(241, 241, 241);
+    cursor: pointer;
+}
+.indv:active{
+    background-color: rgb(231, 231, 231);
+}
