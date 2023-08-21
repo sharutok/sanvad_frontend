@@ -32,56 +32,6 @@ export default function ConferenceBookingListView() {
     return (
         <div>
             <BackArrow location={"/home"} title={"Conference Booking - Listing"} />
-            {
-                // <>
-                //     <div className='mt-10 ml-5 flex gap-4'>
-                //         <TextField id="outlined-basic" label="Smart Search" variant="outlined" size='small' />
-                //         <TipTool body={
-                //             <Fab size='small' aria-label="add">
-                //                 <MdClear size={"20"} />
-                //             </Fab>} title={"Clear"} position={"top"} />
-                //         <TipTool body={
-                //             <Fab size='small' aria-label="add">
-                //                 <FiSearch size={"20"} />
-                //             </Fab>} title={"Search"} position={"top"} />
-                //         <TipTool body={
-                //             <Fab onClick={() => window.location.href = "/conference/booking/new"} size='small' aria-label="add">
-                //                 <GiVideoConference size={"20"} />
-                //             </Fab>
-                //         } title={"Book New Conference"} position={"top"} />
-                //         <TipTool body={
-                //             <Fab size='small' aria-label="add">
-                //                 <AiOutlineDownload size={"20"} />
-                //             </Fab>
-                //         } title={"Export"} position={"top"} />
-                //         {/* <Button variant='contained'>Today's Meeting</Button> */}
-                //     </div>
-                //     <Table thead={thead} tbody={
-                //         data?.data?.map((c, i) => {
-                //             return (
-                //                 <tr key={i}>
-                //                     <td>{i + 1}</td>
-                //                     <td>{c.conf_by}</td>
-                //                     <td>{"Dept"}</td>
-                //                     <td>{c.meeting_about}</td>
-                //                     <td>{c.occupancy}</td>
-                //                     <td>{c.conf_start_date}</td>
-                //                     <td>{c.conf_start_time}</td>
-                //                     <td>{c.conf_end_date}</td>
-                //                     <td>{c.conf_end_time}</td>
-                //                     {/* <td>
-                //                 <Link to={`/capex/indvi/${c.id}`}><GrFormView /></Link>
-                //             </td>
-                //             <td>
-                //                 <RiDeleteBin6Line />
-                //             </td> */}
-                //                 </tr>
-                //             )
-                //         })
-                //     } />
-                //     <CPagination />
-                // </>
-            }
             <div className='flex gap-4'>
                 <div>
                     <div>
@@ -97,14 +47,14 @@ export default function ConferenceBookingListView() {
                     {Array.from(Array(37).keys()).map(x => {
                         if ([2, 3, 1, 5, 20, 23, 24, 25, 30, 31, 32].includes(x)) {
                             return (
-                                <div className='w-[100vw]'>
+                                <div onClick={han} className='w-[100vw]'>
                                     <Divider orientation='horizontal' />
                                     <p className='indv bg-gray-300' key={x}>{moment("10/10/2023 09:00").add(15 * (x), 'minute').format("hh:mm A")}</p>
                                 </div>
                             )
                         } else {
                             return (
-                                <div className='w-[100vw]'>
+                                <div onClick={han} className='w-[100vw]'>
                                     <Divider orientation='horizontal' />
                                     <p className='indv' key={x}>{moment("10/10/2023 09:00").add(15 * (x), 'minute').format("hh:mm A")}</p>
                                 </div>
@@ -120,11 +70,6 @@ export default function ConferenceBookingListView() {
 }
 const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, control, options }) => {
     return (
-        // <Controller
-        //     key={name}
-        //     name={name}
-        //     control={control}
-        //     render={({ field }) => (
         <Autocomplete
             className='textfield'
             disablePortal
@@ -153,13 +98,10 @@ const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, contro
                 size={"small"}
                 label={label}
                 variant="outlined"
-            // error={errors[name]} helperText={errors[name] && errors[name].message}
             />
             }
 
         />
-        // )}
-        // />
 
     )
 }

@@ -1,36 +1,12 @@
-import {
-    createStyles,
-    Header,
-    HoverCard,
-    Group,
-    Button,
-    UnstyledButton,
-    Text,
-    SimpleGrid,
-    ThemeIcon,
-    Anchor,
-    Divider,
-    Center,
-    Box,
-    Burger,
-    Drawer,
-    Collapse,
-    ScrollArea,
-    rem,
-    Title,
-} from '@mantine/core';
+import { createStyles, Header, HoverCard, Group, Button, UnstyledButton, Text, SimpleGrid, ThemeIcon, Divider, Center, Box, Burger, Drawer, Collapse, ScrollArea, rem, Title, } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
-    IconNotification,
-    IconCode,
-    IconBook,
-    IconChartPie3,
-    IconFingerprint,
-    IconCoin,
-    IconChevronDown,
+    IconChevronDown
 } from '@tabler/icons-react';
+import { FaUsers, FaIdBadge } from 'react-icons/fa';
 import IMAGES from '../../assets/Image/Image';
 import '../../../Style/Header.css'
+import React from 'react'
 const useStyles = createStyles((theme) => ({
     link: {
         display: 'flex',
@@ -91,34 +67,12 @@ const useStyles = createStyles((theme) => ({
 
 const mockdata = [
     {
-        icon: IconCode,
-        title: 'Conference Booking',
-        description: 'This Pokémon’s cry is very loud and distracting',
+        icon: FaUsers,
+        title: 'HR Policies',
     },
     {
-        icon: IconCoin,
-        title: 'Visitor Management',
-        description: 'The fluid of Smeargle’s tail secretions changes',
-    },
-    {
-        icon: IconBook,
-        title: 'Add IT Ticket',
-        description: 'Yanma is capable of seeing 360 degrees without',
-    },
-    {
-        icon: IconFingerprint,
-        title: 'Capex',
-        description: 'The shell’s rounded shape and the grooves on its.',
-    },
-    {
-        icon: IconChartPie3,
-        title: 'Create User',
-        description: 'This Pokémon uses its flying ability to quickly chase',
-    },
-    {
-        icon: IconNotification,
-        title: 'Manage Work Flow',
-        description: 'Combusken battles with the intensely hot flames it spews',
+        icon: FaIdBadge,
+        title: 'IT Policies',
     },
 ];
 
@@ -131,15 +85,10 @@ export default function HeaderMegaMenu() {
         <UnstyledButton className={classes.subLink} key={item.title}>
             <Group noWrap align="flex-start">
                 <ThemeIcon size={34} variant="default" radius="md">
-                    <item.icon size={rem(22)} color={theme.fn.primaryColor()} />
+                    <item.icon size={rem(22)} color={"grey"} />
                 </ThemeIcon>
-                <div>
-                    <Text size="sm" fw={500}>
-                        {item.title}
-                    </Text>
-                    <Text size="xs" color="dimmed">
-                        {item.description}
-                    </Text>
+                <div className='mt-2'>
+                    <Text size="sm" fw={500}>{item.title} </Text>
                 </div>
             </Group>
         </UnstyledButton>
@@ -154,58 +103,50 @@ export default function HeaderMegaMenu() {
                         <Divider orientation='vertical' />
                         <Title align="center" sx={(theme) => ({ fontFamily: `'Cinzel Decorative', cursive, ${theme.fontFamily}`, fontSize: "20px" })}> Sanvad</Title>
                     </div>
-                    {/* <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
-                        <a href="#" className={classes.link}>
+                    <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+                        {/* <a href="#" className={classes.link}>
                             Home
-                        </a>
-                        <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+                        </a> */}
+                        <HoverCard width={200} position="bottom" radius="md" shadow="md" withinPortal>
                             <HoverCard.Target>
-                                <a href="#" className={classes.link}>
+                                <div className={classes.link}>
                                     <Center inline>
                                         <Box component="span" mr={5}>
-                                            Application
+                                            Policies
                                         </Box>
-                                        <IconChevronDown size={16} color={theme.fn.primaryColor()} />
+                                        <IconChevronDown size={16} color={"red"} />
                                     </Center>
-                                </a>
+                                </div>
                             </HoverCard.Target>
-
                             <HoverCard.Dropdown sx={{ overflow: 'hidden' }}>
-                                <Group position="apart" px="md">
+                                {/* <Group position="apart" px="md">
                                     <Text fw={500}>Features</Text>
                                     <Anchor href="#" fz="xs">
                                         View all
                                     </Anchor>
-                                </Group>
-
-                                <Divider
-                                    my="sm"
-                                    mx="-md"
-                                    color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}
-                                />
-
-                                <SimpleGrid cols={2} spacing={0}>
+                                </Group> */}
+                                <SimpleGrid cols={1} spacing={0}>
                                     {links}
                                 </SimpleGrid>
                             </HoverCard.Dropdown>
                         </HoverCard>
-                        <a href="#" className={classes.link}>
+                        <AccountMenu />
+                        {/* <a href="#" className={classes.link}>
                             Resourses
-                        </a>
-                        <a href="#" className={classes.link}>
+                        </a> */}
+                        {/* <a href="#" className={classes.link}>
                             Policies
-                        </a>
-                    </Group> */}
+                        </a> */}
+                    </Group>
 
                     {/* <Group className={classes.hiddenMobile}>
                         <Button>Log Out</Button>
                     </Group> */}
 
-                    <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
+                    {/* <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} /> */}
                 </Group>
             </Header>
-
-            <Drawer
+            {/* <Drawer
                 opened={drawerOpened}
                 onClose={closeDrawer}
                 size="100%"
@@ -243,10 +184,95 @@ export default function HeaderMegaMenu() {
                         <Button>Sign up</Button>
                     </Group>
                 </ScrollArea>
-            </Drawer>
+            </Drawer> */}
         </Box>
     );
 }
 
 
 
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Logout from '@mui/icons-material/Logout';
+
+function AccountMenu() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    function handleLogOut() {
+        window.location.href = "/login"
+    }
+    return (
+        <React.Fragment>
+            <div sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                <Tooltip title="Profile">
+                    <IconButton
+                        onClick={handleClick}
+                        size="small"
+                        sx={{ ml: 2 }}
+                        aria-controls={open ? 'account-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                    >
+                        <Avatar sx={{ width: 35, height: 35 }}>SK</Avatar>
+                    </IconButton>
+                </Tooltip>
+            </div>
+            <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                        },
+                        '&:before': {
+                            content: '""',
+                            display: 'block',
+                            position: 'absolute',
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: 'background.paper',
+                            transform: 'translateY(-50%) rotate(45deg)',
+                            zIndex: 0,
+                        },
+                    },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+                <MenuItem onClick={handleClose}>
+                    <Avatar /> Profile
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleLogOut}>
+                    <ListItemIcon>
+                        <Logout fontSize="small" />
+                    </ListItemIcon>
+                    Logout
+                </MenuItem>
+            </Menu>
+        </React.Fragment>
+    );
+}

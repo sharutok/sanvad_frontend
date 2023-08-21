@@ -52,3 +52,22 @@
   --shadow1: #ffffff;
   --shadow2: #2e2e2e;
 }
+
+/* For Webkit based browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 7px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Thumb color */
+  border-radius: 6px; /* Rounded corners for the thumb */
+}
+
+/* For Firefox */
+/* Note that Firefox currently only supports changing scrollbar color */
+/* It doesn't support rounded corners or width changes */
+scrollbar-color: #888 #f1f1f1;

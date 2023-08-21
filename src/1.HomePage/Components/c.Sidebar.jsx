@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 const useStyles = createStyles((theme) => ({
     navbar: {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+        maxHeight: 840,
+        overflowY: 'scroll',
     },
 
     title: {
@@ -83,10 +85,12 @@ export default function Sidebar() {
                     </Navbar.Section>
 
                     {/* <Navbar.Section className={classes.footer}>
-                        <Link to={'/login'} className={classes.link} onClick={handleLogout}>
-                            <IconLogout className={classes.linkIcon} stroke={1.5} />
-                            <span>Logout</span>
-                        </Link>
+                        <div >
+                            <Link to={'/login'} style={{ textDecoration: 'none' }} className={classes.link} onClick={handleLogout}>
+                                <IconLogout className={classes.linkIcon} stroke={1.5} />
+                                <span>Logout</span>
+                            </Link>
+                        </div>
                     </Navbar.Section> */}
                 </Navbar>
             </div>

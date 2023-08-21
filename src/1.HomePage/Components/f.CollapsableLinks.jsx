@@ -173,7 +173,7 @@ export default function NavbarLinksGroup() {
             {links.map((x, i) => {
                 return (
                     <div key={i}>
-                        <Link to={!x?.links > 0 ? x.mainlink : ""}>
+                        <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
                             <LinksGroup label={x.label} icon={x.icon} links={x.links} />
                         </Link>
                     </div>
