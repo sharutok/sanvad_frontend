@@ -13,8 +13,8 @@ import Divider from '@mui/material/Divider';
 export default function HomePage() {
     return (
         <div>
-            <div  >
-                <div className=''>
+            <div className='grid'>
+                <div>
                     <Header />
                 </div>
                 <div className='flex gap-2 grid-cols-[repeat(2,1fr)]' >
@@ -22,15 +22,14 @@ export default function HomePage() {
                         <Sidebar />
                     </div>
                     <div className='grid gap-2 p-5 grid-cols-[repeat(2,1fr)] '>
-                        <div className=''>
+                        <div >
+                            <ShortCutBtn />
                             <Calender />
                         </div>
                         <div className='grid gap-2 p-5 grid-cols-[repeat(1,1fr)]'>
-                            {/* <Date /> */}
                             {/* <Policies /> */}
-                            <ShortCutBtn />
                             <YammerFrame />
-                            {/* <NewEmployee /> */}
+                            <NewEmployee />
                             {/* <Tasks /> */}
                         </div>
                     </div>

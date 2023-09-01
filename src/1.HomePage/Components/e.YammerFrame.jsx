@@ -9,10 +9,12 @@ import { Carousel } from '@mantine/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import IMAGES from "../../assets/Image/Image"
 import { IconStar } from '@tabler/icons-react'
+import TipTool from '../../Helper Components/TipTool'
 
 export default function YammerFrame() {
 
     const { isLoading, error, data } = useQuery(['sales-data'], async () => { return await axios.get(api.yammer.get_data) })
+
     return (
         <div>
             {/* <h1>Native Yammer Posts/Feeds</h1> */}
@@ -20,7 +22,6 @@ export default function YammerFrame() {
         </div>
     )
 }
-
 
 const useStyles = createStyles((theme) => ({
     price: {
@@ -58,22 +59,24 @@ function ICarousels({ data }) {
     const autoplay = useRef(Autoplay({ delay: 2000 }));
 
     const { classes } = useStyles();
-    const slides = data?.data.map((x, i) => (
+    const slides = data?.data.data.map((x, i) => (
         <Carousel.Slide key={i + 9} >
             <div  >
                 <div className='text-center mt-3' style={{ wordBreak: "break-word" }}>
-                    <Text fz="lg" className='underline'>
-                        {x.message.toUpperCase()}
-                    </Text>
+                    <TipTool title={x.message.toUpperCase()} body={
+                        <Text fz="lg" className='underline'>
+                            {(x.message.toUpperCase()).substring(0, 100)}
+                        </Text>
+                    } />
                 </div>
-                {/* <span className='hr'></span> */}
+
                 <div className='flex justify-center mt-4'>
-                    {console.log(window.innerHeight, window.innerHeight)}
-                    {x?.image.length == (0 || null || "" || []) && <img style={{ height: "400px" }} src={IMAGES.yammer_alt} />}
-                    {x?.image[0]?.type === "image" && <img style={{ height: "400px" }} src={x?.image[0]?.sharepoint_web_url} />}
-                    {x?.image[0]?.type === "file" && <video style={{ height: "400px" }} controls>
+                    {x?.image.length == (0 || null || "" || []) && <img style={{ width: "400px" }} src={IMAGES.yammer_alt} />}
+                    {x?.image[0]?.type === "image" && <img style={{ width: "400px" }} src={x?.image[0]?.sharepoint_web_url} />}
+                    {x?.image[0]?.type === "file" && <video style={{ width: "400px" }} controls>
                         <source src={x?.image[0]?.sharepoint_web_url} type="video/mp4" />
                     </video>}
+
                 </div>
                 <span className='hr'></span>
                 <div className='px-3'>
@@ -98,7 +101,7 @@ function ICarousels({ data }) {
     ));
 
     return (
-        <div >
+        <div style={{ width: "50rem" }}>
             <Card radius="md" withBorder>
                 <Card.Section >
                     <Carousel
@@ -121,3 +124,4 @@ function ICarousels({ data }) {
         </div>
     );
 }
+

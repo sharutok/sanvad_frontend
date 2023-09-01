@@ -65,38 +65,38 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const mockdata = [
-    {
-        icon: FaUsers,
-        title: 'HR Policies',
-    },
-    {
-        icon: FaIdBadge,
-        title: 'IT Policies',
-    },
-];
+// const mockdata = [
+//     {
+//         icon: FaUsers,
+//         title: 'HR Policies',
+//     },
+//     {
+//         icon: FaIdBadge,
+//         title: 'IT Policies',
+//     },
+// ];
 
 export default function HeaderMegaMenu() {
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const { classes, theme } = useStyles();
 
-    const links = mockdata.map((item) => (
-        <UnstyledButton className={classes.subLink} key={item.title}>
-            <Group noWrap align="flex-start">
-                <ThemeIcon size={34} variant="default" radius="md">
-                    <item.icon size={rem(22)} color={"grey"} />
-                </ThemeIcon>
-                <div className='mt-2'>
-                    <Text size="sm" fw={500}>{item.title} </Text>
-                </div>
-            </Group>
-        </UnstyledButton>
-    ));
+    // const links = mockdata.map((item) => (
+    //     <UnstyledButton className={classes.subLink} key={item.title}>
+    //         <Group noWrap align="flex-start">
+    //             <ThemeIcon size={34} variant="default" radius="md">
+    //                 <item.icon size={rem(22)} color={"grey"} />
+    //             </ThemeIcon>
+    //             <div className='mt-2'>
+    //                 <Text size="sm" fw={500}>{item.title} </Text>
+    //             </div>
+    //         </Group>
+    //     </UnstyledButton>
+    // ));
 
     return (
-        <Box >
-            <Header height={60} px="md">
+        <Box  >
+            <Header className='background-image' height={60} px="md">
                 <Group position="apart" sx={{ height: '100%' }}>
                     <div className='flex gap-2'>
                         <img src={IMAGES.ador_logo} alt="Ador" width={"50"} />
@@ -107,7 +107,7 @@ export default function HeaderMegaMenu() {
                         {/* <a href="#" className={classes.link}>
                             Home
                         </a> */}
-                        <HoverCard width={200} position="bottom" radius="md" shadow="md" withinPortal>
+                        {/* <HoverCard width={200} position="bottom" radius="md" shadow="md" withinPortal>
                             <HoverCard.Target>
                                 <div className={classes.link}>
                                     <Center inline>
@@ -119,17 +119,17 @@ export default function HeaderMegaMenu() {
                                 </div>
                             </HoverCard.Target>
                             <HoverCard.Dropdown sx={{ overflow: 'hidden' }}>
-                                {/* <Group position="apart" px="md">
+                                <Group position="apart" px="md">
                                     <Text fw={500}>Features</Text>
                                     <Anchor href="#" fz="xs">
                                         View all
                                     </Anchor>
-                                </Group> */}
+                                </Group>
                                 <SimpleGrid cols={1} spacing={0}>
                                     {links}
                                 </SimpleGrid>
                             </HoverCard.Dropdown>
-                        </HoverCard>
+                        </HoverCard>*/}
                         <AccountMenu />
                         {/* <a href="#" className={classes.link}>
                             Resourses
@@ -214,7 +214,7 @@ function AccountMenu() {
     return (
         <React.Fragment>
             <div sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Tooltip title="Profile">
+                <Tooltip title="Account">
                     <IconButton
                         onClick={handleClick}
                         size="small"

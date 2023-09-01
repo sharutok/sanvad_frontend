@@ -10,25 +10,37 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import Divider from '@mui/material/Divider';
 import { Button } from '@mui/material';
+import IMAGES from '../../assets/Image/Image';
+
+
 
 export default function NewEmployee() {
+
     return (
-        <div>
+        <div className=''>
             <span>Birthday's</span>
-            <List sx={{ width: '100%', maxHeight: 360, maxWidth: 360 }} className='overflow-y-scroll'>
-                {[...Array(10).keys()].map(x => {
+            <List sx={{ width: '100%', maxHeight: 245, }} className='overflow-y-scroll border border-solid border-[#DDDDDD] rounded-[10px] '>
+                {[...Array(4).keys()].map(x => {
                     return (
-                        <div>
+                        <div className='p-1'>
                             <ListItem>
                                 <ListItemAvatar>
-                                    <Avatar>
-                                        <AccountBoxIcon />
-                                    </Avatar>
+                                    <Avatar sx={{ width: 50, height: 50 }} src={IMAGES.avatar_boy}></Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary="John Doe" secondary="IT" />
+                                <ListItemText primary={
+                                    <span className='text-[16px]'>
+                                        John Doe
+                                    </span>
+                                }
+
+                                    secondary={
+                                        <span className='text-[15px]'>
+                                            FPED
+                                        </span>
+                                    } />
                                 <ListItemText primary={
                                     <>
-                                        <span className='cursor-pointer px-3 py-1 rounded-[5px] bg-[#c0c0c0] text-[#ffff3f]'>Wish</span>
+                                        <span className='cursor-pointer px-3 py-1 rounded-[5px] bg-[#DFE0E5] text-[#7c7c7c]'>Send your wishes</span>
                                     </>
                                 } />
                             </ListItem>

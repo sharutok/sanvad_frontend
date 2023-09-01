@@ -47,14 +47,14 @@ export default function ConferenceBookingListView() {
                     {Array.from(Array(37).keys()).map(x => {
                         if ([2, 3, 1, 5, 20, 23, 24, 25, 30, 31, 32].includes(x)) {
                             return (
-                                <div onClick={han} className='w-[100vw]'>
+                                <div className='w-[100vw]'>
                                     <Divider orientation='horizontal' />
                                     <p className='indv bg-gray-300' key={x}>{moment("10/10/2023 09:00").add(15 * (x), 'minute').format("hh:mm A")}</p>
                                 </div>
                             )
                         } else {
                             return (
-                                <div onClick={han} className='w-[100vw]'>
+                                <div className='w-[100vw]'>
                                     <Divider orientation='horizontal' />
                                     <p className='indv' key={x}>{moment("10/10/2023 09:00").add(15 * (x), 'minute').format("hh:mm A")}</p>
                                 </div>

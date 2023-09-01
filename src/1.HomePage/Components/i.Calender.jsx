@@ -67,5 +67,5 @@ export default function BirthdayCard() {
         return null;
     }
 
-    return <Calendar className='calender' bordered renderCell={renderCell} />;
+    return <Calendar className='calender ' bordered renderCell={renderCell} />;
 }

@@ -67,7 +67,6 @@
   border-radius: 6px; /* Rounded corners for the thumb */
 }
 
-/* For Firefox */
-/* Note that Firefox currently only supports changing scrollbar color */
-/* It doesn't support rounded corners or width changes */
-scrollbar-color: #888 #f1f1f1;
+
+
+

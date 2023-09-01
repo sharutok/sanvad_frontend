@@ -1,13 +1,15 @@
 .table {
   padding: 1rem;
+  
   border-collapse: separate !important;
   border-spacing: 0;
+  
 }
 .th {
   font-size: larger;
   border-bottom: 1px solid #ddd;
   color: rgb(255, 255, 255);
-  padding: 0.2rem 1rem;
+  padding: 0.1rem 1rem;
 }
 
 .thead {
@@ -27,12 +29,43 @@
   border-radius: 0 8px 0 0;
 }
 
-thead>th{
+thead > th {
   color: white;
 }
 
-tbody>tr>td{
+tbody > tr > td {
   text-align: center;
   align-items: center;
   font-size: larger;
+  padding: 0.5rem;
 }
+
+table{
+/* font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica,Arial, sans-serif; */
+/* font-family: 'Barlow', sans-serif; */
+font-family: 'Quicksand', sans-serif;
+  }
+
+ .table-wrapper:hover {
+   background-color: #ebebeb;
+   font-weight: 1000;
+   cursor: pointer;
+ }
+
+ .table-wrapper:hover .delete {
+   background-color: white;
+ }
+
+ .table-wrapper {
+
+   font-size: small;
+ }
+
+ .table-wrapper .delete {
+   background-color: white;
+   border: none;
+ }
+ tbody{
+  border: 1px solid black;
+  /* background-color: red; */
+ }
