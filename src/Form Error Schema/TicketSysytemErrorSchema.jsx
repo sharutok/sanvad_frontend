@@ -1,10 +1,8 @@
 import * as yup from 'yup'
-export const ConferenceErrorSchema = yup.object().shape({
-    about: yup.string().required('Required Field'),
-    attendies: yup.string().required('Required Field'),
-    start_date_time: yup.string().required('Required Field'),
-    end_date_time: yup.string().required('Required Field'),
-    conf_room: yup.string().required('Required Field'),
-    r_plant_name: yup.string().required('Required Field'),
-    r_conf_room: yup.string().required('Required Field'),
+export const TickErrorSchema = yup.object().shape({
+    // tkt_title: yup.string().required('Required Field'),
+    // tkt_type: yup.string().required('Required Field'),
+    // req_type: yup.string().required('Required Field'),
+    // tkt_descrption: yup.string().required('Required Field'),
+
 })

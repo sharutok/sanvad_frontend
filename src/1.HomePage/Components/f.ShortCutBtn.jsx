@@ -20,9 +20,9 @@ export default function ShortCutBtn() {
         <div>
             <span>Shortcuts</span>
             <div className='grid grid-cols-[repeat(3,1fr)] gap-10'>
-                {icons.map((_icon) => {
+                {icons.map((_icon, i) => {
                     return (
-                        <div className='text-center p-4 button1'>
+                        <div key={i} className='text-center p-4 button1'>
                             <Link to={_icon.path} className='flex justify-center '>
                                 < _icon.icons size={40} color='#808285' />
                             </Link>

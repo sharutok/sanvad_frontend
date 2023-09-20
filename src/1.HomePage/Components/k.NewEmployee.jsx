@@ -20,9 +20,9 @@ export default function NewEmployee() {
         <div className=''>
             <span>Birthday's</span>
             <List sx={{ width: '100%', maxHeight: 245, }} className='overflow-y-scroll border border-solid border-[#DDDDDD] rounded-[10px] '>
-                {[...Array(4).keys()].map(x => {
+                {[...Array(4).keys()].map((x, i) => {
                     return (
-                        <div className='p-1'>
+                        <div key={i} className='p-1'>
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar sx={{ width: 50, height: 50 }} src={IMAGES.avatar_boy}></Avatar>

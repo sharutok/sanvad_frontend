@@ -3,7 +3,7 @@ import '../../Style/Table.css'
 export default function Table({ thead, tbody }) {
     return (
 
-        <div className='table-container'>
+        <div className='table-container flex justify-center'>
             <table className='table'>
                 <thead className='thead'>
                     <tr >

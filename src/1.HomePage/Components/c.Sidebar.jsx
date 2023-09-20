@@ -1,10 +1,5 @@
 import { Navbar, Text, createStyles, getStylesRef, rem } from '@mantine/core';
-
-import {
-    IconLogout,
-} from '@tabler/icons-react';
 import NavbarLinksGroup from './f.CollapsableLinks';
-import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
     navbar: {
@@ -63,39 +58,21 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export default function Sidebar() {
+export default function SideBar() {
     const { classes } = useStyles();
-
-    function handleLogout(e) {
-
-    }
 
     return (
         <div>
-
-            <div>
-                <Navbar height={840} width={{ sm: 400 }} p="md" className={classes.navbar}>
-                    <Navbar.Section>
-                        <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-                            sanvad@development
-                        </Text>
-                    </Navbar.Section>
-                    <Navbar.Section grow mt="xl">
-                        <NavbarLinksGroup />
-                    </Navbar.Section>
-
-                    {/* <Navbar.Section className={classes.footer}>
-                        <div >
-                            <Link to={'/login'} style={{ textDecoration: 'none' }} className={classes.link} onClick={handleLogout}>
-                                <IconLogout className={classes.linkIcon} stroke={1.5} />
-                                <span>Logout</span>
-                            </Link>
-                        </div>
-                    </Navbar.Section> */}
-                </Navbar>
-            </div>
-            <div>
-            </div>
+            <Navbar height={840} width={{ sm: 400 }} p="md" className={classes.navbar}>
+                <Navbar.Section>
+                    <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
+                        sanvad@development
+                    </Text>
+                </Navbar.Section>
+                <Navbar.Section grow mt="xl">
+                    <NavbarLinksGroup />
+                </Navbar.Section>
+            </Navbar>
         </div>
     );
 }

@@ -15,28 +15,22 @@ import dayjs from 'dayjs';
 import CPagination from '../Helper Components/Pagination'
 import TipTool from '../Helper Components/TipTool'
 import { AppContext } from '../App'
-import IMAGES from '../assets/Image/Image'
+import moment from 'moment'
 
-export default function UserManagementListView() {
+export default function ListsView() {
+    const thead = ["Meeting title", "Start Date", "End Date ", "Start Time", "End Time", "Conference", "Booked By"]
     const { count, setCount, page, setPage } = useContext(AppContext)
-    const thead = ["Employee Code", "First Name", "Last Name", "Department", "Plant", "Organization", "User Status", "Date of joining"]
-    const { isLoading, error, data } = useQuery(['sales-data', page], async () => {
-        return await axios.get(`${api.user_management.get_data}/?page=${page}`)
+    const { data, isLoading } = useQuery(['list-of-conf-booking'], async () => {
+        return axios.get(api.conference_booking.get_data + "/?page=" + page)
     })
-    const [value, setValue] = React.useState(dayjs('2022-04-17'));
-
-    function handleNavigation(id) {
-        window.location.href = `/user/management/indvi/${id}`
-    }
-
+    console.log(data?.data);
     useEffect(() => {
         setCount(Math.ceil(data?.data.count / 10))
     })
-
     return (
         <div >
             <div className='flex justify-between mt-5'>
-                <BackArrow location={"/home"} title={"User Management - Listing"} />
+                <BackArrow location={"/home"} title={"Conference Booking - Listing"} />
                 <div className='flex gap-4 mt-3 mr-20'>
                     <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                     <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
@@ -45,20 +39,19 @@ export default function UserManagementListView() {
                     <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                 </div>
             </div>
-            {!isLoading ?
+            {!false ?
                 <div className='mt-10'>
                     <Table thead={thead} tbody={
                         data?.data.results.map((g, i) => {
                             return (
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
-                                    <td onClick={() => handleNavigation(g.id)} >{g.emp_no}</td>
-                                    <td onClick={() => handleNavigation(g.id)} >{g.first_name}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.last_name}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.department}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.plant_name}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.organization || "-"}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{<UserStatus user_status={g.user_status} />}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.start_date || "-"}</td>
+                                    <td>{g.meeting_about}</td>
+                                    <td>{moment(g.conf_start_date).format("DD MMM YYYY")}</td>
+                                    <td>{moment(g.conf_end_date).format("DD MMM YYYY")}</td>
+                                    <td>{moment(g.conf_start_time, "HH:mm").format("hh:mm A")}</td>
+                                    <td>{moment(g.conf_end_time, "HH:mm").format("hh:mm A")}</td>
+                                    <td>{g.conf_room}</td>
+                                    <td >{g.conf_by}</td>
                                     <td className='delete'>
                                         <TipTool body={< >
                                             <IconButton>
@@ -74,25 +67,10 @@ export default function UserManagementListView() {
                     < CPagination />
                 </div>
                 : <LoadingSpinner />}
-            {/* {(window.innerHeight >= 900 && window.innerWidth >= 1900) &&
-                <div className='absolute right-0 bottom-0 ' >
-                    <img width={"300px"} src={IMAGES.test_img} />
-                </div>
-            } */}
-
         </div>
-
     )
 }
 
-
-function UserStatus({ user_status }) {
-    return (
-        user_status ?
-            <span className='bg-[#85ff85] rounded-md px-2 text-[grey] ' >Active</span> :
-            <span className='bg-[#ff9b9b] rounded-md px-2 text-[grey] ' >Inactive</span>
-    )
-}
 
 const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     return (

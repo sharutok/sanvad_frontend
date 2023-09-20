@@ -36,7 +36,8 @@ const Input = styled('input')({
 });
 
 export default function Form() {
-    const { id } = useParams()
+    const id = useParams()
+    console.log(id);
     // const FormData = new FormData()
     const ErrorSchema = CapexErrorSchema
     const inputFile = useRef(null)

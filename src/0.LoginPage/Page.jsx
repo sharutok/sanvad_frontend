@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import '../../Style/LoginPage.css'
 import {
     TextInput,
@@ -15,15 +15,23 @@ import {
 import IMAGES from '../assets/Image/Image';
 import { LoadingButton } from '@mui/lab';
 import { AppContext } from '../App'
+const data = [
+    { value: '@adorians.com', label: '@adorians.com' },
+    { value: '@adorfontech.com', label: '@adorfontech.com' },
+    { value: '@flash.com', label: '@flash.com' },
+];
+
+import { NativeSelect, rem } from '@mantine/core';
 import moment from 'moment';
 
 export default function Page() {
+    const [prefix, setPrefix] = useState(data[0]['label'])
     const { btnSaving, setBtnSaving, userLogin, setUserLogin } = useContext(AppContext)
 
     function onSubmit(e) {
         e.preventDefault()
-        console.log(userLogin);
-        window.location.href = "/home"
+        console.log(userLogin, prefix);
+        // window.location.href = "/home"
     }
 
     function handleOnChange(e) {
@@ -31,6 +39,24 @@ export default function Page() {
         let value = e.target.value
         setUserLogin({ ...userLogin, [name]: value })
     }
+
+    const select = (
+        <NativeSelect
+            defaultValue={data[0]['label']}
+            onChange={(e) => setPrefix(e.target.value)}
+            data={data}
+            rightSectionWidth={28}
+            styles={{
+                input: {
+                    fontWeight: 500,
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
+                    width: rem(150),
+                    marginRight: rem(-2),
+                },
+            }}
+        />
+    );
 
     return (
         <div >
@@ -46,12 +72,13 @@ export default function Page() {
                                 <img src={IMAGES.ador_logo} alt="Ador" width={"100"} />
                             </div>
                             <Divider orientation='vertical' />
-
                             <Title align="center" sx={(theme) => ({ fontFamily: `'Cinzel Decorative', cursive, ${theme.fontFamily}`, fontWeight: 900, marginTop: "0.5rem" })}> Sanvad</Title>
                         </div>
                         <Text align="center" sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Text>
                         <form onSubmit={onSubmit} className='px-5'>
-                            <TextInput onChange={handleOnChange} name="email" label="Email Address" placeholder="yourname" required rightSection={"@adorians.com"} rightSectionWidth={"auto"} />
+                            <div >
+                                <TextInput sx={{ width: rem(380) }} onChange={handleOnChange} name="email" label="Email Address" placeholder="email address" required rightSection={select} />
+                            </div>
                             <PasswordInput onChange={handleOnChange} name="password" label="Password" placeholder="your password" required mt="xl" />
                             <Text className='mt-5 underline' color="dimmed" size="sm" align="center">
                                 Forgot password? Contact Sanvad Admin

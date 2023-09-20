@@ -10,9 +10,8 @@ export default function CPagination() {
   };
 
   return (
-    <Stack spacing={2} direction={'row'} className='ml-4 mt-4'>
+    <Stack spacing={2} direction={'row'} className='mt-10 flex justify-center'>
       <Pagination count={count} page={page} shape='rounded' variant="outlined" onChange={handleChange} />
-      {/* <Typography>Page: {page}</Typography> */}
     </Stack>
   );
 }

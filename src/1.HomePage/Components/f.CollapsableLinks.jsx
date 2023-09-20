@@ -52,13 +52,14 @@ const links = [
         mainlink: "/capex/list"
     },
     {
-        label: 'Module Configurations',
+        label: 'Module Setup',
         icon: MdSettingsApplications,
         mainlink: "",
         links: [
             { label: 'User Management', link: '/' },
             { label: 'Conference Room', link: '/' },
             { label: `Visitor's Management`, link: '/' },
+            { label: `Ticketing System`, link: '/module-config/ticket-system' },
         ],
     },
     {
@@ -166,9 +167,9 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
                 </UnstyledButton>
             </>
             {hasLinks ? <Collapse in={opened}>
-                {items.map(x => {
+                {items.map((x, i) => {
                     return (
-                        <Link className='no-underline' >{x}</Link>
+                        <Link key={i} className='no-underline' >{x}</Link>
                     )
                 })}
             </Collapse> : null}

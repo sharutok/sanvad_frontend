@@ -7,7 +7,7 @@ export default function LoadingSpinner() {
             <div className='animation'>
                 <img src={IMAGES.ador_star_logo} alt="Ador" width={"50"} />
             </div>
-            <h1 className='font-[bolder] text-[large] text-center'>Loading</h1>
+            <span className='font-[bolder] text-[2xl] text-center'>Loading</span>
         </div>
     )
 }

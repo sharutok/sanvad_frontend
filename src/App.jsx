@@ -71,12 +71,31 @@ function App() {
   })
 
 
-  const [count, setCount] = useState(10)
-  const [page, setPage] = useState(10)
+  const [count, setCount] = useState(1)
+  const [page, setPage] = useState(1)
   const [btnSaving, setBtnSaving] = useState(false)
 
+  const [dialogStatus, setDialogStatus] = useState(false)
+
+  const [confTemp, setConfTemp] = useState({
+    conf_room_start_date: "",
+    conf_room_start_time: "",
+    conf_room: ""
+  })
+
+  const [momentTime, setMomentTime] = useState([])
+  // const [disabledOptions, setDisabledOptions] = useState(["08:00 AM"])
+  const [disabledOptions, setDisabledOptions] = useState([])
+  const [snackBarPopUp, setSnackBarPopUp] = useState({
+    state: false,
+    message: ""
+  })
+
+  const [visitors, setVisitors] = useState([])
+
   const contextValue = {
-    usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, capex, setCapex, userLogin, setUserLogin
+    momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, capex, setCapex, userLogin, setUserLogin, dialogStatus, setDialogStatus, confTemp, setConfTemp
+    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors
   }
 
   return (

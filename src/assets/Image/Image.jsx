@@ -6,6 +6,12 @@ const IMAGES = {
     avatar_girl: new URL('../Image/girl.png', import.meta.url).href,
     birthday_bg: new URL('../Image/girl.png', import.meta.url).href,
     login_img: new URL('../Image/Login Background.jpg', import.meta.url).href,
+    test_img: new URL('../Image/6099119905dc8225f36ebb25_69.png', import.meta.url).href,
+    conf_img: new URL('../Image/conf.png', import.meta.url).href,
+    _girl_: new URL('../Image/conf.png', import.meta.url).href,
+    _boy_: new URL('../Image/conf.png', import.meta.url).href,
+
+
 }
 
 export default IMAGES

@@ -16,7 +16,19 @@ export const api = {
         create: `${link}/capex/create/`
     },
     conference_booking: {
-        get_data: `${link}/conf-book/all`
+        get_data: `${link}/conf-book/all`,
+        create: `${link}/conf-book/create/`,
+        get_by_date_and_conf_room: `${link}/conf-book/by/date/conf-room/`,
+        post_data: `${link}/conf-book/create/`
+    },
+    ticket_system: {
+        get_data: `${link}/tkt-sys/all/`,
+        create: `${link}/tkt-sys/create/`
+    },
+    dynamic_values: {
+        tkt_type: `${link}/tkt-sys/tkt_type/`,
+        requirement_type: `${link}/tkt-sys/req_type/`,
+        conference_rooms: `${link}/conf-book/conference-rooms/`
     }
 }
 

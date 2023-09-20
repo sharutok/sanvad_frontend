@@ -3,63 +3,82 @@ import Table from '../Helper Components/Table'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import CPagination from '../Helper Components/Pagination'
 import BackArrow from '../Helper Components/SideComponent'
-import { Fab, TextField } from '@mui/material'
+import { Fab, IconButton, TextField } from '@mui/material'
 import TipTool from '../Helper Components/TipTool'
-import { MdClear } from 'react-icons/md'
+import { MdClear, MdDeleteOutline } from 'react-icons/md'
 import { FiSearch } from 'react-icons/fi'
 import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
+import { IoIosPaper } from 'react-icons/io'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import { api } from '../Helper Components/Api'
 
 export default function TicketSystemListView() {
-    const thead = ["TIcket No",]
+    const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Ticket Date", "Status", "Current At"]
+
+    const ticket_listing = useQuery(['ticket-listing'], async () => {
+        const data = await axios.get(api.ticket_system.get_data)
+        return data
+    })
+
+    !ticket_listing.isLoading && console.log(ticket_listing?.data?.data?.results);
+
     return (
         <div>
             <div>
-                <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
-                <div className='mt-10 ml-5 flex gap-4'>
-                    <TextField id="outlined-basic" label="Smart Search" variant="outlined" size='small' />
-                    <TipTool body={
-                        <Fab size='small' aria-label="add">
-                            <MdClear size={"20"} />
-                        </Fab>} title={"Clear"} position={"top"} />
-                    <TipTool body={
-                        <Fab size='small' aria-label="add">
-                            <FiSearch size={"20"} />
-                        </Fab>} title={"Search"} position={"top"} />
-                    <TipTool body={
-                        <Fab onClick={() => window.location.href = "/user/management/new"} size='small' aria-label="add">
-                            <AiOutlineUserAdd size={"20"} />
-                        </Fab>
-                    } title={"Add User"} position={"top"} />
-                    <TipTool body={
-                        <Fab size='small' aria-label="add">
-                            <AiOutlineDownload size={"20"} />
-                        </Fab>
-                    } title={"Export"} position={"top"} />
+                <div className='flex justify-between mt-5'>
+                    <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
+                    <div className='flex gap-4 mt-3 mr-20'>
+                        <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
+                        <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
+                        <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
+                        <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />
+                        <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
+                    </div>
                 </div>
-                <Table thead={thead}
-                // tbody={
-                // data?.data.map((g, i) => {
-                //     return (
-                //         <tr key={i}>
-                //             <td >{g.first_name}</td>
-                //             <td>{g.last_name}</td>
-                //             <td>{g.department}</td>
-                //             <td>{g.plant_name}</td>
-                //             <td>{g.organization || "-"}</td>
-                //             <td>{g.user_status || "-"}</td>
-                //             <td >
-                //               <Link to={`/user/management/indvi/${g.id}`}><GrFormView size={"20"} /></Link>
-                //           </td>
-                //             <td >
-                //                 <RiDeleteBin6Line size={"20"} />
-                //             </td>
-                //         </tr>
-                //     )
-                // })
-                // }
-                />
+                <div className='mt-10'>
+                    <Table thead={thead}
+                        tbody={
+                            ticket_listing?.data?.data?.results.map((g, i) => {
+                                return (
+                                    <tr className='table-wrapper' key={i}>
+                                        <td>{g.ticket_no}</td>
+                                        <td>{g.tkt_title}</td>
+                                        <td>{g.tkt_type}</td>
+                                        <td>{g.req_type}</td>
+                                        <td>{g.requester_emp_no}</td>
+                                        <td>{g.created_at}</td>
+                                        <td>{g.tkt_status}</td>
+                                        <td>{g.tkt_current_at}</td>
+                                        <td className='delete'>
+                                            <TipTool body={< >
+                                                <IconButton>
+                                                    <MdDeleteOutline color='#f08080' size={22} />
+                                                </IconButton>
+                                            </>} title={"Delete"} />
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
+                    />
+                </div>
                 < CPagination />
             </div>
+        </div>
+    )
+}
+
+const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
+    return (
+        <div
+            onClick={onClick}
+            {...props}
+            className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+            <div className='no-underline'>
+                {icon}
+            </div>
+            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
         </div>
     )
 }

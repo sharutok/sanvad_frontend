@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from './Components/b.Header'
-import Sidebar from './Components/c.Sidebar'
+import SideBar from './Components/c.SideBar'
 import YammerFrame from './Components/e.YammerFrame'
 import ShortCutBtn from './Components/f.ShortCutBtn'
 import Tasks from './Components/g.Tasks'
@@ -14,12 +14,12 @@ export default function HomePage() {
     return (
         <div>
             <div className='grid'>
-                <div>
+                {/* <div>
                     <Header />
-                </div>
+                </div> */}
                 <div className='flex gap-2 grid-cols-[repeat(2,1fr)]' >
                     <div className=''>
-                        <Sidebar />
+                        <SideBar />
                     </div>
                     <div className='grid gap-2 p-5 grid-cols-[repeat(2,1fr)] '>
                         <div >

@@ -5,22 +5,15 @@ import { Link } from 'react-router-dom';
 
 export default function BackArrow({ title, location }) {
     return (
-        <div className='flex gap-4'>
-            <div onClick={() => window.location.href = `${location || "/home"}`} >
-                <div className='ml-2 mt-3'>
-                    <IconButton aria-label="delete">
-                        <ArrowBackIcon />
+        <div className='flex gap-2'>
+            <Link to={location || "/home"}>
+                <div className='ml-5 mt-2 bg-[#555259] rounded-3xl px-2 cursor-pointer'>
+                    <IconButton size='small' aria-label="delete">
+                        <ArrowBackIcon sx={{ color: "white" }} />
                     </IconButton>
                 </div>
-            </div>
-            {/* <Link to={location || "/home"}>
-                <div className='ml-2 mt-3'>
-                    <IconButton aria-label="delete">
-                        <ArrowBackIcon />
-                    </IconButton>
-                </div>
-            </Link> */}
-            <h1 className='text-[2rem]'>{title}</h1>
+            </Link>
+            <span className='text-[2rem]'>{title}</span>
         </div>
     )
 }
