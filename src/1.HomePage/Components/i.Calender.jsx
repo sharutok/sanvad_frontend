@@ -30,14 +30,13 @@ export default function BirthdayCard() {
     function renderCell(date) {
         const list = getTodoList(date);
         const displayList = list.filter((item, index) => index < 2);
-
         if (list.length) {
             const moreCount = list.length - displayList.length;
             const moreItem = (
                 <li>
                     <Whisper
                         placement="top"
-                        trigger="click"
+                        trigger="hover"
                         speaker={
                             <Popover>
                                 {list.map((item, index) => (
@@ -67,5 +66,10 @@ export default function BirthdayCard() {
         return null;
     }
 
-    return <Calendar className='calender ' bordered renderCell={renderCell} />;
+    return (
+        <div>
+            <span className='text-xl p-1'>Your Calender</span>
+            <Calendar bordered renderCell={renderCell} />
+        </div>
+    );
 }

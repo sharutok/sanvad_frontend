@@ -21,18 +21,32 @@ import { IconButton } from 'rsuite';
 import { MdDeleteOutline } from 'react-icons/md';
 import { FiSearch } from 'react-icons/fi';
 import { api } from '../Helper Components/Api';
+import axios from 'axios';
+import { LoadingButton } from '@mui/lab';
+import moment from 'moment';
 
 export default function CreateVisitorMangement() {
     const ErrorSchema = VisitorMangErrorSchema
-    const { setDialogStatus, dialogStatus, visitors, setVisitors } = useContext(AppContext)
+    const { setDialogStatus, dialogStatus, visitors, setVisitors, setBtnSaving, setSnackBarPopUp, btnSaving } = useContext(AppContext)
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
     })
+
     const onSubmit = async (data) => {
-        console.log({ data, visitors: visitors });
-        await axios.post(api)
+        data["visitors"] = visitors
+        data["start_date_time"] = moment(getValues("start_date_time")["$d"]).format(),
+            data["end_date_time"] = moment(getValues("end_date_time")["$d"]).format(),
+            data["raised_by"] = "15681"
+        console.log(data);
+        const response = await axios.post(api.visitor_management.create, data)
+        setBtnSaving(true)
+
+        if (response.data.status) {
+            setSnackBarPopUp({ state: true, message: "Created ticket" })
+            window.history.back()
+        }
     }
 
     let obj = {}
@@ -50,17 +64,17 @@ export default function CreateVisitorMangement() {
                 <div>
                     <BackArrow title={"Visitor's Management - New Application"} />
                     <div className='grid gap-5 p-5'>
-                        <div className='flex flex-wrap gap-5'>
-                            <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
-                            <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField>
-                            <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
-                            <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
+                        <div className='grid gap-5 '>
+                            <div className='flex flex-wrap gap-5 '>
+                                {/* <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
+                            <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField> */}
+                                <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
+                                <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
+                                <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
+                                <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
+                                <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
+                            </div>
                             <div className='grid grid-cols-[repeat(2,auto)] gap-5'>
-                                <div className='grid grid-cols-[repeat(2,1fr)] gap-5'>
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
-                                </div>
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                             </div>
                         </div>
@@ -75,7 +89,7 @@ export default function CreateVisitorMangement() {
                                         name="row-radio-buttons-group"
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        inputRef={ref}
+                                        // inputRef={ref}
                                         value={value}>
                                         <FormControlLabel value="0" control={<Radio size='small' />} label="Provided" />
                                         <FormControlLabel value="1" control={<Radio size='small' />} label="Returned" />
@@ -106,7 +120,18 @@ export default function CreateVisitorMangement() {
                     </div>
                 </div>
                 <div className='vm-button'>
-                    <Button fullWidth variant="contained" type="submit">Submit</Button>
+                    {/* <Button fullWidth variant="contained" type="submit">Submit</Button> */}
+                    <LoadingButton
+                        fullWidth
+                        variant="contained"
+                        type="submit"
+                        sx={{ background: "#555259", width: "10rem" }}
+                        loading={btnSaving}
+                        startIcon={<></>}
+                        loadingPosition="start"
+                    >
+                        {btnSaving ? <p>Saving....</p> : <p>Save</p>}
+                    </LoadingButton>
                 </div>
             </form>
         </div>

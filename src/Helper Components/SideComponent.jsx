@@ -7,7 +7,7 @@ export default function BackArrow({ title, location }) {
     return (
         <div className='flex gap-2'>
             <Link to={location || "/home"}>
-                <div className='ml-5 mt-2 bg-[#555259] rounded-3xl px-2 cursor-pointer'>
+                <div className='ml-10 mt-2 bg-[#555259] rounded-3xl px-2 cursor-pointer'>
                     <IconButton size='small' aria-label="delete">
                         <ArrowBackIcon sx={{ color: "white" }} />
                     </IconButton>

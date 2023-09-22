@@ -5,20 +5,19 @@ import { useQuery, } from '@tanstack/react-query'
 import { IconButton, TextField } from '@mui/material'
 import { api } from '../Helper Components/Api'
 import { AiOutlineDownload } from 'react-icons/ai'
-import { MdDeleteOutline } from 'react-icons/md'
+import { MdDeleteOutline, MdOutlineOpenInNew } from 'react-icons/md'
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { FiSearch } from 'react-icons/fi'
 import { MdClear } from 'react-icons/md'
 import axios from 'axios'
 import LoadingSpinner from '../Helper Components/LoadingSpinner'
-import { AiOutlineUserAdd } from 'react-icons/ai'
-import dayjs from 'dayjs';
 import CPagination from '../Helper Components/Pagination'
 import TipTool from '../Helper Components/TipTool'
 import { AppContext } from '../App'
 import moment from 'moment'
 
 export default function ListsView() {
-    const thead = ["Meeting title", "Start Date", "End Date ", "Start Time", "End Time", "Conference", "Booked By"]
+    const thead = ["Meeting title", "Start Date", "End Date ", "Start Time", "End Time", "Conference", "Booked By", "Department"]
     const { count, setCount, page, setPage } = useContext(AppContext)
     const { data, isLoading } = useQuery(['list-of-conf-booking'], async () => {
         return axios.get(api.conference_booking.get_data + "/?page=" + page)
@@ -31,16 +30,16 @@ export default function ListsView() {
         <div >
             <div className='flex justify-between mt-5'>
                 <BackArrow location={"/home"} title={"Conference Booking - Listing"} />
-                <div className='flex gap-4 mt-3 mr-20'>
+                <div className='flex gap-4 mt-3 mr-10'>
                     <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                     <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
                     <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
-                    <ButtonComponent onClick={() => { window.location.href = "/user/management/new" }} icon={<AiOutlineUserAdd color='white' size={"23"} />} btnName={"Add User"} />
+                    <ButtonComponent onClick={() => { window.location.href = "/conference/booking/new" }} icon={<GroupAddIcon sx={{ color: 'white' }} size={"23"} />} btnName={"Book Conference"} />
                     <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                 </div>
             </div>
             {!false ?
-                <div className='mt-10'>
+                <div className='mt-10 mx-10'>
                     <Table thead={thead} tbody={
                         data?.data.results.map((g, i) => {
                             return (
@@ -52,6 +51,7 @@ export default function ListsView() {
                                     <td>{moment(g.conf_end_time, "HH:mm").format("hh:mm A")}</td>
                                     <td>{g.conf_room}</td>
                                     <td >{g.conf_by}</td>
+                                    <td ></td>
                                     <td className='delete'>
                                         <TipTool body={< >
                                             <IconButton>

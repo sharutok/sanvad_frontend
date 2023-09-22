@@ -1,15 +1,31 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import BackArrow from '../Helper Components/SideComponent'
 import CPagination from '../Helper Components/Pagination'
 import { FiSearch } from 'react-icons/fi'
-import { MdClear } from 'react-icons/md'
+import { MdClear, MdDeleteOutline } from 'react-icons/md'
 import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
 import { IoIosPaper } from 'react-icons/io'
 import { Button, TextField } from '@mui/material'
 import Table from '../Helper Components/Table'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '../Helper Components/Api'
+import axios from 'axios'
+import { AppContext } from '../App'
+import TipTool from '../Helper Components/TipTool'
 
 export default function VisitManagementListView() {
-    const thead = ["Visitor's Name", "Visitor's Company", "Visitor's Reason For Vist", "PPE", "Visitor Count", "Actions"]
+    const thead = ["Visitor's Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Visitor Count",]
+    const { count, setCount, page, setPage } = useContext(AppContext)
+
+    const { data, isLoading } = useQuery(["visitor-list", page], async () => {
+        return axios.get(`${api.visitor_management.get_data}/?page=${page}`)
+    })
+
+    useEffect(() => {
+        setCount(Math.ceil(data?.data.count / 10))
+    })
+
+
     return (
         <div>
             <div className='flex justify-between mt-5'>
@@ -22,25 +38,32 @@ export default function VisitManagementListView() {
                     <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                 </div>
             </div>
-            <div className='mt-10'>
+            <div className='mt-10 px-10'>
                 <Table thead={thead} tbody={
-                    [1, 2, 3, 4, 5, 6].map((g, i) => {
+                    data?.data?.results.map((g, i) => {
                         return (
-                            <tr className='p-10 mt-1' key={i}>
-                                <td >{"g.emp_no"}</td>
-                                <td >{"g.first_name"}</td>
-                                <td >{"g.last_name"}</td>
-                                <td >{"g.department"}</td>
-                                <td >{"g.plant_name"}</td>
-                                <td >
+                            <tr className='p-10 mt-1 table-wrapper' key={i}>
+                                <td >{g.reason_for_visit}</td>
+                                <td >{g.raised_by}</td>
+                                <td ></td>
+                                <td >{g.start_date_time}</td>
+                                <td >{g.end_date_time}</td>
+                                <td >{g.visitors.length}</td>
+                                {/* <td >
                                     <>
                                         <>
                                             <Button sx={{ color: "grey", background: "white" }} disableElevation>{"Check In"}</Button>
                                             <Button sx={{ color: "grey", background: "white" }} disableElevation>{"Check Out"}</Button>
                                         </>
                                     </>
+                                </td> */}
+                                <td className='delete'>
+                                    <TipTool body={
+                                        <div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'>
+                                            <MdDeleteOutline color='#f08080' size={22} />
+                                        </div>
+                                    } title={"Delete"} />
                                 </td>
-
                             </tr>
                         )
                     })} />

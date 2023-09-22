@@ -17,20 +17,18 @@ export default function HomePage() {
                 {/* <div>
                     <Header />
                 </div> */}
-                <div className='flex gap-2 grid-cols-[repeat(2,1fr)]' >
+                <div className='flex gap-5 grid-cols-[repeat(2,1fr)]' >
                     <div className=''>
                         <SideBar />
                     </div>
-                    <div className='grid gap-2 p-5 grid-cols-[repeat(2,1fr)] '>
-                        <div >
+                    <div className='grid gap-5 grid-cols-[repeat(2,1fr)] p-3'>
+                        <div className=''>
                             <ShortCutBtn />
                             <Calender />
                         </div>
-                        <div className='grid gap-2 p-5 grid-cols-[repeat(1,1fr)]'>
-                            {/* <Policies /> */}
+                        <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-3'>
                             <YammerFrame />
                             <NewEmployee />
-                            {/* <Tasks /> */}
                         </div>
                     </div>
 

@@ -37,7 +37,7 @@ export default function UserManagementListView() {
         <div >
             <div className='flex justify-between mt-5'>
                 <BackArrow location={"/home"} title={"User Management - Listing"} />
-                <div className='flex gap-4 mt-3 mr-20'>
+                <div className='flex gap-4 mt-3 mr-10'>
                     <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                     <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
                     <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
@@ -46,7 +46,7 @@ export default function UserManagementListView() {
                 </div>
             </div>
             {!isLoading ?
-                <div className='mt-10'>
+                <div className='mt-10 px-10'>
                     <Table thead={thead} tbody={
                         data?.data.results.map((g, i) => {
                             return (
@@ -59,13 +59,13 @@ export default function UserManagementListView() {
                                     <td onClick={() => handleNavigation(g.id)}>{g.organization || "-"}</td>
                                     <td onClick={() => handleNavigation(g.id)}>{<UserStatus user_status={g.user_status} />}</td>
                                     <td onClick={() => handleNavigation(g.id)}>{g.start_date || "-"}</td>
-                                    <td className='delete'>
-                                        <TipTool body={< >
+                                    {/* <td className='delete'>
+                                        <TipTool body={
                                             <IconButton>
                                                 <MdDeleteOutline color='#f08080' size={22} />
                                             </IconButton>
-                                        </>} title={"Delete"} />
-                                    </td>
+                                        } title={"Delete"} />
+                                    </td> */}
 
                                 </tr>
                             )

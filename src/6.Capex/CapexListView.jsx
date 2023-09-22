@@ -5,7 +5,7 @@ import { MdDeleteOutline } from 'react-icons/md'
 import Table from '../Helper Components/Table'
 
 export default function CapexListView() {
-    const thead = ["Budget No", "Purpose code", "Requisition Date", "Payback Period", "Return On Investment", "Budget Type"]
+    const thead = ["Budget No", "Purpose code", "Line No", "Requisition Date", "Payback Period", "Return On Investment", "Budget Type", "Current At"]
     return (
         <div>
             <Table thead={thead} tbody={
@@ -21,15 +21,10 @@ export default function CapexListView() {
                             <td>{"c.capex_class"}</td>
                             <td>{"c.category"}</td>
                             <td>{"c.final_budget"}</td>
-                            {/* <td>
-                                <Link to={`/capex/id/${c.id}`}><GrFormView /></Link>
-                            </td> */}
                             <td className='delete'>
-                                <TipTool body={< >
-                                    <IconButton>
-                                        <MdDeleteOutline color='#f08080' size={22} />
-                                    </IconButton>
-                                </>} title={"Delete"} />
+                                <TipTool body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'>
+                                    <MdDeleteOutline color='#f08080' size={22} />
+                                </div>} title={"Delete"} />
                             </td>
                         </tr>
                     )

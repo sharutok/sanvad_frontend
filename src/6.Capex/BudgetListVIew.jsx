@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../Helper Components/Api';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { MdDeleteOutline } from 'react-icons/md';
+import { MdDeleteOutline, MdOutlineOpenInNew } from 'react-icons/md';
 import TipTool from '../Helper Components/TipTool';
 import { IconButton } from 'rsuite';
 import CPagination from '../Helper Components/Pagination';
@@ -27,33 +27,61 @@ export default function BudgetListVIew() {
     }
     return (
         <div>
-            <Table thead={thead} tbody={
-                !isLoading && data?.data?.map((c, i) => {
+            {/* {!isLoading && <Table thead={thead} tbody={
+                data?.data?.map((c, i) => {
                     return (
                         <tr className='table-wrapper' key={i}>
-                            <td onClick={() => handleNav(c)}>{c.budget_no}</td>
-                            <td onClick={() => handleNav(c)}>{c.purpose_code}</td>
-                            <td onClick={() => handleNav(c)}>{c.purpose_description}</td>
-                            <td onClick={() => handleNav(c)}>{c.line_no}</td>
-                            <td onClick={() => handleNav(c)}>{c.dept}</td>
-                            <td onClick={() => handleNav(c)}>{c.capex_group}</td>
-                            <td onClick={() => handleNav(c)}>{c.capex_class}</td>
-                            <td onClick={() => handleNav(c)}>{c.category}</td>
-                            <td onClick={() => handleNav(c)}>{Math.floor(Math.random() * 5)}</td>
-                            <td onClick={() => handleNav(c)} >{<CProgressBar />}</td>
+                            <td >{c.budget_no}</td>
+                            <td >{c.purpose_code}</td>
+                            <td >{c.purpose_description}</td>
+                            <td >{c.line_no}</td>
+                            <td >{c.dept}</td>
+                            <td >{c.capex_group}</td>
+                            <td >{c.capex_class}</td>
+                            <td >{c.category}</td>
+                            <td >{Math.floor(Math.random() * 5)}</td>
+                            <td  >{<CProgressBar />}</td>
                             <td onClick={() => handleNav(c)}>{c.final_budget}</td>
+                            <td className='delete' onClick={() => handleNav(c)}>
+                                <TipTool title={"Create Capex"} body={<IconButton><MdOutlineOpenInNew color='#f08080' size={22} /></IconButton>} />
+                            </td>
                             <td className='delete'>
-                                <TipTool body={< >
-                                    <IconButton>
-                                        <MdDeleteOutline color='#f08080' size={22} />
-                                    </IconButton>
-                                </>} title={"Delete"} />
+                                <TipTool title={"Delete"} body={<IconButton ><MdDeleteOutline color='#f08080' size={22} /></IconButton>} />
                             </td>
                         </tr>
                     )
                 })
-            } />
-            <CPagination />
+            } />} */}
+            {!isLoading ?
+                <div className='mt-10'>
+                    <Table thead={thead} tbody={
+                        data?.data?.map((c, i) => {
+                            return (
+                                <tr className='p-10 mt-1 table-wrapper' key={i}>
+                                    <td >{c.budget_no}</td>
+                                    <td >{c.purpose_code}</td>
+                                    <td >{c.purpose_description}</td>
+                                    <td >{c.line_no}</td>
+                                    <td >{c.dept}</td>
+                                    <td >{c.capex_group}</td>
+                                    <td >{c.capex_class}</td>
+                                    <td >{c.category}</td>
+                                    <td >{Math.floor(Math.random() * 5)}</td>
+                                    <td  >{<CProgressBar />}</td>
+                                    <td onClick={() => handleNav(c)}>{c.final_budget}</td>
+                                    <td className='delete' onClick={() => handleNav(c)}>
+                                        <TipTool title={"Create Capex"} body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'><MdOutlineOpenInNew color='#f08080' size={22} /></div>} />
+                                    </td>
+                                    <td className='delete'>
+                                        <TipTool title={"Delete"} body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'><MdDeleteOutline color='#f08080' size={22} /></div>} />
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    } />
+                    < CPagination />
+                </div>
+                : <LoadingSpinner />}
         </div>
     )
 }

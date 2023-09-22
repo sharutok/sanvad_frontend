@@ -1,22 +1,17 @@
 .table {
-  /* padding: 1rem; */
   border-collapse: separate !important;
   border-spacing: 0;
 }
 .th {
-  font-size: larger;
+  font-size: medium;
   border-bottom: 1px solid #ddd;
   color: rgb(255, 255, 255);
-  padding: 0.1rem 1rem;
+  padding: 1rem;
 }
 
 .thead {
   background-color: var(--neutral7);
   color: white;
-}
-
-.table {
-  border-collapse: collapse;
 }
 
 .thead .th:first-child {
@@ -34,13 +29,11 @@ thead > th {
 tbody > tr > td {
   text-align: center;
   align-items: center;
-  font-size: larger;
+  font-size: 0.9rem;
   padding: 0.5rem;
 }
 
 table {
-  /* font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica,Arial, sans-serif; */
-  /* font-family: 'Barlow', sans-serif; */
   font-family: "Quicksand", sans-serif;
 }
 

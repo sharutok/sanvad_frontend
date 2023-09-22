@@ -3,8 +3,8 @@ import '../../Style/Table.css'
 export default function Table({ thead, tbody }) {
     return (
 
-        <div className='table-container flex justify-center'>
-            <table className='table'>
+        <div className='table-container '>
+            <table className='table w-[100%]'>
                 <thead className='thead'>
                     <tr >
                         {thead.map((h, i) => {

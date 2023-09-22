@@ -2,7 +2,7 @@
     padding: 1rem;
 }
 .indv:hover{
-    background-color: rgb(241, 241, 241);
+    background-color: rgb(255, 193, 193);
     cursor: pointer;
 }
 .indv:active{

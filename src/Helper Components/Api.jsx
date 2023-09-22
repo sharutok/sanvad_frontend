@@ -29,6 +29,10 @@ export const api = {
         tkt_type: `${link}/tkt-sys/tkt_type/`,
         requirement_type: `${link}/tkt-sys/req_type/`,
         conference_rooms: `${link}/conf-book/conference-rooms/`
+    },
+    visitor_management: {
+        create: `${link}/visitor-manage/create/`,
+        get_data: `${link}/visitor-manage/all`
     }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import Table from '../Helper Components/Table'
-import { RiDeleteBin6Line } from 'react-icons/ri'
+import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2'
 import CPagination from '../Helper Components/Pagination'
 import BackArrow from '../Helper Components/SideComponent'
 import { Fab, IconButton, TextField } from '@mui/material'
@@ -14,21 +14,35 @@ import axios from 'axios'
 import { api } from '../Helper Components/Api'
 
 export default function TicketSystemListView() {
-    const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Ticket Date", "Status", "Current At"]
+    const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Severity", "Ticket Date", "Status", "Current At"]
 
     const ticket_listing = useQuery(['ticket-listing'], async () => {
         const data = await axios.get(api.ticket_system.get_data)
         return data
     })
 
-    !ticket_listing.isLoading && console.log(ticket_listing?.data?.data?.results);
+    function severityArrow(val) {
+        if (val === 0) {
+            return (<div className='flex justify-center p-1 rounded-xl bg-green-100'><p className='mt-[0.1rem]'>Low</p><HiMiniArrowSmallDown className='text-green-500' size="25" /></div>)
+        }
+        if (val === 1) {
+            return (<div className='flex justify-center p-1 rounded-xl bg-yellow-100'><p className='mt-[0.1rem]'>Meduim</p><HiMiniArrowSmallRight className='text-yellow-500' size="25" /></div>)
+        }
+        if (val === 2) {
+            return (<div className='flex justify-center p-1 rounded-xl bg-red-100'><p className='mt-[0.1rem]'>High</p><HiMiniArrowSmallUp className='text-red-500' size="25" /></div>)
+        }
+        else {
+            return "-"
+        }
+    }
+
 
     return (
         <div>
             <div>
                 <div className='flex justify-between mt-5'>
                     <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
-                    <div className='flex gap-4 mt-3 mr-20'>
+                    <div className='flex gap-4 mt-3 mr-10'>
                         <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                         <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
                         <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
@@ -36,7 +50,7 @@ export default function TicketSystemListView() {
                         <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                     </div>
                 </div>
-                <div className='mt-10'>
+                <div className='mt-10 mx-10'>
                     <Table thead={thead}
                         tbody={
                             ticket_listing?.data?.data?.results.map((g, i) => {
@@ -47,6 +61,7 @@ export default function TicketSystemListView() {
                                         <td>{g.tkt_type}</td>
                                         <td>{g.req_type}</td>
                                         <td>{g.requester_emp_no}</td>
+                                        <td className='align-middle'>{severityArrow(g.severity)}</td>
                                         <td>{g.created_at}</td>
                                         <td>{g.tkt_status}</td>
                                         <td>{g.tkt_current_at}</td>

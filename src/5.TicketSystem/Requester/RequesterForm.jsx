@@ -52,13 +52,12 @@ function RequesterForm() {
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
-            // setBtnSaving(true)
+            setBtnSaving(true)
             const response = await axios.post(api.ticket_system.create, formData)
 
             if (response.data.status) {
                 setSnackBarPopUp({ state: true, message: "Created ticket" })
                 window.history.back()
-
             }
         } catch (error) {
             console.log("error in uploading ", error);

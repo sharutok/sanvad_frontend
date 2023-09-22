@@ -77,9 +77,21 @@ export default function ConferenceBookingListView() {
     function getMeetingInfo(what) {
         const header_data = !prev_booked_list.isLoading && prev_booked_list?.data?.data?.data?.map(x => {
             if (what === moment(x.conf_start_time, "HH:mm").format("hh:mm A")) {
-                return x.meeting_about
+                // return `${x.meeting_about} | ${x.conf_by} | ${"IT"}`
+                return (
+                    <div className='flex justify-between'>
+                        <span>{x.meeting_about}</span>
+                        <div className='grid grid-cols-3 gap-2'>
+                            <span>{x.conf_by}</span>
+                            <span>{"IT"}</span>
+                            <div className='cursor-pointer'>
+                                <MdDeleteOutline onClick={() => { console.log("Hi"); }} color='#f08080' size={20} />
+                            </div>
+                        </div>
+                    </div>
+                )
             }
-            return
+            return false
         })
 
         return (header_data.filter(item => item)[0] && <>
@@ -100,7 +112,6 @@ export default function ConferenceBookingListView() {
     booked_dates && booked_dates.map(y => {
         _flag.push(...y.diff_numbered)
     })
-
 
     function handleDilogBox() {
         if (!confTemp.conf_room_start_date || !confTemp.conf_room) {
@@ -126,7 +137,7 @@ export default function ConferenceBookingListView() {
 
     return (
         <div >
-            <BackArrow location={"/home"} title={"Conference Booking"} />
+            <BackArrow location={"/conference/booking/list"} title={"Conference Booking"} />
 
             <div className='flex gap-5 mx-10 my-5'>
                 <div className=' w-fit px-4 bg-[#eeeeee] rounded-lg shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
@@ -158,15 +169,16 @@ export default function ConferenceBookingListView() {
                             value.map((x, i) => {
                                 if ([..._flag].includes(x)) {
                                     return (
-                                        <div key={i} className='w-[100%] '>
-                                            <div className='p-[1rem] bg-gray-100 cursor-not-allowed'>
+                                        <div key={i} className='w-[100%]'>
+                                            {getMeetingInfo(x) && <div className='pt-4'></div>}
+                                            <div className='p-[1rem] bg-gray-100 cursor-not-allowed flex justify-between '>
                                                 <span>{x}</span>
-                                                <span className='text-xl font-[900] ml-5'>{getMeetingInfo(x)}</span>
-                                                {getMeetingInfo(x) && <span>
-                                                    <IconButton>
-                                                        <MdDeleteOutline className='' onClick={() => { console.log("Hi"); }} color='#f08080' size={22} />
-                                                    </IconButton>
-                                                </span>}
+                                                {getMeetingInfo(x) && <div style={{
+                                                    borderLeft: "5px solid rgba(255, 0, 0,0.9)",
+                                                    background: "rgba(255, 0, 0,0.1)",
+                                                }} className='pl-4 pt-1 pb-1 w-[94%] '>
+                                                    <div className='font-[900] '>{getMeetingInfo(x)}</div>
+                                                </div>}
                                             </div>
                                         </div>
                                     )
