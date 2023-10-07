@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {
-    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup,
+    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Divider
 } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox';
 import '../../Style/VisitManagement.css'
@@ -42,10 +42,10 @@ export default function CreateVisitorMangement() {
         console.log(data);
         const response = await axios.post(api.visitor_management.create, data)
         setBtnSaving(true)
-
+        console.log(response.data.status);
         if (response.data.status) {
             setSnackBarPopUp({ state: true, message: "Created ticket" })
-            window.history.back()
+            // window.history.back()
         }
     }
 
@@ -59,50 +59,51 @@ export default function CreateVisitorMangement() {
 
     }
     return (
-        <div>
+        <div className='mt-10'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <BackArrow title={"Visitor's Management - New Application"} />
-                    <div className='grid gap-5 p-5'>
+                    <BackArrow location={"/vistors/management/list"} title={"Visitor's Management - New Application"} />
+                    <div className='grid gap-5 p-10'>
                         <div className='grid gap-5 '>
-                            <div className='flex flex-wrap gap-5 '>
-                                {/* <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
-                            <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField> */}
+                            <div className='grid grid-cols-[repeat(4,18vw)] gap-5 '>
+                                <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
+                                <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField>
                                 <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
                             </div>
-                            <div className='grid grid-cols-[repeat(2,auto)] gap-5'>
+                            <div className='grid grid-cols-[repeat(2,18vw)] gap-5'>
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
+                                <div >
+                                    <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
+                                        <FormControl error={!!errors.ppe}>
+                                            <FormLabel id="demo-row-radio-buttons-group-label">Personal Protective Equipment</FormLabel>
+                                            <RadioGroup
+                                                {...register('ppe')}
+                                                row
+                                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                                name="row-radio-buttons-group"
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                                // inputRef={ref}
+                                                value={value}>
+                                                <FormControlLabel value="0" control={<Radio size='small' />} label="Provided" />
+                                                <FormControlLabel value="1" control={<Radio size='small' />} label="Returned" />
+                                            </RadioGroup>
+                                            <FormHelperText>{errors.ppe && errors.ppe.message}</FormHelperText>
+                                        </FormControl>
+                                    )}
+                                        name="ppe"
+                                        control={control}
+                                        rules={{ required: true }}
+                                    />
+                                </div>
                             </div>
                         </div>
-                        <div >
-                            <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
-                                <FormControl error={!!errors.ppe}>
-                                    <FormLabel id="demo-row-radio-buttons-group-label">Personal Protective Equipment</FormLabel>
-                                    <RadioGroup
-                                        {...register('ppe')}
-                                        row
-                                        aria-labelledby="demo-row-radio-buttons-group-label"
-                                        name="row-radio-buttons-group"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        // inputRef={ref}
-                                        value={value}>
-                                        <FormControlLabel value="0" control={<Radio size='small' />} label="Provided" />
-                                        <FormControlLabel value="1" control={<Radio size='small' />} label="Returned" />
-                                    </RadioGroup>
-                                    <FormHelperText>{errors.ppe && errors.ppe.message}</FormHelperText>
-                                </FormControl>
-                            )}
-                                name="ppe"
-                                control={control}
-                                rules={{ required: true }}
-                            />
-                        </div>
-                        <span className='hr'></span>
+                        <Divider textAlign='left'></Divider>
+                        {/* <Divider sx={{ borderColor: "red" }} /> */}
                         <div className='w-fit'>
                             <div className='w-fit flex'>
                                 <div className='flex flex-wrap gap-5 '>
@@ -119,8 +120,7 @@ export default function CreateVisitorMangement() {
                         </div>
                     </div>
                 </div>
-                <div className='vm-button'>
-                    {/* <Button fullWidth variant="contained" type="submit">Submit</Button> */}
+                <div className='p-10'>
                     <LoadingButton
                         fullWidth
                         variant="contained"

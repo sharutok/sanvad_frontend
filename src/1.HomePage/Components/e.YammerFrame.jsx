@@ -19,8 +19,7 @@ export default function YammerFrame() {
     }
     return (
         <div >
-            <span className='text-xl p-1 '>Yammer Posts</span>
-            <div className='border-[1px] border-solid border-[#cfcfcf] rounded-xl max-h-[56vh] overflow-y-scroll p-4'>
+            <div className=' rounded-xl max-h-[56vh] overflow-y-scroll p-4 bg-[#fff]'>
 
                 {!isLoading && <ICarousels data={data} />}
             </div>
@@ -85,7 +84,7 @@ const useStyles = createStyles((theme) => ({
 
 //                 </div>
 //                 <div className=''>
-//                     {/* <span className='hr'></span> */}
+//                     {/* <Divider sx={{ borderColor: "red" }} /> */}
 //                     <div className='px-3'>
 //                         <div className='flex'>
 //                             <AiOutlineLike color="#3d3d3d" fontSize='20' className='cursor-pointer' />

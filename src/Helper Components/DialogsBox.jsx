@@ -47,6 +47,7 @@ export default function DialogsBox({ btnShow, body, title }) {
         </div>
     );
 }
+
 const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     return (
         <div

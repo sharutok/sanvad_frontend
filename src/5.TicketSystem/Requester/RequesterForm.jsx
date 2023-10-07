@@ -11,24 +11,25 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../Helper Components/Api';
 import axios from 'axios';
 import { RxCross2 } from 'react-icons/rx'
-import { TickErrorSchema } from '../../Form Error Schema/TicketSysytemErrorSchema';
+import { RequestTicketErrorSchema } from '../../Form Error Schema/TicketSysytemErrorSchema';
 import { LoadingButton } from '@mui/lab';
 import { AppContext } from '../../App';
 import BarSnack from '../../Helper Components/BarSnack';
+import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 const Input = styled('input')({
     display: 'none',
 });
 const formData = new FormData()
 
 function RequesterForm() {
-    const { snackBarPopUp, setSnackBarPopUp } = useContext(AppContext)
+    const { snackBarPopUp, setSnackBarPopUp, snackfn } = useContext(AppContext)
     const [tktFiles, setTKTFiles] = useState([])
     const [tktType, setTKTType] = useState({
         value: "",
         index: ""
     })
     const { btnSaving, setBtnSaving } = useContext(AppContext)
-    const ErrorSchema = TickErrorSchema
+    const ErrorSchema = RequestTicketErrorSchema
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
@@ -52,12 +53,14 @@ function RequesterForm() {
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
-            setBtnSaving(true)
             const response = await axios.post(api.ticket_system.create, formData)
-
-            if (response.data.status) {
+            if (response.data.status === 200) {
+                setBtnSaving(true)
                 setSnackBarPopUp({ state: true, message: "Created ticket" })
-                window.history.back()
+                setTimeout(() => {
+                    setSnackBarPopUp({ state: false, message: "" })
+                    window.location.href = "/ticket/sys/list"
+                }, 2000)
             }
         } catch (error) {
             console.log("error in uploading ", error);
@@ -86,25 +89,23 @@ function RequesterForm() {
         })
     }
 
-    function deleteFiles() {
-        tktFiles.pop(globalThis)
+    function deleteFiles(g) {
+        let arr = tktFiles.filter(function (item) {
+            return item.name !== g
+        })
         setTKTFiles((tktFiles) => {
-            return [...tktFiles]
+            return [...arr]
         })
     }
 
     return (
-        <div className='ts-container'>
-            <BackArrow title={"Raise a New Ticket"} />
+        <div className='mt-10'>
+            <BackArrow location={"/ticket/sys/list"} title={"Raise a New Ticket"} />
             <BarSnack />
             <form className='grid grid-cols-[repeat(1,1fr)] p-5' onSubmit={handleSubmit(onSubmit)}>
-                <div className='grid grid-cols-[repeat(2,30vw)] gap-5'>
-                    <div className='grid grid-cols-[repeat(1,30vw)] gap-5'>
-
+                <div className='grid grid-cols-[repeat(2,30vw)] gap-7 p-5'>
+                    <div className='grid grid-cols-[repeat(1,30vw)] gap-7'>
                         <CustomTextField label="Ticket Title*" name={"tkt_title"} errors={errors} register={register} watch={watch} />
-                        <CustomTextField multiline={4} label="Requirement Description*" name={"tkt_descrption"} errors={errors} register={register} watch={watch} />
-                    </div>
-                    <div className='grid grid-cols-[repeat(1,30vw)]'>
                         <Autocomplete
                             onChange={(x, e) => {
                                 setValue("req_type", null)
@@ -123,8 +124,11 @@ function RequesterForm() {
                             renderInput={(params) => <TextField {...params} label="Requirement Type*" size={"small"} {...register('req_type')} error={errors.req_type} helperText={errors.req_type && errors.req_type.message} />}
                         />
                     </div>
+                    <div className='grid grid-cols-[repeat(1,30vw)] gap-7'>
+                        <CustomTextField multiline={7} label="Requirement Description*" name={"tkt_description"} errors={errors} register={register} watch={watch} />
+                    </div>
                 </div>
-                <div className='flex gap-5 mt-5' >
+                <div className='flex gap-7 p-5' >
                     <Card onClick={onButtonClick} className="ts-card" style={{ cursor: "pointer " }} >
                         <CardContent  >
                             <Typography className="ts-card-typo" sx={{ fontSize: 14 }} >
@@ -161,22 +165,13 @@ function RequesterForm() {
                             return (
                                 <div key={i} className='flex gap-2 '>
                                     <p><strong>{i + 1}.</strong> {g.name}</p>
-                                    <RxCross2 onClick={() => { deleteFiles(g) }} className='text-[#ff2a2a] hover:text-[#ff6060] cursor-pointer active:text-[#ffa4a4] mt-1' />
+                                    <RxCross2 onClick={() => { deleteFiles(g.name) }} className='text-[#ff2a2a] hover:text-[#ff6060] cursor-pointer active:text-[#ffa4a4] mt-1' />
                                 </div>)
                         })}
                     </div>
                 </div>
-                <div className='ts-button'>
-                    <LoadingButton
-                        fullWidth
-                        variant="contained"
-                        type="submit"
-                        sx={{ background: "#555259", width: "10rem" }}
-                        loading={btnSaving}
-                        loadingPosition="start"
-                    >
-                        {btnSaving ? <p>Saving....</p> : <p>Save</p>}
-                    </LoadingButton>
+                <div className='p-5'>
+                    <LoadingButtonWithSnack beforeName={"Create Ticket"} afterName={"Creating..."} />
                 </div>
             </form>
         </div>

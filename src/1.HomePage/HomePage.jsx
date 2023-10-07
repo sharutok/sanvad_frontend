@@ -3,30 +3,25 @@ import Header from './Components/b.Header'
 import SideBar from './Components/c.SideBar'
 import YammerFrame from './Components/e.YammerFrame'
 import ShortCutBtn from './Components/f.ShortCutBtn'
-import Tasks from './Components/g.Tasks'
-import Policies from './Components/h.Policies'
 import '../../Style/comman.css'
 import Calender from './Components/i.Calender'
-import Date from './Components/j.Date'
 import NewEmployee from './Components/k.NewEmployee'
-import Divider from '@mui/material/Divider';
 export default function HomePage() {
     return (
-        <div>
-            <div className='grid'>
-                {/* <div>
-                    <Header />
-                </div> */}
-                <div className='flex gap-5 grid-cols-[repeat(2,1fr)]' >
-                    <div className=''>
+        <div className='bg-[#E1EFF9] '>
+            <div className='grid mr-5'>
+                <div className='flex gap-5 grid-cols-[repeat(2,1fr)] ' >
+                    <div className='bg-[#fff]'>
                         <SideBar />
                     </div>
-                    <div className='grid gap-5 grid-cols-[repeat(2,1fr)] p-3'>
-                        <div className=''>
+                    <div className='grid gap-5 grid-cols-[repeat(2,1fr)] p-3 '>
+                        <div className='grid gap-10 grid-cols-[repeat(1,1fr)] p-3'>
                             <ShortCutBtn />
-                            <Calender />
+                            <div className="">
+                                <Calender />
+                            </div>
                         </div>
-                        <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-3'>
+                        <div className='grid gap-10 grid-cols-[repeat(1,1fr)] p-3'>
                             <YammerFrame />
                             <NewEmployee />
                         </div>

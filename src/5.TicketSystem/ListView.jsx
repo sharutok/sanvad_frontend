@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Table from '../Helper Components/Table'
 import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2'
 import CPagination from '../Helper Components/Pagination'
@@ -12,11 +12,15 @@ import { IoIosPaper } from 'react-icons/io'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { api } from '../Helper Components/Api'
+import { AppContext } from '../App'
+import BarSnack from '../Helper Components/BarSnack'
+import { Link } from 'react-router-dom'
 
 export default function TicketSystemListView() {
+    const { setSnackBarPopUp } = useContext(AppContext)
     const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Severity", "Ticket Date", "Status", "Current At"]
 
-    const ticket_listing = useQuery(['ticket-listing'], async () => {
+    const ticket_listing = useQuery(['ticket-listing', handleDelete], async () => {
         const data = await axios.get(api.ticket_system.get_data)
         return data
     })
@@ -36,11 +40,17 @@ export default function TicketSystemListView() {
         }
     }
 
+    async function handleDelete(id) {
+        const response = await axios.delete(api.ticket_system.by_id + id)
+        response.data.status_code === 200 && setSnackBarPopUp({ state: true, message: "Ticket Delete" })
+    }
+
 
     return (
         <div>
+            <BarSnack />
             <div>
-                <div className='flex justify-between mt-5'>
+                <div className='flex justify-between mt-10'>
                     <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
                     <div className='flex gap-4 mt-3 mr-10'>
                         <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
@@ -56,7 +66,9 @@ export default function TicketSystemListView() {
                             ticket_listing?.data?.data?.results.map((g, i) => {
                                 return (
                                     <tr className='table-wrapper' key={i}>
-                                        <td>{g.ticket_no}</td>
+                                        <td>
+                                            <Link to={`/ticket/sys/${g.id}`}>{g.ticket_no}</Link>
+                                        </td>
                                         <td>{g.tkt_title}</td>
                                         <td>{g.tkt_type}</td>
                                         <td>{g.req_type}</td>
@@ -67,7 +79,7 @@ export default function TicketSystemListView() {
                                         <td>{g.tkt_current_at}</td>
                                         <td className='delete'>
                                             <TipTool body={< >
-                                                <IconButton>
+                                                <IconButton onClick={() => handleDelete(g.id)}>
                                                     <MdDeleteOutline color='#f08080' size={22} />
                                                 </IconButton>
                                             </>} title={"Delete"} />

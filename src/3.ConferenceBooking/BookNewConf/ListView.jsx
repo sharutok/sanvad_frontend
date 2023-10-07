@@ -77,13 +77,12 @@ export default function ConferenceBookingListView() {
     function getMeetingInfo(what) {
         const header_data = !prev_booked_list.isLoading && prev_booked_list?.data?.data?.data?.map(x => {
             if (what === moment(x.conf_start_time, "HH:mm").format("hh:mm A")) {
-                // return `${x.meeting_about} | ${x.conf_by} | ${"IT"}`
                 return (
                     <div className='flex justify-between'>
-                        <span>{x.meeting_about}</span>
+                        <span className='text-lg'>{x.meeting_about}</span>
                         <div className='grid grid-cols-3 gap-2'>
-                            <span>{x.conf_by}</span>
-                            <span>{"IT"}</span>
+                            <span className='text-lg'>{x.conf_by} | </span>
+                            <span className='text-lg'>{"IT"}</span>
                             <div className='cursor-pointer'>
                                 <MdDeleteOutline onClick={() => { console.log("Hi"); }} color='#f08080' size={20} />
                             </div>
@@ -136,9 +135,8 @@ export default function ConferenceBookingListView() {
     }
 
     return (
-        <div >
+        <div className='mt-10'>
             <BackArrow location={"/conference/booking/list"} title={"Conference Booking"} />
-
             <div className='flex gap-5 mx-10 my-5'>
                 <div className=' w-fit px-4 bg-[#eeeeee] rounded-lg shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
                     <div className='w-fit'>
@@ -153,7 +151,6 @@ export default function ConferenceBookingListView() {
                     </div>
                     <div >
                         <CustomAutoCompleteWithIcon control={""} errors={""} name={"conference_rooms"} label={"Conference Rooms"} options={_conferences()} />
-
                     </div>
                     {(error1) && <div className='rounded-md mt-5 flex justify-center bg-[#d8d8d8]'>
                         <AiOutlineInfoCircle size={"20"} className='mt-1' />
@@ -172,7 +169,7 @@ export default function ConferenceBookingListView() {
                                         <div key={i} className='w-[100%]'>
                                             {getMeetingInfo(x) && <div className='pt-4'></div>}
                                             <div className='p-[1rem] bg-gray-100 cursor-not-allowed flex justify-between '>
-                                                <span>{x}</span>
+                                                <span className='text-lg'>{x}</span>
                                                 {getMeetingInfo(x) && <div style={{
                                                     borderLeft: "5px solid rgba(255, 0, 0,0.9)",
                                                     background: "rgba(255, 0, 0,0.1)",
@@ -185,9 +182,9 @@ export default function ConferenceBookingListView() {
                                 }
                                 else {
                                     return (
-                                        <div key={i} className='w-[100%]' onClick={handleDilogBox}>
+                                        <div key={i} className='w-[100%] hover:bg-gray-100 cursor-pointer' onClick={handleDilogBox}>
                                             <Divider orientation='horizontal' />
-                                            <p className='indv' onClick={() =>
+                                            <p className='p-[1rem] text-lg font-medium' onClick={() =>
                                                 setConfTemp({ ...confTemp, conf_room_start_time: x })}
                                                 key={i}>{x}</p>
                                         </div>

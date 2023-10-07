@@ -1,5 +1,3 @@
-import Homepage from './1.HomePage/HomePage'
-import UserManagement from './2.UserManagement/UserManagement'
 import Path from './Path'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState } from 'react'
@@ -7,7 +5,12 @@ export const AppContext = React.createContext()
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 const queryClient = new QueryClient()
 import './App.css'
+import { MantineProvider } from '@mantine/core';
+
 const theme = createTheme({
+  typography: {
+    fontFamily: 'Source Sans Pro',
+  },
   palette: {
     primary: {
       main: "#ed1d24",
@@ -93,20 +96,28 @@ function App() {
 
   const [visitors, setVisitors] = useState([])
 
+  const [cookie, setCookie] = useState({
+    role_status: "",
+    emp_code: "",
+    user_role_id: "",
+  })
+
   const contextValue = {
     momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, capex, setCapex, userLogin, setUserLogin, dialogStatus, setDialogStatus, confTemp, setConfTemp
-    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors
+    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie
   }
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <AppContext.Provider value={contextValue}>
-          <ThemeProvider theme={theme}>
-            <Path />
-          </ThemeProvider>
-        </AppContext.Provider>
-      </QueryClientProvider>
+      <MantineProvider theme={{ fontFamily: 'Source Sans Pro' }}>
+        <QueryClientProvider client={queryClient}>
+          <AppContext.Provider value={contextValue}>
+            <ThemeProvider theme={theme}>
+              <Path />
+            </ThemeProvider>
+          </AppContext.Provider>
+        </QueryClientProvider>
+      </MantineProvider>
     </>
   )
 }

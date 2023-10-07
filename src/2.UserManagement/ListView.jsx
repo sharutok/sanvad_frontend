@@ -16,6 +16,9 @@ import CPagination from '../Helper Components/Pagination'
 import TipTool from '../Helper Components/TipTool'
 import { AppContext } from '../App'
 import IMAGES from '../assets/Image/Image'
+import { GoDot, GoDotFill } from 'react-icons/go'
+import { HiMiniArrowSmallDown } from 'react-icons/hi2'
+import { Link } from 'react-router-dom'
 
 export default function UserManagementListView() {
     const { count, setCount, page, setPage } = useContext(AppContext)
@@ -35,7 +38,7 @@ export default function UserManagementListView() {
 
     return (
         <div >
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between mt-10'>
                 <BackArrow location={"/home"} title={"User Management - Listing"} />
                 <div className='flex gap-4 mt-3 mr-10'>
                     <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
@@ -51,22 +54,17 @@ export default function UserManagementListView() {
                         data?.data.results.map((g, i) => {
                             return (
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
-                                    <td onClick={() => handleNavigation(g.id)} >{g.emp_no}</td>
-                                    <td onClick={() => handleNavigation(g.id)} >{g.first_name}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.last_name}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.department}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.plant_name}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.organization || "-"}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{<UserStatus user_status={g.user_status} />}</td>
-                                    <td onClick={() => handleNavigation(g.id)}>{g.start_date || "-"}</td>
-                                    {/* <td className='delete'>
-                                        <TipTool body={
-                                            <IconButton>
-                                                <MdDeleteOutline color='#f08080' size={22} />
-                                            </IconButton>
-                                        } title={"Delete"} />
-                                    </td> */}
-
+                                    <td>
+                                        <Link to={`/user/management/indvi/${g.id}`}>{g.emp_no}</Link>
+                                    </td>
+                                    {/* <td onClick={() => handleNavigation(g.id)}>{g.emp_no}</td> */}
+                                    <td >{g.first_name}</td>
+                                    <td >{g.last_name}</td>
+                                    <td >{g.department}</td>
+                                    <td >{g.plant_name}</td>
+                                    <td >{g.organization || "-"}</td>
+                                    <td >{UserStatus(g.user_status)}</td>
+                                    <td >{g.start_date || "-"}</td>
                                 </tr>
                             )
                         })
@@ -85,14 +83,15 @@ export default function UserManagementListView() {
     )
 }
 
-
-function UserStatus({ user_status }) {
-    return (
-        user_status ?
-            <span className='bg-[#85ff85] rounded-md px-2 text-[grey] ' >Active</span> :
-            <span className='bg-[#ff9b9b] rounded-md px-2 text-[grey] ' >Inactive</span>
-    )
+function UserStatus(val) {
+    if (val === true) {
+        return (<div className='flex justify-center p-1 rounded-xl bg-green-100'><p className='mt-[0.1rem]'>Active</p></div>)
+    }
+    if (val === false) {
+        return (<div className='flex justify-center p-1 rounded-xl bg-red-100'><p className='mt-[0.1rem]'>Inactive</p></div>)
+    }
 }
+
 
 const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     return (

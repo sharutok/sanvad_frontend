@@ -4,7 +4,7 @@ import moment from 'moment';
 import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Checkbox
+    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Checkbox, Divider
 } from '@mui/material'
 import { useForm, Controller, get } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -25,6 +25,7 @@ import { LoadingButton } from '@mui/lab';
 const ErrorSchema = UserErrorSchema
 import { FiSave } from "react-icons/fi";
 import { Link } from 'react-router-dom';
+import { user_permission } from '../Static/StaticValues';
 
 
 function CreateUserForm() {
@@ -72,21 +73,24 @@ function CreateUserForm() {
     }, [])
 
     return (
-        <form className='p-4' onSubmit={handleSubmit(onSubmit)}>
+        <form className='mt-10' onSubmit={handleSubmit(onSubmit)}>
             <BackArrow title={usermanagement.app_name} location={usermanagement.go_back_loc} />
-            <div className='user-management-container'>
-                <div className='user-managment-component'>
+            <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
+                <div className='flex flex-wrap gap-7'>
                     <CustomTextField label={"First Name*"} name={"first_name"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Last Name*"} name={"last_name"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Mobile Number*"} name={"ph_no"} errors={errors} register={register} watch={watch} />
                     <CustomDate label={"Date Of Birth*"} name={"dob"} errors={errors} control={control} watch={watch} register={register} />
+                    <CustomTextField label={"Emergency Contact*"} name={"emerg_contact"} errors={errors} register={register} watch={watch} />
+                    <CustomTextField label={"Address*"} name={"address"} errors={errors} register={register} watch={watch} />
                     <Controller
                         render={({ field: { onChange, onBlur, value, name, ref },
                             fieldState: { isTouched, isDirty, error },
                         }) => (
                             <FormControl error={!!errors.gender}>
-                                <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+                                <FormLabel className='mt-[-.6rem]' id="demo-row-radio-buttons-group-label">Gender</FormLabel>
                                 <RadioGroup
+                                    className='mt-[-.1rem]'
                                     {...register('gender')}
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -104,13 +108,10 @@ function CreateUserForm() {
                         control={control}
                         rules={{ required: true }}
                     />
-                    <CustomTextField label={"Emergency Contact*"} name={"emerg_contact"} errors={errors} register={register} watch={watch} />
-                    <CustomTextField label={"Address*"} name={"address"} errors={errors} register={register} watch={watch} />
                 </div>
-            </div>
-            <span className='hr'></span>
-            <div className='user-management-container'>
-                <div className='user-managment-component'>
+                {/* <Divider sx={{ borderColor: "red" }} /> */}
+                <Divider textAlign='left'></Divider>
+                <div className='flex flex-wrap gap-7'>
                     <CustomDate label={"End Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomDate label={"Start Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
@@ -121,13 +122,12 @@ function CreateUserForm() {
                     <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
                     <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={['0', "1", "2", "3", "4"]} />
                 </div>
-            </div>
-            <span className='hr'></span>
-            <div className='user-management-container'>
-                <div className='user-managment-component'>
+                <Divider textAlign='left'></Divider>
+                <div className='flex flex-wrap gap-7'>
                     <CustomTextField label={"Employee Designation*"} name={"emp_designation"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Email*"} name={"email_id"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Password*"} name={"password"} errors={errors} register={register} watch={watch} />
+                    <CustomAutoComplete control={control} errors={errors} name={"user_role"} label={"User Roles"} options={["0", "1", "3", "4"]} />
                     <div className='grid grid-cols-[repeat(1,1fr)]'>
                         <FormControlLabel {...register('user_status')} control={<Switch checked={usermanagement.user_status}
                             onChange={(e) => { setUsermanagement({ ...usermanagement, user_status: !usermanagement.user_status }) }} />
@@ -135,12 +135,12 @@ function CreateUserForm() {
                             label="User Status" />
                         {usermanagement.user_status === true ? <p className='text-[0.8rem] text-[#3c993c] font-[bolder]'>Active</p> : <p className='text-[0.8rem] text-[red] font-[bolder]'>In Active</p>}
                     </div>
-                    <div className='w-80'>
+                    <div className='w-[50rem]'>
                         <Autocomplete
                             multiple
                             limitTags={2}
                             id="checkboxes-tags-demo"
-                            options={["a", "b", "c", "d", "e"]}
+                            options={user_permission}
                             disableCloseOnSelect
                             getOptionLabel={(option) => option}
                             onChange={(e, x) => {
@@ -165,26 +165,28 @@ function CreateUserForm() {
                             )}
                         />
                     </div>
-                    <CustomAutoComplete control={control} errors={errors} name={"user_role"} label={"User Roles"} options={["0", "1", "3", "4"]} />
+
                 </div>
+                {usermanagement.btn_type == "0" ?
+                    <div className=''>
+                        <LoadingButton
+                            fullWidths
+                            size="small"
+                            color="primary" variant="contained" type="submit"
+                            loading={btnSaving}
+                            loadingPosition="start"
+                            startIcon={<FiSave />}
+                        >
+                            <span className='p-1'>Save & Send Credentials to User</span>
+                        </LoadingButton>
+                    </div> :
+                    <div className=''>
+                        <Button fullWidth color="primary" variant="contained" type="submit">Update User</Button>
+                    </div>
+                }
             </div>
-            {usermanagement.btn_type == "0" ?
-                <div className='user-management-button'>
-                    <LoadingButton
-                        fullWidths
-                        size="small"
-                        color="primary" variant="contained" type="submit"
-                        loading={btnSaving}
-                        loadingPosition="start"
-                        startIcon={<FiSave />}
-                    >
-                        <span className='p-1'>Save & Send Credentials to User</span>
-                    </LoadingButton>
-                </div> :
-                <div className='user-management-button'>
-                    <Button fullWidth color="primary" variant="contained" type="submit">Update User</Button>
-                </div>
-            }
+            <div>
+            </div>
         </form>
     )
 }
@@ -235,6 +237,7 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
         <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                    sx={{ width: 320 }}
                     inputFormat='DD/MM/YYYY'
                     slotProps={{
                         textField:

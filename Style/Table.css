@@ -10,7 +10,8 @@
 }
 
 .thead {
-  background-color: var(--neutral7);
+  font-family: Brandon Grotesque;
+  background-color: #555259;
   color: white;
 }
 
@@ -31,10 +32,6 @@ tbody > tr > td {
   align-items: center;
   font-size: 0.9rem;
   padding: 0.5rem;
-}
-
-table {
-  font-family: "Quicksand", sans-serif;
 }
 
 .table-wrapper {

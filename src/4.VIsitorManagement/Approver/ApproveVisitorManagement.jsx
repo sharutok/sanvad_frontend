@@ -1,4 +1,3 @@
-
 import React, { useContext, useRef } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import DialogsBox from '../../Helper Components/DialogsBox'
@@ -8,9 +7,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {
-    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup,
+    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, IconButton,
 } from '@mui/material'
-import Checkbox from '@mui/material/Checkbox';
 import '../../../Style/VisitManagement.css'
 import { VisitorMangErrorSchema } from '../../Form Error Schema/VisitorMangErrorSchema';
 import BackArrow from '../../Helper Components/SideComponent';
@@ -21,6 +19,11 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import { saveAs } from 'file-saver';
+import TipTool from '../../Helper Components/TipTool';
+import { AiOutlineCamera } from 'react-icons/ai';
+import CustomPrint from '../../Helper Components/Printer';
+const ErrorSchema = VisitorMangErrorSchema
+
 
 const videoConstraints = {
     width: 1280,
@@ -30,8 +33,10 @@ const videoConstraints = {
 
 
 export default function ApproveVisitorManagement() {
-    const ErrorSchema = VisitorMangErrorSchema
     const { setDialogStatus, dialogStatus } = useContext(AppContext)
+    const { id } = useParams()
+    const webcamRef = useRef(null);
+
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
@@ -44,13 +49,31 @@ export default function ApproveVisitorManagement() {
     function handleAddVisitor() {
         setDialogStatus(!dialogStatus)
     }
-    const { id } = useParams()
+
+    const captureImage = (image_name) => {
+        const imageSrc = webcamRef.current.getScreenshot();
+
+        // Convert the base64 image to a Blob
+        const byteCharacters = atob(imageSrc.split(',')[1]);
+        const byteNumbers = new Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+        saveAs(blob, `${image_name}.jpg`);
+    };
+
+
     return (
         <div className='flex justify-around'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <BackArrow title={`Visitor's Management - #${id.padStart(5, "0")}`} />
-                    <div className='grid gap-5 p-5'>
+                    <div className='grid gap-5 p-10'>
                         <div className='flex flex-wrap gap-5'>
                             <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
                             <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField>
@@ -90,40 +113,35 @@ export default function ApproveVisitorManagement() {
                                 rules={{ required: true }}
                             />
                         </div>
-
-                        {/* <div className='w-fit'>
-                        <ButtonComponent onClick={handleAddVisitor} icon={<AiOutlineUsergroupAdd color='white' size={"23"} />} btnName={"Add Visitor"} />
-                    </div> */}
                         <div className='flex justify-start'>
-                            <VisitorListing />
+                            <VisitorListing captureImage={captureImage} />
                         </div>
-                        <>
-                            <DialogsBox title={"Manage Add Visitor"} body={
-                                <div className='w-fit'>
-                                    <div className='flex flex-wrap gap-5 p-5'>
-                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_name" label="Visitor's Name*" />
-                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
-                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_desig" label="Visitor's Designation*" />
-                                    </div>
-                                    <div className='p-5'>
-                                        <Button variant="contained" type="submit">Add</Button>
-                                    </div>
-                                </div>
-                            } />
-                        </>
+                    </div>
+                    <div className='vm-button ml-5'>
+                        <Button fullWidth variant="contained" type="submit">Submit</Button>
                     </div>
                 </div>
-                <div className='vm-button'>
-                    <Button fullWidth variant="contained" type="submit">Submit</Button>
+                <div className='mt-20 p-5'>
+                    <span className='ml-5 text-3xl flex justify-left'>VISITOR PASS Preview</span>
+                    <div><CustomPrint /></div>
                 </div>
             </form>
-            <div className='w-86'>
-                <PhotoComponent />
+            <div className=''>
+                <div className='grid gap-5 p-5 '>
+                    <Webcam
+                        className='rounded-md'
+                        audio={false}
+                        height={400}
+                        screenshotFormat="image/jpeg"
+                        width={700}
+                        videoConstraints={videoConstraints}
+                        ref={webcamRef}
+                    />
+                </div>
             </div>
         </div>
     )
 }
-
 
 
 
@@ -175,43 +193,32 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
         />
     )
 }
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
 
-const VisitorListing = () => {
+const VisitorListing = ({ captureImage }) => {
     const thead = [
-        "Visitor's Company",
-        "Visitor's Assest",
-        "Visitor's Contact Info",
+        "Visitor's Name",
+        "Visitor's Mob.No",
+        "Visitor's Department",
+        "Assets"
     ]
-
-
     return (<>
         <Table thead={thead} tbody={
-            ["1"].map((g, i) => {
+            ["11", "22", "33"].map((g, i) => {
                 return (
-                    <tr key={i}>
-                        <td>{"g.ticket_no"}</td>
-                        <td>{"g.tkt_title"}</td>
-                        <td>{"g.tkt_type"}</td>
-                        {/* <td className='delete'>
-                            <TipTool body={< >
+                    <tr className='table-wrapper' key={i}>
+                        <td>{"Visitor's Name"}</td>
+                        <td>{"Visitor's Mob.No"}</td>
+                        <td>{"Visitor's Department"}</td>
+                        <td>{"Assets"}</td>
+                        <td onClick={() => { captureImage(i) }} className='delete'>
+                            {/* <td onClick={() => { captureImage(g.id) }} className='delete'> */}
+                            <TipTool body={
                                 <IconButton>
-                                    <MdDeleteOutline color='#f08080' size={22} />
+                                    <AiOutlineCamera color='#555259' size={22} />
                                 </IconButton>
-                            </>} />
-                        </td> */}
+                            } title={"Click Photo"} />
+                        </td>
+
                     </tr>
                 )
             })
@@ -220,43 +227,41 @@ const VisitorListing = () => {
 }
 
 
+// const PhotoComponent = () => {
+//     const webcamRef = useRef(null);
 
+//     const captureImage = () => {
+//         const imageSrc = webcamRef.current.getScreenshot();
 
-const PhotoComponent = () => {
-    const webcamRef = useRef(null);
+//         // Convert the base64 image to a Blob
+//         const byteCharacters = atob(imageSrc.split(',')[1]);
+//         const byteNumbers = new Array(byteCharacters.length);
 
-    const captureImage = () => {
-        const imageSrc = webcamRef.current.getScreenshot();
+//         for (let i = 0; i < byteCharacters.length; i++) {
+//             byteNumbers[i] = byteCharacters.charCodeAt(i);
+//         }
 
-        // Convert the base64 image to a Blob
-        const byteCharacters = atob(imageSrc.split(',')[1]);
-        const byteNumbers = new Array(byteCharacters.length);
+//         const byteArray = new Uint8Array(byteNumbers);
+//         const blob = new Blob([byteArray], { type: 'image/jpeg' });
 
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
+//         saveAs(blob, 'captured-image.jpg');
+//     };
 
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+//     return (
+//         <div className='grid gap-5 p-5'>
+//             <Webcam
+//                 className='rounded-md'
+//                 audio={false}
+//                 height={400}
+//                 screenshotFormat="image/jpeg"
+//                 width={700}
+//                 videoConstraints={videoConstraints}
+//                 ref={webcamRef}
+//             />
+//             <div className='flex justify-center'>
+//                 <ButtonComponent onClick={captureImage} icon={<BsCamera color='white' size={"23"} />} btnName={"Capture Photo"} />
+//             </div>
+//         </div>
+//     );
+// };
 
-        // Save the Blob to a folder (imag) using file-saver
-        saveAs(blob, 'captured-image.jpg');
-    };
-
-    return (
-        <div className='grid gap-5 p-5'>
-            <Webcam
-                className='rounded-md'
-                audio={false}
-                height={400}
-                screenshotFormat="image/jpeg"
-                width={700}
-                videoConstraints={videoConstraints}
-                ref={webcamRef}
-            />
-            <div className='flex justify-center'>
-                <ButtonComponent onClick={captureImage} icon={<BsCamera color='white' size={"23"} />} btnName={"Capture Photo"} />
-            </div>
-        </div>
-    );
-};

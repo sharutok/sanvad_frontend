@@ -2,6 +2,9 @@ import { useParams } from 'react-router-dom'
 import { api } from '../Helper Components/Api';
 import axios from 'axios'
 import LoadingSpinner from '../Helper Components/LoadingSpinner';
+import {
+  Divider
+} from '@mui/material'
 import moment from 'moment';
 import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react'
@@ -20,13 +23,15 @@ import BackArrow from '../Helper Components/SideComponent'
 import { UserErrorSchema } from '../Form Error Schema/UserErrorSchema'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
+import BarSnack from '../Helper Components/BarSnack';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function UpdateUserForm() {
   const { id } = useParams()
 
-  const { usermanagement, setUsermanagement } = useContext(AppContext)
+  const { usermanagement, setUsermanagement, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
   const ErrorSchema = UserErrorSchema
 
   const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
@@ -78,7 +83,7 @@ export default function UpdateUserForm() {
       ph_no: getValues('ph_no'),
       gender: getValues('gender'),
       emerg_contact: getValues('emerg_contact'),
-      address: getValues('address'),  
+      address: getValues('address'),
       dob: moment(getValues('dob').$d).format('YYYY-MM-DD'),
       start_date: moment(getValues('start_date').$d).format('YYYY-MM-DD'),
       end_date: moment(getValues('end_date').$d).format('YYYY-MM-DD'),
@@ -94,7 +99,23 @@ export default function UpdateUserForm() {
       organization: getValues('organization'),
       user_role: getValues('user_role'),
     }
-    console.log(value);
+    try {
+      const response = await axios.put(`${api.user_management.get_data_id}/${id}`, value)
+      console.log(response.data);
+      if (response.data.status_code === 200) {
+        setBtnSaving(true)
+        setSnackBarPopUp({ state: true, message: "User Updated " })
+      }
+      setTimeout(() => {
+        window.history.back()
+        setBtnSaving(false)
+        setSnackBarPopUp({ state: false, message: "" })
+      }, 1000)
+    } catch (error) {
+      console.log(error);
+    }
+
+
   }
 
 
@@ -104,10 +125,11 @@ export default function UpdateUserForm() {
 
 
   return (
-    <form className='p-4' onSubmit={handleSubmit(onSubmit)}>
+    <form className='mt-10' onSubmit={handleSubmit(onSubmit)}>
       <BackArrow title={usermanagement.app_name} location={usermanagement.go_back_loc} />
-      <div className='user-management-container'>
-        <div className='user-managment-component'>
+      <BarSnack />
+      <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
+        <div className='flex flex-wrap gap-7'>
           <CustomTextField label={"First Name*"} name={"first_name"} errors={errors} register={register} watch={watch} />
           <CustomTextField label={"Last Name*"} name={"last_name"} errors={errors} register={register} watch={watch} />
           <CustomTextField label={"Mobile Number*"} name={"ph_no"} errors={errors} register={register} watch={watch} />
@@ -117,19 +139,22 @@ export default function UpdateUserForm() {
               fieldState: { isTouched, isDirty, error },
             }) => (
               <FormControl error={!!errors.gender}>
-                <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
-                <RadioGroup
-                  {...register('gender')}
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value}>
-                  <FormControlLabel value="0" control={<Radio size='small' />} label="Female" />
-                  <FormControlLabel value="1" control={<Radio size='small' />} label="Male" />
-                </RadioGroup>
-                <FormHelperText>{errors.gender && errors.gender.message}</FormHelperText>
+                <FormLabel className='mt-[-.1rem]' id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+                <div>
+                  <RadioGroup
+                    className='mt-[-.6rem]'
+                    {...register('gender')}
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}>
+                    <FormControlLabel value="0" control={<Radio size='small' />} label="Female" />
+                    <FormControlLabel value="1" control={<Radio size='small' />} label="Male" />
+                  </RadioGroup>
+                  <FormHelperText>{errors.gender && errors.gender.message}</FormHelperText>
+                </div>
               </FormControl>
             )}
             name="gender"
@@ -139,10 +164,8 @@ export default function UpdateUserForm() {
           <CustomTextField label={"Emergency Contact*"} name={"emerg_contact"} errors={errors} register={register} watch={watch} />
           <CustomTextField label={"Address*"} name={"address"} errors={errors} register={register} watch={watch} />
         </div>
-      </div>
-      <span className='hr'></span>
-      <div className='user-management-container'>
-        <div className='user-managment-component'>
+        <Divider textAlign='left'></Divider>
+        <div className='flex flex-wrap gap-7'>
           <CustomDate label={"End Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
           <CustomDate label={"Start Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
           <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
@@ -153,10 +176,8 @@ export default function UpdateUserForm() {
           <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
           <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={['0', "1", "2", "3", "4"]} />
         </div>
-      </div>
-      <span className='hr'></span>
-      <div className='user-management-container'>
-        <div className='user-managment-component'>
+        <Divider textAlign='left'></Divider>
+        <div className='flex flex-wrap gap-7'>
           <CustomTextField label={"Employee Designation*"} name={"emp_designation"} errors={errors} register={register} watch={watch} />
           <CustomTextField label={"Email*"} name={"email_id"} errors={errors} register={register} watch={watch} />
           <CustomTextField label={"Password*"} name={"password"} errors={errors} register={register} watch={watch} />
@@ -199,15 +220,17 @@ export default function UpdateUserForm() {
           </div>
           <CustomAutoComplete control={control} errors={errors} name={"user_role"} label={"User Roles"} options={["0", "1", "3", "4"]} />
         </div>
-      </div>
-      {usermanagement.btn_type == "0" ?
-        <div className='user-management-button'>
-          <Button fullWidth color="primary" variant="contained" type="submit">Save & Send Credentials to User</Button>
-        </div> :
-        <div className='user-management-button'>
-          <Button fullWidth color="primary" variant="contained" type="submit">Update User</Button>
+        <div className='w-fit'>
+          {/* <Button fullWidth color="primary" variant="contained" type="submit">Update User</Button> */}
+          <LoadingButtonWithSnack afterName={"Updating"} beforeName={"Update User"} />
         </div>
-      }
+
+        {/* {usermanagement.btn_type == "0" ?
+          <div className='w-fit'>
+            <Button fullWidth color="primary" variant="contained" type="submit">Save & Send Credentials to User</Button>
+          </div> :
+        } */}
+      </div>
     </form>
   )
 
@@ -248,7 +271,13 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
 }
 const CustomTextField = ({ name, label, errors, register, watch }) => {
   return (
-    <TextField key={label} className="textfield" value={watch(name)} label={label} size={"small"}  {...register(name)} error={!!errors[name]} helperText={errors[name] && errors[name].message} />
+    <TextField
+      key={label}
+      className="textfield"
+      value={watch(name)}
+      label={label}
+      size={"small"}
+      {...register(name)} error={!!errors[name]} helperText={errors[name] && errors[name].message} />
   )
 }
 const CustomDate = ({ register, name, label, errors, control, watch }) => {
@@ -256,6 +285,7 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
     <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          sx={{ width: 320 }}
           inputFormat='DD/MM/YYYY'
           slotProps={{
             textField:

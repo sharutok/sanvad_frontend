@@ -29,8 +29,6 @@ export default function BudgetBar() {
     const { capex } = useContext(AppContext)
     const data = [
         { A: 100000, B: capex?.final_budget },
-        // { A: 10, B: 20 },
-        // { A: 10, B: 20 }
     ]
     console.log(data);
     const { classes } = useStyles();
@@ -41,12 +39,22 @@ export default function BudgetBar() {
                 return (
                     <div key={i}>
                         <Card withBorder radius="md" p="xl" className={classes.card}>
-                            <Text fz="xs" tt="uppercase" fw={700} className={classes.title}>
-                                Monthly goal
-                            </Text>
-                            <Text fz="lg" fw={500} className={classes.stats}>
-                                {`₹${Number(val.A).toLocaleString('en-IN')} / ₹${Number(val.B).toLocaleString('en-IN')} Crores`}
-                            </Text>
+                            <div className='flex justify-between'>
+                                <Text fz="xs" tt="uppercase" fw={700} className={classes.title}>
+                                    Used Capex
+                                </Text>
+                                <Text fz="xs" tt="uppercase" fw={700} className={classes.title}>
+                                    Remaining Capex
+                                </Text>
+                            </div>
+                            <div className='flex justify-between'>
+                                <Text fz="lg" fw={500} className={classes.stats}>
+                                    {`₹${Number(val.A).toLocaleString('en-IN')} Crores`}
+                                </Text>
+                                <Text fz="lg" fw={500} className={classes.stats}>
+                                    {`₹${Number(val.B).toLocaleString('en-IN')} Crores`}
+                                </Text>
+                            </div>
                             <Progress
                                 value={(val.A / val.B) * 100}
                                 mt="md"

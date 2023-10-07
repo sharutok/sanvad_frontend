@@ -5,7 +5,7 @@ import { MdDeleteOutline } from 'react-icons/md'
 import Table from '../Helper Components/Table'
 
 export default function CapexListView() {
-    const thead = ["Budget No", "Purpose code", "Line No", "Requisition Date", "Payback Period", "Return On Investment", "Budget Type", "Current At"]
+    const thead = ["Budget No", "Line No", "Purpose code", "Requisition Date", "Payback Period", "Return On Investment", "Budget Type", "Current At"]
     return (
         <div>
             <Table thead={thead} tbody={
@@ -14,8 +14,8 @@ export default function CapexListView() {
                         <tr className='table-wrapper' key={i}>
                             <td>{"c.budget_no"}</td>
                             <td>{"c.purpose_code"}</td>
-                            <td>{"c.purpose_description"}</td>
                             <td>{"c.line_no"}</td>
+                            <td>{"c.purpose_description"}</td>
                             <td>{"c.dept"}</td>
                             <td>{"c.capex_group"}</td>
                             <td>{"c.capex_class"}</td>

@@ -13,7 +13,7 @@ export default function BackArrow({ title, location }) {
                     </IconButton>
                 </div>
             </Link>
-            <span className='text-[2rem]'>{title}</span>
+            <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[2rem]'>{title}</span>
         </div>
     )
 }

@@ -28,7 +28,7 @@ export default function ListsView() {
     })
     return (
         <div >
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between mt-10'>
                 <BackArrow location={"/home"} title={"Conference Booking - Listing"} />
                 <div className='flex gap-4 mt-3 mr-10'>
                     <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />

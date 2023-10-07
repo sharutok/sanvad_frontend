@@ -1,15 +1,12 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import {
-    styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, Checkbox, FormControlLabel, InputAdornment
+    styled, Stack, Typography, TextField, Divider, Button, Autocomplete, Checkbox, FormControlLabel, InputAdornment, FormControl, FormLabel, RadioGroup, Radio, FormHelperText
 } from '@mui/material';
-import { CloudUpload } from 'tabler-icons-react';
 import { useForm, Controller } from 'react-hook-form'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { TickErrorSchema } from '../../Form Error Schema/TicketSysytemErrorSchema';
-import TipTool from '../../Helper Components/TipTool';
+import { ApproverTicketErrorSchema } from '../../Form Error Schema/TicketSysytemErrorSchema';
 import BackArrow from '../../Helper Components/SideComponent';
 import { api } from '../../Helper Components/Api';
 import Box from '@mui/material/Box';
@@ -17,172 +14,193 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
-
 const Input = styled('input')({
     display: 'none',
 });
 
 import { AiOutlineUpload } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
+import { useParams } from 'react-router-dom';
+import { severity } from '../../Static/StaticValues';
+import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import { AppContext } from '../../App';
 
 const formData = new FormData()
 
 export default function ApproverForm() {
+    const { setSnackBarPopUp } = useContext(AppContext)
+    const ErrorSchema = ApproverTicketErrorSchema
     const [tktFiles, setTKTFiles] = useState(null)
     const [tktType, setTKTType] = useState({
         value: "",
         index: ""
     })
+    const { id } = useParams()
 
-
-    const ErrorSchema = TickErrorSchema
-
+    const response = useQuery(['get-ticket-data'], async () => {
+        const data = await axios.get(api.ticket_system.by_id + id)
+        Object.entries(data?.data?.form_data).map(x => {
+            setValue(x[0], x[1])
+            x[0] === "severity" && setValue(x[0], severity[x[1]])
+        })
+        return data
+    })
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
+        defaultValues: {
+            tkt_type: "", tkt_title: "", req_type: '', tkt_description: "", severity: "",
+            assign_ticket_to_user: "", approver_status: "", approver_comment: ""
+
+        }
     })
 
+
     const onSubmit = async (data) => {
+        data["id"] = id
+        console.log(data);
+        setSnackBarPopUp({ state: true, message: "Created ticket" })
         try {
             const formData = new FormData();
-            formData.append('user_file', tktFiles, tktFiles.name)
-            Object.entries(data).map(x, i => {
-                console.log(x, i);
+            tktFiles?.length >= 0 && formData.append('user_file', tktFiles, tktFiles.name)
+            data["severity"] = severity.indexOf(data["severity"])
+            Object.entries(data).map((x) => {
+                formData.append(x[0], x[1])
             })
-            await axios.post(api.ticket_system.create, formData)
+            const response = await axios.put(api.ticket_system.by_id + id, formData)
+            console.log(response);
         } catch (error) {
-            console.log("error in uploading ");
+            console.log("error in uploading", error);
         }
-
     }
-
-    const inputFile = useRef(null)
-
-    const onButtonClick = () => {
-        inputFile.current.click();
-    };
 
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(`${api.dynamic_values.tkt_type}`)
     })
 
     const req_type_lists = useQuery(['req-type-lists', tktType.index], async () => {
-        return await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tktType.index) })
+        return await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tkt_type_lists?.data?.data.indexOf(getValues("tkt_type"))) })
+    })
+
+    const list_of_users = useQuery(['list-of-users'], async () => {
+        return await axios.get(api.ticket_system.get_all_user_list)
     })
 
 
-    function tkt_type_op(e) {
-        setTKTType({
-            value: e,
-            index: tkt_type_lists?.data?.data.indexOf(e)
+    function deleteFiles(g) {
+        let arr = tktFiles.filter(function (item) {
+            return item.name !== g
+        })
+        setTKTFiles((tktFiles) => {
+            return [...arr]
         })
     }
 
-    function deleteFiles() {
-        tktFiles.pop(globalThis)
-        setTKTFiles((tktFiles) => {
-            return [...tktFiles]
-        })
-    }
 
     return (
-        <div className='ts-container'>
-            <BackArrow title={"Ticket No - #007"} />
-            <form className='grid grid-cols-[2fr_1fr] gap-20' onSubmit={handleSubmit(onSubmit)}>
-                <div>
+        <div className='mt-10'>
+            <BackArrow location={"/ticket/sys/list"} title={`Ticket No - #${getValues("ticket_no")}`} />
+            <form className='grid grid-cols-[2fr_1fr] gap-20 p-5' onSubmit={handleSubmit(onSubmit)}>
+                <div >
+                    <div className='grid grid-cols-2 ml-5'>
+                        {(!response.isLoading && Object.entries(response.data.data.user_info).map((u, i) => {
+                            return (
+                                <div key={i} className='flex gap-1'>
+                                    <label className='font-bold'>{u[0]}</label>
+                                    <label >{u[1]}</label>
+                                </div>
+                            )
+                        }))}
+                    </div>
                     <div className='grid grid-cols-[repeat(2,1fr)] p-5 gap-5'>
                         <div className='grid grid-cols-[repeat(1,1fr)] gap-5'>
                             <CustomTextField label="Ticket Title*" name={"tkt_title"} errors={errors} register={register} watch={watch} />
-                            <CustomTextField multiline={4} label="Requirement Description*" name={"tkt_descrption"} errors={errors} register={register} watch={watch} />
+                            <CustomTextField multiline={4} label="Requirement Description*" name={"tkt_description"} errors={errors} register={register} watch={watch} />
                         </div>
+
                         <div className='grid grid-cols-[repeat(1,1fr)] gap-5'>
-                            <Autocomplete
-                                onChange={(x, e) => {
-                                    setValue("req_type", null)
-                                    tkt_type_op(e)
-                                }}
-                                disablePortal
-                                id="combo-box-demo"
-                                options={tkt_type_lists?.data?.data.map(x => { return x })}
-                                renderInput={(params) => <TextField {...params} label="Ticket Type*" size={"small"} {...register('tkt_type')} error={errors.tkt_type} helperText={errors.tkt_type && errors.tkt_type.message} />}
-                            />
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                disabled={tktType.value ? false : true}
-                                options={req_type_lists?.data?.data.map(x => { return x })}
-                                renderInput={(params) => <TextField {...params} label="Requirement Type*" size={"small"} {...register('req_type')} error={errors.req_type} helperText={errors.req_type && errors.req_type.message} />}
-                            />
-                            <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Severity"} options={['Low🔥', "Medium🔥🔥", "High🔥🔥🔥"]} />
+                            <CustomAutoComplete disabled={true} control={control} errors={errors} name={"tkt_type"} label={"Ticket Type"} options={tkt_type_lists?.data?.data.map(x => { return x }) || []} />
+                            <CustomAutoComplete control={control} errors={errors} name={"req_type"} label={"Requirement Type"} options={req_type_lists?.data?.data.map(x => { return x }) || []} />
+                            <CustomAutoComplete control={control} errors={errors} name={"severity"} label={"Severity"} options={severity} />
                         </div>
                     </div>
-                    <div className='ts-card-component flex gap-3 ml-5 mt-5' >
-                        <Card onClick={onButtonClick} className="ts-card" style={{ cursor: "pointer " }} >
-                            <CardContent  >
-                                <Typography className="ts-card-typo" sx={{ fontSize: 14 }} >
-                                    <CloudUpload
-                                        size={38}
-                                        strokeWidth={2}
-                                        color={'grey'}
-                                    />
-                                </Typography>
-                                <Typography className="ts-card-typo" sx={{ fontWeight: "bold" }} >
-                                    Click Here to Upload Files
-                                </Typography>
-                                <Typography className="ts-card-typo" variant="h5" component="div">
-                                    <Stack direction="row" alignItems="center" spacing={2}>
-                                        <label htmlFor="contained-button-file">
-                                            <Input type='file' multiple accept="image/jpeg,image/png,application/pdf" id='file' ref={inputFile} style={{ display: 'none' }} onChange={(e) => setTKTFiles(e.target.files[0])} />
-                                        </label>
-                                    </Stack>
-                                </Typography>
-                                <Typography sx={{ mt: 1, fontStyle: "italic" }} className="ts-card-typo abs" variant="body2">
-                                    Upload files that are less than 30mb in size.
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                        <Divider orientation='vertical' />
-                        <div className='p-[1px] bg-neutral-200'>
-                        </div>
-                        <div>
-                            {[1, 2, 3, 4].map((g, i) => {
+                    <div className='px-5'>
+                        <Divider />
+                    </div>
+                    <div className='p-5' >
+                        <strong>Uploaded files</strong>
+                        <div className='flex gap-3'>
+                            {!response.isLoading && response.data.data.upload_data.map((g, i) => {
                                 return (
-                                    <div className='flex gap-2 '>
-                                        <p><strong>{i + 1}.</strong> {"g.name"}</p>
-                                        <RxCross2 onClick={() => { deleteFiles(g) }} className='hover:text-[#ff6060] mt-1 cursor-pointer active:text-[#ffa4a4]' />
+                                    <div key={i} className='flex gap-1 '>
+                                        <strong>{i + 1}.</strong>
+                                        <a href={g.user_file}>File</a>
                                     </div>)
                             })}
                         </div>
                     </div>
                     <div className='w-fit'>
                     </div>
-                    <div className='ts-button'>
-                        <Button fullWidth color="primary" variant="contained" type="submit">Submit</Button>
-                    </div>
                 </div>
                 <div className='grid grid-cols-[repeat(1,1fr)] pl-0 pr-4 pt-4 pb-0 gap-4'>
                     <div>
-                        <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Assign Ticket To Users"} options={['User1', "User2", "User3"]} />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Assign to User" />
+                        <CustomAutoComplete control={control} errors={errors} name={"assign_ticket_to_user"} label={"Assign Ticket To Users"} options={list_of_users?.data?.data.map(x => { return `${x[2]} - ${x[0]} ${x[1]}` }) || []} />
                     </div>
+                    <Divider />
+                    <span className='text-lg'>Comments</span>
                     <VerticalLinearStepper />
-                    <CustomTextFieldWithIcon multiline={4} label={"Comments*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
+                    <Divider />
+                    <div className='grid gap-3'>
+                        <Controller
+                            render={({ field: { onChange, onBlur, value, name, ref },
+                                fieldState: { isTouched, isDirty, error },
+                            }) => (
+                                <FormControl error={!!errors.approver_status}>
+                                    <FormLabel className='mt-[-.6rem]' id="demo-row-radio-buttons-group-label">Status</FormLabel>
+                                    <RadioGroup
+                                        className='mt-[-.1rem]'
+                                        {...register('approver_status')}
+                                        row
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="row-radio-buttons-group"
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        value={value}>
+                                        <FormControlLabel value="0" control={<Radio size='small' />} label="Approve" />
+                                        <FormControlLabel value="1" control={<Radio size='small' />} label="Reject" />
+                                    </RadioGroup>
+                                    <FormHelperText>{errors.approver_status && errors.approver_status.message}</FormHelperText>
+                                </FormControl>
+                            )}
+                            name="approver_status"
+                            control={control}
+                            rules={{ required: true }}
+                        />
+                    </div>
+                    <CustomTextFieldWithIcon tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />
                     <div>
                         <strong>Files{" "}</strong>
-                        {[1, 2, 3, 4].map((g, i) => {
+                        {/* {[1, 2, 3, 4].map((g, i) => {
                             return (
-                                <div className='inline-block gap-5'>
+                                <div key={i} className='inline-block gap-5'>
                                     <div className='flex gap-1'>
                                         <a className='cursor-pointer'> {"g.name"}</a>
                                         <RxCross2 onClick={() => { deleteFiles(g) }} className='hover:text-[#ff6060] mt-[0.35rem] cursor-pointer active:text-[#ffa4a4]' />
                                     </div>
                                 </div>)
-                        })}
+                        })} */}
+                        <div className='max-h-[8rem] overflow-y-scroll'>
+                            {tktFiles?.map((g, i) => {
+                                return (
+                                    <div key={i} className='flex gap-2 '>
+                                        <p><strong>{i + 1}.</strong> {g.name}</p>
+                                        <RxCross2 onClick={() => { deleteFiles(g.name) }} className='text-[#ff2a2a] hover:text-[#ff6060] cursor-pointer active:text-[#ffa4a4] mt-1' />
+                                    </div>)
+                            })}
+                        </div>
                     </div>
-                    <div className='grid grid-cols-[repeat(3,1fr)] gap-3'>
-                        <Button variant='contained' sx={{ background: "#9dbf9e", }}>Approve</Button>
-                        <Button variant='contained' sx={{ background: "#9dbf9e", }}>Close</Button>
-                        <Button variant='contained' sx={{ background: "#ee7674" }}>Reject</Button>
+                    <div>
+                        <LoadingButtonWithSnack beforeName={"Submit"} afterName={"Submiting..."} />
                     </div>
                 </div>
             </form>
@@ -199,35 +217,35 @@ const steps = [
         comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
         date: '23/12/2022'
     },
-    {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
-        comments:
-            'An ad group contains one or more ads which target a shared set of keywords.',
-        date: '23/12/2022'
-    },
-    {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
-        comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
-        date: '23/12/2022'
-    },
-    {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
-        comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
-        date: '23/12/2022'
-    },
+    // {
+    //     user: 'user',
+    //     department: 'department',
+    //     emp_id: 'emp_id',
+    //     comments:
+    //         'An ad group contains one or more ads which target a shared set of keywords.',
+    //     date: '23/12/2022'
+    // },
+    // {
+    //     user: 'user',
+    //     department: 'department',
+    //     emp_id: 'emp_id',
+    //     comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
+    //     date: '23/12/2022'
+    // },
+    // {
+    //     user: 'user',
+    //     department: 'department',
+    //     emp_id: 'emp_id',
+    //     comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
+    //     date: '23/12/2022'
+    // },
 
 ];
 function VerticalLinearStepper() {
     const [activeStep, setActiveStep] = React.useState(3);
 
     return (
-        <Box className="max-h-[50vh] overflow-y-scroll" >
+        <Box className="max-h-[40vh] overflow-y-scroll" >
             <Stepper orientation="vertical">
                 {steps.map((step, index) => (
                     <Step active expanded key={index}>
@@ -254,7 +272,7 @@ function VerticalLinearStepper() {
     );
 }
 
-const CustomAutoComplete = ({ name, label, options, control, errors }) => {
+const CustomAutoComplete = ({ name, label, options, control, errors, disabled, onClick, ...props }) => {
     return (
         <Controller
             key={name}
@@ -262,6 +280,8 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
             control={control}
             render={({ field }) => (
                 <Autocomplete
+                    {...props}
+                    disabled={disabled}
                     isOptionEqualToValue={(option, value) => option.value === value.value}
                     key={name}
                     disablePortal
@@ -287,11 +307,12 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
 
     )
 }
-const CustomTextField = ({ name, label, errors, register, watch, multiline }) => {
+const CustomTextField = ({ name, label, errors, register, watch, multiline, disabled }) => {
     return (
         <TextField
-            multiline={multiline && multiline}
+            multiline={multiline && true}
             rows={multiline}
+            disabled={disabled}
             key={label}
             value={watch(name)}
             label={label}
@@ -301,16 +322,37 @@ const CustomTextField = ({ name, label, errors, register, watch, multiline }) =>
             helperText={errors[name] && errors[name].message} />
     )
 }
-const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline }) => {
+const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline, tktFiles, setTKTFiles }) => {
+    const inputFile = useRef(null)
+
+    const onButtonClick = () => {
+        inputFile.current.click();
+    };
+
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        setTKTFiles(files);
+    };
+
     return (
+
         <TextField
             InputProps={{
                 endAdornment: (
-                    <ButtonComponent icon={<AiOutlineUpload color='white' size={"23"} />} btnName={"Upload"} />
-                    // <Button variant='contained' startIcon={<SearchIcon />}>Upload </Button>
+                    <div>
+                        <label htmlFor="contained-button-file">
+                            <Input type='file'
+                                multiple
+                                accept="image/jpeg,image/png,application/pdf"
+                                id='file' ref={inputFile} style={{ display: 'none' }} onChange={(e) => {
+                                    handleFileChange(e)
+                                }} />
+                        </label>
+                        <ButtonComponent onClick={onButtonClick} icon={<AiOutlineUpload color='white' size={"23"} />} btnName={"Upload"} />
+                    </div>
                 ),
             }}
-            multiline={multiline && multiline}
+            multiline={multiline && true}
             rows={multiline}
             key={label}
             value={watch(name)}

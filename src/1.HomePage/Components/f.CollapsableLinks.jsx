@@ -38,6 +38,11 @@ const links = [
         mainlink: "/vistors/management/list"
     },
     {
+        label: 'Capex',
+        icon: MdCurrencyExchange,
+        mainlink: "/capex/list"
+    },
+    {
         label: 'Policies',
         icon: MdPolicy,
         mainlink: "",
@@ -45,11 +50,6 @@ const links = [
             { label: 'HR Policies', link: '/' },
             { label: 'IT Policies', link: '/' },
         ],
-    },
-    {
-        label: 'Capex',
-        icon: MdCurrencyExchange,
-        mainlink: "/capex/list"
     },
     {
         label: 'Module Setup',
@@ -67,10 +67,15 @@ const links = [
         icon: AiOutlineLink,
         mainlink: "",
         links: [
+            { label: 'Distributor Portal Application', link: 'https://adorwelding.org/Distributorship_portal/distributor_application' },
+            { label: 'Assent', link: 'http://182.73.197.154/AscentESS/Default.htm' },
             { label: 'Product Certifcate Matrix', link: 'http://27.107.7.11:3040/home' },
             { label: 'FPED KIOSK', link: 'http://27.107.7.11:3060/login' },
             { label: 'DIGI-WCA (ADMIN)', link: 'http://27.107.7.11:3070/admin/login' },
             { label: 'DIGI-WCA (USER)', link: 'http://27.107.7.11:3070/user/login' },
+            { label: 'Falcon (Distributor)', link: 'https://distributor.ador.co/' },
+            { label: 'Falcon (Admin)', link: 'https://admin.ador.co/' },
+            { label: 'Zendesk', link: 'https://adorcare.zendesk.com/' },
         ],
     },
     {
@@ -94,6 +99,7 @@ const useStyles = createStyles((theme) => ({
         fontSize: theme.fontSizes.sm,
 
         '&:hover': {
+
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
             color: theme.colorScheme === 'dark' ? theme.white : theme.black, textDecoration: "none"
         },
@@ -109,6 +115,7 @@ const useStyles = createStyles((theme) => ({
         fontSize: theme.fontSizes.sm,
         color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
         borderLeft: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+
             }`,
 
         '&:hover': {

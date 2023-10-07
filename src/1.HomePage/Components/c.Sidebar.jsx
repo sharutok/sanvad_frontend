@@ -21,13 +21,12 @@ const useStyles = createStyles((theme) => ({
         fontSize: theme.fontSizes.sm,
         color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
         padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-        borderRadius: theme.radius.sm,
         fontWeight: 500,
+        borderRadius: theme.radius.lg,
 
         '&:hover': {
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
             color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-
             [`& .${getStylesRef('icon')}`]: {
                 color: theme.colorScheme === 'dark' ? theme.white : theme.black,
             },

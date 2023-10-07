@@ -44,15 +44,17 @@ export default function PreFilledSubForm() {
                                     <CustomTextField label={"Capex Class"} value={c.capex_class} />
                                     <CustomTextField label={"Capex Group"} value={c.capex_group} />
                                     <CustomTextField label={"Plant"} value={c.plant} />
-                                    <CustomTextField multiline={true} label={"Asset Description"} value={c.asset_description} />
                                     <CustomTextField label={"Details"} value={c.details} />
                                     <CustomTextField label={"Final Budget"} value={c.final_budget} />
                                     <CustomTextField label={"Line No"} value={c.line_no} />
-                                    <CustomTextField multiline={true} label={"Purpose Description"} value={c.purpose_description} />
                                     <CustomTextField label={"Quantity"} value={c.qty} />
                                     <CustomTextField label={"Rate"} value={c.rate} />
                                     <CustomTextField label={"UOM"} value={c.uom} />
-                                    <CustomTextField multiline={true} label={"Remarks"} value={c.remarks} />
+                                    <div className='flex flex-wrap gap-5'>
+                                        <CustomTextField multiline={true} label={"Purpose Description"} value={c.purpose_description} />
+                                        <CustomTextField multiline={true} label={"Asset Description"} value={c.asset_description} />
+                                        <CustomTextField multiline={true} label={"Remarks"} value={c.remarks} />
+                                    </div>
                                 </div>
                             )
                         })

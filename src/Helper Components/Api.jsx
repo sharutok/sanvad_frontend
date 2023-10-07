@@ -5,7 +5,7 @@ export const api = {
     user_management: {
         get_data: `${link}/user-manage/all`,
         get_data_id: `${link}/user-manage`,
-        post_data: `${link}/user-manage/create/`
+        post_data: `${link}/user-manage/create/`,
     },
     yammer: {
         get_data: `${link}/yammer-feeds/posts/`
@@ -23,7 +23,9 @@ export const api = {
     },
     ticket_system: {
         get_data: `${link}/tkt-sys/all/`,
-        create: `${link}/tkt-sys/create/`
+        create: `${link}/tkt-sys/create/`,
+        by_id: `${link}/tkt-sys/`,
+        get_all_user_list: `${link}/tkt-sys/get-all-users/`
     },
     dynamic_values: {
         tkt_type: `${link}/tkt-sys/tkt_type/`,
@@ -33,7 +35,11 @@ export const api = {
     visitor_management: {
         create: `${link}/visitor-manage/create/`,
         get_data: `${link}/visitor-manage/all`
-    }
+    },
+    user: {
+        log_check: `${link}/user-manage/login/check/`,
+        birthday_list: `${link}/user-manage/birthday/list/`
+    },
 }
 
 

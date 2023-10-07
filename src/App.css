@@ -1,56 +1,15 @@
-:root {
-  /*Neutral*/
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("./fonts/SourceSansPro-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
 
-  --neutral1: #f3f4f6;
-  --neutral2: #dfe0e5;
-  --neutral3: #d1d3d9;
-  --neutral4: #aeb1b8;
-  --neutral5: #8e9094;
-  --neutral6: #808285;
-  --neutral7: #555259;
-  --neutral8: #3d3d3d;
-  --neutral9: #2b2b2b;
-  --neutral10: #1e1e1e;
-
-  /*Primary*/
-
-  --primary1: #ed1d24;
-  --primary2: #19345b;
-  --primary3: #2b58a4;
-  --primary4: #4880c2;
-  --primary5: #83bde7;
-
-  /*Success*/
-
-  --success1: #dcf4e6;
-  --success2: #a9d9bc;
-  --success3: #70bf4c;
-  --success4: #00a959;
-  --success5: #00783d;
-
-  /*Warning*/
-
-  --warning1: #fff5c7;
-  --warning2: #ffea8f;
-  --warning3: #f0d351;
-  --warning4: #e1bc23;
-  --warning5: #d17528;
-
-  /*Error*/
-
-  --error1: #f491a7;
-  --error2: #ef3956;
-  --error3: #b52336;
-  --error4: #821a2c;
-  --error5: #461318;
-  --error6: #352020;
-
-  /*Background*/
-  --background1: #eef2fc;
-
-  /*Shadow*/
-  --shadow1: #ffffff;
-  --shadow2: #2e2e2e;
+html,
+body {
+  font-family: "Source Sans Pro";
+  padding: 0;
+  margin: 0;
 }
 
 /* For Webkit based browsers (Chrome, Safari) */
@@ -67,6 +26,9 @@
   border-radius: 6px; /* Rounded corners for the thumb */
 }
 
-
-
-
+@font-face {
+  font-family: "Brandon Grotesque";
+  src: url("./fonts/BrandonGrotesque-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}

@@ -64,32 +64,32 @@ function ConferenceBooking() {
     }, [])
 
     return (
-        <form className='p-4' onSubmit={handleSubmit(onSubmit)}>
-            <div className='conf-book-component '>
-                <div className='conf_book-container'>
+        <form className='p-5' onSubmit={handleSubmit(onSubmit)}>
+            <div className='grid grid-cols-1 gap-5'>
+                <div className='grid grid-cols-1 gap-5'>
+                    <TextField className="w-full" defaultValue={confTemp.conf_room} label="Conference Name*" size={"small"} disabled />
                     <TextField fullWidth multiline={true} rows={2} className='textfield' label="Meeting About*" size={"small"} {...register('meeting_about')} error={errors.about} helperText={errors.about && errors.about.message} />
-                    <TextField fullWidth className='w-max' defaultValue={`${confTemp.conf_room_start_date} ${confTemp.conf_room_start_time}`} label="Start Date Time*" size={"small"} disabled />
                 </div>
                 <div className='flex gap-4'>
                     <CustomDate label={"End Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomAutoComplete control={control} errors={errors} name={"end_date_time"} label={"End Time"} options={[...momentTime]} />
                 </div>
-                <TextField defaultValue={confTemp.conf_room} className='textfield' label="Conference Name*" size={"small"} disabled />
+                <TextField fullWidth className='w-max' defaultValue={`${confTemp.conf_room_start_date} ${confTemp.conf_room_start_time}`} label="Start Date Time*" size={"small"} disabled />
+                <div className='w-fit' >
+                    <LoadingButton
+                        fullWidth
+                        size="small"
+                        color="primary"
+                        variant="contained"
+                        type="submit"
+                        loading={btnSaving}
+                        loadingPosition="start"
+                        startIcon={<></>}
+                    >
+                        <span >Submit</span>
+                    </LoadingButton>
+                </div>
             </div>
-            <Box className="conf-book-button" >
-                <LoadingButton
-                    fullWidth
-                    size="small"
-                    color="primary"
-                    variant="contained"
-                    type="submit"
-                    loading={btnSaving}
-                    loadingPosition="start"
-                    startIcon={<FaBeer />}
-                >
-                    <span className='p-1'>Submit</span>
-                </LoadingButton>
-            </Box>
         </form >
     )
 }
