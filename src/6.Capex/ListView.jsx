@@ -1,20 +1,7 @@
-import React, { useContext, useRef } from 'react'
-import Table from '../Helper Components/Table'
-import TipTool from '../Helper Components/TipTool'
-import Fab from '@mui/material/Fab';
-import { GrFormView } from 'react-icons/gr'
-import { RiDeleteBin6Line } from 'react-icons/ri'
-import { ImUpload } from 'react-icons/im'
-import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
-import { FaFileExcel } from 'react-icons/fa'
+import React, { useContext, useRef, useState } from 'react'
 import { FiSave, FiSearch } from 'react-icons/fi'
-import { Button, Card, CardContent, Input, Stack, TextField } from '@mui/material';
+import { Card, CardContent, Input, Stack, TextField } from '@mui/material';
 import BackArrow from '../Helper Components/SideComponent';
-import { Link } from 'react-router-dom';
-import { api } from '../Helper Components/Api';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
-import { MdClear } from 'react-icons/md';
 import { CgExport, CgImport } from 'react-icons/cg';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -25,58 +12,26 @@ import BudgetListVIew from './BudgetListVIew';
 import CapexListView from './CapexListView';
 import DialogsBox from '../Helper Components/DialogsBox';
 import { AppContext } from '../App';
-import { CloudUpload } from 'tabler-icons-react';
+import { CloudUpload, Search } from 'tabler-icons-react';
 
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
 
 export default function ListView() {
-    // const thead = ["Budget No", "Purpose code", "Purpose", "Line No", "Plant/Location", "Dept", "Capex Group", "Class", "Category (Nature of Asset)", "Asset description", "Details", "Rate", "Qty", "Uom", "Final Budget", "Remarks", "View", "Delete"]
     const { dialogStatus, setDialogStatus } = useContext(AppContext)
+    const [_search, _setSearch] = useState("")
+
     return (
         <div>
             <div className='flex justify-between mt-5'>
                 <BackArrow location={"/home"} title={"Capex - Listing"} />
                 <div className='flex gap-4 mt-3 mr-20'>
-                    <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                    <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
-                    <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
+                    <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                     <ButtonComponent onClick={() => { setDialogStatus(true) }} icon={<CgImport color='white' size={"23"} />} btnName={"Import .xlsx"} />
                     <ButtonComponent icon={<CgExport color='white' size={"23"} />} btnName={"Export"} />
                 </div>
             </div>
             <div className='mt-10 px-5'>
-                <BasicTabs />
+                <BasicTabs _search={_search} _setSearch={_setSearch} />
             </div>
             <DialogsBox title={"Upload Excel"} body={<UploadFiles />} />
         </div>
@@ -84,10 +39,14 @@ export default function ListView() {
 }
 
 
-function BasicTabs() {
+function BasicTabs({ _search, _setSearch }) {
     const [value, setValue] = React.useState(0);
+    const { count, setCount, page, setPage } = useContext(AppContext)
 
     const handleChange = (event, newValue) => {
+        setCount(1)
+        // _setSearch("")
+        setPage(1)
         setValue(newValue);
     };
 
@@ -100,15 +59,14 @@ function BasicTabs() {
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                <BudgetListVIew />
+                <BudgetListVIew _search={_search} _setSearch={_setSearch} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <CapexListView />
+                <CapexListView _search={_search} _setSearch={_setSearch} />
             </CustomTabPanel>
         </Box>
     );
 }
-
 const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     return (
         <div
@@ -171,4 +129,36 @@ const UploadFiles = () => {
             </div>
         </div>
     )
+}
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
 }

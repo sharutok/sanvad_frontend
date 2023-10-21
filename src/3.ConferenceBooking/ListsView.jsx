@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Table from '../Helper Components/Table'
 import BackArrow from '../Helper Components/SideComponent'
 import { useQuery, } from '@tanstack/react-query'
@@ -19,21 +19,22 @@ import moment from 'moment'
 export default function ListsView() {
     const thead = ["Meeting title", "Start Date", "End Date ", "Start Time", "End Time", "Conference", "Booked By", "Department"]
     const { count, setCount, page, setPage } = useContext(AppContext)
-    const { data, isLoading } = useQuery(['list-of-conf-booking'], async () => {
-        return axios.get(api.conference_booking.get_data + "/?page=" + page)
+    const [_search, _setSearch] = useState("")
+    const { data, isLoading } = useQuery(['list-of-conf-booking', _search, page], async () => {
+        return axios.get(`${api.conference_booking.get_data}/?page=${page}&search=${_search}`)
     })
-    console.log(data?.data);
+
     useEffect(() => {
-        setCount(Math.ceil(data?.data.count / 10))
+        setCount(Math.ceil(data?.data?.count / 10))
     })
     return (
         <div >
             <div className='flex justify-between mt-10'>
                 <BackArrow location={"/home"} title={"Conference Booking - Listing"} />
                 <div className='flex gap-4 mt-3 mr-10'>
-                    <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                    <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
-                    <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
+                    <TextField onChange={(e) => { _setSearch(e.target.value) }} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
+                    {/* <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
+                    <ButtonComponent icon={<MdClear color='white' size={"23"} />} /> */}
                     <ButtonComponent onClick={() => { window.location.href = "/conference/booking/new" }} icon={<GroupAddIcon sx={{ color: 'white' }} size={"23"} />} btnName={"Book Conference"} />
                     <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                 </div>

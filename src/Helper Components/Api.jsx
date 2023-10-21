@@ -11,9 +11,11 @@ export const api = {
         get_data: `${link}/yammer-feeds/posts/`
     },
     capex: {
-        get_data: `${link}/capex/get-all-data/`,
-        by_id: `${link}/capex`,
-        create: `${link}/capex/create/`
+        get_budget_data: `${link}/capex/get-all-budget-data`,
+        get_capex_data: `${link}/capex/get-all-capex-data`,
+        capex_by_id: `${link}/capex/data-capex`,
+        budget_by_id: `${link}/capex/data-budget`,
+        create_capex: `${link}/capex/create/`
     },
     conference_booking: {
         get_data: `${link}/conf-book/all`,
@@ -22,7 +24,7 @@ export const api = {
         post_data: `${link}/conf-book/create/`
     },
     ticket_system: {
-        get_data: `${link}/tkt-sys/all/`,
+        get_data: `${link}/tkt-sys/all`,
         create: `${link}/tkt-sys/create/`,
         by_id: `${link}/tkt-sys/`,
         get_all_user_list: `${link}/tkt-sys/get-all-users/`
@@ -38,8 +40,19 @@ export const api = {
     },
     user: {
         log_check: `${link}/user-manage/login/check/`,
-        birthday_list: `${link}/user-manage/birthday/list/`
+        birthday_list: `${link}/user-manage/birthday/list/`,
+        user_permissions: `${link}/user-manage/user/permission/list/`
     },
+    utils: {
+        download_excel: `${link}/utils/download/excel/`
+    },
+    wf: {
+        it_system_ticket_wf: `${link}/wf/ticket/systems/`,
+        it_infra_ticket_wf: `${link}/wf/ticket/infra/`,
+        capex_wf_corporate: `${link}/wf/capex/corporate/`,
+        capex_wf_plant: `${link}/wf/capex/plant/`,
+
+    }
 }
 
 

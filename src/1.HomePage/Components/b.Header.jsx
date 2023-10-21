@@ -82,7 +82,7 @@ export default function HeaderMegaMenu() {
         <Box  >
             <Header className='background-image' height={60} px="md">
                 <Group position="apart" sx={{ height: '100%' }}>
-                    <div className='flex gap-2'>
+                    <div onClick={() => window.location.href = '/home'} className='flex gap-2 cursor-pointer'>
                         <img src={IMAGES.ador_logo} alt="Ador" width={"50"} />
                         <Divider orientation='vertical' />
                         <Title align="center" sx={(theme) => ({ fontSize: "20px", textTransform: "uppercase" })}> Sanvad</Title>

@@ -20,12 +20,12 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab';
 const ErrorSchema = UserErrorSchema
 import { FiSave } from "react-icons/fi";
 import { Link } from 'react-router-dom';
-import { user_permission } from '../Static/StaticValues';
+import IMAGES from '../assets/Image/Image';
 
 
 function CreateUserForm() {
@@ -37,7 +37,9 @@ function CreateUserForm() {
         defaultValues: usermanagement,
     })
 
-
+    const user_perm = useQuery(["user-permission"], async () => {
+        return await axios.get(api.user.user_permissions)
+    })
 
     const mutation = useMutation({
         mutationFn: async (newTodo) => {
@@ -83,6 +85,7 @@ function CreateUserForm() {
                     <CustomDate label={"Date Of Birth*"} name={"dob"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomTextField label={"Emergency Contact*"} name={"emerg_contact"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Address*"} name={"address"} errors={errors} register={register} watch={watch} />
+
                     <Controller
                         render={({ field: { onChange, onBlur, value, name, ref },
                             fieldState: { isTouched, isDirty, error },
@@ -138,9 +141,9 @@ function CreateUserForm() {
                     <div className='w-[50rem]'>
                         <Autocomplete
                             multiple
-                            limitTags={2}
+                            limitTags={5}
                             id="checkboxes-tags-demo"
-                            options={user_permission}
+                            options={!user_perm.isLoading ? [...user_perm?.data?.data] : []}
                             disableCloseOnSelect
                             getOptionLabel={(option) => option}
                             onChange={(e, x) => {
@@ -186,6 +189,9 @@ function CreateUserForm() {
                 }
             </div>
             <div>
+            </div>
+            <div className='absolute right-0 bottom-0 p-6' >
+                <img width={"200px"} src={IMAGES.user_man_i} />
             </div>
         </form>
     )

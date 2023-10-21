@@ -28,9 +28,8 @@ const useStyles = createStyles((theme) => ({
 export default function BudgetBar() {
     const { capex } = useContext(AppContext)
     const data = [
-        { A: 100000, B: capex?.final_budget },
+        { A: 1000, B: 100000 },
     ]
-    console.log(data);
     const { classes } = useStyles();
 
     return (
@@ -49,10 +48,10 @@ export default function BudgetBar() {
                             </div>
                             <div className='flex justify-between'>
                                 <Text fz="lg" fw={500} className={classes.stats}>
-                                    {`₹${Number(val.A).toLocaleString('en-IN')} Crores`}
+                                    {`₹${Number(val.A).toLocaleString('en-IN')} Lakhs`}
                                 </Text>
                                 <Text fz="lg" fw={500} className={classes.stats}>
-                                    {`₹${Number(val.B).toLocaleString('en-IN')} Crores`}
+                                    {`₹${Number(val.B).toLocaleString('en-IN')} Lakhs`}
                                 </Text>
                             </div>
                             <Progress

@@ -9,13 +9,16 @@ import { AppContext } from '../App'
 import { useEffect } from 'react'
 
 export default function PreFilledSubForm() {
-    const { setCapex } = useContext(AppContext)
-    const { id } = useParams()
-    const { data, isLoading, isError } = useQuery(['todos'], async () => { return await axios.get(`${api.capex.by_id}/${id}/`) });
+    const { setBudget } = useContext(AppContext)
+    const { budget_id } = useParams()
+    const { data, isLoading, isError } = useQuery(['budget-data'], async () => { return await axios.get(`${api.capex.budget_by_id}/${budget_id}/`) });
 
-    !isLoading && (
-        setCapex(data.data.data)
-    )
+    console.log(budget_id);
+
+    useEffect(() => {
+        setBudget(data?.data?.data)
+    }, [!isLoading])
+
 
     if (isLoading) {
         return <LoadingSpinner />;
@@ -25,9 +28,6 @@ export default function PreFilledSubForm() {
         return <div>Error occurred while fetching data</div>;
     }
 
-    // useEffect(() => {
-    // setCapex(...data.data)
-    // }, [])
 
     return (
         <>
@@ -38,20 +38,20 @@ export default function PreFilledSubForm() {
                             return (
                                 <div key={i} className='flex flex-wrap gap-5 p-4'>
                                     <CustomTextField label={"Budget No"} value={c.budget_no} />
-                                    <CustomTextField label={"Purpose_Code"} value={c.purpose_code} />
+                                    <CustomTextField label={"Purpose Code"} value={c.purpose_code} />
+                                    <CustomTextField label={"Line No"} value={c.line_no} />
+                                    <CustomTextField label={"Purpose Description"} value={c.purpose_description} />
                                     <CustomTextField label={"Category"} value={c.category} />
-                                    <CustomTextField label={"Dept"} value={c.dept} />
+                                    {/* <CustomTextField label={"Dept"} value={c.dept} /> */}
                                     <CustomTextField label={"Capex Class"} value={c.capex_class} />
                                     <CustomTextField label={"Capex Group"} value={c.capex_group} />
-                                    <CustomTextField label={"Plant"} value={c.plant} />
+                                    {/* <CustomTextField label={"Plant"} value={c.plant} /> */}
                                     <CustomTextField label={"Details"} value={c.details} />
-                                    <CustomTextField label={"Final Budget"} value={c.final_budget} />
-                                    <CustomTextField label={"Line No"} value={c.line_no} />
+                                    <CustomTextField label={"Final Budget (₹ in Lakhs)"} value={c.final_budget} />
                                     <CustomTextField label={"Quantity"} value={c.qty} />
-                                    <CustomTextField label={"Rate"} value={c.rate} />
                                     <CustomTextField label={"UOM"} value={c.uom} />
+                                    <CustomTextField label={"Rate (₹ in Lakhs)"} value={c.rate} />
                                     <div className='flex flex-wrap gap-5'>
-                                        <CustomTextField multiline={true} label={"Purpose Description"} value={c.purpose_description} />
                                         <CustomTextField multiline={true} label={"Asset Description"} value={c.asset_description} />
                                         <CustomTextField multiline={true} label={"Remarks"} value={c.remarks} />
                                     </div>
@@ -67,10 +67,6 @@ export default function PreFilledSubForm() {
 }
 const CustomTextField = ({ label, value, multiline }) => {
     return (
-        <TextField multiline={multiline || false} rows={2} className="textfield" value={value} label={label} size={"small"} />
+        <TextField multiline={multiline && true} rows={2} className="textfield" value={value} label={label} size={"small"} />
     )
 }
-
-
-
-

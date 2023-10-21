@@ -55,7 +55,6 @@ export default function ApproverForm() {
         }
     })
 
-
     const onSubmit = async (data) => {
         data["id"] = id
         console.log(data);
@@ -67,19 +66,22 @@ export default function ApproverForm() {
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
-            const response = await axios.put(api.ticket_system.by_id + id, formData)
-            console.log(response);
+            formData.append('user_info', JSON.stringify(response?.data?.data?.user_info))
+            const _response = await axios.put(api.ticket_system.by_id + id, formData)
+            console.log(_response);
         } catch (error) {
             console.log("error in uploading", error);
         }
     }
 
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
-        return await axios.get(`${api.dynamic_values.tkt_type}`)
+        const data = await axios.get(`${api.dynamic_values.tkt_type}`)
+        return data?.data
     })
 
     const req_type_lists = useQuery(['req-type-lists', tktType.index], async () => {
-        return await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tkt_type_lists?.data?.data.indexOf(getValues("tkt_type"))) })
+        const data = await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tkt_type_lists?.data?.data.indexOf(getValues("tkt_type"))) })
+        return data?.data
     })
 
     const list_of_users = useQuery(['list-of-users'], async () => {
@@ -103,7 +105,7 @@ export default function ApproverForm() {
             <form className='grid grid-cols-[2fr_1fr] gap-20 p-5' onSubmit={handleSubmit(onSubmit)}>
                 <div >
                     <div className='grid grid-cols-2 ml-5'>
-                        {(!response.isLoading && Object.entries(response.data.data.user_info).map((u, i) => {
+                        {(!response.isLoading && Object.entries(response?.data?.data?.user_info)?.map((u, i) => {
                             return (
                                 <div key={i} className='flex gap-1'>
                                     <label className='font-bold'>{u[0]}</label>
@@ -119,8 +121,8 @@ export default function ApproverForm() {
                         </div>
 
                         <div className='grid grid-cols-[repeat(1,1fr)] gap-5'>
-                            <CustomAutoComplete disabled={true} control={control} errors={errors} name={"tkt_type"} label={"Ticket Type"} options={tkt_type_lists?.data?.data.map(x => { return x }) || []} />
-                            <CustomAutoComplete control={control} errors={errors} name={"req_type"} label={"Requirement Type"} options={req_type_lists?.data?.data.map(x => { return x }) || []} />
+                            <CustomAutoComplete disabled={true} control={control} errors={errors} name={"tkt_type"} label={"Ticket Type"} options={tkt_type_lists || []} />
+                            <CustomAutoComplete control={control} errors={errors} name={"req_type"} label={"Requirement Type"} options={req_type_lists || []} />
                             <CustomAutoComplete control={control} errors={errors} name={"severity"} label={"Severity"} options={severity} />
                         </div>
                     </div>
@@ -130,7 +132,7 @@ export default function ApproverForm() {
                     <div className='p-5' >
                         <strong>Uploaded files</strong>
                         <div className='flex gap-3'>
-                            {!response.isLoading && response.data.data.upload_data.map((g, i) => {
+                            {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
                                 return (
                                     <div key={i} className='flex gap-1 '>
                                         <strong>{i + 1}.</strong>
@@ -144,11 +146,13 @@ export default function ApproverForm() {
                 </div>
                 <div className='grid grid-cols-[repeat(1,1fr)] pl-0 pr-4 pt-4 pb-0 gap-4'>
                     <div>
-                        <CustomAutoComplete control={control} errors={errors} name={"assign_ticket_to_user"} label={"Assign Ticket To Users"} options={list_of_users?.data?.data.map(x => { return `${x[2]} - ${x[0]} ${x[1]}` }) || []} />
+                        <CustomAutoComplete control={control} errors={errors} name={"assign_ticket_to_user"} label={"Assign Ticket To Users"} options={list_of_users?.data?.data.map(x => { return `${x[2]}-${x[0]} ${x[1]}-${x[3]}` }) || []} />
                     </div>
                     <Divider />
-                    <span className='text-lg'>Comments</span>
-                    <VerticalLinearStepper />
+                    <div className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px] rounded-lg p-2'>
+                        <span className='text-lg'>Comments</span>
+                        <VerticalLinearStepper response={response} />
+                    </div>
                     <Divider />
                     <div className='grid gap-3'>
                         <Controller
@@ -180,15 +184,6 @@ export default function ApproverForm() {
                     <CustomTextFieldWithIcon tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />
                     <div>
                         <strong>Files{" "}</strong>
-                        {/* {[1, 2, 3, 4].map((g, i) => {
-                            return (
-                                <div key={i} className='inline-block gap-5'>
-                                    <div className='flex gap-1'>
-                                        <a className='cursor-pointer'> {"g.name"}</a>
-                                        <RxCross2 onClick={() => { deleteFiles(g) }} className='hover:text-[#ff6060] mt-[0.35rem] cursor-pointer active:text-[#ffa4a4]' />
-                                    </div>
-                                </div>)
-                        })} */}
                         <div className='max-h-[8rem] overflow-y-scroll'>
                             {tktFiles?.map((g, i) => {
                                 return (
@@ -241,28 +236,33 @@ const steps = [
     // },
 
 ];
-function VerticalLinearStepper() {
+function VerticalLinearStepper({ response }) {
     const [activeStep, setActiveStep] = React.useState(3);
-
     return (
-        <Box className="max-h-[40vh] overflow-y-scroll" >
+        <Box className=" max-h-[30vh] overflow-y-scroll" >
             <Stepper orientation="vertical">
-                {steps.map((step, index) => (
+                {response?.data?.data?.form_data?.approval_flow.map((step, index) => (
                     <Step active expanded key={index}>
                         <StepLabel >
-                            <div className='flex justify-between px-2'>
+                            <div className='flex justify-between'>
                                 <div>
-                                    <span className='font-[700] uppercase'>{step.user} | </span>
-                                    <span className='font-[700] uppercase'>{step.department} | </span>
-                                    <span className='font-[700] uppercase'>{step.emp_id}</span>
+                                    <span className='font-[500] uppercase'>{step.user_name} | </span>
+                                    <span className='font-[500] uppercase'>{step.department} | </span>
+                                    <span className='font-[500] uppercase'>{step.emp_id}</span>
                                 </div>
                                 <div>
+                                    <span className='font-[500]'>{severityArrow(step.status)}</span>
+                                </div>
+                                {/* <div>
                                     <span className='font-[700] uppercase'>{step.date}</span>
-                                </div>
+                                </div> */}
                             </div>
                         </StepLabel>
                         <StepContent>
                             <Typography>{step.comments}</Typography>
+                            <div className='flex justify-end'>
+                                <span className='font-[500] uppercase'>{step.time}</span>
+                            </div>
                         </StepContent>
                     </Step >
                 ))
@@ -378,3 +378,14 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     )
 }
 
+function severityArrow(val) {
+    if (val === "0") {
+        return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-green-100'><p className='mt-[0.1rem]'>Approved</p></div>)
+    }
+    if (val === "1") {
+        return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-red-100'><p className='mt-[0.1rem]'>Rejected</p></div>)
+    }
+    else {
+        return "-"
+    }
+}

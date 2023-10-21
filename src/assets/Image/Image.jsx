@@ -11,8 +11,13 @@ const IMAGES = {
     _girl_: new URL('../Image/_girl.png', import.meta.url).href,
     _boy_: new URL('../Image/_male.png', import.meta.url).href,
     like_gif: new URL('../Image/wired-outline-1122-thumb-down.gif', import.meta.url).href,
-    confetti_gif: new URL('../Image/wired-gradient-1103-confetti.gif', import.meta.url).href,
+    confetti_gif: new URL('../Image/wired-gradient-1103-confetti (1).gif', import.meta.url).href,
 
+
+    user_man_i: new URL('../Image/User Management (2).png', import.meta.url).href,
+    ticket_sys_i: new URL('../Image/Ticketing System.png', import.meta.url).href,
+    conf_img_i: new URL('../Image/Conference Room.png', import.meta.url).href,
+    vistor_manage_i: new URL('../Image/Visitor Management.png', import.meta.url).href,
 
 
 }

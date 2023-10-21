@@ -15,18 +15,20 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 import { LoadingButton } from '@mui/lab';
 import { AppContext } from '../../App';
-import { useQueries } from '@tanstack/react-query';
+import { useMutation, useQueries } from '@tanstack/react-query';
 import { api } from '../../Helper Components/Api';
 import { FaBeer } from 'react-icons/fa';
 import axios from 'axios';
 import { DatePicker } from '@mui/x-date-pickers';
+import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import LoadingSpinner from '../../Helper Components/LoadingSpinner';
 
 
 
-function ConferenceBooking() {
-    const { momentTime, usermanagement, setUsermanagement, btnSaving, setBtnSaving, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
+function ConferenceBooking({ fetchData }) {
+    const { momentTime, setSnackBarPopUp, setDialogStatus, usermanagement, setUsermanagement, btnSaving, setBtnSaving, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
     const ErrorSchema = ConferenceErrorSchema
-
+    const mutation = useMutation(fetchData);
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
@@ -34,7 +36,6 @@ function ConferenceBooking() {
 
     const onSubmit = async (data) => {
         try {
-            console.clear()
             const _data = {
                 ...data,
                 conf_room: confTemp.conf_room,
@@ -42,10 +43,22 @@ function ConferenceBooking() {
                 end_date_time: `${moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD")} ${getValues("end_date_time")}`,
                 conf_by: 15681
             }
-            console.log(_data);
             const response = await axios.post(api.conference_booking.create, _data)
-            console.log(response.data);
+            if (response.data.status === 200) {
+                mutation.mutateAsync()
+                // setBtnSaving(true)
+                // setSnackBarPopUp({ state: true, message: "Booked Conference" })
+                // if (mutation.isLoading) {
+                //     setDialogStatus(false)
+                //     setBtnSaving(false)
+                // }
+                // if (mutation.isError) { console.log("error in mutation"); }
+                // setTimeout(() => {
+                //     setSnackBarPopUp({ state: false, message: "" })
+                // }, 2000)
+            }
         } catch (error) {
+            console.log(error);
         }
     }
 
@@ -76,18 +89,7 @@ function ConferenceBooking() {
                 </div>
                 <TextField fullWidth className='w-max' defaultValue={`${confTemp.conf_room_start_date} ${confTemp.conf_room_start_time}`} label="Start Date Time*" size={"small"} disabled />
                 <div className='w-fit' >
-                    <LoadingButton
-                        fullWidth
-                        size="small"
-                        color="primary"
-                        variant="contained"
-                        type="submit"
-                        loading={btnSaving}
-                        loadingPosition="start"
-                        startIcon={<></>}
-                    >
-                        <span >Submit</span>
-                    </LoadingButton>
+                    <LoadingButtonWithSnack beforeName={"Book Conference"} afterName={"Booking..."} />
                 </div>
             </div>
         </form >

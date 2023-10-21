@@ -25,6 +25,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
 import BarSnack from '../Helper Components/BarSnack';
+import { useQuery } from '@tanstack/react-query';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -118,6 +119,10 @@ export default function UpdateUserForm() {
 
   }
 
+  const user_perm = useQuery(["user-permission"], async () => {
+    return await axios.get(api.user.user_permissions)
+  })
+
 
   useEffect(() => {
     getData()
@@ -188,12 +193,12 @@ export default function UpdateUserForm() {
               label="User Status" />
             {usermanagement.user_status === true ? <p className='text-[0.8rem] text-[#3c993c] font-[bolder]'>Active</p> : <p className='text-[0.8rem] text-[red] font-[bolder]'>In Active</p>}
           </div>
-          <div className='w-80'>
+          <div className='w-[50rem]'>
             <Autocomplete
               multiple
-              limitTags={2}
+              limitTags={5}
               id="checkboxes-tags-demo"
-              options={["a", "b", "c", "d", "e"]}
+              options={!user_perm.isLoading ? [...user_perm?.data?.data] : []}
               disableCloseOnSelect
               getOptionLabel={(option) => option}
               onChange={(e, x) => {

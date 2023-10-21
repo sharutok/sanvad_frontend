@@ -1,165 +1,124 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
-    Group,
-    Box,
-    Collapse,
-    ThemeIcon,
-    Text,
-    UnstyledButton,
-    createStyles,
-    rem,
+    Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, createStyles, rem,
 } from '@mantine/core';
-import { IconCalendarStats, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { FaUsers, FaIdBadge, FaUserCog, } from "react-icons/fa";
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import { IoIosPaper } from "react-icons/io";
-import { MdCurrencyExchange, MdSettingsApplications, MdPolicy } from "react-icons/md";
-import { AiOutlineLink } from "react-icons/ai";
-import { PiFlowArrowBold } from "react-icons/pi";
-const links = [
-    {
-        label: 'User Management',
-        icon: IconCalendarStats, mainlink: "/user/management/list"
-    },
-    {
-        label: 'Ticketing System',
-        icon: IoIosPaper,
-        mainlink: "/ticket/sys/list"
-    },
-    {
-        label: 'Conference Booking',
-        icon: FaUsers,
-        mainlink: "/conference/booking/list"
+import { getCookies } from '../../Helper Components/CustomCookies';
+import { AppContext } from '../../App';
+import { links } from '../../Static/StaticValues';
+import { Tooltip } from '@mui/material';
 
-    },
-    {
-        label: 'Visitor Management',
-        icon: FaIdBadge,
-        mainlink: "/vistors/management/list"
-    },
-    {
-        label: 'Capex',
-        icon: MdCurrencyExchange,
-        mainlink: "/capex/list"
-    },
-    {
-        label: 'Policies',
-        icon: MdPolicy,
-        mainlink: "",
-        links: [
-            { label: 'HR Policies', link: '/' },
-            { label: 'IT Policies', link: '/' },
-        ],
-    },
-    {
-        label: 'Module Setup',
-        icon: MdSettingsApplications,
-        mainlink: "",
-        links: [
-            { label: 'User Management', link: '/' },
-            { label: 'Conference Room', link: '/' },
-            { label: `Visitor's Management`, link: '/' },
-            { label: `Ticketing System`, link: '/module-config/ticket-system' },
-        ],
-    },
-    {
-        label: 'Static Links',
-        icon: AiOutlineLink,
-        mainlink: "",
-        links: [
-            { label: 'Distributor Portal Application', link: 'https://adorwelding.org/Distributorship_portal/distributor_application' },
-            { label: 'Assent', link: 'http://182.73.197.154/AscentESS/Default.htm' },
-            { label: 'Product Certifcate Matrix', link: 'http://27.107.7.11:3040/home' },
-            { label: 'FPED KIOSK', link: 'http://27.107.7.11:3060/login' },
-            { label: 'DIGI-WCA (ADMIN)', link: 'http://27.107.7.11:3070/admin/login' },
-            { label: 'DIGI-WCA (USER)', link: 'http://27.107.7.11:3070/user/login' },
-            { label: 'Falcon (Distributor)', link: 'https://distributor.ador.co/' },
-            { label: 'Falcon (Admin)', link: 'https://admin.ador.co/' },
-            { label: 'Zendesk', link: 'https://adorcare.zendesk.com/' },
-        ],
-    },
-    {
-        label: 'Workflow Configurations',
-        icon: PiFlowArrowBold,
-        mainlink: "",
-        links: [
-            { label: 'Ticketing System', link: '/' },
-            { label: 'Capex', link: '/' },
-        ],
-    },
-];
+export default function NavbarLinksGroup() {
+    const user_perm = getCookies()[2]
+    const { collapse, setCollapse, setOpen } = useContext(AppContext)
 
-const useStyles = createStyles((theme) => ({
-    control: {
-        fontWeight: 500,
-        display: 'block',
-        width: '100%',
-        padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-        fontSize: theme.fontSizes.sm,
+    return (
 
-        '&:hover': {
-
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-            color: theme.colorScheme === 'dark' ? theme.white : theme.black, textDecoration: "none"
-        },
-    },
-
-    link: {
-        fontWeight: 500,
-        display: 'block',
-        textDecoration: 'none',
-        padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-        paddingLeft: rem(31),
-        marginLeft: rem(30),
-        fontSize: theme.fontSizes.sm,
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
-        borderLeft: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-
-            }`,
-
-        '&:hover': {
-            textDecoration: 'none',
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-            color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        },
-    },
-
-    chevron: {
-        transition: 'transform 200ms ease',
-    },
-}));
+        <Box
+            sx={(theme) => ({
+                minHeight: rem(220),
+                padding: theme.spacing.md,
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+            })}
+        >
+            {!collapse && <div className='p-2 w-fit'>
+                <ButtonComponent onClick={() => setOpen(false)} btnName={"Collapse All"} />
+            </div>}
+            {links.map((x, i) => {
+                return (
+                    x.index ? user_perm.includes(x.index) &&
+                        <div key={i}>
+                            <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
+                                <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
+                            </Link>
+                        </div>
+                        :
+                        <div key={i}>
+                            <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
+                                <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
+                            </Link>
+                        </div>
+                )
+            })}
+        </Box>
+    );
+}
 
 function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
+    const { collapse, open, } = useContext(AppContext)
+    const useStyles = createStyles((theme) => ({
+        control: {
+            fontWeight: 500,
+            display: 'block',
+            width: `${!collapse ? "100%" : "fitContent"}`,
+            // padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+            padding: `10px`,
+            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+            fontSize: "0.9rem",
+
+            '&:hover': {
+                borderRadius: "0.5rem",
+                backgroundColor: !collapse ? theme.colors.gray[1] : "white",
+                color: theme.colorScheme === 'dark' ? theme.white : theme.black, textDecoration: "none",
+            },
+        },
+
+        link: {
+            fontWeight: 500,
+            display: 'block',
+            textDecoration: 'none',
+            padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+            paddingLeft: rem(31),
+            marginLeft: rem(30),
+            fontSize: theme.fontSizes.sm,
+            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
+            borderLeft: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]
+                }`,
+
+            '&:hover': {
+                textDecoration: 'none',
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[1],
+                color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+                borderRadius: "0.5rem"
+            },
+        },
+
+        chevron: {
+            transition: 'transform 200ms ease',
+        },
+    }));
     const { classes, theme } = useStyles();
     const hasLinks = Array.isArray(links);
     const [opened, setOpened] = useState(initiallyOpened || false);
     const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft;
+
     const items = (hasLinks ? links : []).map((link) => (
 
         <Text
             component="a"
             className={classes.link}
             href={link.link}
+            target='_blank'
             key={link.label}
-            onClick={(event) => window.location.href = link.link
-            }
-        >
-            {link.label}
+            onClick={(event) => window.location.href = link.link}>{link.label}
         </Text >
+
     ));
 
     return (
         <>
             <>
-                <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
+                <UnstyledButton onClick={() => setOpened((o) => !o)} className={`${classes.control} `}>
                     <Group position="apart" spacing={0}>
+
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <ThemeIcon variant="light" color='#ffffff' size={30}>
-                                <Icon color="grey" size="1.5rem" />
+                            <ThemeIcon variant='light' color='#fff' size={30}>
+                                <Icon color="#555259" size="1.5rem" />
                             </ThemeIcon>
                             <Box ml="md">{label}</Box>
                         </Box>
+
                         {hasLinks && (
                             <ChevronIcon
                                 className={classes.chevron}
@@ -185,24 +144,14 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
 }
 
 
-export default function NavbarLinksGroup() {
+
+const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     return (
-        <Box
-            sx={(theme) => ({
-                minHeight: rem(220),
-                padding: theme.spacing.md,
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-            })}
-        >
-            {links.map((x, i) => {
-                return (
-                    <div key={i}>
-                        <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
-                            <LinksGroup label={x.label} icon={x.icon} links={x.links} />
-                        </Link>
-                    </div>
-                )
-            })}
-        </Box>
-    );
+        <div
+            onClick={onClick}
+            {...props}
+            className=' no-underline rounded-full  h-fit border-[#c7c7c7] bg-[#fff] flex justify-between px-2 cursor-pointer hover:bg-[#f0f0f0] active:bg-[#eeeeee] transition-[1s]'>
+            {btnName && <span className='text-[#555259] text-[13px] no-underline'>{btnName}</span>}
+        </div>
+    )
 }

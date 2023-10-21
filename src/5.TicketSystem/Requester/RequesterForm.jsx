@@ -16,10 +16,10 @@ import { LoadingButton } from '@mui/lab';
 import { AppContext } from '../../App';
 import BarSnack from '../../Helper Components/BarSnack';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import IMAGES from '../../assets/Image/Image';
 const Input = styled('input')({
     display: 'none',
 });
-const formData = new FormData()
 
 function RequesterForm() {
     const { snackBarPopUp, setSnackBarPopUp, snackfn } = useContext(AppContext)
@@ -54,6 +54,7 @@ function RequesterForm() {
                 formData.append(x[0], x[1])
             })
             const response = await axios.post(api.ticket_system.create, formData)
+            console.log(response.data);
             if (response.data.status === 200) {
                 setBtnSaving(true)
                 setSnackBarPopUp({ state: true, message: "Created ticket" })
@@ -174,6 +175,9 @@ function RequesterForm() {
                     <LoadingButtonWithSnack beforeName={"Create Ticket"} afterName={"Creating..."} />
                 </div>
             </form>
+            <div className='absolute right-0 bottom-0 p-10' >
+                <img width={"300px"} src={IMAGES.ticket_sys_i} />
+            </div>
         </div>
     )
 }

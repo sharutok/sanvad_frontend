@@ -17,16 +17,16 @@ export default function ShortCutBtn() {
 
     return (
         <div>
-            {/* <span className='text-xl p-1'>Shortcuts</span> */}
+
             <div className='grid grid-cols-[repeat(3,1fr)] gap-10 '>
                 {icons.map((_icon, i) => {
                     return (
-                        <div key={i} className='text-center p-2 button1 rounded-lg bg-[#fff]'>
+                        <div key={i} className='text-center px-2 py-3 button1 rounded-lg bg-[#fff]'>
                             <Link to={_icon.path} className='flex justify-center '>
-                                < _icon.icons size={35} color='#808285' />
+                                < _icon.icons size={35} color='#555259' />
                             </Link>
-                            <div className='mt-2'>
-                                <span>{_icon.iconTitle}</span>
+                            <div className='mt-2 font-[1rem] '>
+                                <span className='font-bold'>{_icon.iconTitle}</span>
                             </div>
                         </div>
                     )

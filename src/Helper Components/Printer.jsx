@@ -4,7 +4,6 @@ import { useReactToPrint } from "react-to-print";
 import { ComponentToPrint } from "./ComponentToPrints";
 import { BsPrinter } from "react-icons/bs";
 import TipTool from "./TipTool";
-import { IconButton } from "rsuite";
 
 export default function CustomPrint() {
     const componentRef = React.useRef(null);

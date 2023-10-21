@@ -23,6 +23,8 @@ import StepContent from '@mui/material/StepContent';
 import { BiChevronDown } from 'react-icons/bi';
 import PreFilledSubForm from '../PreFilledSubForm';
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from 'react-icons/md';
+import { useQuery } from '@tanstack/react-query';
+import { AppContext } from '../../App';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -32,19 +34,27 @@ const Input = styled('input')({
 
 export default function Form() {
     const id = useParams()
+    const { budget, setBudget } = useContext(AppContext)
     const ErrorSchema = CapexErrorSchema
     const inputFile = useRef(null)
     const [preFilled, setPreFilled] = useState(true)
     const [uploadFIle, setUploadFile] = useState([])
+    const [capexDetail, setCapexDetail] = useState([])
+    const { capex_id } = useParams()
+    const { data, isLoading } = useQuery(['capex-data'], async () => {
+        return await axios.get(`${api.capex.capex_by_id}/${capex_id}/`)
+    })
+
+    useEffect(() => {
+        if (!isLoading) {
+            setCapexDetail(data?.data?.data);
+        }
+    }, [!isLoading])
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
-        defaultValues: {
-            requisition_date: "",
-            site_delivery_date: "",
-            installation_date: ""
-        }
+        defaultValues: {}
     })
 
     const onSubmit = async (submit) => {
@@ -59,30 +69,43 @@ export default function Form() {
         // const res = await axios.post(api.capex.create, data)
         // console.log(res.data);
     }
+
     const onButtonClick = () => {
         inputFile.current.click();
     };
+
+
+    if (isLoading) {
+        return (
+            <LoadingSpinner />
+        )
+    }
 
     return (
         <div className='mt-5'>
             <BackArrow location={"/capex/list"} title={"Capex Form - Approver"} />
             <div className='p-10 grid grid-cols-[2fr_1fr] gap-20'>
-                <div className='h-fit grid gap-5'>
-                    <div className='grid grid-cols-[repeat(2,1fr)] gap-5'>
-                        <CustomTextField label={"Nature Of Requirement"} name={"nature_of_requirement"} errors={errors} register={register} watch={watch} />
-                        <CustomTextField label={"Purpose"} name={"purpose"} errors={errors} register={register} watch={watch} />
-                        <CustomTextField label={"Plant"} name={"purpose"} errors={errors} register={register} watch={watch} />
-                        <CustomTextField label={"Department"} name={"purpose"} errors={errors} register={register} watch={watch} />
-                        <CustomTextField label={"Budgeted Type"} name={"purpose"} errors={errors} register={register} watch={watch} />
-                        <CustomTextField label={"Total Cost"} name={"purpose"} errors={errors} register={register} watch={watch} />
-                    </div>
+                <div className='h-fit grid gap-5  '>
+                    {!isLoading ? [{ ...capexDetail, ...budget }].map((c, i) => {
+                        return (
+                            <div key={i} className=' grid grid-cols-[repeat(2,1fr)] gap-5 '>
+                                <CustomValueTextField size={true} label={"Nature Of Requirement"} value={c.nature_of_requirement} />
+                                <CustomValueTextField size={true} label={"Purpose"} value={c.purpose} />
+                                <CustomValueTextField size={true} label={"Plant"} value={c.plant} />
+                                <CustomValueTextField size={true} label={"Department"} value={c.dept} />
+                                <CustomValueTextField size={true} label={"Budgeted Type"} value={c.budget_type} />
+                                <CustomValueTextField size={true} label={"Total Cost (₹ in Lakhs)"} value={c.total_cost} />
+                            </div>
+                        )
+                    }) : <LoadingSpinner />}
+
                     <div>
                         <strong>Uploaded files</strong>
                         <div className=' flex gap-3'>
-                            {[1, 2, 3, 4].map((g, i) => {
+                            {[{ ...capexDetail, ...budget }].map((c, i) => {
                                 return (
-                                    <div className='flex gap-1 '>
-                                        <a href=""><strong>{i + 1}.</strong> {"g.name"}</a>
+                                    <div key={i} className='flex gap-1 '>
+                                        <a href={c.user_file}><strong>{i + 1}.</strong> {"file1"}</a>
                                     </div>)
                             })}
                         </div>
@@ -93,7 +116,7 @@ export default function Form() {
                         <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowDown color='#fff' size={22} />} btnName={"Click for More Information"} />
                     }
                     {preFilled && <div >
-                        <MoreInformation />
+                        <MoreInformation details={[{ ...capexDetail, ...budget }]} />
                     </div>}
                 </div>
                 <div className='grid grid-cols-[repeat(1,1fr)] gap-5 h-fit '>
@@ -110,7 +133,7 @@ export default function Form() {
     )
 }
 
-const MoreInformation = () => {
+const MoreInformation = ({ details }) => {
     return (
         <div className='grid grid-cols-1 gap-10'>
             <div className='grid grid-cols-1 gap-3'>
@@ -119,33 +142,38 @@ const MoreInformation = () => {
                     <PreFilledSubForm />
                 </div>
             </div>
-            <div className='grid grid-cols-1 gap-3'>
-                <span className='text-xl font-bold'>Capex Details</span>
-                <div className='flex flex-wrap gap-5 p-5 border border-solid border-[grey] rounded-xl'>
-                    <CustomValueTextField label={"Requisition Date"} value={""} />
-                    <CustomValueTextField label={"Payback Period"} value={""} />
-                    <CustomValueTextField label={"Return On Investment"} value={""} />
-                    <CustomValueTextField label={"Site Delivery Date*"} value={""} />
-                    <CustomValueTextField label={"Installation Date*"} value={""} />
-                    <div className='flex flex-wrap gap-5'>
-                        <CustomValueTextField multiline={true} label={"Functional Utility/Performance"} value={""} />
-                        <CustomValueTextField multiline={true} label={"Brief Description of Assets"} value={""} />
-                        <CustomValueTextField multiline={true} label={"Supplier's Name with Address"} value={""} />
-                        <CustomValueTextField multiline={true} label={"Key User"} value={""} />
-                        <CustomValueTextField multiline={true} label={"Additional Note"} value={""} />
-                        <CustomValueTextField multiline={true} label={"LD Clause"} value={""} />
+            {details.map((c, x) => {
+                return (
+                    <div key={x} className='grid grid-cols-1 gap-3'>
+                        <span className='text-xl font-bold'>Capex Details</span>
+                        <div className='flex flex-wrap gap-5 p-5 border border-solid border-[grey] rounded-xl'>
+                            <CustomValueTextField className="w-[20rem]" label={"Requisition Date"} value={c.requisition_date} />
+                            <CustomValueTextField className="w-[20rem]" label={"Payback Period"} value={c.payback_period} />
+                            <CustomValueTextField className="w-[20rem]" label={"Return On Investment"} value={c.return_on_investment} />
+                            <CustomValueTextField className="w-[20rem]" label={"Site Delivery Date*"} value={c.site_delivery_date} />
+                            <CustomValueTextField className="w-[20rem]" label={"Installation Date*"} value={c.installation_date} />
+                            <div className='flex flex-wrap gap-5'>
+                                <CustomValueTextField className="w-[20rem]" multiline={true} label={"Functional Utility/Performance"} value={c.comment1} />
+                                <CustomValueTextField className="w-[20rem]" multiline={true} label={"Brief Description of Assets"} value={c.comment2} />
+                                <CustomValueTextField className="w-[20rem]" multiline={true} label={"Supplier's Name with Address"} value={c.comment3} />
+                                <CustomValueTextField className="w-[20rem]" multiline={true} label={"Key User"} value={c.comment4} />
+                                <CustomValueTextField className="w-[20rem]" multiline={true} label={"Additional Note"} value={c.comment5} />
+                                <CustomValueTextField className="w-[20rem]" multiline={true} label={"LD Clause"} value={c.comment6} />
+                                <CustomValueTextField className="w-[20rem]" multiline={true} label={"Short Description"} value={c.comment7} />
+                            </div>
+                        </div>
+                        <div className='grid grid-cols-1 gap-3'>
+                            <span className='text-xl font-bold'>Asset's Listings</span>
+                            <AssetListing asset_listings={c.asset_listings} />
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div className='grid grid-cols-1 gap-3'>
-                <span className='text-xl font-bold'>Asset's Listings</span>
-                <AssetListing />
-            </div>
+                )
+            })}
         </div>
     )
 }
 
-const AssetListing = () => {
+const AssetListing = ({ asset_listings }) => {
     const thead = [
         "Nature of Assets",
         "Asset Type",
@@ -157,15 +185,15 @@ const AssetListing = () => {
     return (
         <div className='w-fit'>
             <Table thead={thead}
-                tbody={[1, 2, 3, 4]?.map((g, i) => {
+                tbody={asset_listings && JSON.parse(asset_listings).map((g, i) => {
                     return (
                         <tr className='table-wrapper' key={i}>
-                            <td>{"Nature of Assets"}</td>
-                            <td>{"Asset Type"}</td>
-                            <td>{"Requirement"}</td>
-                            <td>{"Justification"}</td>
-                            <td>{"Present Status"}</td>
-                            <td>{"Specification"}</td>
+                            <td>{g.nature_of_assets}</td>
+                            <td>{g.asset_type}</td>
+                            <td>{g.justification}</td>
+                            <td>{g.present_status}</td>
+                            <td>{g.requirement}</td>
+                            <td>{g.specification}</td>
                         </tr>
                     )
                 })} />
@@ -207,9 +235,9 @@ const ApprovalSection = ({ control, errors, register, watch, handleSubmit, onSub
     )
 }
 
-const CustomValueTextField = ({ label, value, multiline }) => {
+const CustomValueTextField = ({ label, value, multiline, size, className, ...props }) => {
     return (
-        <TextField multiline={multiline || false} rows={2} className="w-[20rem]" value={value} label={label} size={"small"} />
+        <TextField multiline={multiline || false} rows={2} className={className} {...props} value={String(value)} label={label} size={"small"} />
     )
 }
 
@@ -235,34 +263,34 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
 
 const steps = [
     {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
-        comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
+        user: 'Avinash Attarde',
+        department: 'IT',
+        emp_id: '14112',
+        comments: `Please Approve`,
         date: '23/12/2022'
     },
     {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
+        user: 'LP Bansod',
+        department: 'IT',
+        emp_id: '00547',
         comments:
-            'An ad group contains one or more ads which target a shared set of keywords.',
-        date: '23/12/2022'
+            'Approved',
+        date: '24/12/2022'
     },
-    {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
-        comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
-        date: '23/12/2022'
-    },
-    {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
-        comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
-        date: '23/12/2022'
-    },
+    // {
+    //     user: 'user',
+    //     department: 'IT',
+    //     emp_id: 'emp_id',
+    //     comments: `Approved`,
+    //     date: '26/12/2022'
+    // },
+    // {
+    //     user: 'user',
+    //     department: 'IT',
+    //     emp_id: 'emp_id',
+    //     comments: `Approved`,
+    //     date: '27/12/2022'
+    // },
 
 ];
 

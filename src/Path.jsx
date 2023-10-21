@@ -20,6 +20,8 @@ import TApproverForm from './5.TicketSystem/Agent/ApproverForm';
 import ApproveVisitorManagement from './4.VIsitorManagement/Approver/ApproveVisitorManagement';
 import ListsView from './3.ConferenceBooking/ListsView';
 import CApproverForm from './6.Capex/Approver/ApproverForm'
+import CWorkFlow from './8.WorkFlow/CapexWorkFlow/WorkFlow';
+import TWorkFlow from './8.WorkFlow/TicketWorkFlow/WorkFlow';
 export default function Path() {
     return (
         <>
@@ -47,11 +49,14 @@ export default function Path() {
                     <Route path='/ticket/sys/:id' element={<TApproverForm />} />
 
 
-                    <Route path='/capex/:id' element={<CForm />} />
-                    <Route path='/capex/appr/:id' element={<CApproverForm />} />
+                    <Route path='/capex/:budget_id' element={<CForm />} />
+                    <Route path='/capex/appr/:budget_id/:capex_id' element={<CApproverForm />} />
                     <Route path='/capex/list' element={<CListView />} />
 
                     <Route path='/module-config/ticket-system' element={<TicketSys />} />
+
+                    <Route path='/workflow/ticket-system' element={<TWorkFlow />} />
+                    <Route path='/workflow/capex-system' element={<CWorkFlow />} />
 
                     <Route path='*' element={<ErrorPage404NotFound />} />
                 </Routes>

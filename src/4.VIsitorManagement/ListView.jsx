@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, {useState, useContext, useEffect } from 'react'
 import BackArrow from '../Helper Components/SideComponent'
 import CPagination from '../Helper Components/Pagination'
 import { FiSearch } from 'react-icons/fi'
@@ -16,9 +16,10 @@ import TipTool from '../Helper Components/TipTool'
 export default function VisitManagementListView() {
     const thead = ["Visitor's Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Visitor Count",]
     const { count, setCount, page, setPage } = useContext(AppContext)
+    const[_search,_setSearch]=useState("")
 
-    const { data, isLoading } = useQuery(["visitor-list", page], async () => {
-        return axios.get(`${api.visitor_management.get_data}/?page=${page}`)
+    const { data, isLoading } = useQuery(["visitor-list", page,_search], async () => {
+        return axios.get(`${api.visitor_management.get_data}/?page=${page}&search=${_search}`)
     })
 
     useEffect(() => {
@@ -31,9 +32,9 @@ export default function VisitManagementListView() {
             <div className='flex justify-between mt-10'>
                 <BackArrow location={"/home"} title={"Visitor's Management - Listing"} />
                 <div className='flex gap-4 mt-3 mr-20'>
-                    <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                    <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
-                    <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
+                    <TextField onChange={(e)=>_setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
+                    {/* <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
+                    <ButtonComponent icon={<MdClear color='white' size={"23"} />} /> */}
                     <ButtonComponent onClick={() => { window.location.href = "/vistors/management/new" }} icon={<AiOutlineUserAdd color='white' size={"23"} />} btnName={"Add Visitor"} />
                     <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                 </div>

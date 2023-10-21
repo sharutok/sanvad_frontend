@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Table from '../Helper Components/Table'
 import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2'
 import CPagination from '../Helper Components/Pagination'
@@ -15,14 +15,20 @@ import { api } from '../Helper Components/Api'
 import { AppContext } from '../App'
 import BarSnack from '../Helper Components/BarSnack'
 import { Link } from 'react-router-dom'
+import LoadingSpinner from '../Helper Components/LoadingSpinner'
 
 export default function TicketSystemListView() {
-    const { setSnackBarPopUp } = useContext(AppContext)
+    const { setSnackBarPopUp, count, setCount, page, setPage } = useContext(AppContext)
+    const [_search, _setSearch] = useState("")
     const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Severity", "Ticket Date", "Status", "Current At"]
 
-    const ticket_listing = useQuery(['ticket-listing', handleDelete], async () => {
-        const data = await axios.get(api.ticket_system.get_data)
+    const ticket_listing = useQuery(['ticket-listing', page, _search], async () => {
+        const data = await axios.get(`${api.ticket_system.get_data}/?page=${page}&search=${_search}`)
         return data
+    })
+
+    useEffect(() => {
+        setCount(Math.ceil(ticket_listing?.data?.data.count / 10))
     })
 
     function severityArrow(val) {
@@ -53,14 +59,14 @@ export default function TicketSystemListView() {
                 <div className='flex justify-between mt-10'>
                     <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
                     <div className='flex gap-4 mt-3 mr-10'>
-                        <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                        <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
-                        <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
+                        <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
+                        {/* <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
+                        <ButtonComponent icon={<MdClear color='white' size={"23"} />} /> */}
                         <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />
                         <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                     </div>
                 </div>
-                <div className='mt-10 mx-10'>
+                {!ticket_listing.isLoading ? <div className='mt-10 mx-10'>
                     <Table thead={thead}
                         tbody={
                             ticket_listing?.data?.data?.results.map((g, i) => {
@@ -89,17 +95,18 @@ export default function TicketSystemListView() {
                             })
                         }
                     />
-                </div>
+                </div> : <LoadingSpinner />}
                 < CPagination />
             </div>
         </div>
     )
 }
 
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
+const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
     return (
         <div
             onClick={onClick}
+            onChange={onChange}
             {...props}
             className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
             <div className='no-underline'>

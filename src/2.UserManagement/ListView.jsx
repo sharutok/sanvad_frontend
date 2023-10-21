@@ -1,51 +1,53 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Table from '../Helper Components/Table'
 import BackArrow from '../Helper Components/SideComponent'
-import { useQuery, } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { IconButton, TextField } from '@mui/material'
 import { api } from '../Helper Components/Api'
 import { AiOutlineDownload } from 'react-icons/ai'
-import { MdDeleteOutline } from 'react-icons/md'
-import { FiSearch } from 'react-icons/fi'
-import { MdClear } from 'react-icons/md'
 import axios from 'axios'
 import LoadingSpinner from '../Helper Components/LoadingSpinner'
 import { AiOutlineUserAdd } from 'react-icons/ai'
-import dayjs from 'dayjs';
 import CPagination from '../Helper Components/Pagination'
-import TipTool from '../Helper Components/TipTool'
 import { AppContext } from '../App'
-import IMAGES from '../assets/Image/Image'
-import { GoDot, GoDotFill } from 'react-icons/go'
-import { HiMiniArrowSmallDown } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
+import ExportToExcel from '../Helper Components/ExportToExcel'
 
 export default function UserManagementListView() {
     const { count, setCount, page, setPage } = useContext(AppContext)
-    const thead = ["Employee Code", "First Name", "Last Name", "Department", "Plant", "Organization", "User Status", "Date of joining"]
-    const { isLoading, error, data } = useQuery(['sales-data', page], async () => {
-        return await axios.get(`${api.user_management.get_data}/?page=${page}`)
-    })
-    const [value, setValue] = React.useState(dayjs('2022-04-17'));
+    const [_search, _setSearch] = useState("")
+    const thead = ["Employee Code", "Function", "Location", "First Name", "Last Name", "Department", "Plant", "Organization", "User Status", "Date of joining"]
 
-    function handleNavigation(id) {
-        window.location.href = `/user/management/indvi/${id}`
+    async function get_user_data() {
+        return await axios.get(`${api.user_management.get_data}/?page=${page}&search=${_search}`)
     }
+
+    const { isLoading, error, data } = useQuery(['user-data-list', page, _search], async () => {
+        return await get_user_data()
+    })
+
+    const mutation = useMutation({
+        mutationFn: async (newTodo) => {
+            get_user_data()
+        },
+    })
 
     useEffect(() => {
         setCount(Math.ceil(data?.data.count / 10))
     })
+
 
     return (
         <div >
             <div className='flex justify-between mt-10'>
                 <BackArrow location={"/home"} title={"User Management - Listing"} />
                 <div className='flex gap-4 mt-3 mr-10'>
-                    <TextField sx={{ width: "20rem" }} id="outlined-basic" label="Smart Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                    <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
-                    <ButtonComponent icon={<MdClear color='white' size={"23"} />} />
+                    <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
+                    {/* <ButtonComponent onClick={handleOnSearch} icon={<FiSearch color='white' size={"23"} />} /> */}
+                    {/* <ButtonComponent icon={<MdClear color='white' size={"23"} />} /> */}
                     <ButtonComponent onClick={() => { window.location.href = "/user/management/new" }} icon={<AiOutlineUserAdd color='white' size={"23"} />} btnName={"Add User"} />
-                    <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
+                    {/* <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} /> */}
+                    <ExportToExcel apiData={data?.data.results} fileName={"usermanagement"} />
                 </div>
             </div>
             {!isLoading ?
@@ -54,10 +56,11 @@ export default function UserManagementListView() {
                         data?.data.results.map((g, i) => {
                             return (
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
-                                    <td>
+                                    <td className='text-[#0b1358]'>
                                         <Link to={`/user/management/indvi/${g.id}`}>{g.emp_no}</Link>
                                     </td>
-                                    {/* <td onClick={() => handleNavigation(g.id)}>{g.emp_no}</td> */}
+                                    <td >{g.ess_function}</td>
+                                    <td >{g.ess_location}</td>
                                     <td >{g.first_name}</td>
                                     <td >{g.last_name}</td>
                                     <td >{g.department}</td>
@@ -72,12 +75,6 @@ export default function UserManagementListView() {
                     < CPagination />
                 </div>
                 : <LoadingSpinner />}
-            {/* {(window.innerHeight >= 900 && window.innerWidth >= 1900) &&
-                <div className='absolute right-0 bottom-0 ' >
-                    <img width={"300px"} src={IMAGES.test_img} />
-                </div>
-            } */}
-
         </div>
 
     )
@@ -93,7 +90,7 @@ function UserStatus(val) {
 }
 
 
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
+const ButtonComponent = ({ onClick, icon, btnName, ...props }) => {
     return (
         <div
             onClick={onClick}
@@ -106,3 +103,5 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         </div>
     )
 }
+
+

@@ -12,7 +12,7 @@ import Divider from '@mui/material/Divider';
 import { Button } from '@mui/material';
 import IMAGES from '../../assets/Image/Image';
 import { FiSearch } from 'react-icons/fi';
-import { FaBirthdayCake } from 'react-icons/fa';
+import { LiaBirthdayCakeSolid } from 'react-icons/lia';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { api } from '../../Helper Components/Api';
@@ -27,9 +27,9 @@ export default function NewEmployee() {
 
     return (
         <div >
-            {/* <span className='text-xl p-1'>Today's Birthday</span> */}
             <List sx={{ width: '100%', maxHeight: 245, }} className='overflow-y-scroll rounded-2xl bg-[#fff]'>
-                {!tkt_type_lists.isLoading && tkt_type_lists?.data?.data?.data.map((x, i) => {
+                {/* <span className='text-xl p-1 ml-4'>Today's Birthday</span> */}
+                {tkt_type_lists?.data?.data?.data?.map((x, i) => {
                     return (
                         <div key={i} >
                             <ListItem className='flex justify-between'>
@@ -39,8 +39,8 @@ export default function NewEmployee() {
                                 </ListItemAvatar>
                                 <ListItemText primary={<span className='text-[16px]'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department}</span>} />
                                 <div>
-
-                                    <ButtonComponent icon={<img className='' width={30} src={IMAGES.confetti_gif} alt="" />} btnName={"Send Wishes"} />
+                                    {/* <ButtonComponent icon={<LiaBirthdayCakeSolid size={23} />} btnName={"Send Birthday Wishes"} /> */}
+                                    <ButtonComponent icon={<img className='' width={30} src={IMAGES.confetti_gif} alt="" />} btnName={"Send Birthday Wishes"} />
                                 </div>
                             </ListItem>
                             <Divider variant="inset" component="li" />
@@ -55,11 +55,11 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         <div
             onClick={onClick}
             {...props}
-            className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+            className=' no-underline rounded-lg py-2 h-fit border-[#c7c7c7] bg-[#DFE0E5] flex justify-between px-6 cursor-pointer hover:bg-[#e7e7e7] active:bg-[#000000] transition-[1s]'>
             {icon && <div className='no-underline'>
                 {icon}
             </div>}
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2 mt-1'>{btnName}</span>}
+            {btnName && <span className='text-[#383838] font-bold text-[14px] no-underline ml-2 mt-1 pr-1'>{btnName}</span>}
         </div>
     )
 }

@@ -19,8 +19,8 @@ export default function YammerFrame() {
     }
     return (
         <div >
-            <div className=' rounded-xl max-h-[56vh] overflow-y-scroll p-4 bg-[#fff]'>
-
+            {/* <span className='text-md font-bold p-1 uppercase'>Shortcuts</span> */}
+            <div className=' rounded-xl max-h-[56vh] overflow-y-scroll p-4 bg-[#fff] border-[0.5rem] border-solid border-[#ffffff] '>
                 {!isLoading && <ICarousels data={data} />}
             </div>
         </div>
@@ -58,79 +58,6 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-
-// function ICarousels({ data }) {
-//     const autoplay = useRef(Autoplay({ delay: 2000 }));
-
-//     const { classes } = useStyles();
-//     const slides = data?.data.data.map((x, i) => (
-//         <Carousel.Slide key={i + 9} >
-//             <div  >
-//                 <div className='text-center mt-3 p-3' style={{ wordBreak: "break-word" }}>
-//                     {/* <TipTool title={x.message.toUpperCase()} body={
-//                         <Text fz="lg" className='underline'>
-//                             {x.message.length >= 100 ? `${(x.message.toUpperCase()).substring(0, 50)}.....` : x.message.toUpperCase()}
-//                         </Text>
-//                     } /> */}
-//                     <p>{x.message.toUpperCase()}</p>
-//                 </div>
-
-//                 <div className='flex justify-center mt-4'>
-//                     {x?.image.length == (0 || null || "" || []) && <img style={{ width: "400px" }} src={IMAGES.yammer_alt} />}
-//                     {x?.image[0]?.type === "image" && <img style={{ width: "400px" }} src={x?.image[0]?.sharepoint_web_url} />}
-//                     {x?.image[0]?.type === "file" && <video style={{ width: "400px" }} controls>
-//                         <source src={x?.image[0]?.sharepoint_web_url} type="video/mp4" />
-//                     </video>}
-
-//                 </div>
-//                 <div className=''>
-//                     {/* <Divider sx={{ borderColor: "red" }} /> */}
-//                     <div className='px-3'>
-//                         <div className='flex'>
-//                             <AiOutlineLike color="#3d3d3d" fontSize='20' className='cursor-pointer' />
-//                             <span color='#3d3d3d' className=' text-l'>{x.liked_by}</span>
-//                         </div>
-//                     </div>
-//                     <Group className='px-3' position="apart" >
-//                         <Text fw={500} fz=" ">
-//                             Posted on: {moment(x.created_at).format("DD MMMM YYYY")}
-//                         </Text>
-
-//                         <Group spacing={5}>
-//                             <Text fz="xs" fw={500}>
-//                                 <a href={x.web_url}>Click here for more...</a>
-//                             </Text>
-//                         </Group>
-//                     </Group>
-//                 </div>
-//             </div>
-//         </Carousel.Slide >
-//     ));
-
-//     return (
-//         <div style={{ width: "50rem" }}>
-//             <Card radius="md" withBorder>
-//                 <Card.Section >
-//                     <Carousel
-//                         plugins={[autoplay.current]}
-//                         onMouseEnter={autoplay.current.stop}
-//                         onMouseLeave={autoplay.current.reset}
-//                         orientation="horizontal"
-//                         withIndicators
-//                         mx="auto"
-//                         classNames={{
-//                             root: classes.carousel,
-//                             controls: classes.carouselControls,
-//                             indicator: classes.carouselIndicator,
-//                         }}
-//                     >
-//                         {slides}
-//                     </Carousel>
-//                 </Card.Section>
-//             </Card>
-//         </div>
-//     );
-// }
 
 
 function ICarousels({ data }) {

@@ -25,7 +25,7 @@ export default function Page() {
 
     return (
         <div >
-            <div className='flex justify-center mt-10'>
+            <div id="element" className='flex justify-center mt-10 pretty'>
                 <div className='w-[80%] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
                     <img className=' rounded-3xl' src={IMAGES.login_img} />
                 </div>
@@ -51,7 +51,8 @@ function LoginBody() {
         console.log(response.data);
         if (response.data.status === 200) {
             window.location.href = "/home"
-            setCookies([1, "15681", 11])
+            setCookies([1, "15681", ['module:capex', 'module:usermanagement', "module:workflowconfig",
+                "module:moduleconfigurations"]])
             setError("")
         } else {
             setError("Password or Email is Incorrect")

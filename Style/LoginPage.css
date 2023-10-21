@@ -52,3 +52,39 @@
     rgba(174, 210, 255, 1) 100%
   );
 }
+
+#element {
+  -webkit-animation: 1s ease 0s normal forwards 1 fadein;
+  animation: 1s ease 0s normal forwards 1 fadein;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Additional styles not required */
+.pretty {
+  font-family: helvetica, arial, sans-serif;
+  padding: 40px 20px;
+  width: 100%;
+}

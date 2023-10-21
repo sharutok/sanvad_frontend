@@ -1,42 +1,29 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useRef, useState } from 'react'
 import BackArrow from '../../Helper Components/SideComponent'
-import { TextField, Button, Divider, Autocomplete, Box, IconButton } from '@mui/material'
-import { AiOutlineClose, AiOutlineInfoCircle } from 'react-icons/ai'
+import { TextField, Divider, Autocomplete, Box } from '@mui/material'
+import { AiOutlineInfoCircle } from 'react-icons/ai'
 import moment from 'moment'
 import '../../../Style/conferenceListView.css'
 import { api } from '../../Helper Components/Api'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { AppContext } from '../../App'
-
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { Controller } from 'react-hook-form'
 import { User } from 'tabler-icons-react'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
 import ConferenceBooking from './ConferenceBooking'
 import { IoMdArrowBack, IoMdRefresh } from 'react-icons/io'
 import LoadingSpinner from '../../Helper Components/LoadingSpinner'
-
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import IMAGES from '../../assets/Image/Image'
 import { MdDeleteOutline } from 'react-icons/md'
+import dayjs from 'dayjs'
 
 export default function ConferenceBookingListView() {
     const { setMomentTime, dialogStatus, setDialogStatus, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
     const [error1, setError1] = useState(false)
     const thead = ["Conf No", "By", "Dept", "Start Date", "Start Time", "Conference Room", "End Date", "End Time",]
-    // const { isLoading, error, data } = useQuery(['conference-data'], async () => { return await axios.get(api.conference_booking.get_data) })
 
     const value = useMemo(() => {
         return (Array.from(Array(41).keys()).map(x => {
@@ -47,6 +34,7 @@ export default function ConferenceBookingListView() {
     const all_conference_rooms = useQuery(['all-conference-rooms'], async () => {
         return await axios.get(api.dynamic_values.conference_rooms)
     })
+
     const _conferences = () => {
         const val = all_conference_rooms?.data?.data.map((room) => {
             const data = (room.split("#"))
@@ -55,17 +43,22 @@ export default function ConferenceBookingListView() {
         return (val);
     }
 
-    const prev_booked_list = useQuery(['prev-booked-list', confTemp.conf_room_start_date, confTemp.conf_room], async () => {
+    const fetchData = async () => {
+        console.log({
+            "conf_start_date": confTemp.conf_room_start_date ? moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
+            "conf_room": confTemp.conf_room ? confTemp.conf_room : "MULA"
+        });
         const data = await axios.post(api.conference_booking.get_by_date_and_conf_room, {
             "conf_start_date": confTemp.conf_room_start_date ? moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
-            "conf_room": confTemp.conf_room ? confTemp.conf_room : "MULLA"
+            "conf_room": confTemp.conf_room ? confTemp.conf_room : "MULA"
         })
-
-        console.log({
-            "conf_room": confTemp.conf_room ? confTemp.conf_room : setConfTemp({ ...confTemp, conf_room: "MUTHA" })
-        });
         return data
-    })
+    }
+
+    const prev_booked_list = useQuery(['prev-booked-list', confTemp.conf_room_start_date, confTemp.conf_room], fetchData)
+
+
+
     const diff_numbered = (a, b) => {
         let flag = []
         for (let i = b; i <= a; i++) {
@@ -94,7 +87,7 @@ export default function ConferenceBookingListView() {
         })
 
         return (header_data.filter(item => item)[0] && <>
-            <span classname={"p-1"}>{header_data.filter(item => item)[0]}</span>
+            <span>{header_data.filter(item => item)[0]}</span>
         </>)
     }
 
@@ -143,6 +136,7 @@ export default function ConferenceBookingListView() {
                         <ButtonComponent onClick={handleClearBtn} icon={<IoMdRefresh color='white' size={"15"} />} btnName={"Clear All"} />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateCalendar
+                                defaultValue={dayjs(moment().format("YYYY-MM-DD"))}
                                 onChange={(a, b) => {
                                     handleDataChange(a)
                                 }}
@@ -151,55 +145,58 @@ export default function ConferenceBookingListView() {
                     </div>
                     <div >
                         <CustomAutoCompleteWithIcon control={""} errors={""} name={"conference_rooms"} label={"Conference Rooms"} options={_conferences()} />
+
                     </div>
                     {(error1) && <div className='rounded-md mt-5 flex justify-center bg-[#d8d8d8]'>
                         <AiOutlineInfoCircle size={"20"} className='mt-1' />
                         <span className='  p-1 text-sm  text-[#ff0000cc] '>Select both<strong> Date</strong> and<strong> Conference Room</strong></span>
                     </div>}
                 </div>
-                {!prev_booked_list.isLoading ? <div className='w-[100vw]'>
-                    <div className='mb-4'>
-                        <span className='text-2xl'>Timing Schedule</span>
-                    </div>
-                    <div className='max-h-[47rem] overflow-y-scroll '>
-                        {!prev_booked_list.isLoading &&
-                            value.map((x, i) => {
-                                if ([..._flag].includes(x)) {
-                                    return (
-                                        <div key={i} className='w-[100%]'>
-                                            {getMeetingInfo(x) && <div className='pt-4'></div>}
-                                            <div className='p-[1rem] bg-gray-100 cursor-not-allowed flex justify-between '>
-                                                <span className='text-lg'>{x}</span>
-                                                {getMeetingInfo(x) && <div style={{
-                                                    borderLeft: "5px solid rgba(255, 0, 0,0.9)",
-                                                    background: "rgba(255, 0, 0,0.1)",
-                                                }} className='pl-4 pt-1 pb-1 w-[94%] '>
-                                                    <div className='font-[900] '>{getMeetingInfo(x)}</div>
-                                                </div>}
+                <>
+                    {!prev_booked_list.isLoading ? <div className='w-[100vw]'>
+                        <div className='mb-4'>
+                            <span className='text-2xl'>Timing Schedule</span>
+                        </div>
+                        <div className='max-h-[47rem] overflow-y-scroll '>
+                            {!prev_booked_list.isLoading &&
+                                value.map((x, i) => {
+                                    if ([..._flag].includes(x)) {
+                                        return (
+                                            <div key={i} className='w-[100%]'>
+                                                {getMeetingInfo(x) && <div className='pt-4'></div>}
+                                                <div className='p-[1rem] bg-gray-100 cursor-not-allowed flex justify-between '>
+                                                    <span className='text-lg'>{x}</span>
+                                                    {getMeetingInfo(x) && <div style={{
+                                                        borderLeft: "5px solid rgba(255, 0, 0,0.9)",
+                                                        background: "rgba(255, 0, 0,0.1)",
+                                                    }} className='pl-4 pt-1 pb-1 w-[94%] '>
+                                                        <div className='font-[900] '>{getMeetingInfo(x)}</div>
+                                                    </div>}
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                }
-                                else {
-                                    return (
-                                        <div key={i} className='w-[100%] hover:bg-gray-100 cursor-pointer' onClick={handleDilogBox}>
-                                            <Divider orientation='horizontal' />
-                                            <p className='p-[1rem] text-lg font-medium' onClick={() =>
-                                                setConfTemp({ ...confTemp, conf_room_start_time: x })}
-                                                key={i}>{x}</p>
-                                        </div>
-                                    )
-                                }
-                            })
-                        }
-                        <Divider orientation='horizontal' />
-                        <TemporaryDrawer body={<ConferenceBooking />} />
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <div key={i} className='w-[100%] hover:bg-gray-100 cursor-pointer' onClick={handleDilogBox}>
+                                                <Divider orientation='horizontal' />
+                                                <p className='p-[1rem] text-lg font-medium' onClick={() =>
+                                                    setConfTemp({ ...confTemp, conf_room_start_time: x })}
+                                                    key={i}>{x}</p>
+                                            </div>
+                                        )
+                                    }
+                                })
+                            }
+                            <Divider orientation='horizontal' />
+                            <TemporaryDrawer body={<ConferenceBooking fetchData={fetchData} />} />
+                        </div>
                     </div>
-                </div>
-                    : <div>
-                        <LoadingSpinner />
-                    </div>
-                }
+                        : <div>
+                            <LoadingSpinner />
+                        </div>
+                    }
+                </>
             </div>
         </div>
     )
@@ -207,14 +204,16 @@ export default function ConferenceBookingListView() {
 
 }
 
+
+
 const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, control, options }) => {
     const { dialogStatus, setDialogStatus, confTemp, setConfTemp } = useContext(AppContext)
-
     return (
         <Autocomplete
             className='textfield'
             disablePortal
             id="combo-box-demo"
+            value={options && options[0].conf}
             options={options}
             getOptionLabel={(obj) => obj.conf}
             renderOption={(props, obj) => (
@@ -275,9 +274,9 @@ function TemporaryDrawer({ body }) {
                 <span className='text-3xl mt-5'>Book a Conference</span>
             </div>
             {body}
-            {/* <div className='absolute right-0 bottom-0 ' >
-                <img width={"300px"} src={IMAGES.conf_img} />
-            </div> */}
+            <div className='absolute right-0 bottom-0 p-6' >
+                <img width={"450px"} src={IMAGES.conf_img_i} />
+            </div>
         </Box>
     );
 

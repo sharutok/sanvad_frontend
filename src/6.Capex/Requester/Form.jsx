@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { CloudUpload } from 'tabler-icons-react';
 import {
-    styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, InputAdornment
+    styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, InputAdornment, IconButton
 } from '@mui/material'
 
 import { useForm, Controller, get } from 'react-hook-form'
@@ -32,6 +32,10 @@ import Table from '../../Helper Components/Table';
 import {
     TbMoneybag
 } from 'react-icons/tb';
+import TipTool from '../../Helper Components/TipTool';
+import { MdDeleteOutline, MdRefresh } from 'react-icons/md';
+import { asset_type, budgeted_type, nature_of_assets, payback_period_return_of_investment, static_val } from '../../Static/StaticValues';
+import { RxCross2 } from 'react-icons/rx';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const Input = styled('input')({
@@ -39,38 +43,111 @@ const Input = styled('input')({
 });
 
 export default function Form() {
-    const id = useParams()
-    // const FormData = new FormData()
+    const { id } = useParams()
+    const { assets, setAssets } = useContext(AppContext)
     const ErrorSchema = CapexErrorSchema
     const inputFile = useRef(null)
     const [preFilled, setPreFilled] = useState(true)
     const [uploadFIle, setUploadFile] = useState([])
+    const [tktFiles, setTKTFiles] = useState([])
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
         defaultValues: {
+            nature_of_requirement: "",
+            purpose: "",
+            payback_period: "",
+            return_on_investment: "",
+            budget_type: "",
             requisition_date: "",
+            total_cost: "",
             site_delivery_date: "",
-            installation_date: ""
+            installation_date: "",
+            comment1: "",
+            comment2: "",
+            comment3: "",
+            comment4: "",
+            comment5: "",
+            comment6: "",
+            comment7: "",
+            nature_of_assets: "",
+            asset_type: "",
+            requirement: "",
+            justification: "",
+            present_status: "",
+            specification: "",
+            // nature_of_requirement: "1",
+            // purpose: "1",
+            // payback_period: "1",
+            // return_on_investment: "op",
+            // budget_type: "op",
+            // requisition_date: "op",
+            // total_cost: "1000",
+            // site_delivery_date: "op",
+            // installation_date: "op",
+            // comment1: "op",
+            // comment2: "op",
+            // comment3: "op",
+            // comment4: "op",
+            // comment5: "op",
+            // comment6: "op",
+            // comment7: "op",
+            // nature_of_assets: "",
+            // asset_type: "",
+            // requirement: "",
+            // justification: "",
+            // present_status: "",
+            // specification: "",
         }
     })
 
     const onSubmit = async (submit) => {
-        const data = ({
-            ...submit,
-            capex_id: id,
-            requisition_date: moment(submit.requisition_date.$d).format("YYYY-MM-DD"),
-            site_delivery_date: moment(submit.site_delivery_date.$d).format("YYYY-MM-DD"),
-            installation_date: moment(submit.installation_date.$d).format("YYYY-MM-DD"),
-        });
-        console.log({ upload_file: uploadFIle });
-        // const res = await axios.post(api.capex.create, data)
-        // console.log(res.data);
+        try {
+            const formData = new FormData();
+            const data = ({
+                ...submit,
+                budget_id: id,
+                requisition_date: moment(submit.requisition_date.$d).format("YYYY-MM-DD"),
+                site_delivery_date: moment(submit.site_delivery_date.$d).format("YYYY-MM-DD"),
+                installation_date: moment(submit.installation_date.$d).format("YYYY-MM-DD"),
+                asset_listings: JSON.stringify(assets),
+            });
+            console.log(assets);
+            tktFiles.forEach((file, index) => {
+                formData.append(`user_file`, file);
+                formData.append(`file${index + 1}`, file);
+            });
+
+            Object.entries(data).map((x) => {
+                console.log((x[0], x[1]));
+                formData.append(x[0], x[1])
+            })
+            const res = await axios.post(api.capex.create_capex, formData)
+            console.log(res.data);
+        } catch (e) {
+            console.log("error in sending data", e);
+        }
     }
+
+    const deleteFiles = (g) => {
+        let arr = tktFiles.filter(function (item) {
+            return item.name !== g
+        })
+        setTKTFiles((tktFiles) => {
+            return [...arr]
+        })
+    }
+
     const onButtonClick = () => {
         inputFile.current.click();
     };
+
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        setTKTFiles(files);
+    };
+
 
     return (
         <div className='mt-5'>
@@ -91,10 +168,10 @@ export default function Form() {
                     <CustomTextField label={"Nature Of Requirement"} name={"nature_of_requirement"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Purpose"} name={"purpose"} errors={errors} register={register} watch={watch} />
                     <CustomDate label={"Requisition Date*"} name={"requisition_date"} errors={errors} control={control} watch={watch} register={register} />
-                    <CustomAutoComplete control={control} errors={errors} label={"Payback Period"} name={"payback_period"} options={['0', "1", "2", "3", "4"]} />
-                    <CustomAutoComplete control={control} errors={errors} label={"Return On Investment"} name={"return_on_investment"} options={['0', "1", "2", "3", "4"]} />
-                    <CustomAutoComplete control={control} errors={errors} label={"Budget Type"} name={"budget_type"} options={['0', "1", "2", "3", "4"]} />
-                    <CustomTextField label={"Total Cost"} name={"total_cost"} errors={errors} register={register} watch={watch} />
+                    <CustomAutoComplete control={control} errors={errors} label={"Payback Period"} name={"payback_period"} options={payback_period_return_of_investment} />
+                    <CustomAutoComplete control={control} errors={errors} label={"Return On Investment"} name={"return_on_investment"} options={payback_period_return_of_investment} />
+                    <CustomAutoComplete control={control} errors={errors} label={"Budget Type"} name={"budget_type"} options={budgeted_type} />
+                    <CustomTextField label={"Total Cost (₹ in Lakhs)"} name={"total_cost"} errors={errors} register={register} watch={watch} />
                     <CustomDate label={"Site Delivery Date*"} name={"site_delivery_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomDate label={"Installation Date*"} name={"installation_date"} errors={errors} control={control} watch={watch} register={register} />
                     <div className='grid gap-5'>
@@ -107,11 +184,11 @@ export default function Form() {
                             <CustomTextField multiline={true} label={"LD Clause"} name={"comment6"} errors={errors} register={register} watch={watch} />
                         </div>
                         <Divider sx={{ borderColor: "red" }} />
-                        <AssetListing control={control} errors={errors} register={register} watch={watch} />
+                        <AssetListing control={control} errors={errors} register={register} watch={watch} getValues={getValues} setValue={setValue} />
                         <Divider sx={{ borderColor: "red" }} />
-                        <div className='grid grid-cols-[repeat(2,20rem)] gap-4'>
+                        <div className='flex gap-4 '>
                             <CustomTextField rows={4} multiline={true} label={"Short Attachment Description"} name={"comment7"} errors={errors} register={register} watch={watch} />
-                            <div >
+                            <div className='flex gap-4 '>
                                 <Card onClick={onButtonClick} className="ts-card" style={{ cursor: "pointer" }} >
                                     <CardContent  >
                                         <Typography className="ts-card-typo" sx={{ fontSize: 12 }} >
@@ -124,7 +201,7 @@ export default function Form() {
                                         <Typography className="ts-card-typo" variant="h5" component="div">
                                             <Stack direction="row" alignItems="center">
                                                 <label htmlFor="contained-button-file">
-                                                    <Input onChange={(e) => setUploadFile(e.target.files)} accept="image/jpeg,image/png,application/pdf" type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
+                                                    <Input onChange={(e) => handleFileChange(e)} accept="image/jpeg,image/png,application/pdf" type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
                                                     <Typography sx={{ fontWeight: "bold" }} className="ts-card-typo abs" variant="body2">
                                                         Upload files
                                                     </Typography>
@@ -136,10 +213,20 @@ export default function Form() {
                                         </Typography>
                                     </CardContent>
                                 </Card>
+                                <Divider orientation='vertical' />
+                                <div className='max-h-[8rem] overflow-y-scroll'>
+                                    {tktFiles?.map((g, i) => {
+                                        return (
+                                            <div key={i} className='flex gap-2 '>
+                                                <p><strong>{i + 1}.</strong> {g.name}</p>
+                                                <RxCross2 onClick={() => { deleteFiles(g.name) }} className='text-[#ff2a2a] hover:text-[#ff6060] cursor-pointer active:text-[#ffa4a4] mt-1' />
+                                            </div>)
+                                    })}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className='w-fit p-4'>
+                    <div className='w-fit'>
                         <Button fullWidth color="primary" variant="contained" type="submit">Create Capex</Button>
                     </div>
                 </form>
@@ -148,8 +235,8 @@ export default function Form() {
     )
 }
 
-const AssetListing = ({ control, errors, register, watch }) => {
-    const { visitors, setVisitors } = useContext(AppContext)
+const AssetListing = ({ control, errors, register, watch, getValues, setValue }) => {
+    const { assets, setAssets } = useContext(AppContext)
     const thead = [
         "Nature of Assets",
         "Asset Type",
@@ -158,28 +245,71 @@ const AssetListing = ({ control, errors, register, watch }) => {
         "Present Status",
         "Specification",
     ]
+    let obj = {}
+    function handleDelete(g) {
+        let arr = assets.filter(function (item) {
+            return item.requirement !== g
+        })
+        setAssets((assets) => {
+            return [...arr]
+        })
+    }
+
+    function handleAddAsset() {
+        ["nature_of_assets",
+            "asset_type",
+            "requirement",
+            "justification",
+            "present_status",
+            "specification"].map((val) => {
+                if (val) {
+                    obj[val] = getValues(val)
+                }
+            })
+        const val = Object.values(obj).map(x => {
+            if (x) {
+                return x
+            } return 0
+        })
+        !val.includes(0) && setAssets([...assets, obj])
+    }
+
+    function clearAll() {
+        ["nature_of_assets",
+            "asset_type",
+            "requirement",
+            "justification",
+            "present_status",
+            "specification"].map((val) => {
+                setValue(val, "")
+            })
+
+    }
 
     return (
         <div className='grid gap-5'>
             <div className='flex gap-5 flex-wrap shadow-[rgba(60,64,67,0.3)_0px_1px_2px_0px,rgba(60,64,67,0.15)_0px_2px_6px_2px] p-5 rounded-2xl'>
-                <CustomAutoComplete control={control} errors={errors} label={"Nature of Assets"} name={"nature_of_assets"} options={['0', "1", "2", "3", "4"]} />
-                <CustomAutoComplete control={control} errors={errors} label={"Asset Type"} name={"asset_type"} options={['0', "1", "2", "3", "4"]} />
-                <CustomTextField label={"Requirement"} name={"requirement"} errors={errors} register={register} watch={watch} />
-                <CustomTextField label={"Justification"} name={"justification"} errors={errors} register={register} watch={watch} />
-                <CustomTextField label={"Present Status"} name={"present_status"} errors={errors} register={register} watch={watch} />
-                <CustomTextField label={"Specification"} name={"specification"} errors={errors} register={register} watch={watch} />
-                <ButtonComponent icon={<TbMoneybag color='white' size={"23"} />} btnName={"Add Assets"} />
+                <CustomAutoComplete control={control} errors={errors} label={"Nature of Assets*"} name={"nature_of_assets"} options={nature_of_assets} />
+                <CustomAutoComplete control={control} errors={errors} label={"Asset Type*"} name={"asset_type"} options={asset_type} />
+                <CustomTextField label={"Requirement*"} name={"requirement"} errors={errors} register={register} watch={watch} />
+                <CustomTextField label={"Justification*"} name={"justification"} errors={errors} register={register} watch={watch} />
+                <CustomTextField label={"Present Status*"} name={"present_status"} errors={errors} register={register} watch={watch} />
+                <CustomTextField label={"Specification*"} name={"specification"} errors={errors} register={register} watch={watch} />
+                <ButtonComponent onClick={handleAddAsset} icon={<TbMoneybag color='white' size={"23"} />} btnName={"Add Assets"} />
+                <ButtonComponent onClick={clearAll} icon={<MdRefresh color='white' size={"23"} />} btnName={"Clear All"} />
             </div>
             <div className='w-fit'>
                 <Table thead={thead}
-                    tbody={visitors?.map((g, i) => {
+                    tbody={assets?.map((g, i) => {
                         return (
                             <tr className='table-wrapper' key={i}>
-                                <td>{g.v_name}</td>
-                                <td>{g.v_mobile_no}</td>
-                                <td>{g.v_desig}</td>
-                                <td>{g.v_asset}</td>
-                                <td className='delete'>
+                                <td>{g.nature_of_assets}</td>
+                                <td>{g.asset_type}</td>
+                                <td>{g.requirement}</td>
+                                <td>{g.justification}</td>
+                                <td>{g.present_status}</td>
+                                <td>{g.specification}</td>
+                                <td className='delete' onClick={() => handleDelete(g.requirement)}>
                                     <TipTool body={< >
                                         <IconButton>
                                             <MdDeleteOutline color='#f08080' size={22} />
@@ -237,6 +367,7 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
         <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                    className='w-[20rem]'
                     inputFormat='DD/MM/YYYY'
                     slotProps={{
                         textField:
@@ -258,6 +389,7 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
             control={control}
             rules={{ required: true }}
         />
+
     )
 }
 const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {

@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {
-    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Divider
+    Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Divider, IconButton
 } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox';
 import '../../Style/VisitManagement.css'
@@ -17,13 +17,13 @@ import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { AppContext } from '../App';
 import Table from '../Helper Components/Table';
 import TipTool from '../Helper Components/TipTool';
-import { IconButton } from 'rsuite';
 import { MdDeleteOutline } from 'react-icons/md';
 import { FiSearch } from 'react-icons/fi';
 import { api } from '../Helper Components/Api';
 import axios from 'axios';
 import { LoadingButton } from '@mui/lab';
 import moment from 'moment';
+import IMAGES from '../assets/Image/Image';
 
 export default function CreateVisitorMangement() {
     const ErrorSchema = VisitorMangErrorSchema
@@ -39,13 +39,12 @@ export default function CreateVisitorMangement() {
         data["start_date_time"] = moment(getValues("start_date_time")["$d"]).format(),
             data["end_date_time"] = moment(getValues("end_date_time")["$d"]).format(),
             data["raised_by"] = "15681"
-        console.log(data);
         const response = await axios.post(api.visitor_management.create, data)
         setBtnSaving(true)
-        console.log(response.data.status);
+
         if (response.data.status) {
             setSnackBarPopUp({ state: true, message: "Created ticket" })
-            // window.history.back()
+            window.history.back()
         }
     }
 
@@ -134,6 +133,9 @@ export default function CreateVisitorMangement() {
                     </LoadingButton>
                 </div>
             </form>
+            <div className='absolute right-0 bottom-0 p-6' >
+                <img width={"400px"} src={IMAGES.vistor_manage_i} />
+            </div>
         </div>
     )
 }

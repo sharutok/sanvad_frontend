@@ -50,24 +50,7 @@ function App() {
     module_permission: []
   })
 
-  const [capex, setCapex] = useState({
-    budget_no: "",
-    purpose_code: "",
-    category: "",
-    dept: "",
-    capex_class: "",
-    capex_group: "",
-    plant: "",
-    asset_description: "",
-    details: "",
-    final_budget: "",
-    line_no: "",
-    purpose_description: "",
-    qty: "",
-    rate: "",
-    uom: "",
-    remarks: "",
-  })
+  const [budget, setBudget] = useState([])
 
   const [userLogin, setUserLogin] = useState({
     email: "", password: ""
@@ -95,6 +78,7 @@ function App() {
   })
 
   const [visitors, setVisitors] = useState([])
+  const [assets, setAssets] = useState([])
 
   const [cookie, setCookie] = useState({
     role_status: "",
@@ -102,9 +86,13 @@ function App() {
     user_role_id: "",
   })
 
+  const [collapse, setCollapse] = useState(false)
+  const [open, setOpen] = useState(false)
+
+
   const contextValue = {
-    momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, capex, setCapex, userLogin, setUserLogin, dialogStatus, setDialogStatus, confTemp, setConfTemp
-    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie
+    momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, budget, setBudget, userLogin, setUserLogin, dialogStatus, setDialogStatus, confTemp, setConfTemp
+    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets, setAssets, collapse, setCollapse, open, setOpen
   }
 
   return (
