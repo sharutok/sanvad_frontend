@@ -44,7 +44,8 @@ export const api = {
         user_permissions: `${link}/user-manage/user/permission/list/`
     },
     utils: {
-        download_excel: `${link}/utils/download/excel/`
+        download_excel: `${link}/utils/download/excel/`,
+        weather_temp: `${link}/utils/get/weather/temp/`
     },
     wf: {
         it_system_ticket_wf: `${link}/wf/ticket/systems/`,

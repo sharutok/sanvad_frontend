@@ -4,7 +4,10 @@ import { useDisclosure } from '@mantine/hooks';
 import {
     IconChevronDown
 } from '@tabler/icons-react';
-import { FaUsers, FaIdBadge } from 'react-icons/fa';
+import { FaUsers, FaIdBadge, FaRegBell } from 'react-icons/fa';
+import { IoTicketOutline } from 'react-icons/io5';
+import { GrCurrency } from 'react-icons/gr';
+import { AiFillAccountBook } from 'react-icons/ai';
 import IMAGES from '../../assets/Image/Image';
 import '../../../Style/Header.css'
 import Avatar from '@mui/material/Avatar';
@@ -88,6 +91,7 @@ export default function HeaderMegaMenu() {
                         <Title align="center" sx={(theme) => ({ fontSize: "20px", textTransform: "uppercase" })}> Sanvad</Title>
                     </div>
                     <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+                        <Notification />
                         <AccountMenu />
                     </Group>
                 </Group>
@@ -122,7 +126,7 @@ function AccountMenu() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 35, height: 35 }}>SK</Avatar>
+                        <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}>SK</Avatar>
                     </IconButton>
                 </Tooltip>
             </div>
@@ -173,5 +177,119 @@ function AccountMenu() {
                 </MenuItem>
             </Menu>
         </React.Fragment>
+    );
+}
+
+function Notification() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    function handleLogOut() {
+        window.location.href = "/login"
+        deleteCookies()
+
+    }
+    return (
+        <div >
+            <div sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                <Tooltip title="Notification">
+                    <IconButton
+                        onClick={handleClick}
+                        size="small"
+                        sx={{ ml: 2 }}
+                        aria-controls={open ? 'account-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                    >
+                        <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}><FaRegBell /></Avatar>
+                    </IconButton>
+                </Tooltip>
+            </div>
+            <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                        },
+                        '&:before': {
+                            content: '""',
+                            display: 'block',
+                            position: 'absolute',
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: 'background.paper',
+                            transform: 'translateY(-50%) rotate(45deg)',
+                            zIndex: 0,
+                        },
+                    },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+                <div className='max-h-[15rem] overflow-scroll'>
+
+                    {[...Array(5).keys()].map(x => {
+                        return (
+                            <div>
+                                <MenuItem onClick={handleClose}>
+                                    <div className='flex gap-3'>
+                                        <IoTicketOutline color="black" size={25} className='mt-3' />
+                                        <Divider orientation='vertical' />
+                                        <div className='grid-cols-1'>
+                                            <span>Toss out that granular state management</span>
+                                            <h1 className='text-right text-[#ED1C24]'> date</h1>
+                                        </div>
+
+                                    </div>
+                                </MenuItem>
+                                <div className='px-3'>
+                                    <Divider />
+                                </div>
+                            </div>
+                        )
+                    })}
+                    {[...Array(5).keys()].map(x => {
+                        return (
+                            <div>
+                                <MenuItem nuItem onClick={handleClose}>
+                                    <div className='flex gap-3'>
+                                        <GrCurrency size={25} className='mt-3' />
+                                        <Divider orientation='vertical' />
+                                        <div className='grid-cols-1'>
+                                            <span>Toss out that granular state management</span>
+                                            <div className='flex justify-end'>
+                                                <h1 className='text-[#ED1C24]'> date</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </MenuItem>
+                                <div className='px-3'>
+                                    <Divider />
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </Menu>
+        </div>
     );
 }

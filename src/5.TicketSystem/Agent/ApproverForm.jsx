@@ -24,10 +24,14 @@ import { useParams } from 'react-router-dom';
 import { severity } from '../../Static/StaticValues';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import { AppContext } from '../../App';
+import { getCookies } from '../../Helper Components/CustomCookies';
 
 const formData = new FormData()
 
 export default function ApproverForm() {
+
+    const cookie_data = getCookies()
+
     const { setSnackBarPopUp } = useContext(AppContext)
     const ErrorSchema = ApproverTicketErrorSchema
     const [tktFiles, setTKTFiles] = useState(null)
@@ -55,6 +59,7 @@ export default function ApproverForm() {
         }
     })
 
+
     const onSubmit = async (data) => {
         data["id"] = id
         console.log(data);
@@ -79,15 +84,15 @@ export default function ApproverForm() {
         return data?.data
     })
 
-    const req_type_lists = useQuery(['req-type-lists', tktType.index], async () => {
-        const data = await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tkt_type_lists?.data?.data.indexOf(getValues("tkt_type"))) })
-        return data?.data
+    const req_type_lists = useQuery(['req-type-lists', tktType], async () => {
+        const data = await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tkt_type_lists?.data?.indexOf(tktType.index)) })
+        return data
     })
+
 
     const list_of_users = useQuery(['list-of-users'], async () => {
         return await axios.get(api.ticket_system.get_all_user_list)
     })
-
 
     function deleteFiles(g) {
         let arr = tktFiles.filter(function (item) {
@@ -96,6 +101,10 @@ export default function ApproverForm() {
         setTKTFiles((tktFiles) => {
             return [...arr]
         })
+    }
+
+    function isUserOpenedHisOwnTicket() {
+        return String(cookie_data[1]) !== String(response?.data?.data?.user_info['Employee ID']) ? true : false
     }
 
 
@@ -119,10 +128,9 @@ export default function ApproverForm() {
                             <CustomTextField label="Ticket Title*" name={"tkt_title"} errors={errors} register={register} watch={watch} />
                             <CustomTextField multiline={4} label="Requirement Description*" name={"tkt_description"} errors={errors} register={register} watch={watch} />
                         </div>
-
                         <div className='grid grid-cols-[repeat(1,1fr)] gap-5'>
-                            <CustomAutoComplete disabled={true} control={control} errors={errors} name={"tkt_type"} label={"Ticket Type"} options={tkt_type_lists || []} />
-                            <CustomAutoComplete control={control} errors={errors} name={"req_type"} label={"Requirement Type"} options={req_type_lists || []} />
+                            <CustomAutoComplete disabled={true} control={control} errors={errors} name={"tkt_type"} label={"Ticket Type"} options={tkt_type_lists.data || []} />
+                            <CustomAutoComplete onFocus={() => setTKTType({ index: response?.data?.data?.form_data?.tkt_type })} control={control} errors={errors} name={"req_type"} label={"Requirement Type"} options={req_type_lists?.data?.data || []} />
                             <CustomAutoComplete control={control} errors={errors} name={"severity"} label={"Severity"} options={severity} />
                         </div>
                     </div>
@@ -145,16 +153,20 @@ export default function ApproverForm() {
                     </div>
                 </div>
                 <div className='grid grid-cols-[repeat(1,1fr)] pl-0 pr-4 pt-4 pb-0 gap-4'>
-                    <div>
-                        <CustomAutoComplete control={control} errors={errors} name={"assign_ticket_to_user"} label={"Assign Ticket To Users"} options={list_of_users?.data?.data.map(x => { return `${x[2]}-${x[0]} ${x[1]}-${x[3]}` }) || []} />
-                    </div>
-                    <Divider />
+                    {isUserOpenedHisOwnTicket() &&
+                        <>
+                            <div>
+                                <CustomAutoComplete control={control} errors={errors} name={"assign_ticket_to_user"} label={"Assign Ticket To Users"} options={list_of_users?.data?.data.map(x => { return `${x[2]}-${x[0]} ${x[1]}-${x[3]}` }) || []} />
+                            </div>
+                            <Divider />
+                        </>
+                    }
                     <div className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px] rounded-lg p-2'>
                         <span className='text-lg'>Comments</span>
                         <VerticalLinearStepper response={response} />
                     </div>
                     <Divider />
-                    <div className='grid gap-3'>
+                    {isUserOpenedHisOwnTicket() && <div className='grid gap-3'>
                         <Controller
                             render={({ field: { onChange, onBlur, value, name, ref },
                                 fieldState: { isTouched, isDirty, error },
@@ -180,10 +192,10 @@ export default function ApproverForm() {
                             control={control}
                             rules={{ required: true }}
                         />
-                    </div>
-                    <CustomTextFieldWithIcon tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />
+                    </div>}
+                    {isUserOpenedHisOwnTicket() && <CustomTextFieldWithIcon tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />}
                     <div>
-                        <strong>Files{" "}</strong>
+                        <strong>Uploaded Files{" "}</strong>
                         <div className='max-h-[8rem] overflow-y-scroll'>
                             {tktFiles?.map((g, i) => {
                                 return (
@@ -194,48 +206,15 @@ export default function ApproverForm() {
                             })}
                         </div>
                     </div>
-                    <div>
+                    {isUserOpenedHisOwnTicket() && <div>
                         <LoadingButtonWithSnack beforeName={"Submit"} afterName={"Submiting..."} />
-                    </div>
+                    </div>}
                 </div>
             </form>
         </div>
     )
 }
 
-
-const steps = [
-    {
-        user: 'user',
-        department: 'department',
-        emp_id: 'emp_id',
-        comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
-        date: '23/12/2022'
-    },
-    // {
-    //     user: 'user',
-    //     department: 'department',
-    //     emp_id: 'emp_id',
-    //     comments:
-    //         'An ad group contains one or more ads which target a shared set of keywords.',
-    //     date: '23/12/2022'
-    // },
-    // {
-    //     user: 'user',
-    //     department: 'department',
-    //     emp_id: 'emp_id',
-    //     comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
-    //     date: '23/12/2022'
-    // },
-    // {
-    //     user: 'user',
-    //     department: 'department',
-    //     emp_id: 'emp_id',
-    //     comments: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
-    //     date: '23/12/2022'
-    // },
-
-];
 function VerticalLinearStepper({ response }) {
     const [activeStep, setActiveStep] = React.useState(3);
     return (
@@ -253,9 +232,6 @@ function VerticalLinearStepper({ response }) {
                                 <div>
                                     <span className='font-[500]'>{severityArrow(step.status)}</span>
                                 </div>
-                                {/* <div>
-                                    <span className='font-[700] uppercase'>{step.date}</span>
-                                </div> */}
                             </div>
                         </StepLabel>
                         <StepContent>
@@ -272,7 +248,7 @@ function VerticalLinearStepper({ response }) {
     );
 }
 
-const CustomAutoComplete = ({ name, label, options, control, errors, disabled, onClick, ...props }) => {
+const CustomAutoComplete = ({ name, label, options, control, errors, disabled, onFocus, onClick, ...props }) => {
     return (
         <Controller
             key={name}
@@ -280,6 +256,7 @@ const CustomAutoComplete = ({ name, label, options, control, errors, disabled, o
             control={control}
             render={({ field }) => (
                 <Autocomplete
+                    onFocus={onFocus}
                     {...props}
                     disabled={disabled}
                     isOptionEqualToValue={(option, value) => option.value === value.value}
@@ -322,7 +299,7 @@ const CustomTextField = ({ name, label, errors, register, watch, multiline, disa
             helperText={errors[name] && errors[name].message} />
     )
 }
-const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline, tktFiles, setTKTFiles }) => {
+const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline, tktFiles, setTKTFiles, }) => {
     const inputFile = useRef(null)
 
     const onButtonClick = () => {
@@ -340,15 +317,18 @@ const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multili
             InputProps={{
                 endAdornment: (
                     <div>
-                        <label htmlFor="contained-button-file">
-                            <Input type='file'
-                                multiple
-                                accept="image/jpeg,image/png,application/pdf"
-                                id='file' ref={inputFile} style={{ display: 'none' }} onChange={(e) => {
-                                    handleFileChange(e)
-                                }} />
-                        </label>
-                        <ButtonComponent onClick={onButtonClick} icon={<AiOutlineUpload color='white' size={"23"} />} btnName={"Upload"} />
+                        <>
+                            <label htmlFor="contained-button-file">
+                                <Input type='file'
+                                    multiple
+
+                                    accept="image/jpeg,image/png,application/pdf"
+                                    id='file' ref={inputFile} style={{ display: 'none' }} onChange={(e) => {
+                                        handleFileChange(e)
+                                    }} />
+                            </label>
+                            <ButtonComponent onClick={onButtonClick} icon={<AiOutlineUpload color='white' size={"23"} />} btnName={"Upload"} />
+                        </>
                     </div>
                 ),
             }}

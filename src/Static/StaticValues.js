@@ -22,13 +22,16 @@ export const user_permission = [
     "module:capex",
     "module:workflowconfig",
     "module:moduleconfigurations",
-    "usermanagement:create",
-    "usermanagement:update",
+
     "usermanagement:admin",
+
     "ticketsystem:admin:oraclesystem",
     "ticketsystem:admin:itinfra",
+
     "conferencebooking:admin",
+
     "visitormanagement:admin",
+
     "capex:create",
     "capex:update",
     "capex:list:budget",
@@ -36,7 +39,7 @@ export const user_permission = [
     "capex:delete",
     "capex:admin",
     "capex:approver",
-    "capex:uploadexcel"
+    "capex:uploadexcel",
 
 ]
 
@@ -134,6 +137,7 @@ export const links = [
             { label: 'Ador Welding Official Website', link: 'https://www.adorwelding.com/' },
             { label: 'ERP', link: 'http://adrprodapp.adrprdappsn.adorprodvcn.oraclevcn.com:8052' },
             { label: 'ClickView Bi', link: 'http://10.202.65.70/qlikview/index.htm' },
+            { label: 'PLM', link: 'http://plmprodtc.ador.co.in:3000/' },
         ],
     },
     {

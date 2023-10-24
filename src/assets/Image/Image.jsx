@@ -20,6 +20,19 @@ const IMAGES = {
     vistor_manage_i: new URL('../Image/Visitor Management.png', import.meta.url).href,
 
 
+    falcon_logo: new URL('../Image/falcon_logo.png', import.meta.url).href,
+    ascent_logo: new URL('../Image/Ascent_logo.png', import.meta.url).href,
+    erp_logo: new URL('../Image/erp_logo.png', import.meta.url).href,
+    qlik_logo: new URL('../Image/Qlik_Logo.png', import.meta.url).href,
+    plm_logo: new URL('../Image/Siemens-logo 1.png', import.meta.url).href,
+    zendesk_log: new URL('../Image/zendesk_logo.png', import.meta.url).href,
+    salesforce_logo: new URL('../Image/salesforce-logo 1.png', import.meta.url).href,
+    krystal_logo: new URL('../Image/krystal.png', import.meta.url).href,
+
+    announcement: new URL('../Image/Vector.png', import.meta.url).href,
+
+    climate_bg: new URL('../Image/Climate Cards.png', import.meta.url).href,
+
 }
 
 export default IMAGES

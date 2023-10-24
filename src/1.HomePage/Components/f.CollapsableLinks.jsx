@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import { AppContext } from '../../App';
 import { links } from '../../Static/StaticValues';
-import { Tooltip } from '@mui/material';
+import TipTool from '../../Helper Components/TipTool';
+import { IconButton } from '@mui/material';
 
 export default function NavbarLinksGroup() {
     const user_perm = getCookies()[2]
@@ -22,22 +23,26 @@ export default function NavbarLinksGroup() {
                 backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
             })}
         >
-            {!collapse && <div className='p-2 w-fit'>
+            {/* {!collapse && <div className='p-2 w-fit'>
                 <ButtonComponent onClick={() => setOpen(false)} btnName={"Collapse All"} />
-            </div>}
+            </div>} */}
             {links.map((x, i) => {
                 return (
                     x.index ? user_perm.includes(x.index) &&
                         <div key={i}>
-                            <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
-                                <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
-                            </Link>
+                            <TipTool position={"right"} title={x.label} body={
+                                <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
+                                    <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
+                                </Link>
+                            } />
                         </div>
                         :
                         <div key={i}>
-                            <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
-                                <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
-                            </Link>
+                            <TipTool position={"right"} title={x.label} body={
+                                <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
+                                    <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
+                                </Link>
+                            } />
                         </div>
                 )
             })}
@@ -52,7 +57,6 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
             fontWeight: 500,
             display: 'block',
             width: `${!collapse ? "100%" : "fitContent"}`,
-            // padding: `${theme.spacing.xs} ${theme.spacing.md}`,
             padding: `10px`,
             color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
             fontSize: "0.9rem",
@@ -114,7 +118,9 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
 
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <ThemeIcon variant='light' color='#fff' size={30}>
-                                <Icon color="#555259" size="1.5rem" />
+                                <IconButton>
+                                    <Icon color="#555259" size="1.5rem" />
+                                </IconButton>
                             </ThemeIcon>
                             <Box ml="md">{label}</Box>
                         </Box>
@@ -141,17 +147,4 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
             </Collapse> : null}
         </>
     );
-}
-
-
-
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className=' no-underline rounded-full  h-fit border-[#c7c7c7] bg-[#fff] flex justify-between px-2 cursor-pointer hover:bg-[#f0f0f0] active:bg-[#eeeeee] transition-[1s]'>
-            {btnName && <span className='text-[#555259] text-[13px] no-underline'>{btnName}</span>}
-        </div>
-    )
 }

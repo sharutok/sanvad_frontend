@@ -86,7 +86,7 @@ function App() {
     user_role_id: "",
   })
 
-  const [collapse, setCollapse] = useState(false)
+  const [collapse, setCollapse] = useState(true)
   const [open, setOpen] = useState(false)
 
 

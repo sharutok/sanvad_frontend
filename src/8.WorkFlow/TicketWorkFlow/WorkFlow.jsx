@@ -62,7 +62,7 @@ const NestedFlowForSystems = ({ it_system }) => {
             id: `horizontal-${x + 1}`,
             sourcePosition: 'right',
             targetPosition: 'left',
-            data: { label: `${String(it_system?.data?.data[x - 1]?.type).toUpperCase().replaceAll("_", " ")}` },
+            data: { label: `${String(it_system?.data?.data[x - 1]?.type).toUpperCase().replaceAll("_", " ")}` + `(${it_system?.data?.data[x - 1]?.user})` },
             position: { x: 300 * x, y: 0 },
         })
         initialEdges.push({

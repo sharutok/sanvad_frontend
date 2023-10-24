@@ -28,3 +28,22 @@ tbody > tr > td {
 .component-3 {
   background-color: red;
 }
+
+.hover-element {
+  background-color: #fff; /* Initial background color */
+  cursor: pointer;
+}
+
+.hover-element:hover {
+  transition: background-color 0.1s; /* Add a smooth transition */
+  animation: colorPulse 0.8s infinite alternate; /* Apply the animation */
+}
+
+@keyframes colorPulse {
+  0% {
+    background-color: #fff; /* Start color */
+  }
+  100% {
+    background-color: #f0f0f0; /* End color */
+  }
+}

@@ -8,6 +8,7 @@ import { createStyles, Card, getStylesRef, rem, Group, Text } from '@mantine/cor
 import LoadingSpinner from '../../Helper Components/LoadingSpinner'
 import Avatar from '@mui/material/Avatar';
 import IMAGES from '../../assets/Image/Image'
+import { Divider } from '@mui/material'
 
 
 export default function YammerFrame() {
@@ -19,8 +20,13 @@ export default function YammerFrame() {
     }
     return (
         <div >
-            {/* <span className='text-md font-bold p-1 uppercase'>Shortcuts</span> */}
-            <div className=' rounded-xl max-h-[56vh] overflow-y-scroll p-4 bg-[#fff] border-[0.5rem] border-solid border-[#ffffff] '>
+            <div className='p-3 bg-[#fff] rounded-t-xl'>
+                <span className='text-[1.5rem] font-extrabold text-[#555259] '>Posts</span>
+                <div >
+                    <Divider />
+                </div>
+            </div>
+            <div className=' max-h-[80vh] overflow-y-scroll p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl '>
                 {!isLoading && <ICarousels data={data} />}
             </div>
         </div>
@@ -64,8 +70,8 @@ function ICarousels({ data }) {
     return (
         data?.data?.data?.map((x, i) => {
             return (
-                <div key={i} className='grid mb-6'>
-                    <div className='shadow-[rgba(0,0,0,0.16)_0px_3px_6px,rgba(0,0,0,0.23)_0px_3px_6px] rounded-xl p-2 grid'>
+                <div key={i} className='grid mb-6 rounded-xl'>
+                    <div className='shadow-[rgba(0,0,0,0.16)_0px_3px_6px,rgba(0,0,0,0.23)_0px_3px_6px] p-4 grid'>
                         <div className='flex gap-2 p-2'>
                             <Avatar sx={{ width: 45, height: 45, bgcolor: "#2b58a5" }}>{(x.sender_id).split(" ")[0][0]}{String((x.sender_id).split(" ")[1])[0].toUpperCase()}</Avatar>
                             <div className='grid grid-cols-1'>
@@ -75,7 +81,6 @@ function ICarousels({ data }) {
                         </div>
                         <div className='text-center my-3 mx-1' style={{ wordBreak: "break-word" }}>
                             <p className='text-lg font-extrabold'>{x.message.toUpperCase()}</p>
-
                         </div>
 
                         <div className='flex justify-center '>
@@ -83,7 +88,6 @@ function ICarousels({ data }) {
                             {x?.image[0]?.type === "file" && <video style={{ width: "400px" }} controls>
                                 <source src={x?.image[0]?.sharepoint_web_url} type="video/mp4" />
                             </video>}
-
                         </div>
                         <div className='py-2'>
                             <Group className='px-3' position="apart" >

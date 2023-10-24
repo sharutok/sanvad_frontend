@@ -4,18 +4,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import Divider from '@mui/material/Divider';
-import { Button } from '@mui/material';
 import IMAGES from '../../assets/Image/Image';
-import { FiSearch } from 'react-icons/fi';
-import { LiaBirthdayCakeSolid } from 'react-icons/lia';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { api } from '../../Helper Components/Api';
+import { FaCakeCandles } from 'react-icons/fa6';
 
 
 
@@ -27,8 +21,13 @@ export default function NewEmployee() {
 
     return (
         <div >
-            <List sx={{ width: '100%', maxHeight: 245, }} className='overflow-y-scroll rounded-2xl bg-[#fff]'>
-                {/* <span className='text-xl p-1 ml-4'>Today's Birthday</span> */}
+            <div className='p-3 bg-[#fff] rounded-t-xl'>
+                <span className='text-[1.5rem] font-extrabold text-[#555259] '>Birthdays</span>
+                <div >
+                    <Divider />
+                </div>
+            </div>
+            <List sx={{ width: '100%', maxHeight: 200, }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
                 {tkt_type_lists?.data?.data?.data?.map((x, i) => {
                     return (
                         <div key={i} >
@@ -37,10 +36,9 @@ export default function NewEmployee() {
                                     {x.gender === "F" ? <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._girl_}></Avatar>
                                         : <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._boy_}></Avatar>}
                                 </ListItemAvatar>
-                                <ListItemText primary={<span className='text-[16px]'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department}</span>} />
+                                <ListItemText primary={<span className='text-[13px] font-bold'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department}</span>} />
                                 <div>
-                                    {/* <ButtonComponent icon={<LiaBirthdayCakeSolid size={23} />} btnName={"Send Birthday Wishes"} /> */}
-                                    <ButtonComponent icon={<img className='' width={30} src={IMAGES.confetti_gif} alt="" />} btnName={"Send Birthday Wishes"} />
+                                    <ButtonComponent icon={<FaCakeCandles size={15} color='#ED1C24' />} btnName={"Send wishes"} />
                                 </div>
                             </ListItem>
                             <Divider variant="inset" component="li" />
@@ -55,11 +53,11 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         <div
             onClick={onClick}
             {...props}
-            className=' no-underline rounded-lg py-2 h-fit border-[#c7c7c7] bg-[#DFE0E5] flex justify-between px-6 cursor-pointer hover:bg-[#e7e7e7] active:bg-[#000000] transition-[1s]'>
-            {icon && <div className='no-underline'>
+            className=' no-underline rounded-xl py-1 h-fit border-[3px] border-solid border-[#ED1C24] bg-[#ffffff] flex justify-between px-2 cursor-pointer hover:bg-[#e7e7e7] active:bg-[#eeeeee] transition-[1s]'>
+            {icon && <div className='no-underline mt-[0.4rem]'>
                 {icon}
             </div>}
-            {btnName && <span className='text-[#383838] font-bold text-[14px] no-underline ml-2 mt-1 pr-1'>{btnName}</span>}
+            {btnName && <span className='text-[#ED1C24] font-bold text-[14px] no-underline ml-2 mt-1 pr-1'>{btnName}</span>}
         </div>
     )
 }
