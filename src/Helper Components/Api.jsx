@@ -36,7 +36,8 @@ export const api = {
     },
     visitor_management: {
         create: `${link}/visitor-manage/create/`,
-        get_data: `${link}/visitor-manage/all`
+        get_data: `${link}/visitor-manage/all`,
+        by_id: `${link}/visitor-manage/`
     },
     user: {
         log_check: `${link}/user-manage/login/check/`,
@@ -45,7 +46,8 @@ export const api = {
     },
     utils: {
         download_excel: `${link}/utils/download/excel/`,
-        weather_temp: `${link}/utils/get/weather/temp/`
+        weather_temp: `${link}/utils/get/weather/temp/`,
+        serve_files: `${link}/utils/serve/file/`
     },
     wf: {
         it_system_ticket_wf: `${link}/wf/ticket/systems/`,

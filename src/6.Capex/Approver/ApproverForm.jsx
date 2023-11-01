@@ -11,7 +11,7 @@ import { useForm, Controller, get } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import '../../../Style/UserManagement.css'
 import BackArrow from '../../Helper Components/SideComponent'
-import { CapexErrorSchema } from '../../Form Error Schema/CapexErrorSchema'
+import { ApproverCapexErrorSchema } from '../../Form Error Schema/CapexErrorSchema'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import Table from '../../Helper Components/Table';
@@ -25,6 +25,8 @@ import PreFilledSubForm from '../PreFilledSubForm';
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import { AppContext } from '../../App';
+import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import { getCookies } from '../../Helper Components/CustomCookies';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -33,49 +35,53 @@ const Input = styled('input')({
 });
 
 export default function Form() {
-    const id = useParams()
-    const { budget, setBudget } = useContext(AppContext)
-    const ErrorSchema = CapexErrorSchema
+    const { budget_id, capex_id } = useParams()
+    const { budget, setBudget, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
+    const ErrorSchema = ApproverCapexErrorSchema
     const inputFile = useRef(null)
     const [preFilled, setPreFilled] = useState(true)
     const [uploadFIle, setUploadFile] = useState([])
     const [capexDetail, setCapexDetail] = useState([])
-    const { capex_id } = useParams()
-    const { data, isLoading } = useQuery(['capex-data'], async () => {
-        return await axios.get(`${api.capex.capex_by_id}/${capex_id}/`)
-    })
 
-    useEffect(() => {
-        if (!isLoading) {
-            setCapexDetail(data?.data?.data);
-        }
-    }, [!isLoading])
+    const response = useQuery(['capex-data'], async () => {
+        const data = await axios.get(`${api.capex.capex_by_id}/${capex_id}/`)
+        setCapexDetail(data?.data?.data);
+        return data
+    }, { staleTime: Infinity })
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
-        defaultValues: {}
+        defaultValues: {
+            capex_status: "0",
+            comments: "ok"
+        }
     })
-
     const onSubmit = async (submit) => {
-        const data = ({
-            ...submit,
-            capex_id: id,
-            requisition_date: moment(submit.requisition_date.$d).format("YYYY-MM-DD"),
-            site_delivery_date: moment(submit.site_delivery_date.$d).format("YYYY-MM-DD"),
-            installation_date: moment(submit.installation_date.$d).format("YYYY-MM-DD"),
-        });
-        console.log({ upload_file: uploadFIle });
-        // const res = await axios.post(api.capex.create, data)
-        // console.log(res.data);
+        console.log(submit);
+        const data = {
+            // ...submit,
+            budget_id, capex_id,
+            approver_status: getValues('capex_status'),
+            approver_comment: getValues('comments'),
+            user_no: getCookies()[0]
+            // requisition_date: moment(submit.requisition_date.$d).format("YYYY-MM-DD"),
+            // site_delivery_date: moment(submit.site_delivery_date.$d).format("YYYY-MM-DD"),
+            // installation_date: moment(submit.installation_date.$d).format("YYYY-MM-DD"),
+        };
+
+        const res = await axios.put(`${api.capex.capex_by_id}/${capex_id}/`, data)
+        if (res.data.status_code === 200) {
+            setBtnSaving(true)
+            setSnackBarPopUp({ state: true, message: "Submitted" })
+            setTimeout(() => {
+                setSnackBarPopUp({ state: false, message: "" })
+                window.location.href = "/capex/list"
+            }, 2000)
+        }
     }
 
-    const onButtonClick = () => {
-        inputFile.current.click();
-    };
-
-
-    if (isLoading) {
+    if (response?.isLoading) {
         return (
             <LoadingSpinner />
         )
@@ -86,7 +92,7 @@ export default function Form() {
             <BackArrow location={"/capex/list"} title={"Capex Form - Approver"} />
             <div className='p-10 grid grid-cols-[2fr_1fr] gap-20'>
                 <div className='h-fit grid gap-5  '>
-                    {!isLoading ? [{ ...capexDetail, ...budget }].map((c, i) => {
+                    {!response.isLoading ? [{ ...response?.data?.data?.data, ...budget }].map((c, i) => {
                         return (
                             <div key={i} className=' grid grid-cols-[repeat(2,1fr)] gap-5 '>
                                 <CustomValueTextField size={true} label={"Nature Of Requirement"} value={c.nature_of_requirement} />
@@ -119,15 +125,50 @@ export default function Form() {
                         <MoreInformation details={[{ ...capexDetail, ...budget }]} />
                     </div>}
                 </div>
-                <div className='grid grid-cols-[repeat(1,1fr)] gap-5 h-fit '>
-                    <VerticalLinearStepper />
-                    <Divider />
-                    <ApprovalSection control={control} errors={errors} register={register} watch={watch} handleSubmit={handleSubmit} onSubmit={onSubmit} />
-                    <CustomTextFieldWithIcon multiline={4} label={"Comments*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
-                    <div className='grid grid-cols-[repeat(3,1fr)] gap-3'>
-                        <Button variant='contained' sx={{ background: "#9dbf9e", }}>Submit</Button>
+                <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-[repeat(1,1fr)] gap-5 h-fit '>
+                    <div className='grid grid-cols-[repeat(1,1fr)] pl-0 pr-4 pt-4 pb-0 gap-4'>
+                        <div className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px] rounded-lg p-2'>
+                            <span className='text-lg'>Comment History</span>
+                            <VerticalLinearStepper response={response.data?.data?.data?.approval_flow} />
+                        </div>
+                        <Divider />
+                        {<div className='grid gap-3'>
+                            <Controller
+                                render={({ field: { onChange, onBlur, value, name, ref },
+                                    fieldState: { isTouched, isDirty, error },
+                                }) => (
+                                    <FormControl error={!!errors.capex_status}>
+                                        <FormLabel className='mt-[-.6rem]' id="demo-row-radio-buttons-group-label">Status</FormLabel>
+                                        <RadioGroup
+                                            className='mt-[-.1rem]'
+                                            {...register('capex_status')}
+                                            row
+                                            aria-labelledby="demo-row-radio-buttons-group-label"
+                                            name="row-radio-buttons-group"
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}>
+                                            <FormControlLabel value="0" control={<Radio size='small' />} label="Approve" />
+                                            <FormControlLabel value="1" control={<Radio size='small' />} label="Reject" />
+                                            <FormControlLabel value="2" control={<Radio size='small' />} label="Close" />
+                                            <FormControlLabel value="2" control={<Radio size='small' />} label="Ask for justifcation" />
+                                        </RadioGroup>
+                                        <FormHelperText>{errors.capex_status && errors.capex_status.message}</FormHelperText>
+                                    </FormControl>
+                                )}
+                                name="capex_status"
+                                control={control}
+                                rules={{ required: true }}
+                            />
+                        </div>}
+                        {<CustomTextFieldWithIcon multiline={4} label={"Comments*"} name={"comments"} errors={errors} register={register} watch={watch} />}
+                        <div>
+                            <LoadingButtonWithSnack beforeName={"Submit"} afterName={"Submiting..."} />
+                        </div>
                     </div>
-                </div>
+                    {/* <ApprovalSection control={control} errors={errors} register={register} name={"capex_status"} watch={watch} />
+                    <CustomTextFieldWithIcon multiline={4} label={"Comments*"} name={"comments"} errors={errors} register={register} watch={watch} /> */}
+                </form>
             </div>
         </div>
     )
@@ -201,40 +242,6 @@ const AssetListing = ({ asset_listings }) => {
     )
 }
 
-
-const ApprovalSection = ({ control, errors, register, watch, handleSubmit, onSubmit }) => {
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-                render={({ field: { onChange, onBlur, value, name, ref },
-                    fieldState: { isTouched, isDirty, error },
-                }) => (
-                    <FormControl error={!!errors.gender}>
-                        <FormLabel className='mt-[-.6rem]' id="demo-row-radio-buttons-group-label">Status</FormLabel>
-                        <RadioGroup
-                            className='mt-[-.1rem]'
-                            {...register('gender')}
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            value={value}>
-                            <FormControlLabel value="0" control={<Radio size='small' />} label="Ask Clarification" />
-                            <FormControlLabel value="1" control={<Radio size='small' />} label="Reject" />
-                            <FormControlLabel value="2" control={<Radio size='small' />} label="Approve" />
-                        </RadioGroup>
-                        <FormHelperText>{errors.gender && errors.gender.message}</FormHelperText>
-                    </FormControl>
-                )}
-                name="gender"
-                control={control}
-                rules={{ required: true }}
-            />
-        </form>
-    )
-}
-
 const CustomValueTextField = ({ label, value, multiline, size, className, ...props }) => {
     return (
         <TextField multiline={multiline || false} rows={2} className={className} {...props} value={String(value)} label={label} size={"small"} />
@@ -261,61 +268,31 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     )
 }
 
-const steps = [
-    {
-        user: 'Avinash Attarde',
-        department: 'IT',
-        emp_id: '14112',
-        comments: `Please Approve`,
-        date: '23/12/2022'
-    },
-    {
-        user: 'LP Bansod',
-        department: 'IT',
-        emp_id: '00547',
-        comments:
-            'Approved',
-        date: '24/12/2022'
-    },
-    // {
-    //     user: 'user',
-    //     department: 'IT',
-    //     emp_id: 'emp_id',
-    //     comments: `Approved`,
-    //     date: '26/12/2022'
-    // },
-    // {
-    //     user: 'user',
-    //     department: 'IT',
-    //     emp_id: 'emp_id',
-    //     comments: `Approved`,
-    //     date: '27/12/2022'
-    // },
 
-];
 
-function VerticalLinearStepper() {
-    const [activeStep, setActiveStep] = React.useState(3);
-
+function VerticalLinearStepper({ response }) {
     return (
-        <Box className="max-h-[40vh] overflow-y-scroll" >
+        <Box className=" max-h-[30vh] overflow-y-scroll" >
             <Stepper orientation="vertical">
-                {steps.map((step, index) => (
+                {response?.map((step, index) => (
                     <Step active expanded key={index}>
                         <StepLabel >
-                            <div className='flex justify-between px-2'>
+                            <div className='flex justify-between'>
                                 <div>
-                                    <span className='font-[700] uppercase'>{step.user} | </span>
-                                    <span className='font-[700] uppercase'>{step.department} | </span>
-                                    <span className='font-[700] uppercase'>{step.emp_id}</span>
+                                    <span className='font-[500] uppercase'>{step.user_name} | </span>
+                                    <span className='font-[500] uppercase'>{step.department} | </span>
+                                    <span className='font-[500] uppercase'>{step.emp_id}</span>
                                 </div>
                                 <div>
-                                    <span className='font-[700] uppercase'>{step.date}</span>
+                                    <span className='font-[500]'>{severityArrow(step.status)}</span>
                                 </div>
                             </div>
                         </StepLabel>
                         <StepContent>
                             <Typography>{step.comments}</Typography>
+                            <div className='flex justify-end'>
+                                <span className='font-[500] uppercase'>{step.time}</span>
+                            </div>
                         </StepContent>
                     </Step >
                 ))
@@ -325,15 +302,24 @@ function VerticalLinearStepper() {
     );
 }
 
+function severityArrow(val) {
+    if (val === "0") {
+        return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-green-100'><p className='mt-[0.1rem]'>Approved</p></div>)
+    }
+    if (val === "1") {
+        return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-red-100'><p className='mt-[0.1rem]'>Rejected</p></div>)
+    }
+    if (val === "2") {
+        return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-blue-100'><p className='mt-[0.1rem]'>Closed</p></div>)
+    }
+    else {
+        return "-"
+    }
+}
+
 const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline }) => {
     return (
         <TextField
-            // InputProps={{
-            //     endAdornment: (
-            //         <ButtonComponent icon={<AiOutlineUpload color='white' size={"23"} />} btnName={"Upload"} />
-            //         // <Button variant='contained' startIcon={<SearchIcon />}>Upload </Button>
-            //     ),
-            // }}
             multiline={multiline && multiline}
             rows={multiline}
             key={label}

@@ -226,15 +226,8 @@ export default function UpdateUserForm() {
           <CustomAutoComplete control={control} errors={errors} name={"user_role"} label={"User Roles"} options={["0", "1", "3", "4"]} />
         </div>
         <div className='w-fit'>
-          {/* <Button fullWidth color="primary" variant="contained" type="submit">Update User</Button> */}
           <LoadingButtonWithSnack afterName={"Updating"} beforeName={"Update User"} />
         </div>
-
-        {/* {usermanagement.btn_type == "0" ?
-          <div className='w-fit'>
-            <Button fullWidth color="primary" variant="contained" type="submit">Save & Send Credentials to User</Button>
-          </div> :
-        } */}
       </div>
     </form>
   )
@@ -278,7 +271,7 @@ const CustomTextField = ({ name, label, errors, register, watch }) => {
   return (
     <TextField
       key={label}
-      className="textfield"
+      className="w-[20rem]"
       value={watch(name)}
       label={label}
       size={"small"}

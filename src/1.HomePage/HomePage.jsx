@@ -12,21 +12,23 @@ import Feedback from './Components/n.feedback'
 
 export default function HomePage() {
     return (
-        <div className='bg-[#f0f0f0] h-100'>
+        <div className='bg-[#f0f0f0] h-full p-0 m-0'>
             <div className='grid mr-5 '>
-                <div className='flex gap-5 grid-cols-[repeat(2,1fr)] ' >
+                <div className='flex gap-5 grid-cols-[repeat(2,1fr)]' >
                     <div className='bg-[#fff]'>
                         <SideBar />
                     </div>
-                    <div className='grid gap-5 grid-cols-[1fr_1fr] p-1 mt-7'>
-                        <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1'>
+                    <div className='grid gap-5 grid-cols-[45rem_2fr] p-1 mt-5 '>
+                        <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1 grid-rows-[repeat(1,1fr)]  '>
                             <YammerFrame />
                         </div>
                         <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1  h-fit'>
                             <ShortCutBtn />
-                            <div className='grid gap-5 grid-cols-[repeat(2,1fr)] p-1 '>
-                                <QuickLinks />
-                                <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1 '>
+                            <div className='grid gap-5 grid-cols-[repeat(2,1fr)]  p-1 h-fit '>
+                                <div className='grid grid-cols-[repeat(1,1fr)] '>
+                                    <QuickLinks />
+                                </div>
+                                <div className='grid  gap-5  '>
                                     <WetherAndTemp />
                                     <NewEmployee />
                                     <Announsments />

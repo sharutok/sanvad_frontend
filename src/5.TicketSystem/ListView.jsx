@@ -16,14 +16,16 @@ import { AppContext } from '../App'
 import BarSnack from '../Helper Components/BarSnack'
 import { Link } from 'react-router-dom'
 import LoadingSpinner from '../Helper Components/LoadingSpinner'
+import { getCookies } from '../Helper Components/CustomCookies'
 
 export default function TicketSystemListView() {
     const { setSnackBarPopUp, count, setCount, page, setPage } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
+    const emp_no = getCookies()[0]
     const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Severity", "Ticket Date", "Status", "Current At"]
 
     const ticket_listing = useQuery(['ticket-listing', page, _search], async () => {
-        const data = await axios.get(`${api.ticket_system.get_data}/?page=${page}&search=${_search}`)
+        const data = await axios.get(`${api.ticket_system.get_data}/?page=${page}&search=${_search}&woosee=${emp_no}`)
         return data
     })
 
@@ -60,8 +62,6 @@ export default function TicketSystemListView() {
                     <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
                     <div className='flex gap-4 mt-3 mr-10'>
                         <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                        {/* <ButtonComponent icon={<FiSearch color='white' size={"23"} />} />
-                        <ButtonComponent icon={<MdClear color='white' size={"23"} />} /> */}
                         <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />
                         <ButtonComponent icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                     </div>
@@ -80,8 +80,8 @@ export default function TicketSystemListView() {
                                         <td>{g.req_type}</td>
                                         <td>{g.requester_emp_no}</td>
                                         <td className='align-middle'>{severityArrow(g.severity)}</td>
-                                        <td>{g.created_at}</td>
-                                        <td>{g.tkt_status}</td>
+                                        <td >{g.created_at}</td>
+                                        <td className='align-middle'>{status(g.tkt_status)}</td>
                                         <td>{g.tkt_current_at}</td>
                                         <td className='delete'>
                                             <TipTool body={< >
@@ -115,4 +115,22 @@ const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
             {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
         </div>
     )
+}
+
+function status(val) {
+    if (val === "INPROGRESS") {
+        return (<div className=' font-extrabold  text-xs  px-2 py-1 rounded-xl text-yellow-500'><p className='mt-[0.1rem]'>{val}</p></div>)
+    }
+    if (val === "APPROVED") {
+        return (<div className=' font-extrabold  text-xs  px-2 py-1 rounded-xl text-green-500'><p className='mt-[0.1rem]'>{val}</p></div>)
+    }
+    if (val === "CLOSED") {
+        return (<div className=' font-extrabold  text-xs  px-2 py-1 rounded-xl text-blue-500'><p className='mt-[0.1rem]'>{val}</p></div>)
+    }
+    if (val === "REJECTED") {
+        return (<div className=' font-extrabold  text-xs  px-2 py-1 rounded-xl text-red-500'><p className='mt-[0.1rem]'>{val}</p></div>)
+    }
+    else {
+        return "-"
+    }
 }

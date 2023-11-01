@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { AppContext } from '../App';
+import { BsCheckCircleFill } from 'react-icons/bs';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -26,13 +27,14 @@ export default function BarSnack() {
     return (
         <Stack sx={{ width: '10rem' }} >
             <Snackbar open={snackBarPopUp.state}
+                elevation={false}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'center',
                 }}
                 autoHideDuration={2000} onClose={handleClose}>
                 <div className='mt-10'>
-                    <Alert onClose={handleClose} severity="success" sx={{ background: "#84cc16", width: '100%', borderLeft: "10px solid #4d7c0f" }}>
+                    <Alert elevation={false} icon={<BsCheckCircleFill />} onClose={handleClose} severity="success" sx={{ background: "#DCF4E6", color: "#00A959", borderRadius: "7px" }}>
                         {snackBarPopUp.message}
                     </Alert>
                 </div>

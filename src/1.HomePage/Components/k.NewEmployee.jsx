@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { api } from '../../Helper Components/Api';
 import { FaCakeCandles } from 'react-icons/fa6';
+import { Stack, } from '@mui/material';
 
 
 
@@ -17,33 +18,42 @@ export default function NewEmployee() {
 
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(api.user.birthday_list)
-    })
+    }, { staleTime: "300000" })
+
+
 
     return (
-        <div >
-            <div className='p-3 bg-[#fff] rounded-t-xl'>
-                <span className='text-[1.5rem] font-extrabold text-[#555259] '>Birthdays</span>
+        <div className=''>
+            <div className='p-3 bg-[#fff] rounded-t-xl '>
+                <span className='text-[1.2rem] font-extrabold text-[#555259] '>Birthdays</span>
                 <div >
                     <Divider />
                 </div>
             </div>
-            <List sx={{ width: '100%', maxHeight: 200, }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
-                {tkt_type_lists?.data?.data?.data?.map((x, i) => {
-                    return (
-                        <div key={i} >
-                            <ListItem className='flex justify-between'>
-                                <ListItemAvatar>
-                                    {x.gender === "F" ? <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._girl_}></Avatar>
-                                        : <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._boy_}></Avatar>}
-                                </ListItemAvatar>
-                                <ListItemText primary={<span className='text-[13px] font-bold'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department}</span>} />
-                                <div>
-                                    <ButtonComponent icon={<FaCakeCandles size={15} color='#ED1C24' />} btnName={"Send wishes"} />
-                                </div>
-                            </ListItem>
-                            <Divider variant="inset" component="li" />
-                        </div>)
-                })}
+            <List sx={{ width: '100%', height: "12rem" }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
+                {tkt_type_lists?.data?.data?.data.length !== 0 ? <div>
+                    {tkt_type_lists?.data?.data?.data?.map((x, i) => {
+                        return (
+                            <div key={i} >
+                                <ListItem className='flex justify-between'>
+                                    <ListItemAvatar>
+                                        {x.gender === "F" ? <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._girl_}></Avatar>
+                                            : <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._boy_}></Avatar>}
+                                    </ListItemAvatar>
+                                    <ListItemText primary={<span className='text-[13px] font-bold text-[#555259]'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department}</span>} />
+                                    <div>
+                                        <ButtonComponent icon={<FaCakeCandles size={15} color='#ED1C24' />} btnName={"Send wishes"} />
+                                    </div>
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+                            </div>)
+                    })}
+                </div> : <div >
+                    <Stack spacing={1} alignItems={"center"} >
+                        <img src={IMAGES.no_birthday} alt="" width={200} />
+                        <span className='font-bold'>NO BIRTHDAYS</span>
+                    </Stack>
+                </div>}
             </List>
         </div>
     );

@@ -1,19 +1,19 @@
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
+import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Stack } from '@mui/material'
 import React from 'react'
 import IMAGES from '../../assets/Image/Image'
 import moment from 'moment';
 
 export default function Announsments() {
     return (
-        <div >
-            <div className='p-3 bg-[#fff] rounded-t-xl'>
-                <span className='text-[1.5rem] font-extrabold text-[#555259] '>Announcements</span>
+        <div className=' '>
+            <div className='p-3 bg-[#fff] rounded-t-xl  '>
+                <span className='text-[1.2rem] font-extrabold text-[#555259] '>Announcements</span>
                 <div >
                     <Divider />
                 </div>
             </div>
-            <List sx={{ width: '100%', maxHeight: 150, }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
-                {[...Array(3).keys()].map((x, i) => {
+            <List sx={{ width: '100%', maxHeight: "10rem" }} className=' overflow-y-scroll rounded-b-xl bg-[#fff] '>
+                {false ? [...Array(3).keys()].map((x, i) => {
                     return (
                         <div key={i} >
                             <ListItem className='flex justify-between'>
@@ -27,7 +27,12 @@ export default function Announsments() {
                             </ListItem>
                             <Divider variant="inset" component="li" />
                         </div>)
-                })}
+                }) : <div >
+                    <Stack spacing={1} alignItems={"center"} >
+                        <img src={IMAGES.no_announcement} alt="" width={150} />
+                        <span className='font-bold'>NO ANNOUNCEMENT</span>
+                    </Stack>
+                </div>}
             </List>
         </div>
     );

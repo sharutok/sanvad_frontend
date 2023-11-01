@@ -13,7 +13,6 @@ export default function PreFilledSubForm() {
     const { budget_id } = useParams()
     const { data, isLoading, isError } = useQuery(['budget-data'], async () => { return await axios.get(`${api.capex.budget_by_id}/${budget_id}/`) });
 
-    console.log(budget_id);
 
     useEffect(() => {
         setBudget(data?.data?.data)
@@ -42,10 +41,8 @@ export default function PreFilledSubForm() {
                                     <CustomTextField label={"Line No"} value={c.line_no} />
                                     <CustomTextField label={"Purpose Description"} value={c.purpose_description} />
                                     <CustomTextField label={"Category"} value={c.category} />
-                                    {/* <CustomTextField label={"Dept"} value={c.dept} /> */}
                                     <CustomTextField label={"Capex Class"} value={c.capex_class} />
                                     <CustomTextField label={"Capex Group"} value={c.capex_group} />
-                                    {/* <CustomTextField label={"Plant"} value={c.plant} /> */}
                                     <CustomTextField label={"Details"} value={c.details} />
                                     <CustomTextField label={"Final Budget (₹ in Lakhs)"} value={c.final_budget} />
                                     <CustomTextField label={"Quantity"} value={c.qty} />
@@ -67,6 +64,6 @@ export default function PreFilledSubForm() {
 }
 const CustomTextField = ({ label, value, multiline }) => {
     return (
-        <TextField multiline={multiline && true} rows={2} className="textfield" value={value} label={label} size={"small"} />
+        <TextField multiline={multiline && true} rows={2} className="w-[20rem]" value={value} label={label} size={"small"} />
     )
 }

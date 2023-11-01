@@ -27,23 +27,23 @@ function QuickLinks() {
     }
 
     return (
-        <div className='bg-[#fff] rounded-xl h-fit'>
+        <div className='bg-[#fff] rounded-xl '>
             <div className='p-3'>
-                <span className='text-[1.5rem] font-extrabold text-[#555259]'>Quick Links</span>
+                <span className='text-[1.2rem] font-extrabold text-[#555259]'>Quick Links</span>
                 <div className='px-2'>
                     <Divider sx={{ backgroundColor: "#D1D3D9" }} />
                 </div>
             </div>
-            <div className='grid grid-cols-[repeat(3,1fr)] grid-rows-4 p-2'>
+            <div className='grid grid-cols-[repeat(3,1fr)] grid-rows-[repeat(4,14.5vh)] mt-4 p-2'>
                 {quick_link.map((x, i) => {
                     return (
                         <div onClick={() => handleNav(x.link)} key={i} className='hover-element active:bg-[#e6e6e6] cursor-pointer border border-solid border-[#e3e5ec] flex justify-center pop py-3 ' >
                             <div className=' grid grid-cols-1 w-fit h-fit gap-3 py-2'>
                                 <div className='flex justify-center'>
-                                    {x.img_name === "ador_star_logo" ? <img src={x.img} width="50" /> : (x.img_name === "ador_logo" ? <img src={x.img} width="100" className='mt-4' /> : <img src={x.img} width="70" />)}
+                                    {x.img_name === "ador_star_logo" ? <img src={x.img} width="55" /> : (x.img_name === "ador_logo" ? <img src={x.img} width="100" className='mt-4' /> : <img src={x.img} width="70" />)}
                                 </div>
                                 <div className='flex justify-center'>
-                                    <span className='text-center text-xs font-[600]' style={{ wordBreak: "break-word" }}>{x.label}</span>
+                                    <span className='text-center text-xs font-[600] px-2' style={{ wordBreak: "break-word" }}>{x.label}</span>
                                 </div>
                             </div>
                         </div>

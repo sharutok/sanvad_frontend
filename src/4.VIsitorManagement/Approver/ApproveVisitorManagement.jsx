@@ -22,6 +22,9 @@ import { saveAs } from 'file-saver';
 import TipTool from '../../Helper Components/TipTool';
 import { AiOutlineCamera } from 'react-icons/ai';
 import CustomPrint from '../../Helper Components/Printer';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { api } from '../../Helper Components/Api';
 const ErrorSchema = VisitorMangErrorSchema
 
 
@@ -33,7 +36,7 @@ const videoConstraints = {
 
 
 export default function ApproveVisitorManagement() {
-    const { setDialogStatus, dialogStatus } = useContext(AppContext)
+    const { setDialogStatus, dialogStatus, setVisitors } = useContext(AppContext)
     const { id } = useParams()
     const webcamRef = useRef(null);
 
@@ -41,7 +44,29 @@ export default function ApproveVisitorManagement() {
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
+        defaultValues: {
+            start_date_time: "",
+            end_date_time: "",
+            v_company: "",
+            reason_for_visit: "",
+            more_info: "",
+            veh_no: "",
+            ppe: "", name: "",
+            department: ""
+        }
     })
+
+    const data = useQuery(["visitor-data"], async () => {
+        const response = await axios.get(api.visitor_management.by_id + id)
+        Object.entries(response?.data?.data[0]).map(x => {
+            setValue(x[0], x[1])
+        })
+        setVisitors(response?.data?.data)
+        return data
+    },
+        { staleTime: 30000 }
+    )
+
 
     const onSubmit = (data) => {
         console.log(data);
@@ -67,22 +92,21 @@ export default function ApproveVisitorManagement() {
         saveAs(blob, `${image_name}.jpg`);
     };
 
-
     return (
-        <div className='flex justify-around'>
+        <div className='flex justify-around mt-10'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <BackArrow title={`Visitor's Management - #${id.padStart(5, "0")}`} />
+                    <BackArrow location={"/vistors/management/list"} title={`Visitor Details`} />
                     <div className='grid gap-5 p-10'>
                         <div className='flex flex-wrap gap-5'>
-                            <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
-                            <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField>
+                            <CustomTextField errors={errors} register={register} watch={watch} name="name" label="Department*" />
+                            <CustomTextField errors={errors} register={register} watch={watch} name="department" label="Visitor's Vehicle No*" />
                             <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
                             <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                             <div className='grid grid-cols-[repeat(2,auto)] gap-5'>
                                 <div className='grid grid-cols-[repeat(2,1fr)] gap-5'>
                                     <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assest*" />
+                                    {/* <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assest*" /> */}
                                     <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
                                     <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
                                 </div>
@@ -114,7 +138,7 @@ export default function ApproveVisitorManagement() {
                             />
                         </div>
                         <div className='flex justify-start'>
-                            <VisitorListing captureImage={captureImage} />
+                            <VisitorListing captureImage={captureImage} visitors={getValues("visitors") && JSON.parse(getValues("visitors"))} />
                         </div>
                     </div>
                     <div className='vm-button ml-5'>
@@ -194,7 +218,7 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
     )
 }
 
-const VisitorListing = ({ captureImage }) => {
+const VisitorListing = ({ captureImage, visitors }) => {
     const thead = [
         "Visitor's Name",
         "Visitor's Mob.No",
@@ -202,27 +226,28 @@ const VisitorListing = ({ captureImage }) => {
         "Assets"
     ]
     return (<>
-        <Table thead={thead} tbody={
-            ["11", "22", "33"].map((g, i) => {
-                return (
-                    <tr className='table-wrapper' key={i}>
-                        <td>{"Visitor's Name"}</td>
-                        <td>{"Visitor's Mob.No"}</td>
-                        <td>{"Visitor's Department"}</td>
-                        <td>{"Assets"}</td>
-                        <td onClick={() => { captureImage(i) }} className='delete'>
-                            {/* <td onClick={() => { captureImage(g.id) }} className='delete'> */}
-                            <TipTool body={
-                                <IconButton>
-                                    <AiOutlineCamera color='#555259' size={22} />
-                                </IconButton>
-                            } title={"Click Photo"} />
-                        </td>
+        <Table thead={thead}
+            tbody={
+                visitors?.map((g, i) => {
+                    return (
+                        <tr className='table-wrapper' key={i}>
+                            <td>{g.v_name}</td>
+                            <td>{g.v_mobile_no}</td>
+                            <td>{g.v_desig}</td>
+                            <td>{g.v_asset}</td>
+                            <td onClick={() => { captureImage(i) }} className='delete'>
+                                <TipTool body={
+                                    <IconButton>
+                                        <AiOutlineCamera color='#555259' size={22} />
+                                    </IconButton>
+                                } title={"Click Photo"} />
+                            </td>
 
-                    </tr>
-                )
-            })
-        } />
+                        </tr>
+                    )
+                })
+            }
+        />
     </>)
 }
 

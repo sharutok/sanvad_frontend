@@ -18,3 +18,10 @@ export const CapexErrorSchema = yup.object().shape({
     comment7: yup.string().required('Required Field'),
 
 })
+
+export const ApproverCapexErrorSchema = yup.object().shape({
+    capex_status: yup.string().required('Required Field'),
+    comments: yup.string().required('Required Field'),
+
+})
+

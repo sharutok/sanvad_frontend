@@ -46,16 +46,21 @@ function LoginBody() {
 
     async function onSubmit(e) {
         e.preventDefault()
-        userLogin["prefix"] = prefix
-        const response = await axios.post(api.user.log_check, userLogin)
-        console.log(response.data);
-        if (response.data.status === 200) {
-            window.location.href = "/home"
-            setCookies([1, "15681", ['module:capex', 'module:usermanagement', "module:workflowconfig",
-                "module:moduleconfigurations"]])
-            setError("")
-        } else {
-            setError("Password or Email is Incorrect")
+        try {
+            userLogin["prefix"] = prefix
+            const response = await axios.post(api.user.log_check, userLogin)
+            if (response?.data?.status === 200) {
+                const emp_no = response?.data?.emp_no
+                const module_permission = response?.data?.module_permission
+                const initials = response?.data?.initials
+                setCookies([emp_no, module_permission, initials])
+                setError("")
+                window.location.href = "/home"
+            } else {
+                setError("Password or Email is Incorrect")
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 

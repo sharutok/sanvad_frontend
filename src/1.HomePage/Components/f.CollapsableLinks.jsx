@@ -11,7 +11,7 @@ import TipTool from '../../Helper Components/TipTool';
 import { IconButton } from '@mui/material';
 
 export default function NavbarLinksGroup() {
-    const user_perm = getCookies()[2]
+    const user_perm = getCookies()[1]
     const { collapse, setCollapse, setOpen } = useContext(AppContext)
 
     return (

@@ -17,12 +17,14 @@ import { AppContext } from '../../App';
 import BarSnack from '../../Helper Components/BarSnack';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import IMAGES from '../../assets/Image/Image';
+import { getCookies } from '../../Helper Components/CustomCookies';
 const Input = styled('input')({
     display: 'none',
 });
 
 function RequesterForm() {
     const { snackBarPopUp, setSnackBarPopUp, snackfn } = useContext(AppContext)
+    const emp_id = getCookies()[0]
     const [tktFiles, setTKTFiles] = useState([])
     const [tktType, setTKTType] = useState({
         value: "",
@@ -45,10 +47,11 @@ function RequesterForm() {
     const onSubmit = async (data) => {
         try {
             const formData = new FormData();
+
             tktFiles.forEach((file, index) => {
                 formData.append(`file${index + 1}`, file);
             });
-            formData.append('requester_emp_no', "15681")
+            formData.append('requester_emp_no', emp_id)
             formData.append('file_count', tktFiles.length)
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
@@ -76,11 +79,11 @@ function RequesterForm() {
 
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(`${api.dynamic_values.tkt_type}`)
-    })
+    }, { staleTime: "300000" })
 
     const req_type_lists = useQuery(['req-type-lists', tktType.index], async () => {
         return await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tktType.index) })
-    })
+    }, { staleTime: "300000" })
 
 
     function tkt_type_op(e) {

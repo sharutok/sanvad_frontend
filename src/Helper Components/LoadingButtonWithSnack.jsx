@@ -11,6 +11,7 @@ function LoadingButtonWithSnack({ afterName, beforeName }) {
             <div
                 className='mt-5' >
                 <LoadingButton
+                    ref={null}
                     fullWidth
                     variant="contained"
                     type="submit"

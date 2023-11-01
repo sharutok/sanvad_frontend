@@ -13,7 +13,6 @@ import { AppContext } from '../App';
 export default function BudgetListVIew({ _search, _setSearch }) {
     const thead = ["Budget No", "Purpose code", "Line No", "Purpose", "Department", "Capex Group", "Class", "Category", "No. Of Capex ", "Budget (Remaining v/s Consumed)", "Final Budget"]
     const { count, setCount, page, setPage } = useContext(AppContext)
-    console.log(_search);
     const { isLoading, error, data } = useQuery(['budget-data', page, _search], async () => {
         return await axios.get(`${api.capex.get_budget_data}/?page=${page}&search=${_search}`)
     })

@@ -103,12 +103,14 @@ const NestedFlowForInfra = ({ it_infra }) => {
     let initialNodesEven = []
     let initialNodes = []
 
-    for (let x = 2; x <= it_infra?.data?.data?.length; x++) {
+    console.log(it_infra?.data?.data[0]['req1']);
+
+    for (let x = 2; x <= it_infra?.data?.data[0]['req1']?.length; x++) {
         initialNodesEven.push({
             id: `horizontal-${(x - 1) * 2}`,
             sourcePosition: 'right',
             targetPosition: 'left',
-            data: { label: `${String(it_infra?.data?.data[x - 1]?.type).toUpperCase().replaceAll("_", " ")}` },
+            data: { label: `${String(it_infra?.data?.data[0]['req1'][x - 1]?.type).toUpperCase().replaceAll("_", " ")}(${it_infra?.data?.data[0]['req1'][x - 1]?.user})` },
             position: { x: 250 * (x - 1), y: 0 },
 
         })

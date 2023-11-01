@@ -33,7 +33,7 @@ export default function ConferenceBookingListView() {
 
     const all_conference_rooms = useQuery(['all-conference-rooms'], async () => {
         return await axios.get(api.dynamic_values.conference_rooms)
-    })
+    }, { staleTime: Infinity })
 
     const _conferences = () => {
         const val = all_conference_rooms?.data?.data.map((room) => {
@@ -44,18 +44,14 @@ export default function ConferenceBookingListView() {
     }
 
     const fetchData = async () => {
-        console.log({
-            "conf_start_date": confTemp.conf_room_start_date ? moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
-            "conf_room": confTemp.conf_room ? confTemp.conf_room : "MULA"
-        });
         const data = await axios.post(api.conference_booking.get_by_date_and_conf_room, {
-            "conf_start_date": confTemp.conf_room_start_date ? moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
+            "conf_end_date": confTemp.conf_room_start_date ? moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
             "conf_room": confTemp.conf_room ? confTemp.conf_room : "MULA"
         })
         return data
     }
 
-    const prev_booked_list = useQuery(['prev-booked-list', confTemp.conf_room_start_date, confTemp.conf_room], fetchData)
+    const prev_booked_list = useQuery(['prev-booked-list', confTemp.conf_room_start_date, confTemp.conf_room], fetchData, { staleTime: "300000" })
 
 
 
@@ -72,11 +68,11 @@ export default function ConferenceBookingListView() {
             if (what === moment(x.conf_start_time, "HH:mm").format("hh:mm A")) {
                 return (
                     <div className='flex justify-between'>
-                        <span className='text-lg'>{x.meeting_about}</span>
+                        <span className=''>{x.meeting_about}</span>
                         <div className='grid grid-cols-3 gap-2'>
-                            <span className='text-lg'>{x.conf_by} | </span>
-                            <span className='text-lg'>{"IT"}</span>
-                            <div className='cursor-pointer'>
+                            <span className=''>{x.conf_by} | </span>
+                            <span className=''>{"IT"}</span>
+                            <div className='cursor-pointer mt-[0.1rem]'>
                                 <MdDeleteOutline onClick={() => { console.log("Hi"); }} color='#f08080' size={20} />
                             </div>
                         </div>
@@ -106,6 +102,7 @@ export default function ConferenceBookingListView() {
     })
 
     function handleDilogBox() {
+        console.log(confTemp.conf_room_start_date, confTemp.conf_room);
         if (!confTemp.conf_room_start_date || !confTemp.conf_room) {
             setError1(true)
         } else {
@@ -131,7 +128,7 @@ export default function ConferenceBookingListView() {
         <div className='mt-10'>
             <BackArrow location={"/conference/booking/list"} title={"Conference Booking"} />
             <div className='flex gap-5 mx-10 my-5'>
-                <div className=' w-fit px-4 bg-[#eeeeee] rounded-lg shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
+                <div className='w-fit px-4 bg-[#eeeeee] rounded-lg shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
                     <div className='w-fit'>
                         <ButtonComponent onClick={handleClearBtn} icon={<IoMdRefresh color='white' size={"15"} />} btnName={"Clear All"} />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -145,11 +142,10 @@ export default function ConferenceBookingListView() {
                     </div>
                     <div >
                         <CustomAutoCompleteWithIcon control={""} errors={""} name={"conference_rooms"} label={"Conference Rooms"} options={_conferences()} />
-
                     </div>
                     {(error1) && <div className='rounded-md mt-5 flex justify-center bg-[#d8d8d8]'>
-                        <AiOutlineInfoCircle size={"20"} className='mt-1' />
-                        <span className='  p-1 text-sm  text-[#ff0000cc] '>Select both<strong> Date</strong> and<strong> Conference Room</strong></span>
+                        <AiOutlineInfoCircle color='#ff0000cc' size={"20"} className='mt-1' />
+                        <span className='  p-1 text-sm   '>Select both<strong> Date</strong> and<strong> Conference Room</strong></span>
                     </div>}
                 </div>
                 <>
@@ -157,7 +153,7 @@ export default function ConferenceBookingListView() {
                         <div className='mb-4'>
                             <span className='text-2xl'>Timing Schedule</span>
                         </div>
-                        <div className='max-h-[47rem] overflow-y-scroll '>
+                        <div className='max-h-[45rem] overflow-y-scroll '>
                             {!prev_booked_list.isLoading &&
                                 value.map((x, i) => {
                                     if ([..._flag].includes(x)) {
@@ -165,12 +161,12 @@ export default function ConferenceBookingListView() {
                                             <div key={i} className='w-[100%]'>
                                                 {getMeetingInfo(x) && <div className='pt-4'></div>}
                                                 <div className='p-[1rem] bg-gray-100 cursor-not-allowed flex justify-between '>
-                                                    <span className='text-lg'>{x}</span>
+                                                    <span className='text-sm'>{x}</span>
                                                     {getMeetingInfo(x) && <div style={{
                                                         borderLeft: "5px solid rgba(255, 0, 0,0.9)",
                                                         background: "rgba(255, 0, 0,0.1)",
-                                                    }} className='pl-4 pt-1 pb-1 w-[94%] '>
-                                                        <div className='font-[900] '>{getMeetingInfo(x)}</div>
+                                                    }} className='pl-4 w-[94%] '>
+                                                        <div className='font-bold '>{getMeetingInfo(x)}</div>
                                                     </div>}
                                                 </div>
                                             </div>
@@ -178,9 +174,9 @@ export default function ConferenceBookingListView() {
                                     }
                                     else {
                                         return (
-                                            <div key={i} className='w-[100%] hover:bg-gray-100 cursor-pointer' onClick={handleDilogBox}>
+                                            <div key={i} className='w-[100%] hover:bg-red-100 cursor-pointer' onClick={handleDilogBox}>
                                                 <Divider orientation='horizontal' />
-                                                <p className='p-[1rem] text-lg font-medium' onClick={() =>
+                                                <p className='p-[1rem] text-sm font-medium' onClick={() =>
                                                     setConfTemp({ ...confTemp, conf_room_start_time: x })}
                                                     key={i}>{x}</p>
                                             </div>
@@ -210,7 +206,7 @@ const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, contro
     const { dialogStatus, setDialogStatus, confTemp, setConfTemp } = useContext(AppContext)
     return (
         <Autocomplete
-            className='textfield'
+            className='w-full'
             disablePortal
             id="combo-box-demo"
             value={options && options[0].conf}
@@ -259,8 +255,6 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         </div>
     )
 }
-
-
 
 function TemporaryDrawer({ body }) {
     const { dialogStatus, setDialogStatus } = useContext(AppContext)

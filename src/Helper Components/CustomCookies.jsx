@@ -3,8 +3,7 @@ import Cookies from "universal-cookie";
 import { AppContext } from '../App';
 const cookies = new Cookies()
 
-let cookieName = ["role_status", "emp_code", "user_role"]
-let flag = []
+let cookieName = ["emp_code", "user_role", "initials"]
 
 export const setCookies = (cookieValues) => {
     cookieName.map((x, i) => {
@@ -13,10 +12,9 @@ export const setCookies = (cookieValues) => {
 
 }
 export const getCookies = () => {
-    cookieName.map(x => {
-        flag.push(cookies.get(x))
+    return cookieName.map(x => {
+        return cookies.get(x)
     })
-    return (flag)
 }
 
 export const deleteCookies = () => {
@@ -28,9 +26,9 @@ export const deleteCookies = () => {
 function CustomCookies() {
     const { setCookie } = useContext(AppContext)
     setCookie({
-        role_status: getCookies()[0],
-        emp_code: getCookies()[1],
-        user_role: getCookies()[2]
+        emp_code: getCookies()[0],
+        user_role: getCookies()[1],
+        initials: getCookies()[2]
     })
 }
 export default CustomCookies

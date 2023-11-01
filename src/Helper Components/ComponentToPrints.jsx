@@ -9,7 +9,6 @@ import { Title } from "@mantine/core";
 export class ComponentToPrint extends React.PureComponent {
     constructor(props) {
         super(props);
-
         this.state = { checked: false };
     }
 
@@ -29,7 +28,6 @@ export class ComponentToPrint extends React.PureComponent {
 
     handleCheckboxOnChange = () =>
         this.setState({ checked: !this.state.checked });
-
     setRef = (ref) => (this.canvasEl = ref);
 
     render() {
@@ -63,87 +61,56 @@ export const FunctionalComponentToPrint = React.forwardRef((props, ref) => {
 
 function PrintBody() {
     const [i, setI] = React.useState()
-    // const{}=React.useContext(AppContext)
-    const data = [
-        {
-            "id": "80db68e5-811f-41ca-817f-a2f84e94dd8c",
-            "start_date_time": "2023-09-21T10:40:52.036000Z",
-            "end_date_time": "2023-09-21T10:40:52.036000Z",
-            "v_company": "abc",
-            "raised_by": null,
-            "reason_for_visit": "aaa",
-            "more_info": "8971291503",
-            "veh_no": "ka02jp4573",
-            "ppe": "0",
-            "created_at": "2023-09-21T10:49:27.205379Z",
-            "updated_at": "2023-09-21T10:49:27.205379Z",
-            "delete_flag": "N",
-            "visitors": [
-                {
-                    "v_name": "Sharan Kudtarkar",
-                    "v_asset": "laptop",
-                    "v_desig": "it",
-                    "v_mobile_no": "8971291503"
-                },
-                {
-                    "v_name": "Sharan Kudtarkar",
-                    "v_asset": "laptop",
-                    "v_desig": "it",
-                    "v_mobile_no": "8971291503"
-                }
-            ]
-        }
-    ]
+    const { visitors } = React.useContext(AppContext)
+    console.log(visitors);
     return (
         <div>
             {
-                data.map(y => {
+                visitors?.map((y, i) => {
                     return (
-                        <div className="border-[10px] border-solid border-[black] ">
+                        <div key={i} className="border-[10px] border-solid border-[black] ">
                             <div className="flex justify-between p-2">
                                 <div className='flex gap-2'>
                                     <img src={IMAGES.ador_logo} alt="Ador" width={"80"} />
-                                    {/* <Divider orientation='vertical' /> */}
-                                    {/* <Title align="center" sx={(theme) => ({ marginTop: "0.2rem", fontSize: "25px", textTransform: "uppercase" })}> Sanvad</Title> */}
                                 </div>
                                 <strong className="text-2xl">VISITOR PASS</strong>
                                 <div>
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
+                                    <div className="grid grid-cols-2 gap-2 ">
                                         <span className="font-bold">Visitor ID</span>
-                                        <label>{"#111"}</label>
+                                        <label>{(y.id).slice(-3)}</label>
                                     </div>
                                     <div className="grid grid-cols-2 gap-2 w-fit">
                                         <span className="font-bold">Visitor Pass</span>
-                                        <label>{moment().format("DDMMYYYY")}/{"01"}</label>
+                                        <label>{moment(y.created_at).format("DDMMYYYY")}</label>
                                     </div>
                                 </div>
                             </div>
                             <Divider />
-                            <div className="grid grid-cols-2 p-5 mt-5">
-                                <div>
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
+                            <div className="grid grid-cols-2 p-5 mt-5 justify-around">
+                                <div className="w-[25rem]">
+                                    <div className="grid grid-cols-2 ">
                                         <span className="font-bold">Person In Charge</span>
-                                        <label>{"y.raised_by"}</label>
+                                        <label>{y.name}</label>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
+                                    <div className="grid grid-cols-2  ">
                                         <span className="font-bold">Department</span>
-                                        <label>{"y.raised_by"}</label>
+                                        <label className="">{y.department}</label>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2">
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
+                                <div className="grid grid-cols-2 ">
+                                    <div className="grid grid-cols-2  ">
                                         <span className="font-bold">Start Date</span>
-                                        <label>{(y.start_date_time).substring(0, 10)}</label>
+                                        <label>{(y?.start_date_time).substring(0, 10)}</label>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
+                                    <div className="grid grid-cols-2  ">
                                         <span className="font-bold">End Date</span>
-                                        <label>{(y.end_date_time).substring(0, 10)}</label>
+                                        <label>{(y?.end_date_time).substring(0, 10)}</label>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
+                                    <div className="grid grid-cols-2  ">
                                         <span className="font-bold">Start Time</span>
                                         <label>{moment(y.start_date_time).format("hh:mm a")}</label>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
+                                    <div className="grid grid-cols-2  ">
                                         <span className="font-bold">End Time</span>
                                         <label>{moment(y.end_date_time).format("hh:mm a")}</label>
                                     </div>
@@ -154,15 +121,15 @@ function PrintBody() {
                                     <div className="border border-solid border-[black] rounded-xl">
                                         <div className="grid grid-cols-2 w-100% ">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 rounded-tl-[10px]">Visitor's Name</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-tr-[10px]" >{y.v_company}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-tr-[10px]" >{JSON.parse(y['visitors']) && JSON.parse(y['visitors'])[0]['v_name']}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 ">Mobile No</span>
-                                            <label className="pl-2 pr-2  border border-solid border-[black]" >{y.reason_for_visit}</label>
+                                            <label className="pl-2 pr-2  border border-solid border-[black]" >{y.more_info}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2">Visitors Company</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black]">{y.veh_no}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black]">{y.v_company}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100% ">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 rounded-bl-[10px]">Visitors Vehicle Number</span>
@@ -172,7 +139,7 @@ function PrintBody() {
                                     <div className="border border-solid border-[black] rounded-xl">
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="rounded-tl-[10px] pl-2 pr-2 border border-solid border-[black] font-bold">Number of Visitors</span>
-                                            <label className=" rounded-tr-[10px] pl-2 pr-2 border border-solid border-[black]">{data[0]['visitors'].length}</label>
+                                            <label className=" rounded-tr-[10px] pl-2 pr-2 border border-solid border-[black]">{JSON.parse(y['visitors']).length}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="pl-2 pr-2 border border-solid border-[black] font-bold">Visitors Assets</span>
@@ -180,7 +147,7 @@ function PrintBody() {
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="pl-2 pr-2 border border-solid border-[black] font-bold">Reason of Visit</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black]">{y.veh_no}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black]">{(y.reason_for_visit).substring(0, 20)}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="rounded-bl-[10px] pl-2 pr-2 border border-solid border-[black] font-bold">PPE Provided</span>

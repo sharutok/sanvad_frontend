@@ -33,13 +33,13 @@ export default function ShortCutBtn() {
     return (
         <div className=' bg-[white] rounded-lg h-fit px-2 py-4 '>
             <div className='p-1'>
-                <span className='text-[1.5rem] font-extrabold text-[#555259]'>Modules & Policies</span>
+                <span className='text-[1.2rem] font-extrabold text-[#555259]'>Modules & Policies</span>
                 <div >
                     <Divider />
                 </div>
             </div>
-            <div className='flex justify-center '>
-                <div className='curs flex gap-6 py-2'>
+            <div className='flex justify-center'>
+                <div className='flex gap-6 '>
                     <div className='grid grid-cols-4 gap-4'>
                         {ModulesIcons.map((_icon, i) => {
                             return (
@@ -61,7 +61,7 @@ export default function ShortCutBtn() {
                     <div className='grid grid-cols-2 gap-12 '>
                         {IconsIcons.map((_icon, i) => {
                             return (
-                                <div key={i} className='flex justify-center hover-element p-1 rounded-xl'>
+                                <div key={i} className='flex justify-center hover-element px-2 py-1 rounded-xl'>
                                     <div onClick={() => window.open(_icon.path)} key={i} className='text-center'>
                                         <div className='flex justify-center '>
                                             < _icon.icons size={45} color='#ED1C24' />

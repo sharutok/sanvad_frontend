@@ -12,7 +12,7 @@ import { Divider } from '@mui/material'
 
 
 export default function YammerFrame() {
-    const { isLoading, error, data } = useQuery(['sales-data'], async () => { return await axios.get(api.yammer.get_data) })
+    const { isLoading, error, data } = useQuery(['sales-data'], async () => { return await axios.get(api.yammer.get_data) }, { staleTime: "300000" })
     if (isLoading) {
         return (
             <LoadingSpinner />
@@ -21,12 +21,12 @@ export default function YammerFrame() {
     return (
         <div >
             <div className='p-3 bg-[#fff] rounded-t-xl'>
-                <span className='text-[1.5rem] font-extrabold text-[#555259] '>Posts</span>
+                <span className='text-[1.2rem] font-extrabold text-[#555259] '>Posts</span>
                 <div >
                     <Divider />
                 </div>
             </div>
-            <div className=' max-h-[80vh] overflow-y-scroll p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl '>
+            <div className='h-[82vh] overflow-y-auto p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border '>
                 {!isLoading && <ICarousels data={data} />}
             </div>
         </div>
@@ -70,8 +70,8 @@ function ICarousels({ data }) {
     return (
         data?.data?.data?.map((x, i) => {
             return (
-                <div key={i} className='grid mb-6 rounded-xl'>
-                    <div className='shadow-[rgba(0,0,0,0.16)_0px_3px_6px,rgba(0,0,0,0.23)_0px_3px_6px] p-4 grid'>
+                <div key={i} className='grid mb-6 '>
+                    <div className='shadow-[rgba(50,50,93,0.25)_0px_2px_5px_-1px,rgba(0,0,0,0.3)_0px_1px_3px_-1px] p-4 grid rounded-xl'>
                         <div className='flex gap-2 p-2'>
                             <Avatar sx={{ width: 45, height: 45, bgcolor: "#2b58a5" }}>{(x.sender_id).split(" ")[0][0]}{String((x.sender_id).split(" ")[1])[0].toUpperCase()}</Avatar>
                             <div className='grid grid-cols-1'>

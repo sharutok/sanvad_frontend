@@ -30,9 +30,9 @@ const formData = new FormData()
 
 export default function ApproverForm() {
 
-    const cookie_data = getCookies()
+    const emp_id = getCookies()[0]
 
-    const { setSnackBarPopUp } = useContext(AppContext)
+    const { setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
     const ErrorSchema = ApproverTicketErrorSchema
     const [tktFiles, setTKTFiles] = useState(null)
     const [tktType, setTKTType] = useState({
@@ -55,15 +55,12 @@ export default function ApproverForm() {
         defaultValues: {
             tkt_type: "", tkt_title: "", req_type: '', tkt_description: "", severity: "",
             assign_ticket_to_user: "", approver_status: "", approver_comment: ""
-
         }
     })
 
 
     const onSubmit = async (data) => {
         data["id"] = id
-        console.log(data);
-        setSnackBarPopUp({ state: true, message: "Created ticket" })
         try {
             const formData = new FormData();
             tktFiles?.length >= 0 && formData.append('user_file', tktFiles, tktFiles.name)
@@ -71,8 +68,16 @@ export default function ApproverForm() {
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
-            formData.append('user_info', JSON.stringify(response?.data?.data?.user_info))
+            formData.append('user_info', emp_id)
             const _response = await axios.put(api.ticket_system.by_id + id, formData)
+            if (_response.data.status_code === 200) {
+                setBtnSaving(true)
+                setSnackBarPopUp({ state: true, message: "Created ticket" })
+                setTimeout(() => {
+                    setSnackBarPopUp({ state: false, message: "" })
+                    window.location.href = "/ticket/sys/list"
+                }, 2000)
+            }
             console.log(_response);
         } catch (error) {
             console.log("error in uploading", error);
@@ -82,17 +87,17 @@ export default function ApproverForm() {
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         const data = await axios.get(`${api.dynamic_values.tkt_type}`)
         return data?.data
-    })
+    }, { staleTime: "300000" })
 
     const req_type_lists = useQuery(['req-type-lists', tktType], async () => {
         const data = await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tkt_type_lists?.data?.indexOf(tktType.index)) })
         return data
-    })
+    }, { staleTime: "300000" })
 
 
     const list_of_users = useQuery(['list-of-users'], async () => {
         return await axios.get(api.ticket_system.get_all_user_list)
-    })
+    }, { staleTime: "300000" })
 
     function deleteFiles(g) {
         let arr = tktFiles.filter(function (item) {
@@ -104,7 +109,33 @@ export default function ApproverForm() {
     }
 
     function isUserOpenedHisOwnTicket() {
-        return String(cookie_data[1]) !== String(response?.data?.data?.user_info['Employee ID']) ? true : false
+        return true
+        // return String(cookie_data[1]) !== String(response?.data?.data?.user_info['Employee ID']) ? true : false
+    }
+
+    const forceDownload = (response, file) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url;
+        link.setAttribute('download', file)
+        document.body.appendChild(link)
+        link.click()
+    }
+
+
+    const downloadWithAxios = async (url) => {
+        try {
+            const _url = `http://localhost:8000${url}`
+            const file_name = (url.split("/")[Number(url.split("/").length) - 1])
+            const response = await axios.get(_url, { responseType: 'arraybuffer' })
+            console.log(response)
+            const file = file_name
+            forceDownload(response, file)
+        }
+        catch (error) {
+            console.log("error in getting file")
+        }
+
     }
 
 
@@ -142,9 +173,10 @@ export default function ApproverForm() {
                         <div className='flex gap-3'>
                             {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
                                 return (
-                                    <div key={i} className='flex gap-1 '>
+                                    <div key={i} className='flex gap-1 cursor-pointer'>
                                         <strong>{i + 1}.</strong>
-                                        <a href={g.user_file}>File</a>
+                                        <span onClick={() => downloadWithAxios(g.user_file)}>File</span>
+                                        <a href="" target="_blank"></a>
                                     </div>)
                             })}
                         </div>
@@ -162,7 +194,7 @@ export default function ApproverForm() {
                         </>
                     }
                     <div className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px] rounded-lg p-2'>
-                        <span className='text-lg'>Comments</span>
+                        <span className='text-lg'>Comment History</span>
                         <VerticalLinearStepper response={response} />
                     </div>
                     <Divider />
@@ -184,6 +216,7 @@ export default function ApproverForm() {
                                         value={value}>
                                         <FormControlLabel value="0" control={<Radio size='small' />} label="Approve" />
                                         <FormControlLabel value="1" control={<Radio size='small' />} label="Reject" />
+                                        <FormControlLabel value="2" control={<Radio size='small' />} label="Close" />
                                     </RadioGroup>
                                     <FormHelperText>{errors.approver_status && errors.approver_status.message}</FormHelperText>
                                 </FormControl>
@@ -206,9 +239,9 @@ export default function ApproverForm() {
                             })}
                         </div>
                     </div>
-                    {isUserOpenedHisOwnTicket() && <div>
+                    <div>
                         <LoadingButtonWithSnack beforeName={"Submit"} afterName={"Submiting..."} />
-                    </div>}
+                    </div>
                 </div>
             </form>
         </div>
@@ -364,6 +397,9 @@ function severityArrow(val) {
     }
     if (val === "1") {
         return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-red-100'><p className='mt-[0.1rem]'>Rejected</p></div>)
+    }
+    if (val === "2") {
+        return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-blue-100'><p className='mt-[0.1rem]'>Closed</p></div>)
     }
     else {
         return "-"

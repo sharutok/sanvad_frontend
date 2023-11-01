@@ -31,7 +31,13 @@ const IMAGES = {
 
     announcement: new URL('../Image/Vector.png', import.meta.url).href,
 
-    climate_bg: new URL('../Image/Climate Cards.png', import.meta.url).href,
+    no_birthday: new URL('../Image/No_Birthday_Today.png', import.meta.url).href,
+    no_announcement: new URL('../Image/No_Announcements.png', import.meta.url).href,
+
+    cloudy: new URL('../Image/cloudy.png', import.meta.url).href,
+    rain: new URL('../Image/rain.png', import.meta.url).href,
+    sunny: new URL('../Image/sunny.png', import.meta.url).href,
+    night: new URL('../Image/night.png', import.meta.url).href,
 
 }
 

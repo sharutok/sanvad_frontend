@@ -65,15 +65,13 @@ export default function CreateVisitorMangement() {
                     <div className='grid gap-5 p-10'>
                         <div className='grid gap-5 '>
                             <div className='grid grid-cols-[repeat(4,18vw)] gap-5 '>
-                                <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
-                                <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField>
+                                {/* <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
+                                <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField> */}
                                 <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
-                            </div>
-                            <div className='grid grid-cols-[repeat(2,18vw)] gap-5'>
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                                 <div >
                                     <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
@@ -99,6 +97,8 @@ export default function CreateVisitorMangement() {
                                         rules={{ required: true }}
                                     />
                                 </div>
+                            </div>
+                            <div className='grid grid-cols-[repeat(2,18vw)] gap-5'>
                             </div>
                         </div>
                         <Divider textAlign='left'></Divider>

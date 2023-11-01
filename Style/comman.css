@@ -35,8 +35,8 @@ tbody > tr > td {
 }
 
 .hover-element:hover {
-  transition: background-color 0.1s; /* Add a smooth transition */
-  animation: colorPulse 0.8s infinite alternate; /* Apply the animation */
+  transition: background-color 2s; /* Add a smooth transition */
+  animation: colorPulse 0.5s infinite alternate; /* Apply the animation */
 }
 
 @keyframes colorPulse {

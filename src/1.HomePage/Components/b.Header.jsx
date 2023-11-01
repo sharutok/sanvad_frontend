@@ -17,7 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
-import { deleteCookies } from '../../Helper Components/CustomCookies';
+import { deleteCookies, getCookies } from '../../Helper Components/CustomCookies';
 const useStyles = createStyles((theme) => ({
     link: {
         display: 'flex',
@@ -82,13 +82,13 @@ export default function HeaderMegaMenu() {
     const { classes, theme } = useStyles();
 
     return (
-        <Box  >
+        <Box className='border-b-[1px] border-solid border-[#AEB1B8]'>
             <Header className='background-image' height={60} px="md">
                 <Group position="apart" sx={{ height: '100%' }}>
-                    <div onClick={() => window.location.href = '/home'} className='flex gap-2 cursor-pointer'>
-                        <img src={IMAGES.ador_logo} alt="Ador" width={"50"} />
-                        <Divider orientation='vertical' />
-                        <Title align="center" sx={(theme) => ({ fontSize: "20px", textTransform: "uppercase" })}> Sanvad</Title>
+                    <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer '>
+                        <img src={IMAGES.ador_logo} alt="Ador" width={"60"} />
+                        <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
+                        <Title align="center" className='text-[#555259]' sx={(theme) => ({ fontSize: "22px", textTransform: "uppercase" })}> Sanvad</Title>
                     </div>
                     <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
                         <Notification />
@@ -102,6 +102,7 @@ export default function HeaderMegaMenu() {
 
 function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const initials = getCookies()[2]
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -126,7 +127,7 @@ function AccountMenu() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}>SK</Avatar>
+                        <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}>{initials}</Avatar>
                     </IconButton>
                 </Tooltip>
             </div>
@@ -246,10 +247,9 @@ function Notification() {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <div className='max-h-[15rem] overflow-scroll'>
-
-                    {[...Array(5).keys()].map(x => {
+                    {[...Array(5).keys()].map((x, i) => {
                         return (
-                            <div>
+                            <div key={i}>
                                 <MenuItem onClick={handleClose}>
                                     <div className='flex gap-3'>
                                         <IoTicketOutline color="black" size={25} className='mt-3' />
@@ -267,9 +267,9 @@ function Notification() {
                             </div>
                         )
                     })}
-                    {[...Array(5).keys()].map(x => {
+                    {[...Array(5).keys()].map((x, i) => {
                         return (
-                            <div>
+                            <div key={i}>
                                 <MenuItem nuItem onClick={handleClose}>
                                     <div className='flex gap-3'>
                                         <GrCurrency size={25} className='mt-3' />
