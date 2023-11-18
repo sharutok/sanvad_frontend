@@ -39,6 +39,8 @@ const IMAGES = {
     sunny: new URL('../Image/sunny.png', import.meta.url).href,
     night: new URL('../Image/night.png', import.meta.url).href,
 
+    no_data: new URL('../Image/no-data.png', import.meta.url).href,
+
 }
 
 export default IMAGES

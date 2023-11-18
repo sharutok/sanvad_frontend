@@ -27,7 +27,7 @@ export default function Page() {
         <div >
             <div id="element" className='flex justify-center mt-10 pretty'>
                 <div className='w-[80%] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
-                    <img className=' rounded-3xl' src={IMAGES.login_img} />
+                    <img loading='lazy' className=' rounded-3xl' src={IMAGES.login_img} />
                 </div>
                 <div className='ml-[-33rem] mt-5'>
                     <LoginBody />
@@ -90,7 +90,6 @@ function LoginBody() {
     return (
         <div>
             <Container size={650} >
-                {/* <Paper p={20} radius="md"> */}
                 <div className='flex justify-center p-5 gap-3 mb-7'>
                     <div className='flex justify-center'>
                         <img src={IMAGES.ador_logo} alt="Ador" width={"100"} />
@@ -98,7 +97,7 @@ function LoginBody() {
                     <Divider orientation='vertical' />
                     <Title align="center" sx={(theme) => ({ fontWeight: 900, marginTop: "0.5rem", textTransform: "uppercase" })}> Sanvad</Title>
                 </div>
-                {/* <Text align="center" sx={(theme) => ({ fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Text> */}
+                <Text align="center" sx={(theme) => ({ fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Text>
                 <form onSubmit={onSubmit} className='px-5'>
                     <div >
                         <TextInput error={error} sx={{ width: rem(350) }} onChange={handleOnChange} name="email" label="Email Address" placeholder="email address" required rightSection={select} />
@@ -125,7 +124,7 @@ function LoginBody() {
                 </form>
                 {/* </Paper> */}
             </Container>
-            <h1 className='text-center'>{moment().format('YYYY')} adorwelding.com</h1>
+            <p className='text-center text-[0.9rem] mt-3'>{moment().format('YYYY')} adorwelding.com</p>
         </div >
     )
 }

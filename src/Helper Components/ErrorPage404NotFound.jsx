@@ -50,7 +50,7 @@ const useStyles = createStyles((theme) => ({
 export function NotFoundTitle() {
     const { classes } = useStyles();
     function take_me_back_to_home_page() {
-        window.location.href = "/home"
+        window.location.href = "/login"
     }
     return (
         <Container className={classes.root}>
@@ -62,7 +62,7 @@ export function NotFoundTitle() {
             </Text>
             <Group position="center">
                 <Button variant="subtle" size="md" onClick={() => take_me_back_to_home_page()}>
-                    Take me back to home page
+                    Take me back to login page
                 </Button>
             </Group>
         </Container>

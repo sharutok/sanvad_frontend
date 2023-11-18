@@ -50,7 +50,7 @@ export default function NewEmployee() {
                     })}
                 </div> : <div >
                     <Stack spacing={1} alignItems={"center"} >
-                        <img src={IMAGES.no_birthday} alt="" width={200} />
+                        <img loading='lazy' src={IMAGES.no_birthday} alt="" width={200} />
                         <span className='font-bold'>NO BIRTHDAYS</span>
                     </Stack>
                 </div>}

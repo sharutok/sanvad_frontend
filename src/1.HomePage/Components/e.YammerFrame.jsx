@@ -26,7 +26,7 @@ export default function YammerFrame() {
                     <Divider />
                 </div>
             </div>
-            <div className='h-[82vh] overflow-y-auto p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border '>
+            <div className='h-[80vh] overflow-y-auto p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border '>
                 {!isLoading && <ICarousels data={data} />}
             </div>
         </div>
@@ -84,8 +84,8 @@ function ICarousels({ data }) {
                         </div>
 
                         <div className='flex justify-center '>
-                            {x?.image[0]?.type === "image" && <img style={{ width: "400px" }} src={x.image[0].sharepoint_web_url} />}
-                            {x?.image[0]?.type === "file" && <video style={{ width: "400px" }} controls>
+                            {x?.image[0]?.type === "image" && <img loading='lazy' style={{ width: "400px" }} src={x.image[0].sharepoint_web_url} />}
+                            {x?.image[0]?.type === "file" && <video loop style={{ width: "400px" }} controls>
                                 <source src={x?.image[0]?.sharepoint_web_url} type="video/mp4" />
                             </video>}
                         </div>

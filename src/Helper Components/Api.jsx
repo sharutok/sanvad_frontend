@@ -6,6 +6,7 @@ export const api = {
         get_data: `${link}/user-manage/all`,
         get_data_id: `${link}/user-manage`,
         post_data: `${link}/user-manage/create/`,
+        reset_password: `${link}/user-manage/reset/password`
     },
     yammer: {
         get_data: `${link}/yammer-feeds/posts/`
@@ -13,15 +14,18 @@ export const api = {
     capex: {
         get_budget_data: `${link}/capex/get-all-budget-data`,
         get_capex_data: `${link}/capex/get-all-capex-data`,
-        capex_by_id: `${link}/capex/data-capex`,
         budget_by_id: `${link}/capex/data-budget`,
-        create_capex: `${link}/capex/create/`
+        capex_by_id: `${link}/capex/data-capex`,
+        create_capex: `${link}/capex/create/`,
+        upload_budget_excel: `${link}/capex/read-data-excel/`,
+        update_capex_only: `${link}/capex/update/only/`
     },
     conference_booking: {
         get_data: `${link}/conf-book/all`,
         create: `${link}/conf-book/create/`,
         get_by_date_and_conf_room: `${link}/conf-book/by/date/conf-room/`,
-        post_data: `${link}/conf-book/create/`
+        post_data: `${link}/conf-book/create/`,
+        by_id: `${link}/conf-book/`
     },
     ticket_system: {
         get_data: `${link}/tkt-sys/all`,
@@ -37,7 +41,10 @@ export const api = {
     visitor_management: {
         create: `${link}/visitor-manage/create/`,
         get_data: `${link}/visitor-manage/all`,
-        by_id: `${link}/visitor-manage/`
+        by_id: `${link}/visitor-manage/`,
+        save_image: `${link}/visitor-manage/save/img/`,
+        get_image: `${link}/visitor-manage/get/img`,
+
     },
     user: {
         log_check: `${link}/user-manage/login/check/`,
@@ -54,11 +61,12 @@ export const api = {
         it_infra_ticket_wf: `${link}/wf/ticket/infra/`,
         capex_wf_corporate: `${link}/wf/capex/corporate/`,
         capex_wf_plant: `${link}/wf/capex/plant/`,
-
+    },
+    policies: {
+        get_all_data: `${link}/policy/get-all-data`,
+        create_data: `${link}/policy/post/`,
     }
 }
-
-
 
 
 

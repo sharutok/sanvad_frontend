@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-ro
 import HomePage from './1.HomePage/HomePage';
 import ErrorPage404NotFound from './Helper Components/ErrorPage404NotFound';
 
-import VisitorMangement from './4.VIsitorManagement/CreateVisitorManagement';
+import VisitorMangement from './4.VIsitorManagement/Requester/CreateVisitorManagement';
 import UpdateUserForm from './2.UserManagement/UpdateUserForm';
 import CreateUserForm from './2.UserManagement/CreateUserForm';
 import CListView from './6.Capex/ListView';
@@ -22,45 +22,64 @@ import ListsView from './3.ConferenceBooking/ListsView';
 import CApproverForm from './6.Capex/Approver/ApproverForm'
 import CWorkFlow from './8.WorkFlow/CapexWorkFlow/WorkFlow';
 import TWorkFlow from './8.WorkFlow/TicketWorkFlow/WorkFlow';
+import Policies from './1.HomePage/Components/o.Policies';
+import { getCookies } from './Helper Components/CustomCookies';
 export default function Path() {
-    return (
-        <>
-            {!["/", "/login"].includes(window.location.pathname) && <HeaderMegaMenu />}
+
+    if (!getCookies()[0]) {
+        return <>
             <Router>
                 <Routes>
                     <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route path='/login' element={<Page />} />
-
-                    <Route path='/home' element={<HomePage />} />
-
-                    <Route path='/user/management/new' element={<CreateUserForm />} />
-                    <Route path='/user/management/indvi/:id' element={<UpdateUserForm />} />
-                    <Route path='/user/management/list' element={<UserManagementListView />} />
-
-                    <Route path='/conference/booking/list' element={<ListsView />} />
-                    <Route path='/conference/booking/new' element={<ConferenceBookingListView />} />
-
-                    <Route path='/vistors/management/new' element={<VisitorMangement />} />
-                    <Route path='/vistors/management/:id' element={<ApproveVisitorManagement />} />
-                    <Route path='/vistors/management/list' element={<VisitManagementListView />} />
-
-                    <Route path='/ticket/sys/list' element={<TicketSystemListView />} />
-                    <Route path='/ticket/sys/new' element={<TRequesterForm />} />
-                    <Route path='/ticket/sys/:id' element={<TApproverForm />} />
-
-
-                    <Route path='/capex/:budget_id' element={<CForm />} />
-                    <Route path='/capex/appr/:budget_id/:capex_id' element={<CApproverForm />} />
-                    <Route path='/capex/list' element={<CListView />} />
-
-                    <Route path='/module-config/ticket-system' element={<TicketSys />} />
-
-                    <Route path='/workflow/ticket-system' element={<TWorkFlow />} />
-                    <Route path='/workflow/capex-system' element={<CWorkFlow />} />
-
                     <Route path='*' element={<ErrorPage404NotFound />} />
                 </Routes>
             </Router>
+        </>
+    }
+
+    return (
+        <>
+            {!["/", "/login"].includes(window.location.pathname) && <HeaderMegaMenu />}
+            <div className='mt-24'>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Navigate to="/login" replace />} />
+                        <Route path='/login' element={<Page />} />
+
+                        <Route path='/home' element={<HomePage />} />
+
+                        <Route path='/user/management/new' element={<CreateUserForm />} />
+                        <Route path='/user/management/indvi/:id' element={<UpdateUserForm />} />
+                        <Route path='/user/management/list' element={<UserManagementListView />} />
+
+                        <Route path='/conference/booking/list' element={<ListsView />} />
+                        <Route path='/conference/booking/new' element={<ConferenceBookingListView />} />
+
+                        <Route path='/vistors/management/new' element={<VisitorMangement />} />
+                        <Route path='/vistors/management/:id' element={<ApproveVisitorManagement />} />
+                        <Route path='/vistors/management/list' element={<VisitManagementListView />} />
+
+                        <Route path='/ticket/sys/list' element={<TicketSystemListView />} />
+                        <Route path='/ticket/sys/new' element={<TRequesterForm />} />
+                        <Route path='/ticket/sys/:id' element={<TApproverForm />} />
+
+
+                        <Route path='/capex/:budget_id' element={<CForm />} />
+                        <Route path='/capex/appr/:budget_id/:capex_id' element={<CApproverForm />} />
+                        <Route path='/capex/list' element={<CListView />} />
+
+                        <Route path='/module-config/ticket-system' element={<TicketSys />} />
+
+                        <Route path='/workflow/ticket-system' element={<TWorkFlow />} />
+                        <Route path='/workflow/capex-system' element={<CWorkFlow />} />
+
+                        <Route path='/policies' element={<Policies />} />
+
+                        <Route path='*' element={<ErrorPage404NotFound />} />
+                    </Routes>
+                </Router>
+            </div>
         </>
     )
 }

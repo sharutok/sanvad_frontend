@@ -91,126 +91,13 @@ function ConferenceBooking({ fetchData }) {
                 <LoadingButtonWithSnack beforeName={"Book Conference"} afterName={"Booking..."} />
             </div>
         </ form>
-        // <form className='p-5' onSubmit={handleSubmit(onSubmit)}>
-        //     <div className='grid grid-cols-1 gap-5'>
-        //         <div className='grid grid-cols-1 gap-5'>
-        //             <TextField className="w-full" defaultValue={confTemp.conf_room} label="Conference Name*" size={"small"} disabled />
-        //             <TextField fullWidth multiline={true} rows={2} className='textfield' label="Meeting About*" size={"small"} {...register('meeting_about')} error={errors.about} helperText={errors.about && errors.about.message} />
-        //         </div>
-        //         <TextField fullWidth className='w-max' defaultValue={`${confTemp.conf_room_start_date} ${confTemp.conf_room_start_time}`} label="Start Date Time*" size={"small"} disabled />
-        //         <div className='flex gap-4'>
-        //             <CustomDate label={"End Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
-        //             <CustomAutoComplete control={control} errors={errors} name={"end_date_time"} label={"End Time"} options={[...momentTime]} />
-        //         </div>
-        //     </div>
-        //     <div className='w-fit' >
-        //         <LoadingButtonWithSnack beforeName={"Book Conference"} afterName={"Booking..."} />
-        //     </div>
-        // </ form>
     )
 }
 
 export default ConferenceBooking
 
 
-// const CustomDateTime = ({ register, name, label, errors, control, watch, disabled }) => {
-//     return (
-//         <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
-//             <LocalizationProvider dateAdapter={AdapterDayjs}>
-//                 <DateTimePicker
-//                     disabled={disabled || false}
-//                     inputFormat='DD/MM/YYYY'
-//                     format='DD/MM/YYYY hh:mm A'
-//                     timeSteps={{ minutes: 15 }}
-//                     slotProps={{
-//                         textField:
-//                         {
-//                             size: 'small',
-//                             helperText: errors[name] && errors[name].message,
-//                             error: !!errors[name]
-//                         },
-//                     }}
-//                     {...register(name)}
-//                     label={label}
-//                     value={dayjs(watch(name))}
-//                     onChange={onChange}
-//                     onBlur={onBlur}
-//                 />
-//             </LocalizationProvider>
-//         )}
-//             name={name}
-//             control={control}
-//             rules={{ required: true }}
-//         />
-//     )
-// }
-// const CustomAutoComplete = ({ name, label, options, control, errors }) => {
-//     const { disabledOptions } = useContext(AppContext)
-//     return (
-//         <Controller
-//             key={name}
-//             name={name}
-//             control={control}
-//             render={({ field }) => (
-//                 <Autocomplete
-//                     isOptionEqualToValue={(option, value) => (
-//                         option.conf === value.conf && option.no === value.no
-//                     )}
-//                     getOptionDisabled={(option) => disabledOptions.includes(option)}
-//                     key={name}
-//                     className="textfield"
-//                     disablePortal
-//                     id="combo-box-demo"
-//                     {...field}
-//                     options={options}
 
-//                     renderInput={(params) => (
-//                         <TextField
-//                             key={name}
-//                             {...params}
-//                             size={"small"}
-//                             label={label}
-//                             variant="outlined"
-//                             error={errors[name]} helperText={errors[name] && errors[name].message}
-//                         />
-//                     )}
-//                     onChange={(e, selectedValue) => {
-//                         field.onChange(selectedValue);
-//                     }}
-//                 />
-//             )}
-//         />
-
-//     )
-// }
-// const CustomDate = ({ register, name, label, errors, control, watch }) => {
-//     return (
-//         <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
-//             <LocalizationProvider dateAdapter={AdapterDayjs}>
-//                 <DatePicker
-//                     slotProps={{
-//                         textField:
-//                         {
-//                             format: 'DD/MM/YYYY',
-//                             size: 'small',
-//                             helperText: errors[name] && errors[name].message,
-//                             error: !!errors[name]
-//                         },
-//                     }}
-//                     {...register(name)}
-//                     label={label}
-//                     value={dayjs(watch(name))}
-//                     onChange={onChange}
-//                     onBlur={onBlur}
-//                 />
-//             </LocalizationProvider>
-//         )}
-//             name={name}
-//             control={control}
-//             rules={{ required: true }}
-//         />
-//     )
-// }
 
 const CustomAutoComplete = ({ name, label, options, data, setData }) => {
     const { disabledOptions } = useContext(AppContext)

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
     styled, Stack, Typography, TextField, Divider, Button, Autocomplete, Checkbox, FormControlLabel, InputAdornment, FormControl, FormLabel, RadioGroup, Radio, FormHelperText
 } from '@mui/material';
@@ -21,7 +21,7 @@ const Input = styled('input')({
 import { AiOutlineUpload } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
 import { useParams } from 'react-router-dom';
-import { severity } from '../../Static/StaticValues';
+import { forceDownload, severity } from '../../Static/StaticValues';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import { AppContext } from '../../App';
 import { getCookies } from '../../Helper Components/CustomCookies';
@@ -34,7 +34,8 @@ export default function ApproverForm() {
 
     const { setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
     const ErrorSchema = ApproverTicketErrorSchema
-    const [tktFiles, setTKTFiles] = useState(null)
+    const [componentAccess, setComponentAccess] = useState({})
+    const [tktFiles, setTKTFiles] = useState([])
     const [tktType, setTKTType] = useState({
         value: "",
         index: ""
@@ -42,11 +43,12 @@ export default function ApproverForm() {
     const { id } = useParams()
 
     const response = useQuery(['get-ticket-data'], async () => {
-        const data = await axios.get(api.ticket_system.by_id + id)
+        const data = await axios.get(api.ticket_system.by_id + id + `?woosee=${getCookies()[0]}`)
         Object.entries(data?.data?.form_data).map(x => {
             setValue(x[0], x[1])
             x[0] === "severity" && setValue(x[0], severity[x[1]])
         })
+        setComponentAccess(data?.data?.view_access)
         return data
     })
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
@@ -63,22 +65,25 @@ export default function ApproverForm() {
         data["id"] = id
         try {
             const formData = new FormData();
-            tktFiles?.length >= 0 && formData.append('user_file', tktFiles, tktFiles.name)
+            tktFiles.length && tktFiles.forEach((file, index) => {
+                formData.append(`file${index + 1}`, file);
+            });
+            formData.append('file_count', tktFiles.length)
             data["severity"] = severity.indexOf(data["severity"])
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
             formData.append('user_info', emp_id)
+
             const _response = await axios.put(api.ticket_system.by_id + id, formData)
             if (_response.data.status_code === 200) {
                 setBtnSaving(true)
-                setSnackBarPopUp({ state: true, message: "Created ticket" })
+                setSnackBarPopUp({ state: true, message: "Created ticket", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
                     window.location.href = "/ticket/sys/list"
                 }, 2000)
             }
-            console.log(_response);
         } catch (error) {
             console.log("error in uploading", error);
         }
@@ -108,32 +113,13 @@ export default function ApproverForm() {
         })
     }
 
-    function isUserOpenedHisOwnTicket() {
-        return true
-        // return String(cookie_data[1]) !== String(response?.data?.data?.user_info['Employee ID']) ? true : false
-    }
-
-    const forceDownload = (response, file) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]))
-        const link = document.createElement('a')
-        link.href = url;
-        link.setAttribute('download', file)
-        document.body.appendChild(link)
-        link.click()
-    }
-
-
-    const downloadWithAxios = async (url) => {
+    const downloadWithAxios = async (url, file_name) => {
         try {
-            const _url = `http://localhost:8000${url}`
-            const file_name = (url.split("/")[Number(url.split("/").length) - 1])
-            const response = await axios.get(_url, { responseType: 'arraybuffer' })
-            console.log(response)
-            const file = file_name
-            forceDownload(response, file)
+            const response = await axios.get(url, { responseType: 'arraybuffer' })
+            forceDownload(response, file_name)
         }
         catch (error) {
-            console.log("error in getting file")
+            console.log("error in getting file", error)
         }
 
     }
@@ -162,7 +148,7 @@ export default function ApproverForm() {
                         <div className='grid grid-cols-[repeat(1,1fr)] gap-5'>
                             <CustomAutoComplete disabled={true} control={control} errors={errors} name={"tkt_type"} label={"Ticket Type"} options={tkt_type_lists.data || []} />
                             <CustomAutoComplete onFocus={() => setTKTType({ index: response?.data?.data?.form_data?.tkt_type })} control={control} errors={errors} name={"req_type"} label={"Requirement Type"} options={req_type_lists?.data?.data || []} />
-                            <CustomAutoComplete control={control} errors={errors} name={"severity"} label={"Severity"} options={severity} />
+                            <CustomAutoComplete disabled={!componentAccess.severity_component} control={control} errors={errors} name={"severity"} label={"Severity"} options={severity} />
                         </div>
                     </div>
                     <div className='px-5'>
@@ -170,13 +156,14 @@ export default function ApproverForm() {
                     </div>
                     <div className='p-5' >
                         <strong>Uploaded files</strong>
-                        <div className='flex gap-3'>
+                        <div className='grid grid-cols-4 gap-1 '>
                             {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
                                 return (
-                                    <div key={i} className='flex gap-1 cursor-pointer'>
-                                        <strong>{i + 1}.</strong>
-                                        <span onClick={() => downloadWithAxios(g.user_file)}>File</span>
-                                        <a href="" target="_blank"></a>
+                                    <div className=''>
+                                        <div key={i} className='flex gap-1 cursor-pointer '>
+                                            <strong>{i + 1}.</strong>
+                                            <span className='hover:underline hover:text-[blue]' onClick={() => downloadWithAxios(g.mod_file_path, g.mod_file_name)}>{g.mod_file_name}</span>
+                                        </div>
                                     </div>)
                             })}
                         </div>
@@ -184,8 +171,8 @@ export default function ApproverForm() {
                     <div className='w-fit'>
                     </div>
                 </div>
-                <div className='grid grid-cols-[repeat(1,1fr)] pl-0 pr-4 pt-4 pb-0 gap-4'>
-                    {isUserOpenedHisOwnTicket() &&
+                <div className='grid grid-cols-[repeat(1,1fr)] pl-0 pr-4 pt-4 pb-0 gap-4 h-fit'>
+                    {componentAccess.assign_ticket_comp &&
                         <>
                             <div>
                                 <CustomAutoComplete control={control} errors={errors} name={"assign_ticket_to_user"} label={"Assign Ticket To Users"} options={list_of_users?.data?.data.map(x => { return `${x[2]}-${x[0]} ${x[1]}-${x[3]}` }) || []} />
@@ -193,12 +180,12 @@ export default function ApproverForm() {
                             <Divider />
                         </>
                     }
-                    <div className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px] rounded-lg p-2'>
+                    <div className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px]  rounded-lg p-2'>
                         <span className='text-lg'>Comment History</span>
                         <VerticalLinearStepper response={response} />
                     </div>
                     <Divider />
-                    {isUserOpenedHisOwnTicket() && <div className='grid gap-3'>
+                    {componentAccess.approval_status && <div className='grid gap-3'>
                         <Controller
                             render={({ field: { onChange, onBlur, value, name, ref },
                                 fieldState: { isTouched, isDirty, error },
@@ -226,7 +213,7 @@ export default function ApproverForm() {
                             rules={{ required: true }}
                         />
                     </div>}
-                    {isUserOpenedHisOwnTicket() && <CustomTextFieldWithIcon tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />}
+                    {componentAccess.comments_box && <CustomTextFieldWithIcon uploadDocuments={componentAccess.upload_documents} tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />}
                     <div>
                         <strong>Uploaded Files{" "}</strong>
                         <div className='max-h-[8rem] overflow-y-scroll'>
@@ -239,9 +226,9 @@ export default function ApproverForm() {
                             })}
                         </div>
                     </div>
-                    <div>
+                    {componentAccess.submit_btn && <div>
                         <LoadingButtonWithSnack beforeName={"Submit"} afterName={"Submiting..."} />
-                    </div>
+                    </div>}
                 </div>
             </form>
         </div>
@@ -332,7 +319,7 @@ const CustomTextField = ({ name, label, errors, register, watch, multiline, disa
             helperText={errors[name] && errors[name].message} />
     )
 }
-const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline, tktFiles, setTKTFiles, }) => {
+const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline, uploadDocuments, setTKTFiles, }) => {
     const inputFile = useRef(null)
 
     const onButtonClick = () => {
@@ -350,7 +337,7 @@ const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multili
             InputProps={{
                 endAdornment: (
                     <div>
-                        <>
+                        {uploadDocuments && <>
                             <label htmlFor="contained-button-file">
                                 <Input type='file'
                                     multiple
@@ -361,7 +348,7 @@ const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multili
                                     }} />
                             </label>
                             <ButtonComponent onClick={onButtonClick} icon={<AiOutlineUpload color='white' size={"23"} />} btnName={"Upload"} />
-                        </>
+                        </>}
                     </div>
                 ),
             }}

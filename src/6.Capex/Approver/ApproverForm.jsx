@@ -5,7 +5,7 @@ import LoadingSpinner from '../../Helper Components/LoadingSpinner';
 import moment from 'moment';
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import {
-    styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, InputAdornment, FormControlLabel, Checkbox, FormControl, FormLabel, RadioGroup, FormHelperText, Radio
+    styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, InputAdornment, FormControlLabel, Checkbox, FormControl, FormLabel, RadioGroup, FormHelperText, Radio, Drawer
 } from '@mui/material'
 import { useForm, Controller, get } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -22,11 +22,15 @@ import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
 import { BiChevronDown } from 'react-icons/bi';
 import PreFilledSubForm from '../PreFilledSubForm';
-import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from 'react-icons/md';
-import { useQuery } from '@tanstack/react-query';
+import { MdBrowserUpdated, MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from 'react-icons/md';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '../../App';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import { getCookies } from '../../Helper Components/CustomCookies';
+import { forceDownload } from '../../Static/StaticValues';
+import EditCapex from '../EditCapex';
+import { IoMdArrowBack } from 'react-icons/io';
+import IMAGES from '../../assets/Image/Image';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -36,15 +40,16 @@ const Input = styled('input')({
 
 export default function Form() {
     const { budget_id, capex_id } = useParams()
-    const { budget, setBudget, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
+    const { budget, setDrawerStatus, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
     const ErrorSchema = ApproverCapexErrorSchema
-    const inputFile = useRef(null)
     const [preFilled, setPreFilled] = useState(true)
-    const [uploadFIle, setUploadFile] = useState([])
     const [capexDetail, setCapexDetail] = useState([])
+    const [componentAccess, setComponentAccess] = useState({})
+    const queryClient = useQueryClient()
 
     const response = useQuery(['capex-data'], async () => {
-        const data = await axios.get(`${api.capex.capex_by_id}/${capex_id}/`)
+        const data = await axios.get(`${api.capex.capex_by_id}/${capex_id}/?woosee=${getCookies()[0]}`)
+        setComponentAccess(data?.data?.view_access)
         setCapexDetail(data?.data?.data);
         return data
     }, { staleTime: Infinity })
@@ -53,32 +58,43 @@ export default function Form() {
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
         defaultValues: {
-            capex_status: "0",
-            comments: "ok"
+            capex_status: "",
+            comments: ""
         }
     })
     const onSubmit = async (submit) => {
-        console.log(submit);
         const data = {
-            // ...submit,
             budget_id, capex_id,
             approver_status: getValues('capex_status'),
             approver_comment: getValues('comments'),
             user_no: getCookies()[0]
-            // requisition_date: moment(submit.requisition_date.$d).format("YYYY-MM-DD"),
-            // site_delivery_date: moment(submit.site_delivery_date.$d).format("YYYY-MM-DD"),
-            // installation_date: moment(submit.installation_date.$d).format("YYYY-MM-DD"),
         };
 
         const res = await axios.put(`${api.capex.capex_by_id}/${capex_id}/`, data)
         if (res.data.status_code === 200) {
-            setBtnSaving(true)
             setSnackBarPopUp({ state: true, message: "Submitted" })
+            setBtnSaving(true)
             setTimeout(() => {
                 setSnackBarPopUp({ state: false, message: "" })
                 window.location.href = "/capex/list"
             }, 2000)
         }
+    }
+
+    function invalidateData() {
+        queryClient.invalidateQueries(['capex-data'])
+    }
+
+
+    const downloadWithAxios = async (url, file_name) => {
+        try {
+            const response = await axios.get(url, { responseType: 'arraybuffer' })
+            forceDownload(response, file_name)
+        }
+        catch (error) {
+            console.log("error in getting file", error)
+        }
+
     }
 
     if (response?.isLoading) {
@@ -88,7 +104,7 @@ export default function Form() {
     }
 
     return (
-        <div className='mt-5'>
+        <div className='mt-10 '>
             <BackArrow location={"/capex/list"} title={"Capex Form - Approver"} />
             <div className='p-10 grid grid-cols-[2fr_1fr] gap-20'>
                 <div className='h-fit grid gap-5  '>
@@ -111,16 +127,22 @@ export default function Form() {
                             {[{ ...capexDetail, ...budget }].map((c, i) => {
                                 return (
                                     <div key={i} className='flex gap-1 '>
-                                        <a href={c.user_file}><strong>{i + 1}.</strong> {"file1"}</a>
+                                        <span className='hover:underline hover:text-[blue] hover:cursor-pointer' onClick={() => downloadWithAxios(c.mod_file_path, c.mod_file_name)}>{c.mod_file_name}</span>
                                     </div>)
                             })}
                         </div>
                     </div>
-                    {preFilled ?
-                        <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowUp color='#fff' size={22} />} btnName={"Click for Less Information"} />
-                        :
-                        <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowDown color='#fff' size={22} />} btnName={"Click for More Information"} />
-                    }
+                    <div className='flex gap-5'>
+                        {preFilled ?
+                            <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowUp color='#fff' size={22} />} btnName={"Click for Less Information"} />
+                            :
+                            <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowDown color='#fff' size={22} />} btnName={"Click for More Information"} />
+                        }
+                        <div >
+                            <TemporaryDrawer body={<EditCapex capexDetail={capexDetail} invalidateData={invalidateData} />} />
+                        </div>
+                        <ButtonComponent onClick={() => setDrawerStatus(true)} icon={<MdBrowserUpdated color='#fff' size={22} />} btnName={"Update Details"} />
+                    </div>
                     {preFilled && <div >
                         <MoreInformation details={[{ ...capexDetail, ...budget }]} />
                     </div>}
@@ -132,7 +154,7 @@ export default function Form() {
                             <VerticalLinearStepper response={response.data?.data?.data?.approval_flow} />
                         </div>
                         <Divider />
-                        {<div className='grid gap-3'>
+                        {componentAccess.approval_status && <div className='grid gap-3'>
                             <Controller
                                 render={({ field: { onChange, onBlur, value, name, ref },
                                     fieldState: { isTouched, isDirty, error },
@@ -151,7 +173,7 @@ export default function Form() {
                                             <FormControlLabel value="0" control={<Radio size='small' />} label="Approve" />
                                             <FormControlLabel value="1" control={<Radio size='small' />} label="Reject" />
                                             <FormControlLabel value="2" control={<Radio size='small' />} label="Close" />
-                                            <FormControlLabel value="2" control={<Radio size='small' />} label="Ask for justifcation" />
+                                            <FormControlLabel value="3" control={<Radio size='small' />} label="Ask for justifcation" />
                                         </RadioGroup>
                                         <FormHelperText>{errors.capex_status && errors.capex_status.message}</FormHelperText>
                                     </FormControl>
@@ -161,16 +183,14 @@ export default function Form() {
                                 rules={{ required: true }}
                             />
                         </div>}
-                        {<CustomTextFieldWithIcon multiline={4} label={"Comments*"} name={"comments"} errors={errors} register={register} watch={watch} />}
-                        <div>
+                        {componentAccess.comments_box && <CustomTextFieldWithIcon multiline={4} label={"Comments*"} name={"comments"} errors={errors} register={register} watch={watch} />}
+                        {componentAccess.submit_btn && <div >
                             <LoadingButtonWithSnack beforeName={"Submit"} afterName={"Submiting..."} />
-                        </div>
+                        </div>}
                     </div>
-                    {/* <ApprovalSection control={control} errors={errors} register={register} name={"capex_status"} watch={watch} />
-                    <CustomTextFieldWithIcon multiline={4} label={"Comments*"} name={"comments"} errors={errors} register={register} watch={watch} /> */}
                 </form>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
@@ -259,15 +279,14 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         <div
             onClick={onClick}
             {...props}
-            className='w-fit no-underline rounded-full p-2 h-fit border-[#ffffff] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
+            className=' w-fit mt-5 no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+            <div className='no-underline '>
                 {icon}
             </div>
-            {btnName && <span className='text-[#fff] text-[15px] no-underline ml-2'>{btnName}</span>}
+            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
         </div>
     )
 }
-
 
 
 function VerticalLinearStepper({ response }) {
@@ -312,6 +331,9 @@ function severityArrow(val) {
     if (val === "2") {
         return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-blue-100'><p className='mt-[0.1rem]'>Closed</p></div>)
     }
+    if (val === "3") {
+        return (<div className='text-xs w-fit flex justify-center px-2 py-1 rounded-xl bg-orange-100'><p className='mt-[0.1rem]'>Ask For Justification</p></div>)
+    }
     else {
         return "-"
     }
@@ -336,7 +358,40 @@ const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multili
 
 
 
+function TemporaryDrawer({ body }) {
+    const { drawerStatus, setDrawerStatus } = useContext(AppContext)
 
+    const list = (anchor) => (
+        <Box
+            role="presentation"
+        >
+            <div className=' w-[50rem]'>
+                <div className='flex gap-5 ml-5 '>
+                    <ButtonComponent icon={<IoMdArrowBack color='white' size={"15"} />} btnName={"Back"} onClick={() => setDrawerStatus(false)} />
+                    <span className='text-3xl mt-5'>Update Capex</span>
+                </div>
+                {body}
+
+            </div>
+        </Box>
+    );
+
+    return (
+        <div >
+            {['right'].map((anchor) => (
+                <React.Fragment key={anchor}>
+                    <Drawer
+                        anchor={"right"}
+                        open={drawerStatus}
+                        onClose={() => setDrawerStatus(false)}
+                    >
+                        {list(anchor)}
+                    </Drawer>
+                </React.Fragment>
+            ))}
+        </div>
+    );
+}
 
 
 

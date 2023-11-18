@@ -21,7 +21,7 @@ import { MdDeleteOutline } from 'react-icons/md'
 import dayjs from 'dayjs'
 
 export default function ConferenceBookingListView() {
-    const { setMomentTime, dialogStatus, setDialogStatus, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
+    const { setMomentTime, dialogStatus, setDrawerStatus, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
     const [error1, setError1] = useState(false)
     const thead = ["Conf No", "By", "Dept", "Start Date", "Start Time", "Conference Room", "End Date", "End Time",]
 
@@ -107,7 +107,7 @@ export default function ConferenceBookingListView() {
             setError1(true)
         } else {
             setDisabledOptions([..._flag])
-            setDialogStatus(true)
+            setDrawerStatus(true)
             setError1(false)
             setMomentTime(value)
         }
@@ -203,7 +203,7 @@ export default function ConferenceBookingListView() {
 
 
 const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, control, options }) => {
-    const { dialogStatus, setDialogStatus, confTemp, setConfTemp } = useContext(AppContext)
+    const { confTemp, setConfTemp } = useContext(AppContext)
     return (
         <Autocomplete
             className='w-full'
@@ -257,19 +257,19 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
 }
 
 function TemporaryDrawer({ body }) {
-    const { dialogStatus, setDialogStatus } = useContext(AppContext)
+    const { drawerStatus, setDrawerStatus } = useContext(AppContext)
 
     const list = (anchor) => (
         <Box
             role="presentation"
         >
             <div className='flex gap-5 ml-5'>
-                <ButtonComponent icon={<IoMdArrowBack color='white' size={"15"} />} btnName={"Back"} onClick={() => setDialogStatus(false)} />
+                <ButtonComponent icon={<IoMdArrowBack color='white' size={"15"} />} btnName={"Back"} onClick={() => setDrawerStatus(false)} />
                 <span className='text-3xl mt-5'>Book a Conference</span>
             </div>
             {body}
             <div className='absolute right-0 bottom-0 p-6' >
-                <img width={"450px"} src={IMAGES.conf_img_i} />
+                <img loading='lazy' width={"450px"} src={IMAGES.conf_img_i} />
             </div>
         </Box>
     );
@@ -280,8 +280,8 @@ function TemporaryDrawer({ body }) {
                 <React.Fragment key={anchor}>
                     <Drawer
                         anchor={"right"}
-                        open={dialogStatus}
-                        onClose={() => setDialogStatus(false)}
+                        open={drawerStatus}
+                        onClose={() => setDrawerStatus(false)}
                     >
                         {list(anchor)}
                     </Drawer>

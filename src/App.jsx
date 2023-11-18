@@ -7,6 +7,7 @@ const queryClient = new QueryClient()
 import './App.css'
 import { MantineProvider } from '@mantine/core';
 
+
 const theme = createTheme({
   typography: {
     fontFamily: 'Source Sans Pro',
@@ -44,9 +45,9 @@ function App() {
     email_id: "",
     password: "",
     organization: "",
-    user_status: false,
+    user_status: "",
     user_role: "",
-    btn_type: "0",
+    btn_type: "",
     module_permission: []
   })
 
@@ -62,6 +63,7 @@ function App() {
   const [btnSaving, setBtnSaving] = useState(false)
 
   const [dialogStatus, setDialogStatus] = useState(false)
+  const [drawerStatus, setDrawerStatus] = useState(false)
 
   const [confTemp, setConfTemp] = useState({
     conf_room_start_date: "",
@@ -74,7 +76,7 @@ function App() {
   const [disabledOptions, setDisabledOptions] = useState([])
   const [snackBarPopUp, setSnackBarPopUp] = useState({
     state: false,
-    message: ""
+    message: "", severity: "s"
   })
 
   const [visitors, setVisitors] = useState([])
@@ -92,7 +94,7 @@ function App() {
 
   const contextValue = {
     momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, budget, setBudget, userLogin, setUserLogin, dialogStatus, setDialogStatus, confTemp, setConfTemp
-    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets, setAssets, collapse, setCollapse, open, setOpen
+    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets, setAssets, collapse, setCollapse, open, setOpen, drawerStatus, setDrawerStatus
   }
 
   return (

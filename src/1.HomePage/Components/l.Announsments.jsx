@@ -19,7 +19,7 @@ export default function Announsments() {
                             <ListItem className='flex justify-between'>
                                 <ListItemAvatar>
                                     <div className='bg-[red] rounded-full w-fit h-fit p-2'>
-                                        <img src={IMAGES.announcement} alt="" width={25} />
+                                        <img loading='lazy' src={IMAGES.announcement} alt="" width={25} />
                                     </div>
                                 </ListItemAvatar>
                                 <ListItemText primary={<span className='text-[14px] font-bold'>{"Toss out that granular state management, manual refetching and endless bowls of async-spaghetti code. TanStack Query gives you"}</span>} secondary={<span className='text-[12px] flex justify-end'>{moment().format("DD MMM YYYY")}</span>} />
@@ -29,7 +29,7 @@ export default function Announsments() {
                         </div>)
                 }) : <div >
                     <Stack spacing={1} alignItems={"center"} >
-                        <img src={IMAGES.no_announcement} alt="" width={150} />
+                        <img loading='lazy' src={IMAGES.no_announcement} alt="" width={150} />
                         <span className='font-bold'>NO ANNOUNCEMENT</span>
                     </Stack>
                 </div>}

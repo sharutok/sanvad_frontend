@@ -15,7 +15,6 @@ export default function NavbarLinksGroup() {
     const { collapse, setCollapse, setOpen } = useContext(AppContext)
 
     return (
-
         <Box
             sx={(theme) => ({
                 minHeight: rem(220),
@@ -23,26 +22,20 @@ export default function NavbarLinksGroup() {
                 backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
             })}
         >
-            {/* {!collapse && <div className='p-2 w-fit'>
-                <ButtonComponent onClick={() => setOpen(false)} btnName={"Collapse All"} />
-            </div>} */}
             {links.map((x, i) => {
                 return (
                     x.index ? user_perm.includes(x.index) &&
                         <div key={i}>
-                            <TipTool position={"right"} title={x.label} body={
-                                <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
-                                    <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
-                                </Link>
-                            } />
+                            <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
+                                <LinksGroup label={x.label} icon={x.icon} links={!collapse && x.links} />
+                            </Link>
+
                         </div>
                         :
                         <div key={i}>
-                            <TipTool position={"right"} title={x.label} body={
-                                <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
-                                    <LinksGroup label={!collapse && x.label} icon={x.icon} links={!collapse && x.links} />
-                                </Link>
-                            } />
+                            <Link style={{ textDecoration: 'none' }} to={!x?.links > 0 ? x.mainlink : ""}>
+                                <LinksGroup label={x.label} icon={x.icon} links={!collapse && x.links} />
+                            </Link>
                         </div>
                 )
             })}
@@ -92,13 +85,13 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
             transition: 'transform 200ms ease',
         },
     }));
+
     const { classes, theme } = useStyles();
     const hasLinks = Array.isArray(links);
     const [opened, setOpened] = useState(initiallyOpened || false);
     const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft;
 
     const items = (hasLinks ? links : []).map((link) => (
-
         <Text
             component="a"
             className={classes.link}
@@ -107,7 +100,6 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
             key={link.label}
             onClick={(event) => window.location.href = link.link}>{link.label}
         </Text >
-
     ));
 
     return (
@@ -118,11 +110,27 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
 
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <ThemeIcon variant='light' color='#fff' size={30}>
-                                <IconButton>
-                                    <Icon color="#555259" size="1.5rem" />
-                                </IconButton>
+                                {
+                                    !collapse ?
+                                        <div>
+                                            <IconButton>
+                                                <Icon color="#555259" size="1.5rem" />
+                                                {/* <Icon size="1.5rem" /> */}
+                                            </IconButton>
+                                        </div>
+                                        :
+                                        <TipTool position={"right"} title={label} body={
+                                            <div >
+                                                <IconButton>
+                                                    {/* <Icon size="1.5rem" /> */}
+                                                    <Icon color="#555259" size="1.5rem" />
+                                                </IconButton>
+                                            </div>
+                                        } />
+
+                                }
                             </ThemeIcon>
-                            <Box ml="md">{label}</Box>
+                            {!collapse && <Box ml="md">{label}</Box>}
                         </Box>
 
                         {hasLinks && (

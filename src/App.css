@@ -18,12 +18,12 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
+  background: #ffffff; /* Track color */
 }
 
 ::-webkit-scrollbar-thumb {
   background: #888; /* Thumb color */
-  border-radius: 6px; /* Rounded corners for the thumb */
+  border-radius: 6px;
 }
 
 @font-face {

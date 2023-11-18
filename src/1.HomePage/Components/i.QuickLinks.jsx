@@ -1,6 +1,5 @@
 import React from 'react'
 import '../../../Style/QuickLinks.css'
-import { links } from '../../Static/StaticValues'
 import IMAGES from '../../assets/Image/Image'
 import { Divider } from '@mui/material'
 
@@ -23,7 +22,7 @@ const quick_link = [
 function QuickLinks() {
 
     function handleNav(nav) {
-        window.location.href = nav
+        window.open(nav, '_blank')
     }
 
     return (
@@ -40,7 +39,7 @@ function QuickLinks() {
                         <div onClick={() => handleNav(x.link)} key={i} className='hover-element active:bg-[#e6e6e6] cursor-pointer border border-solid border-[#e3e5ec] flex justify-center pop py-3 ' >
                             <div className=' grid grid-cols-1 w-fit h-fit gap-3 py-2'>
                                 <div className='flex justify-center'>
-                                    {x.img_name === "ador_star_logo" ? <img src={x.img} width="55" /> : (x.img_name === "ador_logo" ? <img src={x.img} width="100" className='mt-4' /> : <img src={x.img} width="70" />)}
+                                    {x.img_name === "ador_star_logo" ? <img loading='lazy' src={x.img} width="55" /> : (x.img_name === "ador_logo" ? <img src={x.img} width="100" className='mt-4' /> : <img src={x.img} width="70" />)}
                                 </div>
                                 <div className='flex justify-center'>
                                     <span className='text-center text-xs font-[600] px-2' style={{ wordBreak: "break-word" }}>{x.label}</span>

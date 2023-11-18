@@ -8,13 +8,13 @@ import SideBar from './Components/c.Sidebar'
 import QuickLinks from './Components/i.QuickLinks'
 import Announsments from './Components/l.Announsments'
 import WetherAndTemp from './Components/m.WetherAndTemp'
-import Feedback from './Components/n.feedback'
+import Feedback from './Components/n.Feedback'
 
 export default function HomePage() {
     return (
-        <div className='bg-[#f0f0f0] h-full p-0 m-0'>
-            <div className='grid mr-5 '>
-                <div className='flex gap-5 grid-cols-[repeat(2,1fr)]' >
+        <div className='bg-[#f0f0f0] h-max p-0 m-0 '>
+            <div className='grid mr-5 mt-[-2.3rem]'>
+                <div className='flex gap-5 grid-cols-[repeat(2,1fr)] ' >
                     <div className='bg-[#fff]'>
                         <SideBar />
                     </div>
@@ -28,16 +28,15 @@ export default function HomePage() {
                                 <div className='grid grid-cols-[repeat(1,1fr)] '>
                                     <QuickLinks />
                                 </div>
-                                <div className='grid  gap-5  '>
+                                <div className='grid gap-5  '>
                                     <WetherAndTemp />
                                     <NewEmployee />
                                     <Announsments />
-                                    <Feedback />
+                                    {/* <Feedback /> */}
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

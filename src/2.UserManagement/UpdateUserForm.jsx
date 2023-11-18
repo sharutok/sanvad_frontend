@@ -26,12 +26,12 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
 import BarSnack from '../Helper Components/BarSnack';
 import { useQuery } from '@tanstack/react-query';
+import { MdOutlineLockReset } from 'react-icons/md';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function UpdateUserForm() {
   const { id } = useParams()
-
   const { usermanagement, setUsermanagement, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
   const ErrorSchema = UserErrorSchema
 
@@ -41,39 +41,38 @@ export default function UpdateUserForm() {
     defaultValues: usermanagement,
   })
 
+  const ResetPassword = async () => {
+    const data = {
+      user_email: getValues('email_id'),
+      emp_no: getValues('emp_no')
+    }
+    try {
+      const response = await axios.post(api.user_management.reset_password, data)
+      if (response?.data?.status_code === 200) {
+        console.log(response?.data?.status_code);
+        setSnackBarPopUp({ state: true, message: "Password Reset mail sent", severity: "s" })
+        setTimeout(() => {
+          setSnackBarPopUp({ state: false, message: "", severity: "s" })
+        }, 2000)
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
-  const getData = async () => {
+
+  const response = useQuery(['get-user-list'], async () => {
     const data = await axios.get(`${api.user_management.get_data_id}/${id}`)
-    const { first_name, last_name, ph_no, dob, gender, emerg_contact, address, start_date, end_date, emp_no, department, plant_name, manager, job_type, employment_type, emp_designation, email_id, password, organization, user_status, user_role, module_permission } = data.data.data
-    setValue('first_name', first_name)
-    setValue('last_name', last_name)
-    setValue('ph_no', ph_no)
-    setValue('gender', gender)
-    setValue('emerg_contact', emerg_contact)
-    setValue('address', address)
-    setValue('dob', moment(dob).format('DD/MM/YYYY'))
-    setValue('start_date', moment(start_date).format('DD/MM/YYYY'))
-    setValue('end_date', moment(end_date).format('DD/MM/YYYY'))
-    setValue('emp_no', emp_no)
-    setValue('department', department + "")
-    setValue('plant_name', plant_name + "")
-    setValue('manager', manager + "")
-    setValue('job_type', job_type + "")
-    setValue('employment_type', employment_type + "")
-    setValue('emp_designation', emp_designation)
-    setValue('email_id', email_id)
-    setValue('password', password)
-    setValue('organization', organization + "")
-    setValue('user_role', user_role + "")
-
+    Object.entries(data?.data?.data).map(x => {
+      setValue(x[0], x[1])
+    })
     setUsermanagement({
       ...usermanagement,
-      app_name: "User Management - Update User",
-      btn_type: "1",
-      go_back_loc: "/user/management/list",
-      user_status, module_permission: [...module_permission],
+      user_status: getValues('user_status'), module_permission: [...getValues('module_permission')],
     })
-  }
+    return data
+  })
 
   const onSubmit = async (submitData) => {
 
@@ -99,39 +98,33 @@ export default function UpdateUserForm() {
       password: getValues('password'),
       organization: getValues('organization'),
       user_role: getValues('user_role'),
+
     }
     try {
-      const response = await axios.put(`${api.user_management.get_data_id}/${id}`, value)
-      console.log(response.data);
+      const response = await axios.put(`${api.user_management.get_data_id}/${id}/`, value)
+      console.log(value);
       if (response.data.status_code === 200) {
         setBtnSaving(true)
-        setSnackBarPopUp({ state: true, message: "User Updated " })
+        setSnackBarPopUp({ state: true, message: "User Updated", severity: "s" })
+        setTimeout(() => {
+          window.history.back()
+          setBtnSaving(false)
+          setSnackBarPopUp({ state: false, message: "", severity: "s" })
+        }, 1000)
       }
-      setTimeout(() => {
-        window.history.back()
-        setBtnSaving(false)
-        setSnackBarPopUp({ state: false, message: "" })
-      }, 1000)
     } catch (error) {
       console.log(error);
     }
 
 
   }
-
   const user_perm = useQuery(["user-permission"], async () => {
     return await axios.get(api.user.user_permissions)
   })
 
-
-  useEffect(() => {
-    getData()
-  }, [])
-
-
   return (
     <form className='mt-10' onSubmit={handleSubmit(onSubmit)}>
-      <BackArrow title={usermanagement.app_name} location={usermanagement.go_back_loc} />
+      <BackArrow title={"User Management - Update User"} location={'/user/management/list'} />
       <BarSnack />
       <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
         <div className='flex flex-wrap gap-7'>
@@ -171,8 +164,8 @@ export default function UpdateUserForm() {
         </div>
         <Divider textAlign='left'></Divider>
         <div className='flex flex-wrap gap-7'>
-          <CustomDate label={"End Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
-          <CustomDate label={"Start Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
+          <CustomDate label={"End Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
+          <CustomDate label={"Start Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
           <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
           <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={['0', "1", "2", "3", "4"]} />
           <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={['0', "1", "2", "3", "4"]} />
@@ -185,7 +178,7 @@ export default function UpdateUserForm() {
         <div className='flex flex-wrap gap-7'>
           <CustomTextField label={"Employee Designation*"} name={"emp_designation"} errors={errors} register={register} watch={watch} />
           <CustomTextField label={"Email*"} name={"email_id"} errors={errors} register={register} watch={watch} />
-          <CustomTextField label={"Password*"} name={"password"} errors={errors} register={register} watch={watch} />
+          {/* <CustomTextField label={"Password*"} name={"password"} errors={errors} register={register} watch={watch} /> */}
           <div className='grid grid-cols-[repeat(1,1fr)]'>
             <FormControlLabel {...register('user_status')} control={<Switch checked={usermanagement.user_status}
               onChange={(e) => { setUsermanagement({ ...usermanagement, user_status: !usermanagement.user_status }) }} />
@@ -193,6 +186,9 @@ export default function UpdateUserForm() {
               label="User Status" />
             {usermanagement.user_status === true ? <p className='text-[0.8rem] text-[#3c993c] font-[bolder]'>Active</p> : <p className='text-[0.8rem] text-[red] font-[bolder]'>In Active</p>}
           </div>
+          <CustomAutoComplete control={control} errors={errors} name={"user_role"} label={"User Roles"} options={["0", "1", "3", "4"]} />
+          {/* <Button onClick={ResetPassword} size='medium' className='h-fit' variant="contained"></Button> */}
+          <ButtonComponent onClick={ResetPassword} icon={<MdOutlineLockReset color='white' size={"23"} />} btnName={"Reset Password"} />
           <div className='w-[50rem]'>
             <Autocomplete
               multiple
@@ -223,7 +219,6 @@ export default function UpdateUserForm() {
               )}
             />
           </div>
-          <CustomAutoComplete control={control} errors={errors} name={"user_role"} label={"User Roles"} options={["0", "1", "3", "4"]} />
         </div>
         <div className='w-fit'>
           <LoadingButtonWithSnack afterName={"Updating"} beforeName={"Update User"} />
@@ -243,7 +238,7 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
         <Autocomplete
           isOptionEqualToValue={(option, value) => option.value === value.value}
           key={name}
-          className="textfield"
+          className="w-[20rem]"
           disablePortal
           id="combo-box-demo"
           {...field}
@@ -305,5 +300,19 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
       control={control}
       rules={{ required: true }}
     />
+  )
+}
+const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
+  return (
+    <div
+      onClick={onClick}
+      onChange={onChange}
+      {...props}
+      className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+      <div className='no-underline'>
+        {icon}
+      </div>
+      {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
+    </div>
   )
 }

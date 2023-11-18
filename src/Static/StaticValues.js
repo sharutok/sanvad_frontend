@@ -2,8 +2,13 @@ import { IconCalendarStats } from '@tabler/icons-react';
 import { FaUsers, FaIdBadge, } from "react-icons/fa";
 import { IoIosPaper } from "react-icons/io";
 import { MdCurrencyExchange, MdSettingsApplications, MdPolicy } from "react-icons/md";
-import { AiOutlineLink } from "react-icons/ai";
+import * as XLSX from "xlsx";
+import * as FileSaver from "file-saver";
 import { PiFlowArrowBold } from "react-icons/pi";
+
+import { FaUsersLine, FaClipboardCheck, FaRegIdBadge, FaFileInvoiceDollar } from 'react-icons/fa6'
+import { FaUserCog } from 'react-icons/fa'
+import { getCookies } from '../Helper Components/CustomCookies';
 
 export const static_val = {
     prefix_email_id: [
@@ -14,6 +19,7 @@ export const static_val = {
 }
 
 export const severity = ['Low🔥', "Medium🔥🔥", "High🔥🔥🔥"]
+
 
 
 export const user_permission = [
@@ -42,8 +48,6 @@ export const user_permission = [
     "capex:uploadexcel",
 
 ]
-
-
 
 export const payback_period_return_of_investment = [
     "COST OF ASSET",
@@ -74,29 +78,29 @@ export const asset_type = ["IMPORTED", "INDEGENOUS"]
 export const links = [
     {
         label: 'User Management',
-        icon: IconCalendarStats, mainlink: "/user/management/list"
+        icon: FaUserCog, mainlink: "/user/management/list"
         , index: "module:usermanagement",
 
     },
     {
         label: 'Ticketing System',
-        icon: IoIosPaper,
+        icon: FaClipboardCheck,
         mainlink: "/ticket/sys/list"
     },
     {
         label: 'Conference Booking',
-        icon: FaUsers,
+        icon: FaUsersLine,
         mainlink: "/conference/booking/list"
 
     },
     {
         label: 'Visitor Management',
-        icon: FaIdBadge,
+        icon: FaRegIdBadge,
         mainlink: "/vistors/management/list"
     },
     {
         label: 'Capex',
-        icon: MdCurrencyExchange,
+        icon: FaFileInvoiceDollar,
         mainlink: "/capex/list"
         , index: "module:capex",
 
@@ -152,3 +156,32 @@ export const links = [
 
     },
 ];
+
+
+
+const fileType =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const fileExtension = ".xlsx";
+
+export const exportToCSV = (apiData, fileName) => {
+    const ws = XLSX.utils.json_to_sheet(apiData.slice(0, 100));
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
+};
+
+
+export const forceDownload = (response, file) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url;
+    link.setAttribute('download', file)
+    document.body.appendChild(link)
+    link.click()
+}
+
+
+export const isPermissionToView = (component) => {
+    return getCookies()[1].includes(component)
+}

@@ -82,21 +82,23 @@ export default function HeaderMegaMenu() {
     const { classes, theme } = useStyles();
 
     return (
-        <Box className='border-b-[1px] border-solid border-[#AEB1B8]'>
-            <Header className='background-image' height={60} px="md">
-                <Group position="apart" sx={{ height: '100%' }}>
-                    <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer '>
-                        <img src={IMAGES.ador_logo} alt="Ador" width={"60"} />
-                        <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
-                        <Title align="center" className='text-[#555259]' sx={(theme) => ({ fontSize: "22px", textTransform: "uppercase" })}> Sanvad</Title>
-                    </div>
-                    <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
-                        <Notification />
-                        <AccountMenu />
+        <div className='fixed top-0 w-[100%] bg-[#ffff] '>
+            <Box className=' border-b-[.5px] border-solid border-[#e9e9e9] '>
+                <Header className='bg-[#ffff] ' height={60} px="md" >
+                    <Group position="apart" sx={{ height: '100%' }} >
+                        <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer '>
+                            <img loading='lazy' src={IMAGES.ador_logo} alt="Ador" width={"60"} />
+                            <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
+                            <Title align="center" className='text-[#555259]' sx={(theme) => ({ fontSize: "22px", textTransform: "uppercase" })}> Sanvad</Title>
+                        </div>
+                        <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+                            <Notification />
+                            <AccountMenu />
+                        </Group>
                     </Group>
-                </Group>
-            </Header>
-        </Box >
+                </Header>
+            </Box >
+        </div>
     );
 }
 
@@ -127,7 +129,7 @@ function AccountMenu() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}>{initials}</Avatar>
+                        <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}>{initials && initials.toUpperCase()}</Avatar>
                     </IconButton>
                 </Tooltip>
             </div>

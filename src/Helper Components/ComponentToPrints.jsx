@@ -62,11 +62,14 @@ export const FunctionalComponentToPrint = React.forwardRef((props, ref) => {
 function PrintBody() {
     const [i, setI] = React.useState()
     const { visitors } = React.useContext(AppContext)
-    console.log(visitors);
+
     return (
         <div>
             {
-                visitors?.map((y, i) => {
+                visitors?.length && visitors?.map((y, i) => {
+                    const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset })
+                    const assets = t_assets.join(', ')
+                    // console.log(assets);
                     return (
                         <div key={i} className="border-[10px] border-solid border-[black] ">
                             <div className="flex justify-between p-2">
@@ -121,7 +124,7 @@ function PrintBody() {
                                     <div className="border border-solid border-[black] rounded-xl">
                                         <div className="grid grid-cols-2 w-100% ">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 rounded-tl-[10px]">Visitor's Name</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-tr-[10px]" >{JSON.parse(y['visitors']) && JSON.parse(y['visitors'])[0]['v_name']}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-tr-[10px]" >{(JSON.parse(y['visitors']) && JSON.parse(y['visitors'])[0]['v_name'])}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 ">Mobile No</span>
@@ -143,7 +146,7 @@ function PrintBody() {
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="pl-2 pr-2 border border-solid border-[black] font-bold">Visitors Assets</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black]">{y.veh_no}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black]">{assets}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="pl-2 pr-2 border border-solid border-[black] font-bold">Reason of Visit</span>

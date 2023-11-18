@@ -47,20 +47,19 @@ function RequesterForm() {
     const onSubmit = async (data) => {
         try {
             const formData = new FormData();
+            formData.append('requester_emp_no', emp_id)
 
-            tktFiles.forEach((file, index) => {
+            tktFiles.length && tktFiles.forEach((file, index) => {
                 formData.append(`file${index + 1}`, file);
             });
-            formData.append('requester_emp_no', emp_id)
             formData.append('file_count', tktFiles.length)
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
             const response = await axios.post(api.ticket_system.create, formData)
-            console.log(response.data);
             if (response.data.status === 200) {
                 setBtnSaving(true)
-                setSnackBarPopUp({ state: true, message: "Created ticket" })
+                setSnackBarPopUp({ state: true, message: "Created ticket", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
                     window.location.href = "/ticket/sys/list"
@@ -179,7 +178,7 @@ function RequesterForm() {
                 </div>
             </form>
             <div className='absolute right-0 bottom-0 p-10' >
-                <img width={"300px"} src={IMAGES.ticket_sys_i} />
+                <img loading='lazy' width={"300px"} src={IMAGES.ticket_sys_i} />
             </div>
         </div>
     )

@@ -26,10 +26,11 @@ const ErrorSchema = UserErrorSchema
 import { FiSave } from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import IMAGES from '../assets/Image/Image';
+import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
 
 
 function CreateUserForm() {
-    const { usermanagement, setUsermanagement, btnSaving, setBtnSaving } = useContext(AppContext)
+    const { usermanagement, setUsermanagement, setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
@@ -41,11 +42,11 @@ function CreateUserForm() {
         return await axios.get(api.user.user_permissions)
     })
 
-    const mutation = useMutation({
-        mutationFn: async (newTodo) => {
-            return await axios.post(api.user_management.post_data, newTodo)
-        },
-    })
+    // const mutation = useMutation({
+    //     mutationFn: async (newTodo) => {
+    //         return await axios.post(api.user_management.post_data, newTodo)
+    //     },
+    // })
 
 
     const onSubmit = async (submit) => {
@@ -58,11 +59,16 @@ function CreateUserForm() {
                 user_status: usermanagement.user_status,
                 module_permission: usermanagement.module_permission
             });
-            mutation.mutateAsync(data)
-            setBtnSaving(true)
-            setTimeout(() => {
-                window.location.href = "/user/management/list"
-            }, 1 * 1000)
+            const response = await axios.post(api.user_management.post_data, data)
+            if (response?.data.status == 200) {
+                setSnackBarPopUp({ state: true, message: "User Cretaed", severity: 's' })
+                setBtnSaving(true)
+                setTimeout(() => {
+                    window.location.href = "/user/management/list"
+                    setSnackBarPopUp({ state: false, message: "", severity: 's' })
+                    setBtnSaving(false)
+                }, 1 * 1000)
+            }
 
         } catch (error) {
             console.log("err", error);
@@ -71,12 +77,12 @@ function CreateUserForm() {
 
 
     useEffect(() => {
-        setUsermanagement({ ...usermanagement, btn_type: "0", app_name: "User Management - Create User", go_back_loc: "/user/management/list" })
+        setUsermanagement({ ...usermanagement, btn_type: "0" })
     }, [])
 
     return (
         <form className='mt-10' onSubmit={handleSubmit(onSubmit)}>
-            <BackArrow title={usermanagement.app_name} location={usermanagement.go_back_loc} />
+            <BackArrow title={"User Management - Create User"} location={'/user/management/list'} />
             <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
                 <div className='flex flex-wrap gap-7'>
                     <CustomTextField label={"First Name*"} name={"first_name"} errors={errors} register={register} watch={watch} />
@@ -138,6 +144,7 @@ function CreateUserForm() {
                             label="User Status" />
                         {usermanagement.user_status === true ? <p className='text-[0.8rem] text-[#3c993c] font-[bolder]'>Active</p> : <p className='text-[0.8rem] text-[red] font-[bolder]'>In Active</p>}
                     </div>
+
                     <div className='w-[50rem]'>
                         <Autocomplete
                             multiple
@@ -170,28 +177,12 @@ function CreateUserForm() {
                     </div>
 
                 </div>
-                {usermanagement.btn_type == "0" ?
-                    <div className=''>
-                        <LoadingButton
-                            fullWidths
-                            size="small"
-                            color="primary" variant="contained" type="submit"
-                            loading={btnSaving}
-                            loadingPosition="start"
-                            startIcon={<FiSave />}
-                        >
-                            <span className='p-1'>Save & Send Credentials to User</span>
-                        </LoadingButton>
-                    </div> :
-                    <div className=''>
-                        <Button fullWidth color="primary" variant="contained" type="submit">Update User</Button>
-                    </div>
-                }
+                <LoadingButtonWithSnack beforeName={"Create User"} afterName={"Creating...."} />
             </div>
             <div>
             </div>
             <div className='absolute right-0 bottom-0 p-6' >
-                <img width={"200px"} src={IMAGES.user_man_i} />
+                <img loading='lazy' width={"200px"} src={IMAGES.user_man_i} />
             </div>
         </form>
     )
@@ -209,7 +200,7 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
                 <Autocomplete
                     isOptionEqualToValue={(option, value) => option.value === value.value}
                     key={name}
-                    className="textfield"
+                    className="w-[20rem]"
                     disablePortal
                     id="combo-box-demo"
                     {...field}
@@ -233,9 +224,10 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
 
     )
 }
+
 const CustomTextField = ({ name, label, errors, register, watch }) => {
     return (
-        <TextField key={label} className="textfield" value={watch(name)} label={label} size={"small"}  {...register(name)} error={!!errors[name]} helperText={errors[name] && errors[name].message} />
+        <TextField key={label} className="w-[20rem]" value={watch(name)} label={label} size={"small"}  {...register(name)} error={!!errors[name]} helperText={errors[name] && errors[name].message} />
     )
 }
 const CustomDate = ({ register, name, label, errors, control, watch }) => {

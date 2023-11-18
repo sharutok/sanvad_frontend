@@ -1,7 +1,7 @@
 import { Navbar, Text, createStyles, getStylesRef, rem } from '@mantine/core';
-import NavbarLinksGroup from './f.CollapsableLinks';
+import NavbarLinksGroup from './CollapsableLinks';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Collapse, IconButton } from '@mui/material';
+import { Collapse, IconButton, Tooltip } from '@mui/material';
 import '../../../Style/Sidebar.css'
 import { useContext, useState } from 'react';
 import { AppContext } from '../../App';
@@ -13,10 +13,13 @@ export default function SideBar() {
             <Navbar >
                 <Navbar.Section>
                     <div className='flex justify-start px-6 py-4 '>
-                        <IconButton onClick={() => setCollapse(!collapse)}>
-                            <MenuIcon />
-                        </IconButton>
+                        <Tooltip disableInteractive title={`Click ${!collapse ? "Less" : "More"}`} placement='right'>
+                            <IconButton onClick={() => setCollapse(!collapse)}>
+                                <MenuIcon />
+                            </IconButton>
+                        </Tooltip>
                     </div>
+
                 </Navbar.Section>
 
                 <Navbar.Section grow mt="xl">

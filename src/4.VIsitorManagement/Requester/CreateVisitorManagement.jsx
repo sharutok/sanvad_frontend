@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import DialogsBox from '../Helper Components/DialogsBox'
 import dayjs from 'dayjs';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,21 +8,22 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {
     Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Divider, IconButton
 } from '@mui/material'
-import Checkbox from '@mui/material/Checkbox';
-import '../../Style/VisitManagement.css'
-import { VisitorMangErrorSchema } from '../Form Error Schema/VisitorMangErrorSchema';
-import BackArrow from '../Helper Components/SideComponent';
+import '../../../Style/VisitManagement.css'
+import { VisitorMangErrorSchema } from '../../Form Error Schema/VisitorMangErrorSchema';
+import BackArrow from '../../Helper Components/SideComponent';
 import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
-import { AppContext } from '../App';
-import Table from '../Helper Components/Table';
-import TipTool from '../Helper Components/TipTool';
+import { AppContext } from '../../App';
+import Table from '../../Helper Components/Table';
+import TipTool from '../../Helper Components/TipTool';
 import { MdDeleteOutline } from 'react-icons/md';
 import { FiSearch } from 'react-icons/fi';
-import { api } from '../Helper Components/Api';
+import { api } from '../../Helper Components/Api';
 import axios from 'axios';
 import { LoadingButton } from '@mui/lab';
 import moment from 'moment';
-import IMAGES from '../assets/Image/Image';
+import IMAGES from '../../assets/Image/Image';
+import { getCookies } from '../../Helper Components/CustomCookies';
+import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 
 export default function CreateVisitorMangement() {
     const ErrorSchema = VisitorMangErrorSchema
@@ -36,15 +36,20 @@ export default function CreateVisitorMangement() {
 
     const onSubmit = async (data) => {
         data["visitors"] = visitors
-        data["start_date_time"] = moment(getValues("start_date_time")["$d"]).format(),
-            data["end_date_time"] = moment(getValues("end_date_time")["$d"]).format(),
-            data["raised_by"] = "15681"
-        const response = await axios.post(api.visitor_management.create, data)
-        setBtnSaving(true)
-
-        if (response.data.status) {
-            setSnackBarPopUp({ state: true, message: "Created ticket" })
-            window.history.back()
+        console.log(visitors);
+        if (visitors.length >= 1) {
+            data["start_date_time"] = moment(getValues("start_date_time")["$d"]).format()
+            data["end_date_time"] = moment(getValues("end_date_time")["$d"]).format()
+            data["raised_by"] = getCookies()[0]
+            const response = await axios.post(api.visitor_management.create, data)
+            if (response.data.status == 200) {
+                setBtnSaving(true)
+                setSnackBarPopUp({ state: true, message: "Created Visitor Pass", severity: "s" })
+                window.history.back()
+            }
+        }
+        else {
+            return setSnackBarPopUp({ state: true, message: "Add Atlest 1 visitor Details", severity: 'e' })
         }
     }
 
@@ -120,21 +125,11 @@ export default function CreateVisitorMangement() {
                     </div>
                 </div>
                 <div className='p-10'>
-                    <LoadingButton
-                        fullWidth
-                        variant="contained"
-                        type="submit"
-                        sx={{ background: "#555259", width: "10rem" }}
-                        loading={btnSaving}
-                        startIcon={<></>}
-                        loadingPosition="start"
-                    >
-                        {btnSaving ? <p>Saving....</p> : <p>Save</p>}
-                    </LoadingButton>
+                    <LoadingButtonWithSnack beforeName={"Create Pass"} afterName={"Create...."} />
                 </div>
             </form>
             <div className='absolute right-0 bottom-0 p-6' >
-                <img width={"400px"} src={IMAGES.vistor_manage_i} />
+                <img loading='lazy' width={"400px"} src={IMAGES.vistor_manage_i} />
             </div>
         </div>
     )
