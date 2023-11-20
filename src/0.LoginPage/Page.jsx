@@ -1,23 +1,19 @@
 import React, { useContext, useState } from 'react'
 import '../../Style/LoginPage.css'
-import {
-    TextInput,
-    PasswordInput,
-    Title,
-    Text,
-    Container,
-    Divider,
-} from '@mantine/core';
+
 import IMAGES from '../assets/Image/Image';
 import { LoadingButton } from '@mui/lab';
 import { AppContext } from '../App'
-
-import { NativeSelect, rem } from '@mantine/core';
 import moment from 'moment';
 import { static_val } from '../Static/StaticValues';
 import axios from 'axios';
 import { api } from '../Helper Components/Api';
 import { setCookies } from '../Helper Components/CustomCookies';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+
 
 const data = static_val.prefix_email_id
 
@@ -70,43 +66,45 @@ function LoginBody() {
         setUserLogin({ ...userLogin, [name]: value })
     }
 
-    const select = (
-        <NativeSelect
-            defaultValue={data[0]['label']}
-            onChange={(e) => setPrefix(e.target.value)}
-            data={data}
-            rightSectionWidth={28}
-            styles={{
-                input: {
-                    fontWeight: 500,
-                    borderTopLeftRadius: 0,
-                    borderBottomLeftRadius: 0,
-                    width: rem(150),
-                    marginRight: rem(-2),
-                },
-            }}
-        />
-    );
     return (
         <div>
-            <Container size={650} >
-                <div className='flex justify-center p-5 gap-3 mb-7'>
+            <div size={650} >
+                <div className='flex justify-center p-5 gap-5 mb-7'>
                     <div className='flex justify-center'>
                         <img src={IMAGES.ador_logo} alt="Ador" width={"100"} />
                     </div>
-                    <Divider orientation='vertical' />
-                    <Title align="center" sx={(theme) => ({ fontWeight: 900, marginTop: "0.5rem", textTransform: "uppercase" })}> Sanvad</Title>
-                </div>
-                <Text align="center" sx={(theme) => ({ fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Text>
-                <form onSubmit={onSubmit} className='px-5'>
-                    <div >
-                        <TextInput error={error} sx={{ width: rem(350) }} onChange={handleOnChange} name="email" label="Email Address" placeholder="email address" required rightSection={select} />
-                        {/* <TextInput onChange={handleOnChange} name="email" label="Email Address" placeholder="email address" required /> */}
+                    <div>
+                        <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                     </div>
-                    <PasswordInput error={error} sx={{ width: rem(410) }} onChange={handleOnChange} name="password" label="Password" placeholder="your password" required mt="xl" />
-                    <Text className='mt-5 mb-10 underline' color="dimmed" size="sm" align="center">
-                        Forgot password? Contact Sanvad Admin
-                    </Text>
+                    <span align="center" className='font-medium text-[1.9rem] text-[#555259]'>SANVAD</span>
+                </div>
+                {/* <Text align="center" sx={(theme) => ({ fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Text> */}
+                {/* <Typography align="center" sx={(theme) => ({ fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Typography> */}
+                <form onSubmit={onSubmit} className=''>
+                    <div className='grid gap-4'>
+                        <div>
+
+                            <Typography className='text-[#212529]'>Email Address</Typography>
+                            <div className='flex'>
+                                <TextField helperText={error} error={error && true} name="email" size='small' id="outlined-basic" placeholder="Email Address" variant="outlined" required onChange={handleOnChange} />
+                                <Autocomplete
+                                    defaultValue={data[0]}
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={data}
+                                    className='w-[12rem]'
+                                    renderInput={(params) => <TextField {...params} size='small' />}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <Typography className='text-[#212529]'>Password</Typography>
+                            <TextField helperText={error} error={error && true} className='w-[25rem]' size='small' id="outlined-basic" placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
+                        </div>
+                        <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
+                            Forgot password? Contact Sanvad Admin
+                        </span>
+                    </div>
 
                     <div className='mt-5' >
                         <LoadingButton
@@ -123,7 +121,7 @@ function LoginBody() {
                     </div>
                 </form>
                 {/* </Paper> */}
-            </Container>
+            </div>
             <p className='text-center text-[0.9rem] mt-3'>{moment().format('YYYY')} adorwelding.com</p>
         </div >
     )

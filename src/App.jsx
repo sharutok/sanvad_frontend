@@ -5,7 +5,6 @@ export const AppContext = React.createContext()
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 const queryClient = new QueryClient()
 import './App.css'
-import { MantineProvider } from '@mantine/core';
 
 
 const theme = createTheme({
@@ -99,15 +98,13 @@ function App() {
 
   return (
     <>
-      <MantineProvider theme={{ fontFamily: 'Source Sans Pro' }}>
-        <QueryClientProvider client={queryClient}>
-          <AppContext.Provider value={contextValue}>
-            <ThemeProvider theme={theme}>
-              <Path />
-            </ThemeProvider>
-          </AppContext.Provider>
-        </QueryClientProvider>
-      </MantineProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppContext.Provider value={contextValue}>
+          <ThemeProvider theme={theme}>
+            <Path />
+          </ThemeProvider>
+        </AppContext.Provider>
+      </QueryClientProvider>
     </>
   )
 }

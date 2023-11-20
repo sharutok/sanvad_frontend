@@ -1,5 +1,4 @@
 import React from 'react'
-import { Header, Group, Divider, Box, Title, } from '@mantine/core';
 import { FaRegBell } from 'react-icons/fa';
 import { IoTicketOutline } from 'react-icons/io5';
 import { GrCurrency } from 'react-icons/gr';
@@ -13,26 +12,28 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { deleteCookies, getCookies } from '../../Helper Components/CustomCookies';
-
+import Divider from '@mui/material/Divider';
 
 export default function HeaderMegaMenu() {
     return (
-        <div className='fixed top-0 w-[100%] bg-[#ffff] '>
-            <Box className=' border-b-[.5px] border-solid border-[#e9e9e9] '>
-                <Header className='bg-[#ffff] ' height={60} px="md" >
-                    <Group position="apart" sx={{ height: '100%' }} >
-                        <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer '>
+        <div className='fixed top-0 w-[100%] bg-[#ffff] overflow-y-hidden'>
+            <div className=' border-b-[.5px] border-solid border-[#e9e9e9] p-2'>
+                <div className='flex justify-between h-fit'  >
+                    <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer '>
+                        <div className='py-1'>
                             <img loading='lazy' src={IMAGES.ador_logo} alt="Ador" width={"60"} />
-                            <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
-                            <Title align="center" className='text-[#555259]' sx={(theme) => ({ fontSize: "22px", textTransform: "uppercase" })}> Sanvad</Title>
                         </div>
-                        <Group sx={{ height: '100%' }} spacing={0} >
-                            <Notification />
-                            <AccountMenu />
-                        </Group>
-                    </Group>
-                </Header>
-            </Box >
+                        <div className='py-2'>
+                            <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
+                        </div>
+                        <span className='text-[#555259] py-1 font-bold  text-[1.4rem]' > SANVAD</span>
+                    </div>
+                    <div className='flex' >
+                        <Notification />
+                        <AccountMenu />
+                    </div>
+                </div>
+            </div >
         </div>
     );
 }

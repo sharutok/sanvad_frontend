@@ -4,7 +4,6 @@ import axios from 'axios'
 import { api } from '../../Helper Components/Api'
 import moment from 'moment'
 import { AiOutlineLike } from 'react-icons/ai';
-import { createStyles, Card, getStylesRef, rem, Group, Text } from '@mantine/core';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner'
 import Avatar from '@mui/material/Avatar';
 import IMAGES from '../../assets/Image/Image'
@@ -33,37 +32,6 @@ export default function YammerFrame() {
     )
 }
 
-const useStyles = createStyles((theme) => ({
-    price: {
-        color: theme.black,
-    },
-
-    carousel: {
-        '&:hover': {
-            [`& .${getStylesRef('carouselControls')}`]: {
-                opacity: 1,
-            },
-        },
-    },
-
-    carouselControls: {
-        ref: getStylesRef('carouselControls'),
-        transition: 'opacity 150ms ease',
-        opacity: 0,
-    },
-
-    carouselIndicator: {
-        color: 'red',
-        width: rem(10),
-        height: rem(10),
-        transition: 'width 250ms ease',
-
-        '&[data-active]': {
-            width: rem(16),
-        },
-    },
-}));
-
 
 
 function ICarousels({ data }) {
@@ -90,20 +58,20 @@ function ICarousels({ data }) {
                             </video>}
                         </div>
                         <div className='py-2'>
-                            <Group className='px-3' position="apart" >
-                                <Text fw={500} >
+                            <div className='px-3 flex justify-between'  >
+                                <span >
                                     <div className='flex'>
                                         <img className='rotate-180 -scale-x-100' width={30} src={IMAGES.like_gif} alt="" />
                                         {/* <AiOutlineLike color="#3d3d3d" fontSize='20' className='cursor-pointer' /> */}
                                         <span color='#3d3d3d' className=' text-lg'>{x.liked_by}</span>
                                     </div>
-                                </Text>
-                                <Group spacing={5}>
-                                    <Text fz="xs" fw={500}>
+                                </span>
+                                <div spacing={5}>
+                                    <span className='text-[0.8rem]'>
                                         <a href={x.web_url}>Click here for more...</a>
-                                    </Text>
-                                </Group>
-                            </Group>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div >
