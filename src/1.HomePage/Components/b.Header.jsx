@@ -1,13 +1,8 @@
 import React from 'react'
-import { createStyles, Header, HoverCard, Group, Button, UnstyledButton, Text, SimpleGrid, ThemeIcon, Divider, Center, Box, Burger, Drawer, Collapse, ScrollArea, rem, Title, } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import {
-    IconChevronDown
-} from '@tabler/icons-react';
-import { FaUsers, FaIdBadge, FaRegBell } from 'react-icons/fa';
+import { Header, Group, Divider, Box, Title, } from '@mantine/core';
+import { FaRegBell } from 'react-icons/fa';
 import { IoTicketOutline } from 'react-icons/io5';
 import { GrCurrency } from 'react-icons/gr';
-import { AiFillAccountBook } from 'react-icons/ai';
 import IMAGES from '../../assets/Image/Image';
 import '../../../Style/Header.css'
 import Avatar from '@mui/material/Avatar';
@@ -18,69 +13,9 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { deleteCookies, getCookies } from '../../Helper Components/CustomCookies';
-const useStyles = createStyles((theme) => ({
-    link: {
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%',
-        paddingLeft: theme.spacing.md,
-        paddingRight: theme.spacing.md,
-        textDecoration: 'none',
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        fontWeight: 500,
-        fontSize: theme.fontSizes.sm,
 
-        [theme.fn.smallerThan('sm')]: {
-            height: rem(42),
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-        },
-
-        ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-        }),
-    },
-
-    subLink: {
-        width: '100%',
-        padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-        borderRadius: theme.radius.md,
-
-        ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-        }),
-
-        '&:active': theme.activeStyles,
-    },
-
-    dropdownFooter: {
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-        margin: `calc(${theme.spacing.md} * -1)`,
-        marginTop: theme.spacing.sm,
-        padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
-        paddingBottom: theme.spacing.xl,
-        borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]}`,
-    },
-
-    hiddenMobile: {
-        [theme.fn.smallerThan('sm')]: {
-            display: 'none',
-        },
-    },
-
-    hiddenDesktop: {
-        [theme.fn.largerThan('sm')]: {
-            display: 'none',
-        },
-    },
-}));
 
 export default function HeaderMegaMenu() {
-    const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-    const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-    const { classes, theme } = useStyles();
-
     return (
         <div className='fixed top-0 w-[100%] bg-[#ffff] '>
             <Box className=' border-b-[.5px] border-solid border-[#e9e9e9] '>
@@ -91,7 +26,7 @@ export default function HeaderMegaMenu() {
                             <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                             <Title align="center" className='text-[#555259]' sx={(theme) => ({ fontSize: "22px", textTransform: "uppercase" })}> Sanvad</Title>
                         </div>
-                        <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+                        <Group sx={{ height: '100%' }} spacing={0} >
                             <Notification />
                             <AccountMenu />
                         </Group>
