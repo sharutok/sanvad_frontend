@@ -12,8 +12,8 @@ import Feedback from './Components/n.Feedback'
 
 export default function HomePage() {
     return (
-        <div className='bg-[#f0f0f0] h-max p-0 m-0 '>
-            <div className='grid mr-5 mt-[-2.3rem]'>
+        <div className='bg-[#f0f0f0] h-screen p-0 m-0 '>
+            <div className='grid mr-5 mt-[-3rem]'>
                 <div className='flex gap-5 grid-cols-[repeat(2,1fr)] ' >
                     <div className='bg-[#fff]'>
                         <SideBar />

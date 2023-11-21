@@ -1,4 +1,4 @@
-import { Divider } from '@mantine/core';
+import Divider from '@mui/material/Divider';
 import React from 'react'
 import { FaFileInvoiceDollar, FaUserCog } from 'react-icons/fa';
 import { FaUsersLine, FaClipboardCheck, FaRegIdBadge, } from 'react-icons/fa6'

@@ -21,11 +21,11 @@ export default function Page() {
 
     return (
         <div >
-            <div id="element" className='flex justify-center mt-10 pretty'>
-                <div className='w-[80%] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
+            <div id="element" className='flex justify-center mt-[5rem] '>
+                <div className='w-[75%] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
                     <img loading='lazy' className=' rounded-3xl' src={IMAGES.login_img} />
                 </div>
-                <div className='ml-[-33rem] mt-5'>
+                <div className='ml-[-20rem] '>
                     <LoginBody />
                 </div>
             </div>
@@ -67,23 +67,20 @@ function LoginBody() {
     }
 
     return (
-        <div>
-            <div size={650} >
-                <div className='flex justify-center p-5 gap-5 mb-7'>
+        <div className='ml-[-10rem]'>
+            <div  >
+                <div className='flex justify-center p-5 gap-5 mb-9'>
                     <div className='flex justify-center'>
                         <img src={IMAGES.ador_logo} alt="Ador" width={"100"} />
                     </div>
-                    <div>
+                    <div className='px-1 py-2'>
                         <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                     </div>
-                    <span align="center" className='font-medium text-[1.9rem] text-[#555259]'>SANVAD</span>
+                    <span align="center" className='font-medium text-[1.9rem] mt-1 text-[#555259]'>SANVAD</span>
                 </div>
-                {/* <Text align="center" sx={(theme) => ({ fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Text> */}
-                {/* <Typography align="center" sx={(theme) => ({ fontSize: "1.5rem", margin: "0rem 0 2rem" })}> Login to your account</Typography> */}
-                <form onSubmit={onSubmit} className=''>
-                    <div className='grid gap-4'>
+                <form onSubmit={onSubmit} >
+                    <div className='grid gap-4  '>
                         <div>
-
                             <Typography className='text-[#212529]'>Email Address</Typography>
                             <div className='flex'>
                                 <TextField helperText={error} error={error && true} name="email" size='small' id="outlined-basic" placeholder="Email Address" variant="outlined" required onChange={handleOnChange} />
@@ -120,7 +117,6 @@ function LoginBody() {
                         </LoadingButton>
                     </div>
                 </form>
-                {/* </Paper> */}
             </div>
             <p className='text-center text-[0.9rem] mt-3'>{moment().format('YYYY')} adorwelding.com</p>
         </div >

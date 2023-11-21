@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '@mui/material/Button';
 
 export default function ErrorPage404NotFound() {
     return (
@@ -7,64 +8,25 @@ export default function ErrorPage404NotFound() {
 }
 
 
-import { createStyles, Title, Text, Button, Container, Group, rem } from '@mantine/core';
-
-const useStyles = createStyles((theme) => ({
-    root: {
-        paddingTop: rem(80),
-        paddingBottom: rem(80),
-    },
-
-    label: {
-        textAlign: 'center',
-        fontWeight: 900,
-        fontSize: rem(220),
-        lineHeight: 1,
-        marginBottom: `calc(${theme.spacing.xl} * 1.5)`,
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2],
-
-        [theme.fn.smallerThan('sm')]: {
-            fontSize: rem(120),
-        },
-    },
-
-    title: {
-        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        textAlign: 'center',
-        fontWeight: 900,
-        fontSize: rem(38),
-
-        [theme.fn.smallerThan('sm')]: {
-            fontSize: rem(32),
-        },
-    },
-
-    description: {
-        maxWidth: rem(500),
-        margin: 'auto',
-        marginTop: theme.spacing.xl,
-        marginBottom: `calc(${theme.spacing.xl} * 1.5)`,
-    },
-}));
-
 export function NotFoundTitle() {
-    const { classes } = useStyles();
     function take_me_back_to_home_page() {
         window.location.href = "/login"
     }
     return (
-        <Container className={classes.root}>
-            <div className={classes.label}>404</div>
-            <Title className={classes.title}>You have found a secret place.</Title>
-            <Text color="dimmed" size="lg" align="center" className={classes.description}>
+        <div className="text-center grid gap-3">
+            <span className="w-[100%]  h-[100%] text-[40rem] top-0  absolute  text-[#f8f8f8]">404</span>
+            <span className="text-center text-[3rem] font-semibold font-sans text-[#585858]">You have found a secret place.</span>
+            <span className="text-center font-sans">
                 Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has
                 been moved to another URL.
-            </Text>
-            <Group position="center">
-                <Button variant="subtle" size="md" onClick={() => take_me_back_to_home_page()}>
+            </span>
+            <div >
+                <Button style={{
+                    backgroundColor: "#acacac",
+                }} variant="contained" onClick={() => take_me_back_to_home_page()}>
                     Take me back to login page
                 </Button>
-            </Group>
-        </Container>
+            </div>
+        </div>
     );
 }

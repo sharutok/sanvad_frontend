@@ -7,6 +7,7 @@ function TipTool({ body, title, position }) {
         <div>
             <Tooltip style={{ cursor: "pointer" }} title={title}
                 TransitionComponent={Zoom}
+                arrow
                 placement={position || "top"}
                 disableInteractive>
                 {body}

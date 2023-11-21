@@ -3,7 +3,6 @@ import { AppContext } from "../App";
 import Divider from '@mui/material/Divider';
 import IMAGES from "../assets/Image/Image";
 import moment from "moment";
-import { Title } from "@mantine/core";
 
 
 export class ComponentToPrint extends React.PureComponent {
