@@ -125,7 +125,7 @@ export default function ConferenceBookingListView() {
     }
 
     return (
-        <div className='mt-10'>
+        <div className='mt-20'>
             <BackArrow location={"/conference/booking/list"} title={"Conference Booking"} />
             <div className='flex gap-5 mx-10 my-5'>
                 <div className='w-fit px-4 bg-[#eeeeee] rounded-lg shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>

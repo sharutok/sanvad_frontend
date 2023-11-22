@@ -119,7 +119,7 @@ export default function ApproveVisitorManagement() {
     };
 
     return (
-        <div className='flex justify-around mt-10'>
+        <div className='flex justify-around mt-20'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <BackArrow location={"/vistors/management/list"} title={`Visitor Details`} />

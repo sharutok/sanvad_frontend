@@ -41,7 +41,7 @@ export default function ListView() {
 
     return (
         <div>
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between mt-20'>
                 <BackArrow location={"/home"} title={"Capex - Listing"} />
                 <div className='flex gap-4 mt-3 mr-20'>
                     <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
@@ -49,7 +49,7 @@ export default function ListView() {
                     {isPermissionToView("capex:export") && <ButtonComponent onClick={() => exportData()} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />}
                 </div>
             </div>
-            <div className='mt-10 px-5 '>
+            <div className='mt-5 px-5 '>
                 <BasicTabs _search={_search} _setSearch={_setSearch} />
             </div>
             <DialogsBox inputFile={inputFile} title={"Upload Excel"} body={<UploadFiles />} />

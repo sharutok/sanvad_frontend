@@ -52,7 +52,7 @@ export default function ListsView() {
 
     return (
         <div >
-            <div className='flex justify-between mt-10'>
+            <div className='flex justify-between mt-20'>
                 <BackArrow location={"/home"} title={"Conference Booking - Listing"} />
                 <div className='flex gap-4 mt-3 mr-10'>
                     <BarSnack />

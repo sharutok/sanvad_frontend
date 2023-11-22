@@ -67,7 +67,7 @@ export default function TicketSystemListView() {
         <div>
             <BarSnack />
             <div>
-                <div className='flex justify-between '>
+                <div className='flex justify-between mt-20'>
                     <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
                     <div className='flex gap-4  mr-10'>
                         <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
@@ -75,7 +75,7 @@ export default function TicketSystemListView() {
                         {isPermissionToView("ticketsystem:export") && <ButtonComponent onClick={() => exportData()} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />}
                     </div>
                 </div>
-                {!ticket_listing.isLoading ? <div className='mt-10 mx-10'>
+                {!ticket_listing.isLoading ? <div className='mt-20 mx-10'>
                     <Table thead={thead}
                         tbody={
                             ticket_listing?.data?.data?.results.map((g, i) => {

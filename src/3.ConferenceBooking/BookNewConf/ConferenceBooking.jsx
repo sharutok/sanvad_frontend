@@ -75,7 +75,7 @@ function ConferenceBooking({ fetchData }) {
     }
 
     return (
-        <form className='p-5' onSubmit={onSubmit}>
+        <form className='p-5 ' onSubmit={onSubmit}>
             <div className='grid grid-cols-1 gap-5'>
                 <div className='grid grid-cols-1 gap-5'>
                     <TextField className="w-full" defaultValue={confTemp.conf_room} label="Conference Name*" size={"small"} disabled />

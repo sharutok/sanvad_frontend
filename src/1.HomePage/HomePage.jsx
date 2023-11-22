@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from './Components/b.Header'
 import YammerFrame from './Components/e.YammerFrame'
 import ShortCutBtn from './Components/f.ShortCutBtn'
@@ -12,14 +12,14 @@ import Feedback from './Components/n.Feedback'
 
 export default function HomePage() {
     return (
-        <div className='bg-[#f0f0f0] h-screen p-0 m-0 '>
-            <div className='grid mr-5 mt-[-3rem]'>
+        <div className='bg-[#f0f0f0]  p-0 m-0 '>
+            <div className='grid mr-5 '>
                 <div className='flex gap-5 grid-cols-[repeat(2,1fr)] ' >
                     <div className='bg-[#fff]'>
                         <SideBar />
                     </div>
-                    <div className='grid gap-5 grid-cols-[45rem_2fr] p-1 mt-5 '>
-                        <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1 grid-rows-[repeat(1,1fr)]  '>
+                    <div className='grid gap-5 grid-cols-[1.5fr_2fr] p-1 mt-20 '>
+                        <div className='grid gap-5'>
                             <YammerFrame />
                         </div>
                         <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1  h-fit'>
@@ -32,7 +32,6 @@ export default function HomePage() {
                                     <WetherAndTemp />
                                     <NewEmployee />
                                     <Announsments />
-                                    {/* <Feedback /> */}
                                 </div>
                             </div>
                         </div>

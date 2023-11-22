@@ -17,13 +17,15 @@ import Typography from '@mui/material/Typography';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Autocomplete, TextField } from '@mui/material';
+
 export default function TicketSys() {
+
     const Demo = styled('div')(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
     }));
     const arr = [0, 9, 8, 7, 6, 5, 4, 3, 2]
     return (
-        <div>
+        <div >
             <Autocomplete
                 disablePortal
                 id="combo-box-demo"

@@ -52,7 +52,7 @@ export default function BudgetListVIew({ _search, _setSearch }) {
 
     return (
         <div>
-            <div className='mt-10'>
+            <div className='mt-5'>
                 <BarSnack />
                 <TemporaryDrawer body={<EditBudget data={budgetData} invalidateData={invalidateData} />} />
                 <Table thead={thead} tbody={

@@ -102,7 +102,7 @@ function RequesterForm() {
     }
 
     return (
-        <div className='mt-10'>
+        <div className='mt-20'>
             <BackArrow location={"/ticket/sys/list"} title={"Raise a New Ticket"} />
             <BarSnack />
             <form className='grid grid-cols-[repeat(1,1fr)] p-5' onSubmit={handleSubmit(onSubmit)}>

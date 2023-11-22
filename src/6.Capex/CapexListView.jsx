@@ -37,7 +37,7 @@ export default function CapexListView({ _search, _setSearch }) {
     }
 
     return (
-        <div className='mt-10'>
+        <div className='mt-5'>
             <BarSnack />
             <Table thead={thead} tbody={
                 data?.data?.results?.map(i => {

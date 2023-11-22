@@ -41,7 +41,7 @@ export default function Path() {
     return (
         <>
             {!["/", "/login"].includes(window.location.pathname) && <HeaderMegaMenu />}
-            <div className='mt-24'>
+            <div className=''>
                 <Router>
                     <Routes>
                         <Route path="/" element={<Navigate to="/login" replace />} />

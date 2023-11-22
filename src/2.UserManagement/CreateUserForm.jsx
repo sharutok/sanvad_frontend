@@ -81,7 +81,7 @@ function CreateUserForm() {
     }, [])
 
     return (
-        <form className='mt-10' onSubmit={handleSubmit(onSubmit)}>
+        <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
             <BackArrow title={"User Management - Create User"} location={'/user/management/list'} />
             <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
                 <div className='flex flex-wrap gap-7'>

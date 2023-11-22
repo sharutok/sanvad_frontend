@@ -63,7 +63,7 @@ export default function CreateVisitorMangement() {
 
     }
     return (
-        <div className='mt-10'>
+        <div className='mt-20'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <BackArrow location={"/vistors/management/list"} title={"Visitor's Management - New Application"} />

@@ -104,7 +104,7 @@ export default function Form() {
     }
 
     return (
-        <div className='mt-10 '>
+        <div className='mt-20 '>
             <BackArrow location={"/capex/list"} title={"Capex Form - Approver"} />
             <div className='p-10 grid grid-cols-[2fr_1fr] gap-20'>
                 <div className='h-fit grid gap-5  '>

@@ -83,7 +83,7 @@ function LoginBody() {
                         <div>
                             <Typography className='text-[#212529]'>Email Address</Typography>
                             <div className='flex'>
-                                <TextField helperText={error} error={error && true} name="email" size='small' id="outlined-basic" placeholder="Email Address" variant="outlined" required onChange={handleOnChange} />
+                                <TextField helperText={error} error={error && true} name="email" size='small' placeholder="Email Address" variant="outlined" required onChange={handleOnChange} />
                                 <Autocomplete
                                     defaultValue={data[0]}
                                     disablePortal
@@ -96,7 +96,7 @@ function LoginBody() {
                         </div>
                         <div>
                             <Typography className='text-[#212529]'>Password</Typography>
-                            <TextField helperText={error} error={error && true} className='w-[25rem]' size='small' id="outlined-basic" placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
+                            <TextField helperText={error} error={error && true} className='w-[25rem]' size='small' placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
                         </div>
                         <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
                             Forgot password? Contact Sanvad Admin

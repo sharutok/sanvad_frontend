@@ -11,7 +11,7 @@ export default function SideBar() {
         <div className={`h-screen border-r-[.5px] border-solid border-[#e9e9e9] overflow-hidden bg-[white] box ${collapse ? 'expanded' : ''}`}>
             <div >
                 <div>
-                    <div className='flex justify-start px-6 py-4 mt-5'>
+                    <div className='flex justify-start px-6 py-4 mt-20'>
                         <Tooltip disableInteractive title={`Click ${!collapse ? "Less" : "More"}`} placement='right'>
                             <IconButton onClick={() => setCollapse(!collapse)}>
                                 <MenuIcon />

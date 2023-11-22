@@ -136,7 +136,7 @@ export default function Form() {
 
 
     return (
-        <div className='mt-5'>
+        <div className='mt-20'>
             <BackArrow location={"/capex/list"} title={"Capex Form - Requester"} />
             <div className='p-10'>
                 <div>

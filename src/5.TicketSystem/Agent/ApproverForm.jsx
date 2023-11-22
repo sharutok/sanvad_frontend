@@ -126,7 +126,7 @@ export default function ApproverForm() {
 
 
     return (
-        <div className='mt-10'>
+        <div className='mt-20'>
             <BackArrow location={"/ticket/sys/list"} title={`Ticket No - #${getValues("ticket_no")}`} />
             <form className='grid grid-cols-[2fr_1fr] gap-20 p-5' onSubmit={handleSubmit(onSubmit)}>
                 <div >

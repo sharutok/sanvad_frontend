@@ -50,14 +50,16 @@ export default function ShortCutBtn() {
                                             < _icon.icons size={45} color='#ED1C24' />
                                         </div>
                                         <div className='mt-1'>
-                                            <span className='text-[1rem] font-semibold text-[#555259]'>{_icon.iconTitle}</span>
+                                            <span className='text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
                                         </div>
                                     </div>
                                 </div>
                             )
                         })}
                     </div>
-                    <Divider sx={{ borderColor: "#AEB1B8" }} orientation='vertical' />
+                    <div className='p-3'>
+                        <Divider sx={{ borderColor: "#AEB1B8" }} orientation='vertical' />
+                    </div>
                     <div className='grid grid-cols-2 gap-7 '>
                         {IconsIcons.map((_icon, i) => {
                             return (
@@ -67,7 +69,7 @@ export default function ShortCutBtn() {
                                             < _icon.icons size={45} color='#ED1C24' />
                                         </div>
                                         <div className='mt-1'>
-                                            <span className='text-[1rem] font-semibold text-[#555259]'>{_icon.iconTitle}</span>
+                                            <span className='text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
                                         </div>
                                     </div>
                                 </div>

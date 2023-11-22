@@ -36,7 +36,7 @@ export default function UserManagementListView() {
 
     return (
         <div >
-            <div className='flex justify-between mt-10'>
+            <div className='flex justify-between mt-20'>
                 <BackArrow location={"/home"} title={"User Management - Listing"} />
                 <div className='flex gap-4 mt-3 mr-10'>
                     <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />

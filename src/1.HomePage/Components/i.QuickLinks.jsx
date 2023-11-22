@@ -29,8 +29,8 @@ function QuickLinks() {
         <div className='bg-[#fff] rounded-xl '>
             <div className='p-3'>
                 <span className='text-[1.2rem] font-extrabold text-[#555259]'>Quick Links</span>
-                <div className='px-2'>
-                    <Divider sx={{ backgroundColor: "#D1D3D9" }} />
+                <div >
+                    <Divider />
                 </div>
             </div>
             <div className='grid grid-cols-[repeat(3,1fr)] grid-rows-[repeat(4,14.5vh)] mt-4 p-2'>

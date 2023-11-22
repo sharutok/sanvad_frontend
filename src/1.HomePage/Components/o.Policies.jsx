@@ -46,7 +46,7 @@ export default function Policies() {
 
     return (
         <div>
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between mt-20'>
                 <BackArrow location={"/home"} title={`${searchParams.get('type')} Policies`} />
                 <div className='flex gap-4 mt-3 mr-20'>
                     <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
