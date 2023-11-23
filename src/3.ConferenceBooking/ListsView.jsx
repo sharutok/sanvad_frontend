@@ -83,7 +83,7 @@ export default function ListsView() {
                                     <td onClick={() => handleDelete(g.id)} className='delete'>
                                         <TipTool body={
                                             <IconButton>
-                                                <MdDeleteOutline color='#f08080' size={23} />
+                                                {String(g.conf_by) === String(getCookies()[0]) ? <MdDeleteOutline color='#f08080' size={23} /> : <p className='p-3'></p>}
                                             </IconButton>
                                         } title={"Delete"} />
                                     </td>

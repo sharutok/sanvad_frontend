@@ -18,7 +18,7 @@ const IMAGES = {
     ticket_sys_i: new URL('../Image/Ticketing System.png', import.meta.url).href,
     conf_img_i: new URL('../Image/Conference Room.png', import.meta.url).href,
     vistor_manage_i: new URL('../Image/Visitor Management.png', import.meta.url).href,
-
+    login_smaller: new URL('../Image/login small size.png', import.meta.url).href,
 
     falcon_logo: new URL('../Image/falcon_logo.png', import.meta.url).href,
     ascent_logo: new URL('../Image/Ascent_logo.png', import.meta.url).href,

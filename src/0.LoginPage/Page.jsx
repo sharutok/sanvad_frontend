@@ -18,12 +18,18 @@ import Divider from '@mui/material/Divider';
 const data = static_val.prefix_email_id
 
 export default function Page() {
+    const [imageLoaded, setImageLoaded] = useState(false);
+
+    const handleImageLoad = () => {
+        setImageLoaded(true);
+    };
 
     return (
         <div >
             <div id="element" className='flex justify-center mt-[5rem] '>
-                <div className='w-[75%] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
-                    <img loading='lazy' className=' rounded-3xl' src={IMAGES.login_img} />
+                <div className='w-[75%] '>
+                    {!imageLoaded && <img loading='lazy' onLoad={() => handleImageLoad} className='z-[10] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_img} />}
+                    {imageLoaded && <img loading='lazy' className='border z[-1]  rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_smaller} />}
                 </div>
                 <div className='ml-[-20rem] '>
                     <LoginBody />
@@ -71,7 +77,7 @@ function LoginBody() {
             <div  >
                 <div className='flex justify-center p-5 gap-5 mb-9'>
                     <div className='flex justify-center'>
-                        <img src={IMAGES.ador_logo} alt="Ador" width={"100"} />
+                        <img loading='lazy' src={IMAGES.ador_logo} alt="Ador" width={"100"} />
                     </div>
                     <div className='px-1 py-2'>
                         <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />

@@ -19,11 +19,11 @@ import Drawer from '@mui/material/Drawer';
 import IMAGES from '../../assets/Image/Image'
 import { MdDeleteOutline } from 'react-icons/md'
 import dayjs from 'dayjs'
+import { getCookies } from '../../Helper Components/CustomCookies'
 
 export default function ConferenceBookingListView() {
     const { setMomentTime, dialogStatus, setDrawerStatus, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
     const [error1, setError1] = useState(false)
-    const thead = ["Conf No", "By", "Dept", "Start Date", "Start Time", "Conference Room", "End Date", "End Time",]
 
     const value = useMemo(() => {
         return (Array.from(Array(41).keys()).map(x => {
@@ -67,14 +67,17 @@ export default function ConferenceBookingListView() {
         const header_data = !prev_booked_list.isLoading && prev_booked_list?.data?.data?.data?.map(x => {
             if (what === moment(x.conf_start_time, "HH:mm").format("hh:mm A")) {
                 return (
-                    <div className='flex justify-between'>
+                    <div className='flex w-[100%] justify-between  px-5'>
                         <span className=''>{x.meeting_about}</span>
-                        <div className='grid grid-cols-3 gap-2'>
-                            <span className=''>{x.conf_by} | </span>
-                            <span className=''>{"IT"}</span>
-                            <div className='cursor-pointer mt-[0.1rem]'>
-                                <MdDeleteOutline onClick={() => { console.log("Hi"); }} color='#f08080' size={20} />
+                        <div className='flex gap-3'>
+                            <span className=''>{x.first_name} {x.last_name}  </span>
+                            <div className='px-1 py-1'>
+                                <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                             </div>
+                            <span className=''>{x.department}</span>
+                            {String(x.conf_by) === String(getCookies()[0]) && <div className='cursor-pointer mt-[0.1rem]'>
+                                <MdDeleteOutline onClick={() => { console.log("Hi"); }} color='#f08080' size={20} />
+                            </div>}
                         </div>
                     </div>
                 )
@@ -161,11 +164,11 @@ export default function ConferenceBookingListView() {
                                             <div key={i} className='w-[100%]'>
                                                 {getMeetingInfo(x) && <div className='pt-4'></div>}
                                                 <div className='p-[1rem] bg-gray-100 cursor-not-allowed flex justify-between '>
-                                                    <span className='text-sm'>{x}</span>
+                                                    <span className='text-sm mt-2'>{x}</span>
                                                     {getMeetingInfo(x) && <div style={{
                                                         borderLeft: "5px solid rgba(255, 0, 0,0.9)",
                                                         background: "rgba(255, 0, 0,0.1)",
-                                                    }} className='pl-4 w-[94%] '>
+                                                    }} className='p-1 w-[94%] '>
                                                         <div className='font-bold '>{getMeetingInfo(x)}</div>
                                                     </div>}
                                                 </div>

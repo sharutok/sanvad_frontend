@@ -22,9 +22,9 @@ export default function NavbarLinksGroup() {
             {links.map(x => {
                 return (
                     <div onClick={() => handleNavigation(x.mainlink)} className='w-100'>
-                        <div className='p-3 hover:bg-[#f7f7f7] cursor-pointer rounded-lg flex gap-3'>
+                        <div className=' hover:bg-[#f7f7f7] cursor-pointer rounded-lg flex gap-3'>
                             {collapse ? <TipTool position={"right"} title={x.label} body={
-                                <div>
+                                <div className='p-3'>
                                     <Icon icon={x.icon} />
                                 </div>
                             } /> : <div >
@@ -51,7 +51,7 @@ export default function NavbarLinksGroup() {
 
 function Icon({ icon: Icon }) {
     return (
-        <div>
+        <div className='ml-1'>
             <Icon color="#555259" size="1.5rem" />
         </div>
     )
