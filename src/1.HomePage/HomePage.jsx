@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Header from './Components/b.Header'
 import YammerFrame from './Components/e.YammerFrame'
 import ShortCutBtn from './Components/f.ShortCutBtn'
 import '../../Style/comman.css'
@@ -8,7 +7,6 @@ import SideBar from './Components/c.Sidebar'
 import QuickLinks from './Components/i.QuickLinks'
 import Announsments from './Components/l.Announsments'
 import WeatherAndTemp from './Components/m.WeatherAndTemp'
-import Feedback from './Components/n.Feedback'
 
 export default function HomePage() {
     return (
