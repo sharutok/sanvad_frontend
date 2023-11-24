@@ -82,7 +82,7 @@ function LoginBody() {
                     <div className='px-1 py-2'>
                         <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                     </div>
-                    <span align="center" className='font-medium text-[1.9rem] mt-1 text-[#555259]'>SANVAD</span>
+                    <span align="center" className='text-[1.9rem] mt-1 text-[#555259] font-extrabold'>ADOR <span className='text-red-600 font-bold'>HUB</span></span>
                 </div>
                 <form onSubmit={onSubmit} >
                     <div className='grid gap-4  '>
@@ -105,7 +105,7 @@ function LoginBody() {
                             <TextField helperText={error} error={error && true} className='w-[25rem]' size='small' placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
                         </div>
                         <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
-                            Forgot password? Contact Sanvad Admin
+                            Forgot password? Contact HUB Admin
                         </span>
                     </div>
 

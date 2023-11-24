@@ -45,7 +45,7 @@ function ConferenceBooking({ fetchData }) {
             const response = await axios.post(api.conference_booking.create, _data)
             if (response.data.status === 200) {
                 setBtnSaving(true)
-                setSnackBarPopUp({ state: true, message: "Booked Conference" })
+                setSnackBarPopUp({ state: true, message: "Booked Conference", severity: "s" })
                 window.location.href = "/conference/booking/list"
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
@@ -75,7 +75,7 @@ function ConferenceBooking({ fetchData }) {
     }
 
     return (
-        <form className='p-5 ' onSubmit={onSubmit}>
+        <form className='p-10' onSubmit={onSubmit}>
             <div className='grid grid-cols-1 gap-5'>
                 <div className='grid grid-cols-1 gap-5'>
                     <TextField className="w-full" defaultValue={confTemp.conf_room} label="Conference Name*" size={"small"} disabled />

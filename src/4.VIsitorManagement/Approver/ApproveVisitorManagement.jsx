@@ -28,7 +28,8 @@ import { api } from '../../Helper Components/Api';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import moment from 'moment';
 import { getCookies } from '../../Helper Components/CustomCookies';
-import { forceDownload } from '../../Static/StaticValues';
+import BarSnack from '../../Helper Components/BarSnack';
+import LoadingSpinner from '../../Helper Components/LoadingSpinner';
 const ErrorSchema = VisitorMangErrorSchema
 
 
@@ -50,6 +51,7 @@ export default function ApproveVisitorManagement() {
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
         defaultValues: {
+            punch_in_date_time: "", punch_out_date_time: "", status: "",
             start_date_time: "",
             end_date_time: "",
             v_company: "",
@@ -69,14 +71,13 @@ export default function ApproveVisitorManagement() {
         setComponentAccess(response?.data?.view_access);
         setVisitors(response?.data?.data)
         return data
-    },
-        { staleTime: 30000 }
+    }, { staleTime: 3000 }
     )
 
     const visitor_pic_data = useQuery(["visitor-pic"], async () => {
         const data = await axios.get(`${api.visitor_management.get_image}/?id=${id}`)
         return data
-    }, { staleTime: 30000 })
+    }, { staleTime: 3000 })
 
     const onSubmit = async (data) => {
         try {
@@ -100,6 +101,7 @@ export default function ApproveVisitorManagement() {
 
         }
     }
+
     function handleAddVisitor() {
         setDialogStatus(!dialogStatus)
     }
@@ -118,10 +120,39 @@ export default function ApproveVisitorManagement() {
         }
     };
 
+    async function handlePunch() {
+        const punch_in_date_time = getValues('punch_in_date_time')
+        const punch_out_date_time = getValues('punch_out_date_time')
+        const data = {
+            punch_in_date_time,
+            punch_out_date_time, visitor_status: getValues('status')
+        };
+        try {
+            const response = await axios.put(`${api.visitor_management.punch}/?id=${id}`, data)
+            console.log(response.data.status_code);
+            if (response.data.status_code === 200) {
+                setSnackBarPopUp({ state: true, message: "Updated Pass", severity: "s" })
+                queryClient.invalidateQueries(['visitor-data'])
+                setTimeout(() => {
+                    setSnackBarPopUp({ state: false, message: "", severity: "s" })
+                }, 2000)
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    if (data.isLoading) {
+        return (
+            <LoadingSpinner />
+        )
+    }
+
     return (
         <div className='flex justify-around mt-20'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
+                    <BarSnack />
                     <BackArrow location={"/vistors/management/list"} title={`Visitor Details`} />
                     <div className='grid gap-5 p-10'>
                         <div className='flex flex-wrap gap-5'>
@@ -130,12 +161,12 @@ export default function ApproveVisitorManagement() {
                             <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
                             <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                             <div className='grid grid-cols-[repeat(2,auto)] gap-5'>
+                                <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                                 <div className='grid grid-cols-[repeat(2,1fr)] gap-5'>
                                     <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
                                     <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
                                     <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
                                 </div>
-                                <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                             </div>
                         </div>
                         <div >
@@ -149,7 +180,6 @@ export default function ApproveVisitorManagement() {
                                         name="row-radio-buttons-group"
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        inputRef={ref}
                                         value={value}>
                                         <FormControlLabel value="0" control={<Radio size='small' />} label="Provided" />
                                         <FormControlLabel value="1" control={<Radio size='small' />} label="Returned" />
@@ -166,8 +196,13 @@ export default function ApproveVisitorManagement() {
                             <VisitorListing visitorPhoto={visitor_pic_data?.data?.data?.data} componentAccess={componentAccess} captureImage={captureImage} visitors={getValues("visitors") && JSON.parse(getValues("visitors"))} />
                         </div>
                     </div>
-                    <div className='vm-button ml-5'>
-                        <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />
+                    <div className='ml-5'>
+                        <div className='vm-button'>
+                            {!componentAccess.update_btn && <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />}
+                            {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch In</Button>}
+                            {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch Out</Button>}
+
+                        </div>
                     </div>
                 </div>
                 {componentAccess.print_component && <div className='mt-20 p-5'>
@@ -252,17 +287,6 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
         "Visitor's Department",
         "Assets",
     ]
-    const downloadWithAxios = async (url, file_name) => {
-        console.log(url, file_name);
-        try {
-            const response = await axios.get(url, { responseType: 'arraybuffer' })
-            forceDownload(response, file_name)
-        }
-        catch (error) {
-            console.log("error in getting file", error)
-        }
-
-    }
     return (<>
         <Table thead={thead}
             tbody={
@@ -274,21 +298,21 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
                             <td>{g.v_mobile_no}</td>
                             <td>{g.v_desig}</td>
                             <td>{g.v_asset}</td>
-                            {visitorPhoto[i] && <td className='delete'>{
+                            {visitorPhoto[i]?.mod_image && <td className='delete'>{
                                 <TipTool body={
-                                    <a target="_blank" href={visitorPhoto[i]?.mod_image}>{`Vistor ${i + 1}`}</a>
+                                    <a className='py-4 ' target="_blank" href={visitorPhoto[i]?.mod_image}>{`Vistor ${i + 1}`}</a>
                                 }
                                     title={`View Vistor ${i + 1} photo `} />
                             }
                             </td>}
-                            {componentAccess.camera_component &&
-                                <td onClick={() => { captureImage(`${id}__${i}`) }} className='delete'>
+                            {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
+                                <td onClick={() => { captureImage(`${id}__${i}`) }} className='delete '>
                                     <TipTool body={
                                         <IconButton>
                                             <AiOutlineCamera color='#555259' size={22} />
                                         </IconButton>
                                     } title={"Click Photo"} />
-                                </td>}
+                                </td>)}
 
                         </tr>
                     )

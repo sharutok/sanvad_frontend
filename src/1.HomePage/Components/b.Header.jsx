@@ -16,7 +16,7 @@ import Divider from '@mui/material/Divider';
 
 export default function HeaderMegaMenu() {
     return (
-        <div className='fixed top-0 w-[100%] bg-[#ffff] overflow-y-hidden'>
+        <div className='fixed top-0 w-[100%] bg-[#ffff] overflow-y-hidden z-[10]'>
             <div className=' border-b-[.5px] border-solid border-[#e9e9e9] p-2'>
                 <div className='flex justify-between h-fit'  >
                     <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer '>
@@ -26,7 +26,7 @@ export default function HeaderMegaMenu() {
                         <div className='py-2'>
                             <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                         </div>
-                        <span className='text-[#555259] py-1 font-bold  text-[1.4rem]' > SANVAD</span>
+                        <span className='text-[#555259] py-1 font-extrabold  text-[1.4rem]' > ADOR <span className='text-red-600 font-bold'>HUB</span></span>
                     </div>
                     <div className='flex' >
                         <Notification />

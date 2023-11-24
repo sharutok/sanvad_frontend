@@ -23,7 +23,7 @@ const Input = styled('input')({
 });
 
 function RequesterForm() {
-    const { snackBarPopUp, setSnackBarPopUp, snackfn } = useContext(AppContext)
+    const { setSnackBarPopUp, } = useContext(AppContext)
     const emp_id = getCookies()[0]
     const [tktFiles, setTKTFiles] = useState([])
     const [tktType, setTKTType] = useState({

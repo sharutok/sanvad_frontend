@@ -15,7 +15,8 @@ import CPagination from '../../Helper Components/Pagination'
 import { useSearchParams } from 'react-router-dom'
 import { TbDownload } from 'react-icons/tb'
 import TipTool from '../../Helper Components/TipTool'
-import { forceDownload } from '../../Static/StaticValues'
+import { forceDownload, isPermissionToView } from '../../Static/StaticValues'
+import { FaEye } from 'react-icons/fa'
 
 export default function Policies() {
     const thead = ["Policy Name", "Policy Type", "Policy Created Date"]
@@ -29,16 +30,6 @@ export default function Policies() {
         return data
     }, { staleTime: 3000 })
 
-    const downloadWithAxios = async (url, file_name) => {
-        try {
-            const response = await axios.get(url, { responseType: 'arraybuffer' })
-            forceDownload(response, file_name)
-        }
-        catch (error) {
-            console.log("error in getting file", error)
-        }
-    }
-
     useEffect(() => {
         setCount(Math.ceil(response?.data?.data?.count / 10))
     })
@@ -50,7 +41,7 @@ export default function Policies() {
                 <BackArrow location={"/home"} title={`${searchParams.get('type')} Policies`} />
                 <div className='flex gap-4 mt-3 mr-20'>
                     <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                    <ButtonComponent onClick={() => { setDialogStatus(true) }} icon={<CgFolderAdd color='white' size={"20"} />} btnName={"Add Policy"} />
+                    {(searchParams.get('type') === "HR" && (isPermissionToView("policy:hr:add")) || (searchParams.get('type') === "IT" && isPermissionToView("policy:it:add"))) && <ButtonComponent onClick={() => { setDialogStatus(true) }} icon={<CgFolderAdd color='white' size={"20"} />} btnName={"Add Policy"} />}
                 </div>
             </div>
             <DialogsBox inputFile={inputFile} title={"Upload Policy"} body={<UploadFiles />} />
@@ -62,16 +53,16 @@ export default function Policies() {
                                 <td >{g.policy_name}</td>
                                 <td >{PolicyType(g.policy_type)}</td>
                                 <td >{g.mod_created_at}</td>
-                                <td onClick={() => {
-                                    downloadWithAxios(g.mod_file_path, g.mod_file_name)
-                                }} className='delete w-fit '>
-                                    <TipTool body={
-                                        <IconButton>
-                                            <TbDownload color="#555259" size="1.5rem" />
-                                        </IconButton>
-                                    } title={"Download file"} position={"left"}
-                                    />
-                                </td>
+                                <td className='delete'>{
+                                    <a target="_blank" href={g.mod_file_path}>
+                                        <TipTool
+                                            body={
+                                                <IconButton>
+                                                    <FaEye color="#555259" size="1.5rem" />
+                                                </IconButton>
+                                            } position={"top"} title={"View"} />
+                                    </a>
+                                }</td>
                             </tr>
                         )
                     })
@@ -85,6 +76,7 @@ export default function Policies() {
 const UploadFiles = ({ inputFile }) => {
     const { setSnackBarPopUp, setBtnSaving, setDialogStatus } = useContext(AppContext)
     const [tktFiles, setTKTFiles] = useState([])
+    const [searchParams, setSearchParams] = useSearchParams();
     const [obj, setObj] = useState({
         policy_name: "", policy_type: ""
     })
@@ -154,8 +146,8 @@ const UploadFiles = ({ inputFile }) => {
                                 onChange={handleOnChange}
                                 value={obj.policy_type}
                             >
-                                <FormControlLabel value="HR" control={<Radio size='small' />} label="HR" />
-                                <FormControlLabel value="IT" control={<Radio size='small' />} label="IT" />
+                                <FormControlLabel checked={searchParams.get('type') === "HR" ? true : false} value="HR" control={<Radio size='small' />} label="HR" />
+                                <FormControlLabel checked={searchParams.get('type') === "IT" ? true : false} value="IT" control={<Radio size='small' />} label="IT" />
                             </RadioGroup>
                         </FormControl>
                     </div>

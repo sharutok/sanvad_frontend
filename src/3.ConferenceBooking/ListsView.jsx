@@ -20,7 +20,7 @@ import { exportToCSV, isPermissionToView } from '../Static/StaticValues'
 import { getCookies } from '../Helper Components/CustomCookies'
 
 export default function ListsView() {
-    const thead = ["Meeting title", "Meeting Date", "Start Time", "End Time", "Conference", "Booked By", "Department"]
+    const thead = ["Meeting title", "Meeting Start Date", "Meeting End Date", "Start Time", "End Time", "Conference", "Booked By", "Department"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const [_date, _setDate] = useState(false)
@@ -75,6 +75,7 @@ export default function ListsView() {
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
                                     <td>{g.meeting_about}</td>
                                     <td>{moment(g.conf_end_date).format("DD MMM YYYY")}</td>
+                                    <td>{moment(g.disp_conf_end_date).format("DD MMM YYYY")}</td>
                                     <td>{moment(g.conf_start_time, "HH:mm").format("hh:mm A")}</td>
                                     <td>{moment(g.conf_end_time, "HH:mm").format("hh:mm A")}</td>
                                     <td>{g.conf_room}</td>

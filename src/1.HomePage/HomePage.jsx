@@ -7,7 +7,7 @@ import NewEmployee from './Components/k.NewEmployee'
 import SideBar from './Components/c.Sidebar'
 import QuickLinks from './Components/i.QuickLinks'
 import Announsments from './Components/l.Announsments'
-import WetherAndTemp from './Components/m.WetherAndTemp'
+import WeatherAndTemp from './Components/m.WeatherAndTemp'
 import Feedback from './Components/n.Feedback'
 
 export default function HomePage() {
@@ -29,7 +29,7 @@ export default function HomePage() {
                                     <QuickLinks />
                                 </div>
                                 <div className='grid gap-5  '>
-                                    <WetherAndTemp />
+                                    <WeatherAndTemp />
                                     <NewEmployee />
                                     <Announsments />
                                 </div>

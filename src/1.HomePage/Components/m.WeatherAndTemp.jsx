@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { api } from '../../Helper Components/Api'
 import IMAGES from '../../assets/Image/Image'
 
-export default function WetherAndTemp() {
+export default function WeatherAndTemp() {
     const [obj, setObj] = useState({})
     const { isLoading, error, data } = useQuery(['weather-data'], async () => { return await axios.get(api.utils.weather_temp) }, { staleTime: "300000" })
 

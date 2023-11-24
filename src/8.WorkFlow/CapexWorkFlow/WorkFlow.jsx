@@ -32,7 +32,7 @@ const CWorkFlow = () => {
 
     return (
         <>
-            <div className='mt-5'>
+            <div className='mt-20'>
                 <BackArrow location={"/home"} title={"Capex WorkFlow Configuration"} />
             </div>
             <div className='grid grid-cols-1 p-10 gap-20'>

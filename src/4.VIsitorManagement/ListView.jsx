@@ -16,9 +16,10 @@ import moment from 'moment'
 import BarSnack from '../Helper Components/BarSnack'
 import { exportToCSV, isPermissionToView } from '../Static/StaticValues'
 import { getCookies } from '../Helper Components/CustomCookies'
+import LoadingSpinner from '../Helper Components/LoadingSpinner'
 
 export default function VisitManagementListView() {
-    const thead = ["Visitor's Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Visitor Count",]
+    const thead = ["Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Visitor Count", "Visitor's Status"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const queryClient = useQueryClient()
@@ -63,7 +64,7 @@ export default function VisitManagementListView() {
             </div>
             <div className='mt-10 px-10'>
                 <Table thead={thead} tbody={
-                    data?.data?.results.map((g, i) => {
+                    !isLoading ? data?.data?.results.map((g, i) => {
                         return (
                             <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={true} placement='top'>
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
@@ -73,17 +74,18 @@ export default function VisitManagementListView() {
                                     <td onClick={() => handleNav(g)} >{moment(g.start_date_time).format("DD-MM-YYYY hh:mm a")}</td>
                                     <td onClick={() => handleNav(g)} >{moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}</td>
                                     <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors).length}</td>
-                                    <td onClick={() => handleDelete(g.id)} className='delete '>
+                                    <td onClick={() => handleNav(g)} >{VisitorStatus(g.visitor_status)}</td>
+                                    {g.visitor_status !== 2 && <td onClick={() => handleDelete(g.id)} className='delete '>
                                         <TipTool position={"right"} body={
                                             <div className='w-fit hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'>
                                                 <MdDeleteOutline color='#f08080' size={22} />
                                             </div>
                                         } title={"Delete"} />
-                                    </td>
+                                    </td>}
                                 </tr>
                             </Tooltip>
                         )
-                    })} />
+                    }) : <LoadingSpinner />} />
             </div>
             <div>
                 <CPagination />
@@ -104,4 +106,16 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
             {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
         </div>
     )
+}
+
+function VisitorStatus(val) {
+    if (val === 0) {
+        return (<div className='flex justify-center '><p className='mt-[0.1rem]  bg-slate-100 px-3 py-1 rounded-full'>Not Yet</p></div>)
+    }
+    if (val === 1) {
+        return (<div className='flex justify-center '><p className='px-3 py-1  rounded-full bg-yellow-100 mt-[0.1rem]'>In-Premise</p></div>)
+    }
+    if (val === 2) {
+        return (<div className='flex justify-center '><p className='px-3 py-1  rounded-full bg-green-100 mt-[0.1rem]'>Exited</p></div>)
+    }
 }

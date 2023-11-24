@@ -27,10 +27,10 @@ export default function NavbarLinksGroup() {
                                 <div className='p-3'>
                                     <Icon icon={x.icon} />
                                 </div>
-                            } /> : <div >
+                            } /> : <div className='p-3' >
                                 <Icon icon={x.icon} />
                             </div>}
-                            {!collapse && <span className='text-[#555259]'>{x.label}</span>}
+                            {!collapse && <span className='text-[#555259] p-3'>{x.label}</span>}
                         </div>
                         {/* <div className='grid gap-2'>
                             <div className='ml-15 grid grid-cols-1 gap-2'>

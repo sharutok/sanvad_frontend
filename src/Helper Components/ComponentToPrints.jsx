@@ -59,14 +59,13 @@ export const FunctionalComponentToPrint = React.forwardRef((props, ref) => {
 
 
 function PrintBody() {
-    const [i, setI] = React.useState()
     const { visitors } = React.useContext(AppContext)
 
     return (
         <div>
             {
                 visitors?.length && visitors?.map((y, i) => {
-                    const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset })
+                    const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset.toUpperCase() })
                     const assets = t_assets.join(', ')
                     // console.log(assets);
                     return (
@@ -123,7 +122,7 @@ function PrintBody() {
                                     <div className="border border-solid border-[black] rounded-xl">
                                         <div className="grid grid-cols-2 w-100% ">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 rounded-tl-[10px]">Visitor's Name</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-tr-[10px]" >{(JSON.parse(y['visitors']) && JSON.parse(y['visitors'])[0]['v_name'])}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-tr-[10px]" >{(JSON.parse(y['visitors']) && (JSON.parse(y['visitors'])[0]['v_name']).toUpperCase())}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 ">Mobile No</span>
@@ -131,11 +130,11 @@ function PrintBody() {
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2">Visitors Company</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black]">{y.v_company}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black]">{y.v_company && y.v_company.toUpperCase()}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100% ">
                                             <span className="font-bold border border-solid border-[black] pl-2 pr-2 rounded-bl-[10px]">Visitors Vehicle Number</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-br-[10px]">{y.veh_no}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black] rounded-br-[10px]">{y.veh_no && y.veh_no.toUpperCase()}</label>
                                         </div>
                                     </div>
                                     <div className="border border-solid border-[black] rounded-xl">
@@ -149,7 +148,7 @@ function PrintBody() {
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="pl-2 pr-2 border border-solid border-[black] font-bold">Reason of Visit</span>
-                                            <label className="pl-2 pr-2 border border-solid border-[black]">{(y.reason_for_visit).substring(0, 20)}</label>
+                                            <label className="pl-2 pr-2 border border-solid border-[black]">{(y.reason_for_visit && y.reason_for_visit.toUpperCase()).substring(0, 20)}</label>
                                         </div>
                                         <div className="grid grid-cols-2 w-100%">
                                             <span className="rounded-bl-[10px] pl-2 pr-2 border border-solid border-[black] font-bold">PPE Provided</span>

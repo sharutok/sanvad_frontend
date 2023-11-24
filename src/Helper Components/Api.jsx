@@ -44,6 +44,7 @@ export const api = {
         by_id: `${link}/visitor-manage/`,
         save_image: `${link}/visitor-manage/save/img/`,
         get_image: `${link}/visitor-manage/get/img`,
+        punch: `${link}/visitor-manage/punch`,
 
     },
     user: {
@@ -54,7 +55,8 @@ export const api = {
     utils: {
         download_excel: `${link}/utils/download/excel/`,
         weather_temp: `${link}/utils/get/weather/temp/`,
-        serve_files: `${link}/utils/serve/file/`
+        serve_files: `${link}/utils/serve/file/`,
+        announcements: `${link}/utils/add/announsment/`
     },
     wf: {
         it_system_ticket_wf: `${link}/wf/ticket/systems/`,

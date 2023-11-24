@@ -31,7 +31,7 @@ export default function WorkFlow() {
 
     return (
         <>
-            <div className='mt-5'>
+            <div className='mt-20'>
                 <BackArrow location={"/home"} title={"Ticket WorkFlow Configuration"} />
             </div>
             <div className='grid grid-cols-1 p-10 gap-10'>

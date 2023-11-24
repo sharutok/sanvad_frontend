@@ -79,6 +79,7 @@ export default function TicketSystemListView() {
                     <Table thead={thead}
                         tbody={
                             ticket_listing?.data?.data?.results.map((g, i) => {
+                                console.log(String(getCookies()[0]), String(g.requester_emp_no));
                                 return (
                                     <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={true} placement='top'>
                                         <tr className='table-wrapper' >
@@ -86,18 +87,18 @@ export default function TicketSystemListView() {
                                             <td onClick={() => handleNav(g)}>{g.tkt_title}</td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_type}</td>
                                             <td onClick={() => handleNav(g)}>{g.req_type}</td>
-                                            <td onClick={() => handleNav(g)}>{g.requester_emp_no}</td>
+                                            <td onClick={() => handleNav(g)}>{g.requester_emp_name}</td>
                                             <td onClick={() => handleNav(g)} className='align-middle'>{severityArrow(g.severity)}</td>
                                             <td onClick={() => handleNav(g)} >{g.created_at}</td>
                                             <td onClick={() => handleNav(g)} className='align-middle'>{status(g.tkt_status)}</td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_current_at}</td>
-                                            <td className='delete'>
+                                            {String(getCookies()[0]) === String(g.requester_emp_no) && <td className='delete'>
                                                 <TipTool body={< >
                                                     <IconButton onClick={() => handleDelete(g.id)}>
                                                         <MdDeleteOutline color='#f08080' size={22} />
                                                     </IconButton>
                                                 </>} title={"Delete"} />
-                                            </td>
+                                            </td>}
                                         </tr>
                                     </Tooltip>
                                 )
