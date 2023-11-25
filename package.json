@@ -7,7 +7,7 @@
     "dev": "vite --port 3000",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview "
+    "preview": "vite preview --host"
   },
   "dependencies": {
     "@date-io/moment": "^2.16.1",
