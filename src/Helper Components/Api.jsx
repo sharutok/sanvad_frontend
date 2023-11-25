@@ -1,4 +1,4 @@
-const url = "http://127.0.0.1"
+const url = "http://localhost"
 const port = "8000"
 const link = `${url}:${port}`
 export const api = {
