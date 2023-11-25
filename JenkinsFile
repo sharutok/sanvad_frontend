@@ -1,0 +1,19 @@
+pipline{
+    agent_any{
+        statges{
+            stage("build"){
+                steps{
+                    echo 'building application....'
+                }
+            }
+        }
+        post{
+            success{
+                echo 'success to build'
+            }
+            failure{
+                echo 'failed to build'
+            }
+        }
+    }   
+}
