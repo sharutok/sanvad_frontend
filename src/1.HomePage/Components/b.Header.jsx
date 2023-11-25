@@ -26,7 +26,7 @@ export default function HeaderMegaMenu() {
                         <div className='py-2'>
                             <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                         </div>
-                        <span className='text-[#555259] py-1 font-extrabold  text-[1.4rem]' > ADOR <span className='text-red-600 font-bold'>HUB</span></span>
+                        <span className='text-[#555259] py-1 font-extrabold  text-[1.4rem]' > <span className='text-red-600 font-bold'>HUB</span></span>
                     </div>
                     <div className='flex' >
                         <Notification />
