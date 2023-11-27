@@ -74,6 +74,11 @@ export default function UpdateUserForm() {
     return data
   })
 
+  const plant_dept = useQuery(['plant_dept'], async () => {
+    const data = axios.get(api.utils.dept_plant)
+    return data
+  })
+
   const onSubmit = async (submitData) => {
 
     const value = {
@@ -98,8 +103,9 @@ export default function UpdateUserForm() {
       password: getValues('password'),
       organization: getValues('organization'),
       user_role: getValues('user_role'),
-
     }
+
+
     try {
       const response = await axios.put(`${api.user_management.get_data_id}/${id}/`, value)
       console.log(value);
@@ -122,6 +128,10 @@ export default function UpdateUserForm() {
     return await axios.get(api.user.user_permissions)
   })
 
+  const _plant_dept = useQuery(['plant_dept'], async () => {
+    const data = axios.get(api.utils.dept_plant)
+    return data
+  })
   return (
     <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
       <BackArrow title={"User Management - Update User"} location={'/user/management/list'} />
@@ -167,12 +177,12 @@ export default function UpdateUserForm() {
           <CustomDate label={"End Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
           <CustomDate label={"Start Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
           <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
-          <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={['0', "1", "2", "3", "4"]} />
-          <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={['0', "1", "2", "3", "4"]} />
+          <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={_plant_dept?.data?.data?.department || []} />
+          <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={_plant_dept?.data?.data?.plant_data || []} />
           <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
           <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} />
           <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
-          <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={['0', "1", "2", "3", "4"]} />
+          <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={["ADOR WELDING", "ADOR FONTECH", "FLASH"]} />
         </div>
         <Divider textAlign='left'></Divider>
         <div className='flex flex-wrap gap-7'>

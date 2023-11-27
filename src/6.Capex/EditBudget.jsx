@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from 'react'
-import { Box } from 'tabler-icons-react';
 import { AppContext } from '../App';
-import { IoMdArrowBack } from 'react-icons/io';
 import { Autocomplete, Drawer, FormControlLabel, Switch, TextField } from '@mui/material';
-import IMAGES from '../assets/Image/Image';
+import { useQuery } from '@tanstack/react-query';
 import { useForm, Controller, get } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BudgetErrorSchema } from '../Form Error Schema/BudgetErrorSchema'
@@ -54,6 +52,10 @@ export default function EditBudget({ data, invalidateData }) {
             console.log(error);
         }
     }
+    const _plant_dept = useQuery(['plant_dept'], async () => {
+        const data = axios.get(api.utils.dept_plant)
+        return data
+    })
     useEffect(() => {
         Object.entries(data).map(x => {
             setValue(x[0], x[1])
@@ -70,8 +72,8 @@ export default function EditBudget({ data, invalidateData }) {
                     <CustomTextField label={"Line No"} name={"line_no"} errors={errors} register={register} watch={watch} />
                     {/* <CustomTextField label={"Plant"} name={"plant"} errors={errors} register={register} watch={watch} /> */}
                     {/* <CustomTextField label={"Department"} name={"dept"} errors={errors} register={register} watch={watch} /> */}
-                    <CustomAutoComplete control={control} errors={errors} name={"plant"} label={"Plant"} options={['0', "1", "2", "3", "4"]} />
-                    <CustomAutoComplete control={control} errors={errors} name={"dept"} label={"Department"} options={['0', "1", "2", "3", "4"]} />
+                    <CustomAutoComplete control={control} errors={errors} name={"plant"} label={"Plant"} options={_plant_dept?.data?.data?.plant_data || []} />
+                    <CustomAutoComplete control={control} errors={errors} name={"dept"} label={"Department"} options={_plant_dept?.data?.data?.department || []} />
                     <CustomTextField label={"Capex Group"} name={"capex_group"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Capex class"} name={"capex_class"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Category"} name={"category"} errors={errors} register={register} watch={watch} />

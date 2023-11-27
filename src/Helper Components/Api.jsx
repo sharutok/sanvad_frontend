@@ -56,7 +56,8 @@ export const api = {
         download_excel: `${link}/utils/download/excel/`,
         weather_temp: `${link}/utils/get/weather/temp/`,
         serve_files: `${link}/utils/serve/file/`,
-        announcements: `${link}/utils/add/announsment/`
+        announcements: `${link}/utils/add/announsment/`,
+        dept_plant: `${link}/utils/list/dept-plant/`,
     },
     wf: {
         it_system_ticket_wf: `${link}/wf/ticket/systems/`,

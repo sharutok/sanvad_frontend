@@ -42,11 +42,14 @@ function CreateUserForm() {
         return await axios.get(api.user.user_permissions)
     })
 
-    // const mutation = useMutation({
-    //     mutationFn: async (newTodo) => {
-    //         return await axios.post(api.user_management.post_data, newTodo)
-    //     },
-    // })
+    const plant_dept = useQuery(['plant_dept'], async () => {
+        const data = axios.get(api.utils.dept_plant)
+        return data
+    })
+
+
+
+
 
 
     const onSubmit = async (submit) => {
@@ -124,8 +127,8 @@ function CreateUserForm() {
                     <CustomDate label={"End Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomDate label={"Start Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
-                    <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={['0', "1", "2", "3", "4"]} />
-                    <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={['0', "1", "2", "3", "4"]} />
+                    <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
+                    <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={plant_dept?.data?.data?.plant_data || []} />
                     <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
                     <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} />
                     <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
