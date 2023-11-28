@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react'
 import BackArrow from '../Helper Components/SideComponent'
 import CPagination from '../Helper Components/Pagination'
-import { FiSearch } from 'react-icons/fi'
+import { FaInfoCircle } from "react-icons/fa";
+
 import { MdClear, MdDeleteOutline } from 'react-icons/md'
 import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
 import { IoIosPaper } from 'react-icons/io'
@@ -71,7 +72,12 @@ export default function VisitManagementListView() {
                                     <td onClick={() => handleNav(g)} >{g.reason_for_visit}</td>
                                     <td onClick={() => handleNav(g)} >{g.name}</td>
                                     <td onClick={() => handleNav(g)} >{g.department}</td>
-                                    <td onClick={() => handleNav(g)} >{moment(g.start_date_time).format("DD-MM-YYYY hh:mm a")}</td>
+                                    <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
+                                        {moment(g.start_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual In Time", g.punch_in_date_time)}
+                                    </div></td>
+                                    <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
+                                        {moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual Out Time", g.punch_out_date_time)}
+                                    </div></td>
                                     <td onClick={() => handleNav(g)} >{moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}</td>
                                     <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors).length}</td>
                                     <td onClick={() => handleNav(g)} >{VisitorStatus(g.visitor_status)}</td>
@@ -90,6 +96,18 @@ export default function VisitManagementListView() {
             <div>
                 <CPagination />
             </div>
+        </div>
+    )
+}
+
+const MorInfo = (a, g) => {
+    return (
+        <div>
+            {g && <TipTool position={"right"} body={
+                <div>
+                    <FaInfoCircle size={"17"} title={a + " " + moment(g).format("DD-MM-YYYY hh:mm a")} />
+                </div>
+            } />}
         </div>
     )
 }
