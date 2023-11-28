@@ -159,7 +159,7 @@ export default function ApproveVisitorManagement() {
                             <CustomTextField disabled={true} errors={errors} register={register} watch={watch} name="name" label="To whom visitor meet*" />
                             <CustomTextField disabled={true} errors={errors} register={register} watch={watch} name="department" label="Department" />
                             <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
-                            <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
+                            <CustomEndDateTime getValues={getValues} register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                             <div className='grid grid-cols-[repeat(2,auto)] gap-5'>
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                                 <div className='grid grid-cols-[repeat(2,1fr)] gap-5'>
@@ -199,10 +199,17 @@ export default function ApproveVisitorManagement() {
                     </div>
                     <div className='ml-5'>
                         <div className='vm-button'>
-                            {componentAccess.update_btn ? <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} /> : <>
+                            {/* {componentAccess.update_btn ? <></> : <>
                                 {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch In</Button>}
                                 {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch Out</Button>}
-                            </>}
+                            </>} */}
+                            {!componentAccess.camera_component && <div>
+                                {componentAccess.update_btn && <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />}
+                            </div>}
+                            {componentAccess.camera_component && <div>
+                                {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch In</Button>}
+                                {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch Out</Button>}
+                            </div>}
 
 
                         </div>
@@ -318,4 +325,39 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
             }
         />
     </>)
+}
+
+
+function CustomEndDateTime({ register, name, label, errors, control, watch, disabled, getValues }) {
+    return (
+        <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                    disabled={disabled || false}
+                    inputFormat='DD/MM/YYYY'
+                    minDateTime={getValues('start_date_time')}
+                    sx={{ width: "20rem" }}
+                    format='DD/MM/YYYY hh:mm A'
+                    timeSteps={{ minutes: 15 }}
+                    slotProps={{
+                        textField:
+                        {
+                            size: 'small',
+                            helperText: errors[name] && errors[name].message,
+                            error: !!errors[name]
+                        },
+                    }}
+                    {...register(name)}
+                    label={label}
+                    value={dayjs(watch(name))}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                />
+            </LocalizationProvider>
+        )}
+            name={name}
+            control={control}
+            rules={{ required: true }}
+        />
+    )
 }

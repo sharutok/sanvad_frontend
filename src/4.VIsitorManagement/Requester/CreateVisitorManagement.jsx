@@ -96,7 +96,7 @@ export default function CreateVisitorMangement() {
                                 <CustomEndDateTime getValues={getValues} register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Contact Info*" />
-                                <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
+                                <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No" />
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                                 <div >
                                     <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
