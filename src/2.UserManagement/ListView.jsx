@@ -68,6 +68,7 @@ export default function UserManagementListView() {
                     < CPagination />
                 </div>
                 : <LoadingSpinner />}
+
         </div>
 
     )
@@ -85,6 +86,7 @@ function UserStatus(val) {
 
 const ButtonComponent = ({ onClick, icon, btnName, ...props }) => {
     return (
+
         <div
             onClick={onClick}
             {...props}

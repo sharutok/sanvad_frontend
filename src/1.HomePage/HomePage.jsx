@@ -16,8 +16,8 @@ export default function HomePage() {
                     <div className='bg-[#fff]'>
                         <SideBar />
                     </div>
-                    <div className='grid gap-5 grid-cols-[1.5fr_2fr] p-1 mt-20 '>
-                        <div className='grid gap-5'>
+                    <div className=' grid gap-5 grid-cols-[1.5fr_2fr] p-1 mt-20 '>
+                        <div className='h-[85vh] overflow-y-auto grid gap-5 rounded-xl'>
                             <YammerFrame />
                         </div>
                         <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1  h-fit'>

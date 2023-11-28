@@ -85,18 +85,18 @@ export const links = [
     {
         label: 'Ticketing System',
         icon: FaClipboardCheck,
-        mainlink: "/ticket/sys/list"
+        mainlink: "/ticket/sys/list", index: "module:ticketsystem",
     },
     {
         label: 'Conference Booking',
         icon: FaUsersLine,
-        mainlink: "/conference/booking/list"
+        mainlink: "/conference/booking/list", index: "module:conferencebooking",
 
     },
     {
         label: 'Visitor Management',
         icon: FaRegIdBadge,
-        mainlink: "/vistors/management/list"
+        mainlink: "/vistors/management/list", index: "module:visitormanagement",
     },
     {
         label: 'Capex',

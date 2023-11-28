@@ -9,12 +9,32 @@ export default function WeatherAndTemp() {
     const [obj, setObj] = useState({})
     const { isLoading, error, data } = useQuery(['weather-data'], async () => { return await axios.get(api.utils.weather_temp) }, { staleTime: "300000" })
 
-    const image = IMAGES.sunny
+    function imgGen() {
+        function isTimeBetween(start, end, targetTime) {
+            const startTime = moment(start, 'HH:mm');
+            const endTime = moment(end, 'HH:mm');
+            const targetTimeMoment = moment(targetTime, 'HH:mm');
+
+            return targetTimeMoment.isBetween(startTime, endTime, null, '[]');
+        }
+
+        const targetTime = moment().format("HH:mm");
+        if (isTimeBetween("06:00", "11:59", targetTime)) { return IMAGES.morning }
+        if (isTimeBetween("12:00", "15:59", targetTime)) { return IMAGES.afternoon }
+        if (isTimeBetween("16:00", "18:59", targetTime)) { return IMAGES.evening }
+        if (isTimeBetween("19:00", "23:59", targetTime) || isTimeBetween("00:00", "05:59", targetTime)) { return IMAGES.night }
+    }
+
+    useEffect(() => {
+        imgGen()
+    }, [])
+
+    const image = imgGen()
 
     return (
         <div className='w-fit'>
             <img loading='lazy' className='' src={image} />
-            <div className='rounded-xl flex justify-between px-2 py-3  mt-[-7.5rem] ' style={{ color: "black" }}>
+            <div className='rounded-xl flex justify-between px-2 py-3  mt-[-7.5rem]' style={{ color: "white" }}>
                 <div className='grid grid-cols-1'>
                     <div className='grid grid-cols-1 '>
                         <span className='text-[1.6rem] mb-[-0.5rem] mt-[1rem]'>{moment().format("HH:MM")}</span>

@@ -24,7 +24,7 @@ export default function YammerFrame() {
                     <Divider />
                 </div>
             </div>
-            <div className='h-[80vh] overflow-y-auto p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border '>
+            <div className='p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border '>
                 {!isLoading && <ICarousels data={data} />}
             </div>
         </div>

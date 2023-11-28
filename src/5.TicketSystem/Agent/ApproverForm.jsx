@@ -25,6 +25,7 @@ import { forceDownload, severity } from '../../Static/StaticValues';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import { AppContext } from '../../App';
 import { getCookies } from '../../Helper Components/CustomCookies';
+import LoadingSpinner from '../../Helper Components/LoadingSpinner';
 
 const formData = new FormData()
 
@@ -122,6 +123,14 @@ export default function ApproverForm() {
             console.log("error in getting file", error)
         }
 
+    }
+
+    if (response.isLoading) {
+        return (
+            <>
+                <LoadingSpinner />
+            </>
+        )
     }
 
 

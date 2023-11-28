@@ -21,7 +21,7 @@ import { getCookies } from '../../Helper Components/CustomCookies';
 
 function ConferenceBooking({ fetchData }) {
 
-    const { momentTime, setSnackBarPopUp, setDialogStatus, usermanagement, setUsermanagement, btnSaving, setBtnSaving, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
+    const { momentTime, setSnackBarPopUp, setBtnSaving, confTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
     const ErrorSchema = ConferenceErrorSchema
     const [data, setData] = useState({
         end_date: "",
@@ -83,7 +83,7 @@ function ConferenceBooking({ fetchData }) {
                 </div>
                 <TextField name='start_date' fullWidth className='w-max' defaultValue={`${confTemp.conf_room_start_date} ${confTemp.conf_room_start_time}`} label="Start Date Time*" size={"small"} disabled />
                 <div className='flex gap-4'>
-                    <CustomDate label={"End Date*"} name={"end_date"} data={data} setData={setData} />
+                    <CustomDate label={"End Date"} name={"end_date"} data={data} setData={setData} />
                     <CustomAutoComplete name={"end_time"} label={"End Time"} options={[...momentTime]} data={data} setData={setData} />
                 </div>
             </div>
@@ -135,6 +135,7 @@ const CustomDate = ({ name, label, data, setData }) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+                defaultValue={dayjs(moment().format("YYYY-MM-DD"))}
                 minDate={dayjs(moment().format())}
                 reduceAnimations
                 slotProps={{
@@ -146,7 +147,6 @@ const CustomDate = ({ name, label, data, setData }) => {
                     },
                 }}
                 label={label}
-                value={dayjs(data)}
                 onChange={(a) => {
                     setData({ ...data, end_date: a.$d })
                 }}

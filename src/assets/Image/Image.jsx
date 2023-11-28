@@ -34,11 +34,10 @@ const IMAGES = {
     no_birthday: new URL('../Image/No_Birthday_Today.png', import.meta.url).href,
     no_announcement: new URL('../Image/No_Announcements.png', import.meta.url).href,
 
-    cloudy: new URL('../Image/cloudy.png', import.meta.url).href,
-    rain: new URL('../Image/rain.png', import.meta.url).href,
-    sunny: new URL('../Image/sunny.png', import.meta.url).href,
-    night: new URL('../Image/night.png', import.meta.url).href,
-
+    morning: new URL('../Image/morning.png', import.meta.url).href,
+    evening: new URL('../Image/evening.png', import.meta.url).href,
+    night: new URL('../Image/night (2).png', import.meta.url).href,
+    afternoon: new URL('../Image/afternoon.png', import.meta.url).href,
     no_data: new URL('../Image/no-data.png', import.meta.url).href,
 
 }

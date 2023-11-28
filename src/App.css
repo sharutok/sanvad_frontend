@@ -5,6 +5,11 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: Archive;
+  src: url("./fonts/Archive-Regular.otf") format("opentype");
+}
+
 html,
 body {
   font-family: "Source Sans Pro";

@@ -8,7 +8,7 @@ import { Card, CardContent, Divider, FormControl, FormControlLabel, FormHelperTe
 import { CgFolderAdd, CgImport } from 'react-icons/cg'
 import { AppContext } from '../../App'
 import { CloudUpload } from 'tabler-icons-react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../Helper Components/Api'
 import axios from 'axios'
 import CPagination from '../../Helper Components/Pagination'
@@ -24,11 +24,16 @@ export default function Policies() {
     const [_search, _setSearch] = useState("")
     const inputFile = useRef(null)
     const [searchParams, setSearchParams] = useSearchParams();
-
     const response = useQuery(['get-data-policy', _search], async () => {
         const data = await axios.get(`${api.policies.get_all_data}/?search=${_search}&type=${searchParams.get('type')}`)
         return data
     }, { staleTime: 3000 })
+
+    const queryClient = useQueryClient()
+
+    function invalidateData() {
+        queryClient.invalidateQueries(['get-data-policy'])
+    }
 
     useEffect(() => {
         setCount(Math.ceil(response?.data?.data?.count / 10))
@@ -44,7 +49,7 @@ export default function Policies() {
                     {(searchParams.get('type') === "HR" && (isPermissionToView("policy:hr:add")) || (searchParams.get('type') === "IT" && isPermissionToView("policy:it:add"))) && <ButtonComponent onClick={() => { setDialogStatus(true) }} icon={<CgFolderAdd color='white' size={"20"} />} btnName={"Add Policy"} />}
                 </div>
             </div>
-            <DialogsBox inputFile={inputFile} title={"Upload Policy"} body={<UploadFiles />} />
+            <DialogsBox inputFile={inputFile} title={"Upload Policy"} body={<UploadFiles invalidateData={invalidateData} />} />
             <div className='p-10'>
                 <Table thead={thead} tbody={
                     response?.data?.data?.results?.map((g, i) => {
@@ -73,7 +78,7 @@ export default function Policies() {
     )
 }
 
-const UploadFiles = ({ inputFile }) => {
+const UploadFiles = ({ invalidateData }) => {
     const { setSnackBarPopUp, setBtnSaving, setDialogStatus } = useContext(AppContext)
     const [tktFiles, setTKTFiles] = useState([])
     const [searchParams, setSearchParams] = useSearchParams();
@@ -84,10 +89,9 @@ const UploadFiles = ({ inputFile }) => {
 
     const onSubmit = async (e) => {
         try {
-            console.log(obj);
             e.preventDefault()
             formData.append("policy_file", tktFiles[0])
-            Object.entries(obj).map(x => {
+            Object.entries({ ...obj, policy_type: searchParams.get('type') }).map(x => {
                 formData.append(x[0], x[1])
             })
 
@@ -96,6 +100,7 @@ const UploadFiles = ({ inputFile }) => {
                 if (response.data.status == 200) {
                     setSnackBarPopUp({ state: true, message: "Budgeted Created", severity: 's' })
                     setBtnSaving(true)
+                    invalidateData()
                     setTimeout(() => {
                         setDialogStatus(false)
                         setSnackBarPopUp({ state: false, message: "", })

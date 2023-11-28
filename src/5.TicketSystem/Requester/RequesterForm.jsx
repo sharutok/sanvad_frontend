@@ -177,7 +177,7 @@ function RequesterForm() {
                     <LoadingButtonWithSnack beforeName={"Create Ticket"} afterName={"Creating..."} />
                 </div>
             </form>
-            <div className='absolute right-0 bottom-0 p-10' >
+            <div className='absolute right-0 bottom-0 p-10 lg:hidden xl:block' >
                 <img loading='lazy' width={"300px"} src={IMAGES.ticket_sys_i} />
             </div>
         </div>

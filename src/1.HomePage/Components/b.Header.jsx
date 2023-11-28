@@ -19,14 +19,14 @@ export default function HeaderMegaMenu() {
         <div className='fixed top-0 w-[100%] bg-[#ffff] overflow-y-hidden z-[10]'>
             <div className=' border-b-[.5px] border-solid border-[#e9e9e9] p-2'>
                 <div className='flex justify-between h-fit'  >
-                    <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer '>
-                        <div className='py-1'>
-                            <img loading='lazy' src={IMAGES.ador_logo} alt="Ador" width={"60"} />
-                        </div>
+                    <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer ml-5'>
                         <div className='py-2'>
+                            <img loading='lazy' src={IMAGES.ador_star_logo} alt="Ador" width={"30"} />
+                        </div>
+                        <div className='py-3'>
                             <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                         </div>
-                        <span className='text-[#555259] py-1 font-extrabold  text-[1.4rem]' > <span className='text-red-600 font-bold'>HUB</span></span>
+                        <span align="center" style={{ fontFamily: "Archive" }} className='py-1 text-[1.3rem] mt-1 text-[#555259] font-extrabold'>ADOR <span style={{ fontFamily: "Archive" }} className='text-red-600 font-bold'>HUB</span></span>
                     </div>
                     <div className='flex' >
                         <Notification />

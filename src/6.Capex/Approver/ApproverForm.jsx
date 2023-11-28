@@ -198,16 +198,18 @@ const MoreInformation = ({ details }) => {
     return (
         <div className='grid grid-cols-1 gap-10'>
             <div className='grid grid-cols-1 gap-3'>
-                <span className='text-xl font-bold'>Budget Details</span>
-                <div className='rounded-xl p-1 border border-solid border-[grey]'>
+                <Divider />
+                <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Budget Details"}</span>
+                <div className='rounded-xl p-1 '>
                     <PreFilledSubForm />
                 </div>
             </div>
             {details.map((c, x) => {
                 return (
                     <div key={x} className='grid grid-cols-1 gap-3'>
-                        <span className='text-xl font-bold'>Capex Details</span>
-                        <div className='flex flex-wrap gap-5 p-5 border border-solid border-[grey] rounded-xl'>
+                        <Divider />
+                        <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Capex Details"}</span>
+                        <div className='flex flex-wrap gap-5 p-5 '>
                             <CustomValueTextField className="w-[20rem]" label={"Requisition Date"} value={c.requisition_date} />
                             <CustomValueTextField className="w-[20rem]" label={"Payback Period"} value={c.payback_period} />
                             <CustomValueTextField className="w-[20rem]" label={"Return On Investment"} value={c.return_on_investment} />
@@ -224,7 +226,8 @@ const MoreInformation = ({ details }) => {
                             </div>
                         </div>
                         <div className='grid grid-cols-1 gap-3'>
-                            <span className='text-xl font-bold'>Asset's Listings</span>
+                            <Divider />
+                            <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Asset List"}</span>
                             <AssetListing asset_listings={c.asset_listings} />
                         </div>
                     </div>

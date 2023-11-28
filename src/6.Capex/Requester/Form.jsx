@@ -27,7 +27,6 @@ import PreFilledSubForm from '../PreFilledSubForm';
 import BudgetBar from '../BudgetBar';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import Table from '../../Helper Components/Table';
 import {
     TbMoneybag
@@ -56,28 +55,28 @@ export default function Form() {
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
         defaultValues: {
-            nature_of_requirement: "test1",
-            purpose: "test",
-            payback_period: "COST OF ASSET",
-            return_on_investment: "COST OF ASSET",
-            budget_type: "BUDGETED",
-            requisition_date: "06/06/2023",
-            total_cost: "10000",
-            site_delivery_date: "06/06/2023",
-            installation_date: "06/06/2023",
-            comment1: "testing",
-            comment2: "testing",
-            comment3: "testing",
-            comment4: "testing",
-            comment5: "testing",
-            comment6: "testing",
-            comment7: "testing",
-            nature_of_assets: "LAND AND BUILDING",
-            asset_type: "IMPORTED",
-            requirement: "test",
-            justification: "test",
-            present_status: "test",
-            specification: "test",
+            nature_of_requirement: "",
+            purpose: "",
+            payback_period: "",
+            return_on_investment: "",
+            budget_type: "",
+            requisition_date: "",
+            total_cost: "",
+            site_delivery_date: "",
+            installation_date: "",
+            comment1: "",
+            comment2: "",
+            comment3: "",
+            comment4: "",
+            comment5: "",
+            comment6: "",
+            comment7: "",
+            nature_of_assets: "",
+            asset_type: "",
+            requirement: "",
+            justification: "",
+            present_status: "",
+            specification: "",
         }
     })
 
@@ -138,18 +137,20 @@ export default function Form() {
     return (
         <div className='mt-20'>
             <BackArrow location={"/capex/list"} title={"Capex Form - Requester"} />
-            <div className='p-10'>
+            <div className='p-10 grid gap-5'>
                 <div>
                     <BudgetBar />
                 </div>
                 <Divider />
                 <div className='w-fit p-4'>
-                    <Button onClick={() => setPreFilled(!preFilled)} endIcon={preFilled ? <KeyboardDoubleArrowDownIcon /> : <KeyboardDoubleArrowUpIcon />} fullWidth color="primary" variant="contained" type="submit">{preFilled ? "View More" : "View Less"}</Button>
+                    <Button onClick={() => setPreFilled(!preFilled)} endIcon={preFilled ? <KeyboardDoubleArrowDownIcon /> : <KeyboardDoubleArrowUpIcon />} fullWidth color="primary" variant="contained" type="submit">{preFilled ? "View More" : "View Less"} {"TO See Budget Details"}</Button>
                 </div>
                 <div className={`${preFilled && "hidden transition-opacity duration-[600ms]"}`}>
+                    <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Budget Details"}</span>
                     <PreFilledSubForm />
                     <Divider />
                 </div>
+                <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Fill in Capex Details"}</span>
                 <form className='flex flex-wrap gap-5 p-4' onSubmit={handleSubmit(onSubmit)}>
                     <CustomTextField label={"Nature Of Requirement"} name={"nature_of_requirement"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Purpose"} name={"purpose"} errors={errors} register={register} watch={watch} />
@@ -170,8 +171,10 @@ export default function Form() {
                             <CustomTextField multiline={true} label={"LD Clause"} name={"comment6"} errors={errors} register={register} watch={watch} />
                         </div>
                         <Divider />
+                        <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Add Assets"}</span>
                         <AssetListing control={control} errors={errors} register={register} watch={watch} getValues={getValues} setValue={setValue} />
                         <Divider />
+                        <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Additionals"}</span>
                         <div className='flex gap-4 '>
                             <CustomTextField rows={4} multiline={true} label={"Short Attachment Description"} name={"comment7"} errors={errors} register={register} watch={watch} />
                             <div className='flex gap-4 '>
@@ -200,6 +203,7 @@ export default function Form() {
                                     </CardContent>
                                 </Card>
                                 <Divider orientation='vertical' />
+
                                 <div className='max-h-[8rem] overflow-y-scroll'>
                                     {tktFiles?.map((g, i) => {
                                         return (
@@ -273,7 +277,7 @@ const AssetListing = ({ control, errors, register, watch, getValues, setValue })
     }
 
     return (
-        <div className='grid gap-5'>
+        <div className='grid gap-5 ' >
             <div className='flex gap-5 flex-wrap shadow-[rgba(60,64,67,0.3)_0px_1px_2px_0px,rgba(60,64,67,0.15)_0px_2px_6px_2px] p-5 rounded-2xl'>
                 <CustomAutoComplete control={control} errors={errors} label={"Nature of Assets*"} name={"nature_of_assets"} options={nature_of_assets} />
                 <CustomAutoComplete control={control} errors={errors} label={"Asset Type*"} name={"asset_type"} options={asset_type} />
@@ -284,7 +288,10 @@ const AssetListing = ({ control, errors, register, watch, getValues, setValue })
                 <ButtonComponent onClick={handleAddAsset} icon={<TbMoneybag color='white' size={"23"} />} btnName={"Add Assets"} />
                 <ButtonComponent onClick={clearAll} icon={<MdRefresh color='white' size={"23"} />} btnName={"Clear All"} />
             </div>
-            <div className='w-fit'>
+            <div className='w-fit grid gap-5  '>
+                <div className='w-fit '>
+                    <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Asset List"}</span>
+                </div>
                 <Table thead={thead}
                     tbody={assets?.map((g, i) => {
                         return (

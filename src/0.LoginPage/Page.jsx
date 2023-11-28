@@ -25,20 +25,30 @@ export default function Page() {
     };
 
     return (
-        <div >
-            <div id="element" className='flex justify-center mt-[5rem] '>
-                <div className='w-[75%] '>
-                    {!imageLoaded && <img loading='lazy' onLoad={() => handleImageLoad} className='z-[10] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_img} />}
-                    {imageLoaded && <img loading='lazy' className='border z[-1]  rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_smaller} />}
-                </div>
-                <div className='ml-[-20rem] '>
-                    <LoginBody />
+        <div>
+
+            <div className='sm:hidden md:hidden lg:hidden xl:block'>
+                {/* <div className='sm:hidden md:hidden lg:hidden xl:block'> */}
+                <div id="element" className='flex justify-center mt-[5rem] '>
+                    <div className='w-[75%] '>
+                        {!imageLoaded && <img loading='lazy' onLoad={() => handleImageLoad} className=' z-[10] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_img} />}
+                        {/* {imageLoaded && <img loading='lazy' className='border z[-1]  rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_smaller} />} */}
+                    </div>
+                    <div className=' ml-[-30rem] '>
+                        <LoginBody />
+                    </div>
                 </div>
             </div>
         </div>
     )
 }
 
+// <div className='w-fit lg:block xl:hidden flex justify-center'>
+//     {/* {!imageLoaded && <img loading='lazy' onLoad={() => handleImageLoad} className=' rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_img} />} */}
+//     <div>
+//         <LoginBody />
+//     </div>
+// </div>
 
 
 function LoginBody() {
@@ -73,16 +83,16 @@ function LoginBody() {
     }
 
     return (
-        <div className='ml-[-10rem]'>
+        <div className=''>
             <div  >
                 <div className='flex justify-center p-5 gap-5 mb-9'>
                     <div className='flex justify-center'>
-                        <img loading='lazy' src={IMAGES.ador_logo} alt="Ador" width={"100"} />
+                        <img loading='lazy' style={{ fontFamily: "Archive" }} src={IMAGES.ador_star_logo} alt="Ador" width={"50"} />
                     </div>
                     <div className='px-1 py-2'>
                         <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                     </div>
-                    <span align="center" className='text-[1.9rem] mt-1 text-[#555259] font-extrabold'>ADOR <span className='text-red-600 font-bold'>HUB</span></span>
+                    <span align="center" style={{ fontFamily: "Archive" }} className=' text-[1.9rem] mt-1 text-[#555259] font-extrabold'>ADOR <span className='text-red-600 font-bold'>HUB</span></span>
                 </div>
                 <form onSubmit={onSubmit} >
                     <div className='grid gap-4  '>

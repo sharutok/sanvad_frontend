@@ -50,6 +50,14 @@ export default function ListsView() {
         }
     }
 
+    if (isLoading) {
+        return (
+            <>
+                <LoadingSpinner />
+            </>
+        )
+    }
+
     return (
         <div >
             <div className='flex justify-between mt-20'>
@@ -60,7 +68,7 @@ export default function ListsView() {
                     <Divider orientation='vertical' />
                     <Stack direction="row" spacing={1} alignItems="center">
                         <Typography >All Bookings</Typography>
-                        <FormControlLabel onChange={() => _setDate(!_date)} color="#555259" control={<Switch />} />
+                        <FormControlLabel checked={_date} onChange={() => _setDate(!_date)} color="#555259" control={<Switch />} />
                         <Typography >Today's Bookings</Typography>
                     </Stack>
                     <ButtonComponent onClick={() => { window.location.href = "/conference/booking/new" }} icon={<GroupAddIcon sx={{ color: 'white' }} size={"23"} />} btnName={"Book Conference"} />

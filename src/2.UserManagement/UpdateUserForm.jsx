@@ -132,6 +132,15 @@ export default function UpdateUserForm() {
     const data = axios.get(api.utils.dept_plant)
     return data
   })
+
+  if (response.isLoading) {
+    return (
+      <>
+        <LoadingSpinner />
+      </>
+    )
+  }
+
   return (
     <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
       <BackArrow title={"User Management - Update User"} location={'/user/management/list'} />

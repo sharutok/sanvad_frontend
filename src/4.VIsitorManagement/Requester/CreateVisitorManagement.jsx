@@ -15,7 +15,7 @@ import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { AppContext } from '../../App';
 import Table from '../../Helper Components/Table';
 import TipTool from '../../Helper Components/TipTool';
-import { MdDeleteOutline } from 'react-icons/md';
+import { MdDeleteOutline, MdRefresh } from 'react-icons/md';
 import { FiSearch } from 'react-icons/fi';
 import { api } from '../../Helper Components/Api';
 import axios from 'axios';
@@ -28,7 +28,7 @@ import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSna
 export default function CreateVisitorMangement() {
     const ErrorSchema = VisitorMangErrorSchema
     const { setDialogStatus, dialogStatus, visitors, setVisitors, setBtnSaving, setSnackBarPopUp, btnSaving } = useContext(AppContext)
-
+    const [tktFiles, setTKTFiles] = useState([])
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
@@ -36,7 +36,6 @@ export default function CreateVisitorMangement() {
 
     const onSubmit = async (data) => {
         data["visitors"] = visitors
-        console.log(visitors);
         if (visitors.length >= 1) {
             data["start_date_time"] = moment(getValues("start_date_time")["$d"]).format()
             data["end_date_time"] = moment(getValues("end_date_time")["$d"]).format()
@@ -54,28 +53,49 @@ export default function CreateVisitorMangement() {
     }
 
     let obj = {}
+
     function handleAddVisitor() {
         ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
             obj[val] = getValues(val)
+            return
         })
-        setVisitors([...visitors, obj])
+        let logs = []
 
+        Object.values(obj).map(x => {
+            logs.push(x)
+        })
+
+        !logs.includes("") && setVisitors([...visitors, obj])
+    }
+
+    const deleteFiles = (g) => {
+        let arr = visitors.filter(function (item) {
+            return item.v_name !== g
+        })
+        setVisitors((visitors) => {
+            return [...arr]
+        })
+    }
+
+    function clearAll() {
+        ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
+            setValue(val, "")
+        })
 
     }
+
     return (
         <div className='mt-20'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <BackArrow location={"/vistors/management/list"} title={"Visitor's Management - New Application"} />
-                    <div className='grid gap-5 p-10'>
+                    <div className='grid gap-10 p-10'>
                         <div className='grid gap-5 '>
-                            <div className='grid grid-cols-[repeat(4,18vw)] gap-5 '>
-                                {/* <TextField sx={{ width: "20rem" }} label="Person In-Charge*" disabled size={"small"}></TextField>
-                                <TextField sx={{ width: "20rem" }} label="Department*" disabled size={"small"}></TextField> */}
+                            <div className='flex flex-wrap gap-5 '>
                                 <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
-                                <CustomDateTime register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
+                                <CustomEndDateTime getValues={getValues} register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
-                                <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
+                                <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Contact Info*" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                                 <div >
@@ -103,24 +123,27 @@ export default function CreateVisitorMangement() {
                                     />
                                 </div>
                             </div>
-                            <div className='grid grid-cols-[repeat(2,18vw)] gap-5'>
-                            </div>
+
                         </div>
-                        <Divider textAlign='left'></Divider>
-                        {/* <Divider sx={{ borderColor: "red" }} /> */}
-                        <div className='w-fit'>
-                            <div className='w-fit flex'>
-                                <div className='flex flex-wrap gap-5 '>
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="v_name" label="Visitor's Name*" />
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="v_desig" label="Visitor's Designation*" />
-                                    <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets*" />
-                                    <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
+                        <div className='grid gap-5'>
+                            <Divider textAlign='left'></Divider>
+                            <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Add Visitors"}</span>
+                            <div className='w-fit'>
+                                <div className='w-fit flex'>
+                                    <div className='flex flex-wrap gap-5 '>
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_name" label="Visitor's Name*" />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_desig" label="Visitor's Designation*" />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets*" />
+                                        <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
+                                        <ButtonComponent onClick={clearAll} icon={<MdRefresh color='white' size={"23"} />} btnName={"Clear All"} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className='flex justify-start'>
-                            <VisitorListing />
+                        <div className='grid gap-5'>
+                            <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Visitors List"}</span>
+                            <VisitorListing deleteFiles={deleteFiles} />
                         </div>
                     </div>
                 </div>
@@ -128,8 +151,8 @@ export default function CreateVisitorMangement() {
                     <LoadingButtonWithSnack beforeName={"Create Pass"} afterName={"Create...."} />
                 </div>
             </form>
-            <div className='absolute right-0 bottom-0 p-6' >
-                <img loading='lazy' width={"400px"} src={IMAGES.vistor_manage_i} />
+            <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
+                <img className='w-[20rem]' loading='lazy' src={IMAGES.vistor_manage_i} />
             </div>
         </div>
     )
@@ -198,11 +221,11 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
     )
 }
 
-const VisitorListing = () => {
+const VisitorListing = ({ deleteFiles }) => {
     const { visitors, setVisitors } = useContext(AppContext)
     const thead = ["Visitor's Name", "Visitor's Mob.No", "Visitor's Department", "Assets"]
 
-    return (<div className=''>
+    return (<div className='w-fit'>
         <Table thead={thead}
             tbody={visitors?.map((g, i) => {
                 return (
@@ -211,7 +234,7 @@ const VisitorListing = () => {
                         <td>{g.v_mobile_no}</td>
                         <td>{g.v_desig}</td>
                         <td>{g.v_asset}</td>
-                        <td className='delete'>
+                        <td onClick={() => deleteFiles(g.v_name)} className='delete'>
                             <TipTool body={< >
                                 <IconButton>
                                     <MdDeleteOutline color='#f08080' size={22} />
@@ -224,3 +247,36 @@ const VisitorListing = () => {
     </div>)
 }
 
+function CustomEndDateTime({ register, name, label, errors, control, watch, disabled, getValues }) {
+    return (
+        <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                    disabled={disabled || false}
+                    inputFormat='DD/MM/YYYY'
+                    minDateTime={getValues('start_date_time')}
+                    sx={{ width: "20rem" }}
+                    format='DD/MM/YYYY hh:mm A'
+                    timeSteps={{ minutes: 15 }}
+                    slotProps={{
+                        textField:
+                        {
+                            size: 'small',
+                            helperText: errors[name] && errors[name].message,
+                            error: !!errors[name]
+                        },
+                    }}
+                    {...register(name)}
+                    label={label}
+                    value={dayjs(watch(name))}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                />
+            </LocalizationProvider>
+        )}
+            name={name}
+            control={control}
+            rules={{ required: true }}
+        />
+    )
+}

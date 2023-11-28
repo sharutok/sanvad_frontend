@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import DialogsBox from '../../Helper Components/DialogsBox'
+import { Divider } from '@mui/material'
 import dayjs from 'dayjs';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -192,27 +192,32 @@ export default function ApproveVisitorManagement() {
                                 rules={{ required: true }}
                             />
                         </div>
-                        <div className='flex justify-start'>
+                        <div className='grid gap-5 w-fit'>
+                            <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Visitor List"}</span>
                             <VisitorListing visitorPhoto={visitor_pic_data?.data?.data?.data} componentAccess={componentAccess} captureImage={captureImage} visitors={getValues("visitors") && JSON.parse(getValues("visitors"))} />
                         </div>
                     </div>
                     <div className='ml-5'>
                         <div className='vm-button'>
-                            {!componentAccess.update_btn && <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />}
-                            {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch In</Button>}
-                            {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch Out</Button>}
+                            {componentAccess.update_btn ? <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} /> : <>
+                                {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch In</Button>}
+                                {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch Out</Button>}
+                            </>}
+
 
                         </div>
                     </div>
                 </div>
-                {componentAccess.print_component && <div className='mt-20 p-5'>
-                    <span className='ml-5 text-3xl flex justify-left'>VISITOR PASS Preview</span>
+                {componentAccess.print_component && <div className='mt-20 p-5 grid gap-5'>
+                    <Divider />
+                    <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem] ml-5'>{"Visitor Pass Preview"}</span>
                     <div><CustomPrint /></div>
                 </div>}
             </form>
             {componentAccess.camera_component && <div className='-scale-x-100'>
                 <div className='grid gap-5 p-5 '>
                     <Webcam
+
                         className='rounded-md'
                         audio={false}
                         height={400}
@@ -290,7 +295,6 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
     return (<>
         <Table thead={thead}
             tbody={
-
                 visitors?.length && visitors?.map((g, i) => {
                     return (
                         <tr className='table-wrapper' key={i}>
@@ -298,13 +302,7 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
                             <td>{g.v_mobile_no}</td>
                             <td>{g.v_desig}</td>
                             <td>{g.v_asset}</td>
-                            {visitorPhoto[i]?.mod_image && <td className='delete'>{
-                                <TipTool body={
-                                    <a className='py-4 ' target="_blank" href={visitorPhoto[i]?.mod_image}>{`Vistor ${i + 1}`}</a>
-                                }
-                                    title={`View Vistor ${i + 1} photo `} />
-                            }
-                            </td>}
+                            {visitorPhoto[i] && visitorPhoto[i]?.mod_image && <td className='delete'>{<TipTool body={<a className='py-4 ' target="_blank" href={visitorPhoto[i]?.mod_image}>{`Vistor ${i + 1}`}</a>} title={`View Vistor ${i + 1} photo `} />}</td>}
                             {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
                                 <td onClick={() => { captureImage(`${id}__${i}`) }} className='delete '>
                                     <TipTool body={

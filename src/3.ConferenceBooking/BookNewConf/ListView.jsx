@@ -75,9 +75,9 @@ export default function ConferenceBookingListView() {
                                 <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                             </div>
                             <span className=''>{x.department}</span>
-                            {String(x.conf_by) === String(getCookies()[0]) && <div className='cursor-pointer mt-[0.1rem]'>
+                            {/* {String(x.conf_by) === String(getCookies()[0]) && <div className='cursor-pointer mt-[0.1rem]'>
                                 <MdDeleteOutline onClick={() => { console.log("Hi"); }} color='#f08080' size={20} />
-                            </div>}
+                            </div>} */}
                         </div>
                     </div>
                 )
@@ -271,8 +271,8 @@ function TemporaryDrawer({ body }) {
                 <span className='text-3xl mt-5'>Book a Conference</span>
             </div>
             {body}
-            <div className='absolute right-0 bottom-0 p-6' >
-                <img loading='lazy' width={"450px"} src={IMAGES.conf_img_i} />
+            <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
+                <img loading='lazy' width={"300px"} src={IMAGES.conf_img_i} />
             </div>
         </Box>
     );
