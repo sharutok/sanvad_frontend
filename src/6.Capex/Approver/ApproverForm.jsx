@@ -55,7 +55,7 @@ export default function Form() {
         setComponentAccess(data?.data?.view_access)
         setCapexDetail(data?.data?.data);
         return data
-    }, { staleTime: Infinity })
+    })
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
