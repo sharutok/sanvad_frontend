@@ -189,8 +189,8 @@ export default function UpdateUserForm() {
           <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={_plant_dept?.data?.data?.department || []} />
           <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={_plant_dept?.data?.data?.plant_data || []} />
           <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
-          <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} />
-          <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
+          {/* <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} /> */}
+          <CustomAutoComplete control={control} errors={errors} name={"job_status"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
           <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={["ADOR WELDING", "ADOR FONTECH", "FLASH"]} />
         </div>
         <Divider textAlign='left'></Divider>

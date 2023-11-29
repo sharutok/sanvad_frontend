@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { api } from '../../Helper Components/Api';
 import axios from 'axios'
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
@@ -41,6 +41,9 @@ const Input = styled('input')({
 export default function Form() {
     const { budget_id, capex_id } = useParams()
     const { budget, setDrawerStatus, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
+    const [searchParams, setSearchParams] = useSearchParams();
+    const capex_raised_by = searchParams.get('raised_by');
+
     const ErrorSchema = ApproverCapexErrorSchema
     const [preFilled, setPreFilled] = useState(true)
     const [capexDetail, setCapexDetail] = useState([])
@@ -113,6 +116,7 @@ export default function Form() {
                             <div key={i} className=' grid grid-cols-[repeat(2,1fr)] gap-5 '>
                                 <CustomValueTextField size={true} label={"Nature Of Requirement"} value={c.nature_of_requirement} />
                                 <CustomValueTextField size={true} label={"Purpose"} value={c.purpose} />
+                                <CustomValueTextField size={true} label={"Raised By"} value={capex_raised_by} />
                                 <CustomValueTextField size={true} label={"Plant"} value={c.plant} />
                                 <CustomValueTextField size={true} label={"Department"} value={c.dept} />
                                 <CustomValueTextField size={true} label={"Budgeted Type"} value={c.budget_type} />
@@ -205,6 +209,7 @@ const MoreInformation = ({ details }) => {
                 </div>
             </div>
             {details.map((c, x) => {
+                console.log(c);
                 return (
                     <div key={x} className='grid grid-cols-1 gap-3'>
                         <Divider />

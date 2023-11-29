@@ -13,7 +13,7 @@ import { getCookies } from '../Helper Components/CustomCookies'
 import BarSnack from '../Helper Components/BarSnack'
 import NoData from '../Helper Components/NoData'
 export default function CapexListView({ _search, _setSearch }) {
-    const thead = ["Budget No", "Line No", "Purpose code", "Requisition Date", "Payback Period", "Return On Investment", "Budget Type", "Raised By", "Current At", "Capex Status"]
+    const thead = ["Budget No", "Line No", "Purpose code", "Requisition Date", "Payback Period", "Return On Investment", "Budget Type", "Raised By", "Current At", "Capex Raised Date", "Capex Status"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const queryClient = useQueryClient()
     const { isLoading, error, data } = useQuery(['capex-data', page, _search], async () => {
@@ -41,6 +41,7 @@ export default function CapexListView({ _search, _setSearch }) {
             <BarSnack />
             <Table thead={thead} tbody={
                 data?.data?.results?.map(i => {
+                    console.log(i);
                     return (
                         <tr className='table-wrapper' key={i}>
                             <td>{i.budget_no}</td>
@@ -52,9 +53,10 @@ export default function CapexListView({ _search, _setSearch }) {
                             <td>{i.budget_type}</td>
                             <td>{i.capex_raised_by}</td>
                             <td>{i.capex_current_at}</td>
+                            <td>{i.created_at}</td>
                             <td>{status(i.capex_status)}</td>
                             <td className='delete w-fit'>
-                                <Link to={`/capex/appr/${i.budget_id}/${i.capex_id}`}>
+                                <Link to={`/capex/appr/${i.budget_id}/${i.capex_id}/?raised_by=${i.capex_raised_by}`}>
                                     <TipTool title={"View Capex"} body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200 w-fit'><MdOutlineOpenInNew color='#f08080' size={22} /></div>} />
                                 </Link>
                             </td>

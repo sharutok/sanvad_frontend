@@ -28,16 +28,11 @@ export const user_permission = [
     "module:capex",
     "module:workflowconfig",
     "module:moduleconfigurations",
-
     "usermanagement:admin",
-
     "ticketsystem:admin:oraclesystem",
     "ticketsystem:admin:itinfra",
-
     "conferencebooking:admin",
-
     "visitormanagement:admin",
-
     "capex:create",
     "capex:update",
     "capex:list:budget",
@@ -50,8 +45,14 @@ export const user_permission = [
 ]
 
 export const payback_period_return_of_investment = [
-    "COST OF ASSET",
-    "PROFIT ACCRUAL FROM ADDITIONAL INVESTMENT"
+    "less than 3 months",
+    "less than 6 months",
+    "less than 1 year",
+    "less than 2 years",
+    "less than 3 years",
+    "less than 4 years",
+    "less than 5 years",
+
 ]
 export const budgeted_type = [
     "BUDGETED ",

@@ -63,6 +63,7 @@ function CreateUserForm() {
                 module_permission: usermanagement.module_permission
             });
             const response = await axios.post(api.user_management.post_data, data)
+            console.log(response?.data);
             if (response?.data.status == 200) {
                 setSnackBarPopUp({ state: true, message: "User Cretaed", severity: 's' })
                 setBtnSaving(true)
@@ -130,7 +131,7 @@ function CreateUserForm() {
                     <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
                     <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={plant_dept?.data?.data?.plant_data || []} />
                     <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
-                    <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} />
+                    {/* <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} /> */}
                     <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
                     <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={['0', "1", "2", "3", "4"]} />
                 </div>

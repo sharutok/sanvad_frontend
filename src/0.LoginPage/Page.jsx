@@ -92,7 +92,7 @@ function LoginBody() {
                     <div className='px-1 py-2'>
                         <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                     </div>
-                    <span align="center" style={{ fontFamily: "Archive" }} className=' text-[1.9rem] mt-1 text-[#555259] font-extrabold'>ADOR <span className='text-red-600 font-bold'>HUB</span></span>
+                    <span align="center" style={{ fontFamily: "Archive" }} className=' text-[1.9rem] mt-1 text-[#555259] font-extrabold'>ADOR<span className='text-red-600 font-bold'>HUB</span></span>
                 </div>
                 <form onSubmit={onSubmit} >
                     <div className='grid gap-4  '>

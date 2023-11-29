@@ -103,7 +103,7 @@ function BudgetStatus(val) {
 
 function CProgressBar({ consumed, final_budget, budget_remaining }) {
     const val = 80
-    const consumed_in_percentage = Math.ceil((100 * consumed) / final_budget)
+    const consumed_in_percentage = Math.ceil((100 * consumed) / final_budget) > 100 ? 100 : Math.ceil((100 * consumed) / final_budget)
     const remaining_in_percentage = 100 - consumed_in_percentage
     return (<div className=' '>
         <div className='flex justify-between'>

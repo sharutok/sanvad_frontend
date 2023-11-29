@@ -26,7 +26,7 @@ export default function BudgetBar() {
 }
 
 function CProgressBar({ consumed, final_budget, budget_remaining }) {
-    const consumed_in_percentage = Math.ceil((100 * consumed) / final_budget)
+    const consumed_in_percentage = Math.ceil((100 * consumed) / final_budget) > 100 ? 100 : Math.ceil((100 * consumed) / final_budget)
     const remaining_in_percentage = 100 - consumed_in_percentage
     return (<div className=' bg-[#272727] rounded-md p-5 grid gap-5'>
         <div>
@@ -41,7 +41,7 @@ function CProgressBar({ consumed, final_budget, budget_remaining }) {
         </div>
         <div className='w-[100%] relative '>
             <div className='bg-[#797979] p-1 rounded-tl-[10px] rounded-bl-[10px] rounded-tr-[10px] rounded-br-[10px]'></div>
-            <div style={{ width: `${consumed_in_percentage}%` }} className='bg-[#e9e8e8] p-1 rounded-tl-[10px] rounded-bl-[10px] absolute z-[1] left-0 top-0'></div>
+            <div style={{ width: `${consumed_in_percentage}%` }} className='bg-[#e9e8e8] p-1 rounded-[10px] rounded-bl-[10px] absolute z-[1] left-0 top-0'></div>
         </div>
     </div>)
 }

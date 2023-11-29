@@ -26,9 +26,9 @@ export default function HeaderMegaMenu() {
                         <div className='py-3'>
                             <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                         </div>
-                        <span align="center" style={{ fontFamily: "Archive" }} className='py-1 text-[1.3rem] mt-1 text-[#555259] font-extrabold'>ADOR <span style={{ fontFamily: "Archive" }} className='text-red-600 font-bold'>HUB</span></span>
+                        <span align="center" style={{ fontFamily: "Archive" }} className='py-1 text-[1.3rem] mt-1 text-[#555259] font-extrabold'>ADOR<span style={{ fontFamily: "Archive" }} className='text-red-600 font-bold'>HUB</span></span>
                     </div>
-                    <div className='flex' >
+                    <div className='flex mr-5' >
                         <Notification />
                         <AccountMenu />
                     </div>
