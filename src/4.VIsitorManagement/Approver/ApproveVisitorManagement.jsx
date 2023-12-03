@@ -51,7 +51,9 @@ export default function ApproveVisitorManagement() {
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
         defaultValues: {
-            punch_in_date_time: "", punch_out_date_time: "", status: "",
+            punch_in_date_time: "",
+            punch_out_date_time: "",
+            status: "",
             start_date_time: "",
             end_date_time: "",
             v_company: "",
@@ -71,13 +73,13 @@ export default function ApproveVisitorManagement() {
         setComponentAccess(response?.data?.view_access);
         setVisitors(response?.data?.data)
         return data
-    }, { staleTime: 3000 }
+    }
     )
 
     const visitor_pic_data = useQuery(["visitor-pic"], async () => {
         const data = await axios.get(`${api.visitor_management.get_image}/?id=${id}`)
         return data
-    }, { staleTime: 3000 })
+    })
 
     const onSubmit = async (data) => {
         try {
@@ -197,21 +199,29 @@ export default function ApproveVisitorManagement() {
                             <VisitorListing visitorPhoto={visitor_pic_data?.data?.data?.data} componentAccess={componentAccess} captureImage={captureImage} visitors={getValues("visitors") && JSON.parse(getValues("visitors"))} />
                         </div>
                     </div>
-                    <div className='ml-5'>
-                        <div className='vm-button'>
-                            {/* {componentAccess.update_btn ? <></> : <>
-                                {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch In</Button>}
-                                {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch Out</Button>}
-                            </>} */}
-                            {!componentAccess.camera_component && <div>
-                                {componentAccess.update_btn && <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />}
-                            </div>}
-                            {componentAccess.camera_component && <div>
-                                {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch In</Button>}
-                                {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem" }}>Punch Out</Button>}
-                            </div>}
+                    <div className='w-fit p-10'>
+                        <div className=' w-fit'>
+                            <div className='flex gap-20'>
+                                {componentAccess.camera_component && <div className=''>
+                                    <div className='mt-5'>
+                                        {componentAccess.punch_in && <Button onClick={() => { setValue("status", 1), setValue("punch_in_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem", bgcolor: "orange" }}>Punch In</Button>}
+                                    </div>
+                                    <div className='mt-5'>
+                                        {componentAccess.punch_out && <Button onClick={() => { setValue("status", 2), setValue("punch_out_date_time", moment().format()), handlePunch() }} variant="contained" sx={{ width: "10rem", bgcolor: "cornflowerblue" }}>Punch Out</Button>}
+                                    </div>
+                                </div>}
+                                {componentAccess.camera_component && (componentAccess.punch_out && <div >
+                                    <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />
+                                </div>)}
+                                {componentAccess.camera_component && (componentAccess.punch_in && <div >
+                                    <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />
+                                </div>)}
+                                {!componentAccess.camera_component && (componentAccess.punch_in && <div >
+                                    <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />
+                                </div>)}
 
 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -263,7 +273,6 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
                     disabled={disabled || false}
-                    inputFormat='DD/MM/YYYY'
                     sx={{ width: "20rem" }}
                     format='DD/MM/YYYY hh:mm A'
                     timeSteps={{ minutes: 15 }}
@@ -334,8 +343,7 @@ function CustomEndDateTime({ register, name, label, errors, control, watch, disa
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
                     disabled={disabled || false}
-                    inputFormat='DD/MM/YYYY'
-                    minDateTime={getValues('start_date_time')}
+                    minDateTime={dayjs(getValues('start_date_time'))}
                     sx={{ width: "20rem" }}
                     format='DD/MM/YYYY hh:mm A'
                     timeSteps={{ minutes: 15 }}

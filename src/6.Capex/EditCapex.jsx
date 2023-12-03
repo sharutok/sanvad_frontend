@@ -355,7 +355,7 @@ const CustomTextField = ({ name, label, errors, register, watch, multiline, rows
 //             <LocalizationProvider dateAdapter={AdapterDayjs}>
 //                 <DatePicker
 //                     className='w-[20rem]'
-//                     inputFormat='DD/MM/YYYY'
+//                     format="DD/MM/YYYY"
 //                     slotProps={{
 //                         textField:
 //                         {

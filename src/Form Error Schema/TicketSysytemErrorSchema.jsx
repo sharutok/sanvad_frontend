@@ -9,7 +9,7 @@ export const RequestTicketErrorSchema = yup.object().shape({
 export const ApproverTicketErrorSchema = yup.object().shape({
     approver_comment: yup.string().required('Required Field'),
     approver_status: yup.string().required('Required Field'),
-    // assign_ticket_to_user: yup.string().required('Required Field'),
+    assign_ticket_to_user: yup.string().required('Required Field'),
     tkt_title: yup.string().required('Required Field'),
     tkt_type: yup.string().required('Required Field'),
     req_type: yup.string().required('Required Field'),

@@ -84,7 +84,7 @@ function ConferenceBooking({ fetchData }) {
                 <TextField name='start_date' fullWidth className='w-max' defaultValue={`${confTemp.conf_room_start_date} ${confTemp.conf_room_start_time}`} label="Start Date Time*" size={"small"} disabled />
                 <div className='flex gap-4'>
                     <CustomDate label={"End Date"} name={"end_date"} data={data} setData={setData} />
-                    <CustomAutoComplete name={"end_time"} label={"End Time"} options={[...momentTime]} data={data} setData={setData} />
+                    <CustomAutoComplete name={"end_time"} label={"End Time"} options={[...momentTime]} data={data} setData={setData} confTemp={confTemp} />
                 </div>
             </div>
             <div className='w-fit' >
@@ -132,10 +132,12 @@ const CustomAutoComplete = ({ name, label, options, data, setData }) => {
     )
 }
 const CustomDate = ({ name, label, data, setData }) => {
+    const { confTemp, setConfTemp, } = useContext(AppContext)
+    // console.log(dayjs(moment(confTemp.conf_room_start_date).format("YYYY-MM-DD")));
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-                defaultValue={dayjs(moment().format("YYYY-MM-DD"))}
+                defaultValue={dayjs(confTemp.conf_room_start_date ? moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"))}
                 minDate={dayjs(moment().format())}
                 reduceAnimations
                 slotProps={{

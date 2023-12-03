@@ -89,12 +89,12 @@ export default function ListsView() {
                                     <td>{g.conf_room}</td>
                                     <td>{g.first_name}{" "}{g.last_name}</td>
                                     <td>{g.department}</td>
-                                    <td onClick={() => handleDelete(g.id)} className='delete'>
-                                        <TipTool body={
-                                            <IconButton>
-                                                {String(g.conf_by) === String(getCookies()[0]) ? <MdDeleteOutline color='#f08080' size={23} /> : <p className='p-3'></p>}
+                                    <td className='delete'>
+                                        {String(g.conf_by) === String(getCookies()[0]) ? <TipTool body={
+                                            <IconButton onClick={() => handleDelete(g.id)}>
+                                                <MdDeleteOutline color='#f08080' size={23} />
                                             </IconButton>
-                                        } title={"Delete"} />
+                                        } title={"Delete"} /> : <MdDeleteOutline className='' color='#ffff' size={35} />}
                                     </td>
                                 </tr>
                             )

@@ -34,7 +34,7 @@ export default function WorkFlow() {
             <div className='mt-20'>
                 <BackArrow location={"/home"} title={"Ticket WorkFlow Configuration"} />
             </div>
-            <div className='grid grid-cols-1 p-10 gap-10'>
+            <div className='grid grid-cols-1 p-20 gap-20'>
                 <div className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px] rounded-lg border-[3px] border-solid border-[#e2e2e2]' >
                     <span style={{ fontFamily: "Brandon Grotesque" }} className='text-lg p-2'>For IT Systems</span>
                     <div style={{ height: 400 }}>

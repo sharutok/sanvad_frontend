@@ -27,7 +27,7 @@ export default function Page() {
     return (
         <div>
 
-            <div className='sm:hidden md:hidden lg:hidden xl:block'>
+            <div >
                 {/* <div className='sm:hidden md:hidden lg:hidden xl:block'> */}
                 <div id="element" className='flex justify-center mt-[5rem] '>
                     <div className='w-[75%] '>

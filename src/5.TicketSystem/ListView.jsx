@@ -81,7 +81,7 @@ export default function TicketSystemListView() {
                             ticket_listing?.data?.data?.results.map((g, i) => {
                                 console.log(String(getCookies()[0]), String(g.requester_emp_no));
                                 return (
-                                    <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={true} placement='top'>
+                                    <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                         <tr className='table-wrapper' >
                                             <td onClick={() => handleNav(g)}>{g.ticket_no}</td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_title}</td>

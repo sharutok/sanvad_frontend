@@ -17,6 +17,7 @@ import StepContent from '@mui/material/StepContent';
 const Input = styled('input')({
     display: 'none',
 });
+import * as yup from 'yup'
 
 import { AiOutlineUpload } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
@@ -27,16 +28,12 @@ import { AppContext } from '../../App';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
 
-const formData = new FormData()
-
 export default function ApproverForm() {
-
     const emp_id = getCookies()[0]
-
     const { setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
-    const ErrorSchema = ApproverTicketErrorSchema
     const [componentAccess, setComponentAccess] = useState({})
     const [tktFiles, setTKTFiles] = useState([])
+    const [assignTKT, setAssignTKT] = useState()
     const [tktType, setTKTType] = useState({
         value: "",
         index: ""
@@ -52,6 +49,18 @@ export default function ApproverForm() {
         setComponentAccess(data?.data?.view_access)
         return data
     })
+
+    const ApproverTicketErrorSchema = yup.object().shape({
+        approver_comment: yup.string().required('Required Field'),
+        approver_status: yup.string().required('Required Field'),
+        assign_ticket_to_user: componentAccess.assign_ticket_comp ? (assignTKT === "0" ? yup.string().required('Required Field') : "") : "",
+        tkt_title: yup.string().required('Required Field'),
+        tkt_type: yup.string().required('Required Field'),
+        req_type: yup.string().required('Required Field'),
+        tkt_description: yup.string().required('Required Field'),
+
+    })
+    const ErrorSchema = ApproverTicketErrorSchema
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
@@ -207,12 +216,16 @@ export default function ApproverForm() {
                                         row
                                         aria-labelledby="demo-row-radio-buttons-group-label"
                                         name="row-radio-buttons-group"
-                                        onChange={onChange}
+                                        // onFocus={() => setAssignTKT(getValues('approver_status'))}
+                                        onChange={(e) => {
+                                            onChange(e);
+                                            setAssignTKT(e.target.value)
+                                        }}
                                         onBlur={onBlur}
                                         value={value}>
                                         <FormControlLabel value="0" control={<Radio size='small' />} label="Approve" />
                                         <FormControlLabel value="1" control={<Radio size='small' />} label="Reject" />
-                                        <FormControlLabel value="2" control={<Radio size='small' />} label="Close" />
+                                        {/* <FormControlLabel value="2" control={<Radio size='small' />} label="Close" /> */}
                                     </RadioGroup>
                                     <FormHelperText>{errors.approver_status && errors.approver_status.message}</FormHelperText>
                                 </FormControl>
@@ -224,7 +237,7 @@ export default function ApproverForm() {
                     </div>}
                     {componentAccess.comments_box && <CustomTextFieldWithIcon uploadDocuments={componentAccess.upload_documents} tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />}
                     <div>
-                        <strong>Uploaded Files{" "}</strong>
+                        {/* <strong>Uploaded Files{" "}</strong> */}
                         <div className='max-h-[8rem] overflow-y-scroll'>
                             {tktFiles?.map((g, i) => {
                                 return (

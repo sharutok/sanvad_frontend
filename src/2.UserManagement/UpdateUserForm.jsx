@@ -80,7 +80,6 @@ export default function UpdateUserForm() {
   })
 
   const onSubmit = async (submitData) => {
-
     const value = {
       ...usermanagement,
       first_name: getValues('first_name'),
@@ -121,9 +120,9 @@ export default function UpdateUserForm() {
     } catch (error) {
       console.log(error);
     }
-
-
   }
+
+
   const user_perm = useQuery(["user-permission"], async () => {
     return await axios.get(api.user.user_permissions)
   })
@@ -298,7 +297,7 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           sx={{ width: 320 }}
-          inputFormat='DD/MM/YYYY'
+          format="DD/MM/YYYY"
           slotProps={{
             textField:
             {

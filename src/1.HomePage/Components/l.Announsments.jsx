@@ -14,6 +14,7 @@ import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSna
 import { api } from '../../Helper Components/Api';
 import { useQuery, useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { isPermissionToView } from '../../Static/StaticValues';
 export default function Announsments() {
     const { dialogStatus, setDialogStatus } = useContext(AppContext)
     const getAllAnnouncements = useQuery(['get-announcements'], async () => {
@@ -28,12 +29,12 @@ export default function Announsments() {
                     <span className='text-[1.2rem] font-extrabold text-[#555259] '>Announcements</span>
                     <div className='w-fit mt-[-.6rem]'>
                         <div onClick={() => setDialogStatus(true)} className='pt-2'>
-                            <div className='flex gap-2 px-2 rounded-lg  hover:shadow-[rgba(0,0,0,0.24)_0px_3px_8px] cursor-pointer'>
+                            {isPermissionToView("announcement:add") && <div className='flex gap-2 px-2 rounded-lg  hover:shadow-[rgba(0,0,0,0.24)_0px_3px_8px] cursor-pointer'>
                                 <div >
                                     <TbSpeakerphone color='black' size={"23"} />
                                 </div>
                                 <span className='text-[#7e7e7e]'>Create</span>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                 </div>

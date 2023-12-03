@@ -45,6 +45,7 @@ export const api = {
         save_image: `${link}/visitor-manage/save/img/`,
         get_image: `${link}/visitor-manage/get/img`,
         punch: `${link}/visitor-manage/punch`,
+        list_access: `${link}/visitor-manage/list/access`,
 
     },
     user: {

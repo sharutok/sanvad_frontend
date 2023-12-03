@@ -240,7 +240,7 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     sx={{ width: 320 }}
-                    inputFormat='DD/MM/YYYY'
+                    format="DD/MM/YYYY"
                     slotProps={{
                         textField:
                         {

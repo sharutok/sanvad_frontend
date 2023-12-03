@@ -28,7 +28,10 @@ export default function VisitManagementListView() {
     const { data, isLoading } = useQuery(["visitor-list", page, _search], async () => {
         return axios.get(`${api.visitor_management.get_data}/?page=${page}&search=${_search}&woosee=${getCookies()[0]}`)
     })
-
+    const list_access_permission = useQuery(["list-access-permission", page, _search], async () => {
+        const response = axios.get(`${api.visitor_management.list_access}/?woosee=${getCookies()[0]}`)
+        return response
+    })
 
     useEffect(() => {
         setCount(Math.ceil(data?.data.count / 10))
@@ -67,7 +70,7 @@ export default function VisitManagementListView() {
                 <Table thead={thead} tbody={
                     !isLoading ? data?.data?.results.map((g, i) => {
                         return (
-                            <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={true} placement='top'>
+                            <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
                                     <td onClick={() => handleNav(g)} >{g.reason_for_visit}</td>
                                     <td onClick={() => handleNav(g)} >{g.name}</td>
@@ -78,16 +81,18 @@ export default function VisitManagementListView() {
                                     <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
                                         {moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual Out Time", g.punch_out_date_time)}
                                     </div></td>
-                                    <td onClick={() => handleNav(g)} >{moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}</td>
+
                                     <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors).length}</td>
                                     <td onClick={() => handleNav(g)} >{VisitorStatus(g.visitor_status)}</td>
-                                    {g.visitor_status !== 2 && <td onClick={() => handleDelete(g.id)} className='delete '>
-                                        <TipTool position={"right"} body={
-                                            <div className='w-fit hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'>
-                                                <MdDeleteOutline color='#f08080' size={22} />
-                                            </div>
-                                        } title={"Delete"} />
-                                    </td>}
+                                    {!list_access_permission?.data?.data.delete_btn &&
+                                        g.visitor_status !== 2 && <td onClick={() => handleDelete(g.id)} className='delete '>
+                                            <TipTool position={"right"} body={
+                                                <div className='w-fit hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'>
+                                                    <MdDeleteOutline color='#f08080' size={22} />
+                                                </div>
+                                            } title={"Delete"} />
+                                        </td>
+                                    }
                                 </tr>
                             </Tooltip>
                         )

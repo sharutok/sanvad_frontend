@@ -179,8 +179,8 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
         <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
+                    minDate={dayjs(moment().format("YYYY-MM-DD"))}
                     disabled={disabled || false}
-                    inputFormat='DD/MM/YYYY'
                     sx={{ width: "20rem" }}
                     format='DD/MM/YYYY hh:mm A'
                     timeSteps={{ minutes: 15 }}
@@ -249,12 +249,12 @@ const VisitorListing = ({ deleteFiles }) => {
 
 function CustomEndDateTime({ register, name, label, errors, control, watch, disabled, getValues }) {
     return (
+
         <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
-                    disabled={disabled || false}
-                    inputFormat='DD/MM/YYYY'
-                    minDateTime={getValues('start_date_time')}
+                    disabled={!getValues('start_date_time') ? true : false}
+                    minDateTime={dayjs(getValues('start_date_time'))}
                     sx={{ width: "20rem" }}
                     format='DD/MM/YYYY hh:mm A'
                     timeSteps={{ minutes: 15 }}

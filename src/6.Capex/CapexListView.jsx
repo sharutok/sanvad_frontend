@@ -60,11 +60,11 @@ export default function CapexListView({ _search, _setSearch }) {
                                     <TipTool title={"View Capex"} body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200 w-fit'><MdOutlineOpenInNew color='#f08080' size={22} /></div>} />
                                 </Link>
                             </td>
-                            <td onClick={() => handleDelete(i.capex_id)} className='delete'>
+                            {/* <td onClick={() => handleDelete(i.capex_id)} className='delete'>
                                 <TipTool body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200 w-fit'>
                                     <MdDeleteOutline color='#f08080' size={22} />
                                 </div>} title={"Delete"} />
-                            </td>
+                            </td> */}
                         </tr>
                     )
                 })

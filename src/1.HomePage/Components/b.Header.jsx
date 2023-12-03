@@ -29,7 +29,7 @@ export default function HeaderMegaMenu() {
                         <span align="center" style={{ fontFamily: "Archive" }} className='py-1 text-[1.3rem] mt-1 text-[#555259] font-extrabold'>ADOR<span style={{ fontFamily: "Archive" }} className='text-red-600 font-bold'>HUB</span></span>
                     </div>
                     <div className='flex mr-5' >
-                        <Notification />
+                        {/* <Notification /> */}
                         <AccountMenu />
                     </div>
                 </div>

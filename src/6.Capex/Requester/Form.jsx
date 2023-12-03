@@ -60,7 +60,7 @@ export default function Form() {
             payback_period: "",
             return_on_investment: "",
             budget_type: "",
-            requisition_date: "",
+            requisition_date: "2023-11-30",
             total_cost: "",
             site_delivery_date: "",
             installation_date: "",
@@ -87,9 +87,9 @@ export default function Form() {
                 ...submit,
                 budget_id: budget_id,
                 raised_by: getCookies()[0],
-                requisition_date: moment(submit.requisition_date.$d).format("YYYY-MM-DD"),
-                site_delivery_date: moment(submit.site_delivery_date.$d).format("YYYY-MM-DD"),
-                installation_date: moment(submit.installation_date.$d).format("YYYY-MM-DD"),
+                requisition_date: moment(submit.requisition_date).format("YYYY-MM-DD"),
+                site_delivery_date: moment(submit.site_delivery_date).format("YYYY-MM-DD"),
+                installation_date: moment(submit.installation_date).format("YYYY-MM-DD"),
                 asset_listings: JSON.stringify(assets),
             });
             tktFiles.forEach((file, index) => {
@@ -102,7 +102,7 @@ export default function Form() {
             })
             const res = await axios.post(api.capex.create_capex, formData)
             if (res.data.status === 200) {
-                setSnackBarPopUp({ state: true, message: "Capex Added" })
+                setSnackBarPopUp({ state: true, message: "Capex Added", severity: 's' })
                 setBtnSaving(true)
                 setTimeout(() => {
                     window.location.href = "/capex/list"
@@ -154,7 +154,7 @@ export default function Form() {
                 <form className='flex flex-wrap gap-5 p-4' onSubmit={handleSubmit(onSubmit)}>
                     <CustomTextField label={"Nature Of Requirement"} name={"nature_of_requirement"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Purpose"} name={"purpose"} errors={errors} register={register} watch={watch} />
-                    <CustomDate label={"Requisition Date*"} name={"requisition_date"} errors={errors} control={control} watch={watch} register={register} />
+                    <RequestionDate disabled={true} label={"Requisition Date*"} name={"requisition_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomAutoComplete control={control} errors={errors} label={"Payback Period"} name={"payback_period"} options={payback_period_return_of_investment} />
                     <CustomAutoComplete control={control} errors={errors} label={"Return On Investment"} name={"return_on_investment"} options={payback_period_return_of_investment} />
                     <CustomAutoComplete control={control} errors={errors} label={"Budget Type"} name={"budget_type"} options={budgeted_type} />
@@ -192,7 +192,7 @@ export default function Form() {
                                                 <label htmlFor="contained-button-file">
                                                     <Input onChange={(e) => handleFileChange(e)} accept="image/jpeg,image/png,application/pdf" type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
                                                     <Typography sx={{ fontWeight: "bold" }} className="ts-card-typo abs" variant="body2">
-                                                        Upload files
+                                                        Upload files*
                                                     </Typography>
                                                 </label>
                                             </Stack>
@@ -361,7 +361,38 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     className='w-[20rem]'
-                    inputFormat='DD/MM/YYYY'
+                    format="DD/MM/YYYY"
+                    slotProps={{
+                        textField:
+                        {
+                            size: 'small',
+                            helperText: errors[name] && errors[name].message,
+                            error: !!errors[name]
+                        },
+                    }}
+                    {...register(name)}
+                    label={label}
+                    value={dayjs(watch(name))}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                />
+            </LocalizationProvider>
+        )}
+            name={name}
+            control={control}
+            rules={{ required: true }}
+        />
+
+    )
+}
+const RequestionDate = ({ register, name, label, errors, control, watch, disabled }) => {
+    return (
+        <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                    disabled={disabled}
+                    className='w-[20rem]'
+                    format="DD/MM/YYYY"
                     slotProps={{
                         textField:
                         {

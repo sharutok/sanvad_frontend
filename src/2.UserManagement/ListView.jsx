@@ -48,7 +48,7 @@ export default function UserManagementListView() {
                     <Table thead={thead} tbody={
                         data?.data.results.map((g, i) => {
                             return (
-                                <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={true} placement='top'>
+                                <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                     <tr className='p-10 mt-1 table-wrapper' >
                                         <td onClick={() => handleNav(g)}>{g.emp_no}</td>
                                         <td onClick={() => handleNav(g)}>{g.ess_function}</td>

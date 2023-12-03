@@ -137,6 +137,7 @@ export default function ConferenceBookingListView() {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateCalendar
                                 defaultValue={dayjs(moment().format("YYYY-MM-DD"))}
+                                minDate={dayjs(moment().format("YYYY-MM-DD"))}
                                 onChange={(a, b) => {
                                     handleDataChange(a)
                                 }}

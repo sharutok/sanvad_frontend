@@ -18,7 +18,7 @@ import { isPermissionToView } from '../Static/StaticValues';
 import { getCookies } from '../Helper Components/CustomCookies';
 
 export default function BudgetListVIew({ _search, _setSearch }) {
-    const thead = ["Budget No", "Purpose code", "Line No", "Purpose", "Department", "Capex Group", "Class", "Category", "No. Of Capex ", "Budget (Remaining v/s Consumed)", "Final Budget", "Budget Status"]
+    const thead = ["Budget No", "Purpose code", "Line No", "Purpose", "Department", "Capex Group", "Class", "Category", "No. Of Capex ", "Budget (Consumed v/s Remaining)", "Final Budget", "Budget Status"]
     const [budgetData, setBudgetData] = useState({})
     const { count, setCount, page, setDrawerStatus, drawerStatus, setSnackBarPopUp } = useContext(AppContext)
     const { isLoading, error, data } = useQuery(['budget-data', page, _search], async () => {
@@ -58,7 +58,7 @@ export default function BudgetListVIew({ _search, _setSearch }) {
                 <Table thead={thead} tbody={
                     data?.data?.results.map((c, i) => {
                         return (
-                            <Tooltip key={i} title={"Click to Update"} arrow disableInteractive followCursor={true} placement='top'>
+                            <Tooltip key={i} title={"Click to Update"} arrow disableInteractive followCursor={false} placement='top'>
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.budget_no}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.purpose_code}</td>
