@@ -12,9 +12,9 @@ import { getCookies } from '../Helper Components/CustomCookies';
 
 export const static_val = {
     prefix_email_id: [
-        { value: '@adorians.com', label: '@adorians.com' },
-        { value: '@adorfontech.com', label: '@adorfontech.com' },
-        { value: '@flashorthodontics.in', label: '@flashorthodontics.in' },
+        "@adorians.com",
+        "@adorfontech.com",
+        "@flashorthodontics.in",
     ]
 }
 

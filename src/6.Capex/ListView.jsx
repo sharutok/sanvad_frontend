@@ -73,17 +73,17 @@ function BasicTabs({ _search, _setSearch }) {
             {/* <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}> */}
             <Box sx={{ px: 3 }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
-                    {isPermissionToView("capex:list:capex") && <Tab label="Budget List" {...a11yProps(0)} />}
-                    {isPermissionToView("capex:list:budget") && <Tab label="Capex List" {...a11yProps(1)} />}
+                    {isPermissionToView("capex:list:budget") && <Tab label="Budget List" {...a11yProps(0)} />}
+                    {isPermissionToView("capex:list:capex") && <Tab label="Capex List" {...a11yProps(1)} />}
                 </Tabs>
             </Box>
             {
-                isPermissionToView("capex:list:capex") && <CustomTabPanel value={value} index={0}>
+                isPermissionToView("capex:list:budget") && <CustomTabPanel value={value} index={0}>
                     <BudgetListVIew _search={_search} _setSearch={_setSearch} />
                 </CustomTabPanel>
             }
             {
-                isPermissionToView("capex:list:budget") && <CustomTabPanel value={value} index={1}>
+                isPermissionToView("capex:list:capex") && <CustomTabPanel value={value} index={1}>
                     <CapexListView _search={_search} _setSearch={_setSearch} />
                 </CustomTabPanel>
             }

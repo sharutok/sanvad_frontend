@@ -56,7 +56,6 @@ export default function TicketSystemListView() {
     async function exportData() {
         try {
             const data = await axios.post(api.utils.download_excel, { "data_module": "ticket" })
-            console.log(data?.data?.data);
             exportToCSV(data?.data?.data, `Ticket System ${moment().format("DD_MM_YYYY")}`)
         } catch (error) {
             console.log("error in exporting");
@@ -79,7 +78,6 @@ export default function TicketSystemListView() {
                     <Table thead={thead}
                         tbody={
                             ticket_listing?.data?.data?.results.map((g, i) => {
-                                console.log(String(getCookies()[0]), String(g.requester_emp_no));
                                 return (
                                     <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                         <tr className='table-wrapper' >
@@ -150,7 +148,7 @@ function severityArrow(val) {
         return (<div className='flex justify-center p-1 rounded-xl bg-green-100'><p className='mt-[0.1rem]'>Low</p><HiMiniArrowSmallDown className='text-green-500' size="25" /></div>)
     }
     if (val === 1) {
-        return (<div className='flex justify-center p-1 rounded-xl bg-yellow-100'><p className='mt-[0.1rem]'>Meduim</p><HiMiniArrowSmallRight className='text-yellow-500' size="25" /></div>)
+        return (<div className='flex justify-center p-1 rounded-xl bg-yellow-100'><p className='mt-[0.1rem]'>Medium</p><HiMiniArrowSmallRight className='text-yellow-500' size="25" /></div>)
     }
     if (val === 2) {
         return (<div className='flex justify-center p-1 rounded-xl bg-red-100'><p className='mt-[0.1rem]'>High</p><HiMiniArrowSmallUp className='text-red-500' size="25" /></div>)

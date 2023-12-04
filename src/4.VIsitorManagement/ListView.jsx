@@ -20,7 +20,7 @@ import { getCookies } from '../Helper Components/CustomCookies'
 import LoadingSpinner from '../Helper Components/LoadingSpinner'
 
 export default function VisitManagementListView() {
-    const thead = ["Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Visitor Count", "Visitor's Status"]
+    const thead = ["Visitor Company", "Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Visitor Count", "Visitor's Status"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const queryClient = useQueryClient()
@@ -72,6 +72,7 @@ export default function VisitManagementListView() {
                         return (
                             <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
+                                    <td onClick={() => handleNav(g)} >{g.v_company}</td>
                                     <td onClick={() => handleNav(g)} >{g.reason_for_visit}</td>
                                     <td onClick={() => handleNav(g)} >{g.name}</td>
                                     <td onClick={() => handleNav(g)} >{g.department}</td>
@@ -85,7 +86,7 @@ export default function VisitManagementListView() {
                                     <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors).length}</td>
                                     <td onClick={() => handleNav(g)} >{VisitorStatus(g.visitor_status)}</td>
                                     {!list_access_permission?.data?.data.delete_btn &&
-                                        g.visitor_status !== 2 && <td onClick={() => handleDelete(g.id)} className='delete '>
+                                        g.visitor_status == 0 && <td onClick={() => handleDelete(g.id)} className='delete '>
                                             <TipTool position={"right"} body={
                                                 <div className='w-fit hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200'>
                                                     <MdDeleteOutline color='#f08080' size={22} />

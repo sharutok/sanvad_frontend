@@ -52,9 +52,10 @@ export default function Page() {
 
 
 function LoginBody() {
-    const [prefix, setPrefix] = useState(data[0]['label'])
+    const [prefix, setPrefix] = useState(static_val.prefix_email_id[0])
     const { btnSaving, setBtnSaving, userLogin, setUserLogin } = useContext(AppContext)
     const [error, setError] = useState("")
+
 
     async function onSubmit(e) {
         e.preventDefault()
@@ -82,6 +83,8 @@ function LoginBody() {
         setUserLogin({ ...userLogin, [name]: value })
     }
 
+
+
     return (
         <div className=''>
             <div  >
@@ -101,9 +104,10 @@ function LoginBody() {
                             <div className='flex'>
                                 <TextField helperText={error} error={error && true} name="email" size='small' placeholder="Email Address" variant="outlined" required onChange={handleOnChange} />
                                 <Autocomplete
-                                    defaultValue={data[0]}
+                                    defaultValue={static_val.prefix_email_id[0]}
                                     disablePortal
                                     id="combo-box-demo"
+                                    onChange={(e, i) => setPrefix(i)}
                                     options={data}
                                     className='w-[12rem]'
                                     renderInput={(params) => <TextField {...params} size='small' />}

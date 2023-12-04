@@ -24,14 +24,32 @@ import moment from 'moment';
 import IMAGES from '../../assets/Image/Image';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import * as yup from 'yup'
 
 export default function CreateVisitorMangement() {
     const ErrorSchema = VisitorMangErrorSchema
     const { setDialogStatus, dialogStatus, visitors, setVisitors, setBtnSaving, setSnackBarPopUp, btnSaving } = useContext(AppContext)
     const [tktFiles, setTKTFiles] = useState([])
+    const [validMobileNo, setValidMobileNO] = useState("")
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
-        resolver: yupResolver(ErrorSchema),
+        resolver: yupResolver(yup.object().shape({
+            start_date_time: yup.string().required('Required Field'),
+            end_date_time: yup.string().required('Required Field'),
+            v_company: yup.string().required('Required Field').max(25),
+            reason_for_visit: yup.string().required('Required Field').matches(/^[A-Za-z\s]+$/, 'Only alphabets').max(25),
+            more_info: yup.string().max(10),
+            veh_no: yup.string().max(10),
+            v_name: yup.string().max(25),
+            v_mobile_no: !validMobileNo === "" ? yup.string().required('Required Field').matches(/^[0-9]+$/, 'Only numbers are allowed').test('len', 'Must be exactly 10 characters', val => val && val.length === 10) : yup.string(),
+            v_desig: yup.string().max(15),
+            v_asset: yup.string().max(15),
+
+        })),
+        defaultValues: {
+            start_date_time: "",
+            end_date_time: ""
+        }
     })
 
     const onSubmit = async (data) => {
@@ -65,7 +83,10 @@ export default function CreateVisitorMangement() {
             logs.push(x)
         })
 
-        !logs.includes("") && setVisitors([...visitors, obj])
+        if (Object.keys(errors).map(x => { return x }).length == 0 && !logs.includes("")) {
+            setVisitors([...visitors, obj]), clearAll()
+        }
+
     }
 
     const deleteFiles = (g) => {
@@ -95,10 +116,10 @@ export default function CreateVisitorMangement() {
                                 <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomEndDateTime getValues={getValues} register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
-                                <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Contact Info*" />
+                                <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Contact Info" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No" />
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
-                                <div >
+                                {/* <div >
                                     <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
                                         <FormControl error={!!errors.ppe}>
                                             <FormLabel id="demo-row-radio-buttons-group-label">Personal Protective Equipment</FormLabel>
@@ -121,7 +142,7 @@ export default function CreateVisitorMangement() {
                                         control={control}
                                         rules={{ required: true }}
                                     />
-                                </div>
+                                </div> */}
                             </div>
 
                         </div>
@@ -132,7 +153,17 @@ export default function CreateVisitorMangement() {
                                 <div className='w-fit flex'>
                                     <div className='flex flex-wrap gap-5 '>
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_name" label="Visitor's Name*" />
-                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
+                                        <CustomTextFieldMobileNo errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
+                                        <TextField
+                                            onChange={() => console.log("fff")}
+                                            sx={{ width: "20rem" }}
+                                            key={"Visitor's Mobile No*"}
+                                            value={watch('v_mobile_no')}
+                                            label={"Visitor's Mobile No*"}
+                                            size={"small"}
+                                            {...register('v_mobile_no')}
+                                            error={!!errors['v_mobile_no']}
+                                            helperText={errors['v_mobile_no'] && errors['v_mobile_no'].message} />
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_desig" label="Visitor's Designation*" />
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets*" />
                                         <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
@@ -161,6 +192,22 @@ export default function CreateVisitorMangement() {
 const CustomTextField = ({ name, label, errors, register, watch, multiline }) => {
     return (
         <TextField
+            sx={{ width: "20rem" }}
+            multiline={multiline ? true : false}
+            rows={multiline}
+            key={label}
+            value={watch(name)}
+            label={label}
+            size={"small"}
+            {...register(name)}
+            error={!!errors[name]}
+            helperText={errors[name] && errors[name].message} />
+    )
+}
+const CustomTextFieldMobileNo = ({ name, label, errors, register, watch, multiline }) => {
+    return (
+        <TextField
+            onChange={() => console.log("fff")}
             sx={{ width: "20rem" }}
             multiline={multiline ? true : false}
             rows={multiline}

@@ -10,7 +10,7 @@ import {
     Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, IconButton,
 } from '@mui/material'
 import '../../../Style/VisitManagement.css'
-import { VisitorMangErrorSchema } from '../../Form Error Schema/VisitorMangErrorSchema';
+import { ApproverVisitorMangErrorSchema, VisitorMangErrorSchema } from '../../Form Error Schema/VisitorMangErrorSchema';
 import BackArrow from '../../Helper Components/SideComponent';
 import { BsCamera } from 'react-icons/bs';
 import { AppContext } from '../../App';
@@ -30,7 +30,7 @@ import moment from 'moment';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import BarSnack from '../../Helper Components/BarSnack';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
-const ErrorSchema = VisitorMangErrorSchema
+const ErrorSchema = ApproverVisitorMangErrorSchema
 
 
 const videoConstraints = {

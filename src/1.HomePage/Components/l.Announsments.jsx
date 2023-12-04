@@ -12,7 +12,7 @@ import { AppContext } from '../../App';
 import DialogsBox from '../../Helper Components/DialogsBox';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import { api } from '../../Helper Components/Api';
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { isPermissionToView } from '../../Static/StaticValues';
 export default function Announsments() {
@@ -21,9 +21,14 @@ export default function Announsments() {
         const data = await axios.get(api.utils.announcements)
         return data
     })
+    const queryClient = useQueryClient()
+
+    function invalidateData() {
+        queryClient.invalidateQueries(['get-announcements'])
+    }
     return (
         <div >
-            <DialogsBox title={"Add Announcments"} body={<AddForm />} />
+            <DialogsBox title={"Add Announcments"} body={<AddForm invalidateData={invalidateData} />} />
             <div className='p-3 bg-[#fff] rounded-t-xl  '>
                 <div className='flex justify-between'>
                     <span className='text-[1.2rem] font-extrabold text-[#555259] '>Announcements</span>
@@ -71,11 +76,13 @@ export default function Announsments() {
 
 
 
-const AddForm = () => {
+const AddForm = ({ invalidateData }) => {
     const { setSnackBarPopUp, setBtnSaving, setDialogStatus } = useContext(AppContext)
     const [value, setValue] = useState({
         announsments_description: "",
     })
+
+
     const onSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -85,9 +92,11 @@ const AddForm = () => {
                 setSnackBarPopUp({ state: true, message: "Announcement Created", severity: 's' })
                 setBtnSaving(true)
                 setTimeout(() => {
+                    invalidateData()
                     setDialogStatus(false)
                     setSnackBarPopUp({ state: false, message: "", })
                     setBtnSaving(false)
+
                 }, 1500)
             }
         }

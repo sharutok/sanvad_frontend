@@ -80,6 +80,7 @@ export default function UpdateUserForm() {
   })
 
   const onSubmit = async (submitData) => {
+    console.log(getValues('start_date').$d);
     const value = {
       ...usermanagement,
       first_name: getValues('first_name'),
@@ -88,9 +89,9 @@ export default function UpdateUserForm() {
       gender: getValues('gender'),
       emerg_contact: getValues('emerg_contact'),
       address: getValues('address'),
-      dob: moment(getValues('dob').$d).format('YYYY-MM-DD'),
-      start_date: moment(getValues('start_date').$d).format('YYYY-MM-DD'),
-      end_date: moment(getValues('end_date').$d).format('YYYY-MM-DD'),
+      dob: getValues('dob').$d && moment(getValues('dob').$d).format('YYYY-MM-DD'),
+      start_date: getValues('start_date').$d && moment(getValues('start_date').$d).format('YYYY-MM-DD'),
+      end_date: getValues('end_date').$d && moment(getValues('end_date').$d).format('YYYY-MM-DD'),
       emp_no: getValues('emp_no'),
       department: getValues('department'),
       plant_name: getValues('plant_name'),
