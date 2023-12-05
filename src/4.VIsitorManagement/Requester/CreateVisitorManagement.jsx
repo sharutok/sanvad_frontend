@@ -33,19 +33,7 @@ export default function CreateVisitorMangement() {
     const [validMobileNo, setValidMobileNO] = useState("")
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
-        resolver: yupResolver(yup.object().shape({
-            start_date_time: yup.string().required('Required Field'),
-            end_date_time: yup.string().required('Required Field'),
-            v_company: yup.string().required('Required Field').max(25),
-            reason_for_visit: yup.string().required('Required Field').matches(/^[A-Za-z\s]+$/, 'Only alphabets').max(25),
-            more_info: yup.string().max(10),
-            veh_no: yup.string().max(10),
-            v_name: yup.string().max(25),
-            v_mobile_no: !validMobileNo === "" ? yup.string().required('Required Field').matches(/^[0-9]+$/, 'Only numbers are allowed').test('len', 'Must be exactly 10 characters', val => val && val.length === 10) : yup.string(),
-            v_desig: yup.string().max(15),
-            v_asset: yup.string().max(15),
-
-        })),
+        resolver: yupResolver(VisitorMangErrorSchema),
         defaultValues: {
             start_date_time: "",
             end_date_time: ""
@@ -153,17 +141,7 @@ export default function CreateVisitorMangement() {
                                 <div className='w-fit flex'>
                                     <div className='flex flex-wrap gap-5 '>
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_name" label="Visitor's Name*" />
-                                        <CustomTextFieldMobileNo errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
-                                        <TextField
-                                            onChange={() => console.log("fff")}
-                                            sx={{ width: "20rem" }}
-                                            key={"Visitor's Mobile No*"}
-                                            value={watch('v_mobile_no')}
-                                            label={"Visitor's Mobile No*"}
-                                            size={"small"}
-                                            {...register('v_mobile_no')}
-                                            error={!!errors['v_mobile_no']}
-                                            helperText={errors['v_mobile_no'] && errors['v_mobile_no'].message} />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_desig" label="Visitor's Designation*" />
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets*" />
                                         <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
