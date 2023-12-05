@@ -19,7 +19,7 @@ const data = static_val.prefix_email_id
 
 export default function Page() {
     const [imageLoaded, setImageLoaded] = useState(false);
-
+    console.log(import.meta.env.VITE_MODE);
     const handleImageLoad = () => {
         setImageLoaded(true);
     };

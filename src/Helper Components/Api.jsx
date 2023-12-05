@@ -1,5 +1,6 @@
-const url = "http://localhost"
-const port = "8000"
+const url = import.meta.env.VITE_BACKEND_URL
+const port = import.meta.env.VITE_BACKEND_PORT
+
 const link = `${url}:${port}`
 export const api = {
     user_management: {
