@@ -60,7 +60,7 @@ export default function Form() {
             payback_period: "",
             return_on_investment: "",
             budget_type: "",
-            requisition_date: "2023-11-30",
+            requisition_date: moment().format("YYYY-MM-DD"),
             total_cost: "",
             site_delivery_date: "",
             installation_date: "",
@@ -261,7 +261,7 @@ const AssetListing = ({ control, errors, register, watch, getValues, setValue })
                 return x
             } return 0
         })
-        !val.includes(0) && setAssets([...assets, obj])
+        !val.includes(0) && (setAssets([...assets, obj]), clearAll())
     }
 
     function clearAll() {

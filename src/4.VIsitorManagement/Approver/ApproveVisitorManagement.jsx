@@ -3,6 +3,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Divider } from '@mui/material'
 import dayjs from 'dayjs';
 import { yupResolver } from '@hookform/resolvers/yup'
+import Avatar from '@mui/material/Avatar';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -219,8 +220,6 @@ export default function ApproveVisitorManagement() {
                                 {!componentAccess.camera_component && (componentAccess.punch_in && <div >
                                     <LoadingButtonWithSnack beforeName={"Update Pass"} afterName={"Updating..."} />
                                 </div>)}
-
-
                             </div>
                         </div>
                     </div>
@@ -318,7 +317,10 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
                             <td>{g.v_mobile_no}</td>
                             <td>{g.v_desig}</td>
                             <td>{g.v_asset}</td>
-                            {visitorPhoto[i] && visitorPhoto[i]?.mod_image && <td className='delete'>{<TipTool body={<a className='py-4 ' target="_blank" href={visitorPhoto[i]?.mod_image}>{`Vistor ${i + 1}`}</a>} title={`View Vistor ${i + 1} photo `} />}</td>}
+                            {visitorPhoto[i] && visitorPhoto[i]?.mod_image && <td className='delete'>{
+                                <Avatar src={visitorPhoto[i]?.mod_image} sx={{ width: 50, height: 50 }} />
+                            }
+                            </td>}
                             {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
                                 <td onClick={() => { captureImage(`${id}__${i}`) }} className='delete '>
                                     <TipTool body={
@@ -326,7 +328,8 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
                                             <AiOutlineCamera color='#555259' size={22} />
                                         </IconButton>
                                     } title={"Click Photo"} />
-                                </td>)}
+                                </td>)
+                            }
 
                         </tr>
                     )

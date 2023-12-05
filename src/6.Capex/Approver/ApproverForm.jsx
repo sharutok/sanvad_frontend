@@ -145,7 +145,7 @@ export default function Form() {
                         <div >
                             <TemporaryDrawer body={<EditCapex capexDetail={capexDetail} invalidateData={invalidateData} />} />
                         </div>
-                        <ButtonComponent onClick={() => setDrawerStatus(true)} icon={<MdBrowserUpdated color='#fff' size={22} />} btnName={"Update Details"} />
+                        {componentAccess.update_btn && <ButtonComponent onClick={() => setDrawerStatus(true)} icon={<MdBrowserUpdated color='#fff' size={22} />} btnName={"Update Details"} />}
                     </div>
                     {preFilled && <div >
                         <MoreInformation details={[{ ...capexDetail, ...budget }]} />
