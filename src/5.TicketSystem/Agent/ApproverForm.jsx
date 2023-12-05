@@ -111,7 +111,7 @@ export default function ApproverForm() {
 
 
     const list_of_users = useQuery(['list-of-users'], async () => {
-        return await axios.get(api.ticket_system.get_all_user_list)
+        return await axios.get(`${api.ticket_system.get_all_user_list}?woosee=${getCookies()[0]}`)
     }, { staleTime: "300000" })
 
     function deleteFiles(g) {
@@ -225,7 +225,7 @@ export default function ApproverForm() {
                                         value={value}>
                                         <FormControlLabel value="0" control={<Radio size='small' />} label="Approve" />
                                         <FormControlLabel value="1" control={<Radio size='small' />} label="Reject" />
-                                        {/* <FormControlLabel value="2" control={<Radio size='small' />} label="Close" /> */}
+                                        {componentAccess.close_radio_btn && <FormControlLabel value="2" control={<Radio size='small' />} label="Close" />}
                                     </RadioGroup>
                                     <FormHelperText>{errors.approver_status && errors.approver_status.message}</FormHelperText>
                                 </FormControl>
