@@ -75,7 +75,7 @@ export default function Form() {
 
         const res = await axios.put(`${api.capex.capex_by_id}/${capex_id}/`, data)
         if (res.data.status_code === 200) {
-            setSnackBarPopUp({ state: true, message: "Submitted" })
+            setSnackBarPopUp({ state: true, message: "Submitted", severity: "s" })
             setBtnSaving(true)
             setTimeout(() => {
                 setSnackBarPopUp({ state: false, message: "" })

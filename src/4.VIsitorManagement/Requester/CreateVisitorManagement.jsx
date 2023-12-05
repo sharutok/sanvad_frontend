@@ -30,7 +30,7 @@ export default function CreateVisitorMangement() {
     const ErrorSchema = VisitorMangErrorSchema
     const { setDialogStatus, dialogStatus, visitors, setVisitors, setBtnSaving, setSnackBarPopUp, btnSaving } = useContext(AppContext)
     const [tktFiles, setTKTFiles] = useState([])
-    const [validMobileNo, setValidMobileNO] = useState("")
+    const [validError, setValidError] = useState("")
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(VisitorMangErrorSchema),
@@ -60,20 +60,49 @@ export default function CreateVisitorMangement() {
 
     let obj = {}
 
-    function handleAddVisitor() {
-        ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
-            obj[val] = getValues(val)
-            return
-        })
-        let logs = []
+    async function handleAddVisitor() {
+        try {
+            ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
+                obj[val] = getValues(val)
+                return
+            })
+            let logs = []
 
-        Object.values(obj).map(x => {
-            logs.push(x)
-        })
+            Object.values(obj).map(x => {
+                logs.push(x)
+            })
 
-        if (Object.keys(errors).map(x => { return x }).length == 0 && !logs.includes("")) {
-            setVisitors([...visitors, obj]), clearAll()
+            const jsonDataSchema = yup.object({
+                v_name: yup.string().required("All Fields Required").max(20),
+                v_mobile_no: yup.string().required('All Fields Required').matches(/^[0-9]+$/, 'Mobile No must be numbers only').test('len', 'Mobile No must be exactly 10 characters', val => val && val.length === 10),
+                v_desig: yup.string().required("All Fields Required"),
+                v_asset: yup.string().required("All Fields Required"),
+
+            });
+
+            try {
+                // Validate the JSON data against the schema
+                const resp = await jsonDataSchema.validate(obj)
+                // console.log(resp);
+                if (Object.keys(errors).map(x => { return x }).length == 0 && !logs.includes("")) {
+                    setVisitors([...visitors, obj]), clearAll(), setValidError("")
+                }
+            }
+            catch (error) {
+                console.log(error.errors);
+                setValidError(error.errors[0])
+            }
+
         }
+        catch (error) {
+            console.log("error", error);
+        }
+
+
+
+
+
+
 
     }
 
@@ -107,36 +136,13 @@ export default function CreateVisitorMangement() {
                                 <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Contact Info" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No" />
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
-                                {/* <div >
-                                    <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
-                                        <FormControl error={!!errors.ppe}>
-                                            <FormLabel id="demo-row-radio-buttons-group-label">Personal Protective Equipment</FormLabel>
-                                            <RadioGroup
-                                                {...register('ppe')}
-                                                row
-                                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                                name="row-radio-buttons-group"
-                                                onChange={onChange}
-                                                onBlur={onBlur}
-                                                // inputRef={ref}
-                                                value={value}>
-                                                <FormControlLabel value="0" control={<Radio size='small' />} label="Provided" />
-                                                <FormControlLabel value="1" control={<Radio size='small' />} label="Returned" />
-                                            </RadioGroup>
-                                            <FormHelperText>{errors.ppe && errors.ppe.message}</FormHelperText>
-                                        </FormControl>
-                                    )}
-                                        name="ppe"
-                                        control={control}
-                                        rules={{ required: true }}
-                                    />
-                                </div> */}
                             </div>
 
                         </div>
                         <div className='grid gap-5'>
                             <Divider textAlign='left'></Divider>
                             <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Add Visitors"}</span>
+                            {validError && <span className='text-[#ff3838]'>{validError}</span>}
                             <div className='w-fit'>
                                 <div className='w-fit flex'>
                                     <div className='flex flex-wrap gap-5 '>
@@ -146,6 +152,7 @@ export default function CreateVisitorMangement() {
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets*" />
                                         <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
                                         <ButtonComponent onClick={clearAll} icon={<MdRefresh color='white' size={"23"} />} btnName={"Clear All"} />
+
                                     </div>
                                 </div>
                             </div>
