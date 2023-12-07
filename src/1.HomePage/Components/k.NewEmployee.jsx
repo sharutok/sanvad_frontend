@@ -40,7 +40,7 @@ export default function NewEmployee() {
                                         {x.gender === "F" ? <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._girl_}></Avatar>
                                             : <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._boy_}></Avatar>}
                                     </ListItemAvatar>
-                                    <ListItemText primary={<span className='text-[13px] font-bold text-[#555259]'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department && x.department}</span>} />
+                                    <ListItemText primary={<span className='text-[13px] font-bold text-[#555259]'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department !== "null" && x.department}</span>} />
                                     <div>
                                         <ButtonComponent icon={<FaCakeCandles size={15} color='#ED1C24' />} btnName={"Send wishes"} />
                                     </div>

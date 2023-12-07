@@ -7,6 +7,8 @@ import Avatar from '@mui/material/Avatar';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { HiOutlineViewGrid } from "react-icons/hi";
+import { CiBoxList } from "react-icons/ci";
 import {
     Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, IconButton,
 } from '@mui/material'
@@ -31,9 +33,15 @@ import moment from 'moment';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import BarSnack from '../../Helper Components/BarSnack';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
+
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 const ErrorSchema = ApproverVisitorMangErrorSchema
-
-
 const videoConstraints = {
     width: 1280,
     height: 720,
@@ -299,44 +307,99 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
 }
 
 const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto }) => {
+    const [alignment, setAlignment] = React.useState(true);
+
+    const handleAlignment = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
     const { id } = useParams()
 
     const thead = [
         "Visitor's Name",
         "Visitor's Mob.No",
-        "Visitor's Department",
+        "Visitor's Designation",
         "Assets",
     ]
-    return (<>
-        <Table thead={thead}
-            tbody={
-                visitors?.length && visitors?.map((g, i) => {
-                    return (
-                        <tr className='table-wrapper' key={i}>
-                            <td>{g.v_name}</td>
-                            <td>{g.v_mobile_no}</td>
-                            <td>{g.v_desig}</td>
-                            <td>{g.v_asset}</td>
-                            {visitorPhoto[i] && visitorPhoto[i]?.mod_image && <td className='delete'>{
-                                <Avatar src={visitorPhoto[i]?.mod_image} sx={{ width: 50, height: 50 }} />
-                            }
-                            </td>}
-                            {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
-                                <td onClick={() => { captureImage(`${id}__${i}`) }} className='delete '>
-                                    <TipTool body={
-                                        <IconButton>
-                                            <AiOutlineCamera color='#555259' size={22} />
-                                        </IconButton>
-                                    } title={"Click Photo"} />
-                                </td>)
-                            }
 
-                        </tr>
+
+    return (<div className=''>
+        <ToggleButtonGroup
+            value={alignment}
+            exclusive
+            onChange={handleAlignment}
+            aria-label="text alignment"
+        >
+            <ToggleButton value={true} aria-label="left aligned">
+                <HiOutlineViewGrid size={28} />
+            </ToggleButton>
+            <ToggleButton value={false} aria-label="centered">
+                <CiBoxList size={28} />
+            </ToggleButton>
+        </ToggleButtonGroup>
+        <div className='mt-5'>
+            {!alignment &&
+                <Table thead={thead}
+                    tbody={
+                        visitors?.length && visitors?.map((g, i) => {
+                            return (
+                                <tr className='table-wrapper' key={i}>
+                                    <td>{g.v_name}</td>
+                                    <td>{g.v_mobile_no}</td>
+                                    <td>{g.v_desig}</td>
+                                    <td>{g.v_asset}</td>
+                                    {visitorPhoto[i] && visitorPhoto[i]?.mod_image && <td className='delete'>{
+                                        <Avatar src={visitorPhoto[i]?.mod_image} sx={{ width: 50, height: 50 }} />
+                                    }
+                                    </td>}
+                                    {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
+                                        <td onClick={() => { captureImage(`${id}__${i}`) }} className='delete '>
+                                            <TipTool body={
+                                                <IconButton>
+                                                    <AiOutlineCamera color='#555259' size={22} />
+                                                </IconButton>
+                                            } title={"Click Photo"} />
+                                        </td>)
+                                    }
+
+                                </tr>
+                            )
+                        })
+                    }
+                />}
+
+            {alignment && <div className='flex flex-wrap gap-5'>
+                {visitors?.length && visitors?.map((g, i) => {
+                    return (
+                        <div className='grid gap-2 shadow-[rgba(0,0,0,0.24)_0px_3px_8px] p-4 rounded-lg  w-[15rem] h-[16rem]' key={i}>
+                            <div>
+                                {visitorPhoto[i] && visitorPhoto[i]?.mod_image &&
+                                    <>{
+                                        <img className='rounded-lg' src={visitorPhoto[i]?.mod_image} alt="" width={300} />
+                                    }</>}
+                                {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
+                                    <div onClick={() => { captureImage(`${id}__${i}`) }} className='flex justify-center '>
+                                        <div className='grid grid-cols-1' >
+                                            <IconButton>
+                                                <AiOutlineCamera color='#555259' size={70} />
+                                            </IconButton>
+                                        </div>
+                                    </div>)
+                                }
+                            </div>
+                            <div className='grid grid-cols-1 '>
+                                <span className='text-[1.2rem] text-[#555259]' style={{ fontFamily: "Brandon Grotesque" }} >{g.v_name}</span>
+                                <span className='text-[.9rem] text-[#808285]'>{g.v_mobile_no}</span>
+                                <span className='text-[.9rem] text-[#808285]'>{g.v_desig}</span>
+                                <span className='text-[1.2rem] text-[#555259]' style={{ fontFamily: "Brandon Grotesque" }} >{g.v_asset}</span>
+                            </div>
+
+                        </div>
                     )
-                })
-            }
-        />
-    </>)
+                })}
+            </div>}
+        </div>
+    </div>)
+
 }
 
 
