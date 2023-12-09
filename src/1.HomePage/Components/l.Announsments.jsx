@@ -27,7 +27,7 @@ export default function Announsments() {
         queryClient.invalidateQueries(['get-announcements'])
     }
     return (
-        <div >
+        <div className='h-fit'>
             <DialogsBox title={"Add Announcments"} body={<AddForm invalidateData={invalidateData} />} />
             <div className='p-3 bg-[#fff] rounded-t-xl  '>
                 <div className='flex justify-between'>

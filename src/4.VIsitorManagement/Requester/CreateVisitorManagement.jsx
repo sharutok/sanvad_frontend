@@ -167,9 +167,9 @@ export default function CreateVisitorMangement() {
                     <LoadingButtonWithSnack beforeName={"Create Pass"} afterName={"Create...."} />
                 </div>
             </form>
-            <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
+            {/* <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
                 <img className='w-[20rem]' loading='lazy' src={IMAGES.vistor_manage_i} />
-            </div>
+            </div> */}
         </div>
     )
 }

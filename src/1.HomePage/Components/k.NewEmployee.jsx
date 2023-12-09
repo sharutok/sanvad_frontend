@@ -18,12 +18,12 @@ export default function NewEmployee() {
 
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(api.user.birthday_list)
-    }, { staleTime: "300000" })
+    })
 
 
 
     return (
-        <div className=''>
+        <div className='h-fit'>
             <div className='p-3 bg-[#fff] rounded-t-xl '>
                 <span className='text-[1.2rem] font-extrabold text-[#555259] '>Birthdays</span>
                 <div >

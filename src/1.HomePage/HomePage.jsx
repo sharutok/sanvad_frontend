@@ -26,7 +26,7 @@ export default function HomePage() {
                                 <div className='grid grid-cols-[repeat(1,1fr)] '>
                                     <QuickLinks />
                                 </div>
-                                <div className='grid gap-5  '>
+                                <div className='grid gap-5'>
                                     <WeatherAndTemp />
                                     <NewEmployee />
                                     <Announsments />

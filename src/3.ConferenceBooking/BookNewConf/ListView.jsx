@@ -272,9 +272,9 @@ function TemporaryDrawer({ body }) {
                 <span className='text-3xl mt-5'>Book a Conference</span>
             </div>
             {body}
-            <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
+            {/* <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
                 <img loading='lazy' width={"300px"} src={IMAGES.conf_img_i} />
-            </div>
+            </div> */}
         </Box>
     );
 

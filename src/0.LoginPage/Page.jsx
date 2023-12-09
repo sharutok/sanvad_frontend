@@ -28,11 +28,9 @@ export default function Page() {
         <div>
 
             <div >
-                {/* <div className='sm:hidden md:hidden lg:hidden xl:block'> */}
                 <div id="element" className='flex justify-center mt-[5rem] '>
                     <div className='w-[75%] '>
                         {!imageLoaded && <img loading='lazy' onLoad={() => handleImageLoad} className=' z-[10] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_img} />}
-                        {/* {imageLoaded && <img loading='lazy' className='border z[-1]  rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_smaller} />} */}
                     </div>
                     <div className=' ml-[-30rem] '>
                         <LoginBody />
@@ -43,12 +41,6 @@ export default function Page() {
     )
 }
 
-// <div className='w-fit lg:block xl:hidden flex justify-center'>
-//     {/* {!imageLoaded && <img loading='lazy' onLoad={() => handleImageLoad} className=' rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_img} />} */}
-//     <div>
-//         <LoginBody />
-//     </div>
-// </div>
 
 
 function LoginBody() {

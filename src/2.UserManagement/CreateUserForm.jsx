@@ -185,9 +185,9 @@ function CreateUserForm() {
             </div>
             <div>
             </div>
-            <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
+            {/* <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
                 <img loading='lazy' width={"200px"} src={IMAGES.user_man_i} />
-            </div>
+            </div> */}
         </form>
     )
 }
