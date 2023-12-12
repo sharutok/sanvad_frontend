@@ -53,7 +53,6 @@ export default function Policies() {
             <div className='p-10'>
                 <Table thead={thead} tbody={
                     response?.data?.data?.results?.map((g, i) => {
-                        console.log(g.mod_file_path);
                         return (
                             <tr className='p-10 mt-1 table-wrapper' key={i}>
                                 <td >{g.policy_name}</td>
