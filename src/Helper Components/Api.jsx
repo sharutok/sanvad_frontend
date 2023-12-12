@@ -60,6 +60,7 @@ export const api = {
         serve_files: `${link}/utils/serve/file/`,
         announcements: `${link}/utils/add/announsment/`,
         dept_plant: `${link}/utils/list/dept-plant/`,
+        birthday_wish: `${link}/utils/birthday/wish`
     },
     wf: {
         it_system_ticket_wf: `${link}/wf/ticket/systems/`,

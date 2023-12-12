@@ -369,6 +369,7 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
 
             {alignment && <div className='flex flex-wrap gap-5'>
                 {visitors?.length && visitors?.map((g, i) => {
+                    console.log(visitorPhoto[i]?.mod_image);
                     return (
                         <div className='grid gap-2 shadow-[rgba(0,0,0,0.24)_0px_3px_8px] p-4 rounded-lg  w-[15rem] h-[16rem]' key={i}>
                             <div>

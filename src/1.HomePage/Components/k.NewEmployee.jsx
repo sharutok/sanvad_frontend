@@ -11,16 +11,38 @@ import axios from 'axios';
 import { api } from '../../Helper Components/Api';
 import { FaCakeCandles } from 'react-icons/fa6';
 import { Stack, } from '@mui/material';
-
+import { getCookies } from '../../Helper Components/CustomCookies';
+import { AppContext } from '../../App';
+import BarSnack from '../../Helper Components/BarSnack';
 
 
 export default function NewEmployee() {
+    const { setSnackBarPopUp, setBtnSaving, setDialogStatus } = React.useContext(AppContext)
 
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(api.user.birthday_list)
     })
 
-
+    async function handleWishes(x) {
+        try {
+            const response = await axios.get(`${api.utils.birthday_wish}/?woosee=${getCookies()[0]}&firstName=${x.first_name}&lastName=${x.last_name}`)
+            console.log(response.data.status_code == 200);
+            if (response.data.status_code == 200) {
+                setSnackBarPopUp({ state: true, message: "Sent Wish 👍", severity: 's' })
+                setBtnSaving(true)
+                invalidateData()
+                setTimeout(() => {
+                    setDialogStatus(false)
+                    setSnackBarPopUp({ state: false, message: "s", })
+                    setBtnSaving(false)
+                    setTKTFiles([])
+                }, 1500)
+            }
+        }
+        catch (error) {
+            console.log("error", error);
+        }
+    }
 
     return (
         <div className='h-fit'>
@@ -30,6 +52,7 @@ export default function NewEmployee() {
                     <Divider />
                 </div>
             </div>
+            <BarSnack />
             <List sx={{ width: '100%', height: "12rem" }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
                 {tkt_type_lists?.data?.data?.data.length !== 0 ? <div>
                     {tkt_type_lists?.data?.data?.data?.map((x, i) => {
@@ -42,7 +65,7 @@ export default function NewEmployee() {
                                     </ListItemAvatar>
                                     <ListItemText primary={<span className='text-[13px] font-bold text-[#555259]'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department !== "null" && x.department}</span>} />
                                     <div>
-                                        <ButtonComponent icon={<FaCakeCandles size={15} color='#ED1C24' />} btnName={"Send wishes"} />
+                                        <ButtonComponent onClick={() => handleWishes(x)} icon={<FaCakeCandles size={15} color='#ED1C24' />} btnName={"Send wishes"} />
                                     </div>
                                 </ListItem>
                                 <Divider variant="inset" component="li" />
@@ -71,3 +94,9 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         </div>
     )
 }
+
+
+
+
+
+

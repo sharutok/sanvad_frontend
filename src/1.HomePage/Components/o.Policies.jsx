@@ -20,12 +20,12 @@ import { FaEye } from 'react-icons/fa'
 
 export default function Policies() {
     const thead = ["Policy Name", "Policy Type", "Policy Created Date"]
-    const { setDialogStatus, setCount, page, } = useContext(AppContext)
+    const { setDialogStatus, setCount, page, setPage } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const inputFile = useRef(null)
     const [searchParams, setSearchParams] = useSearchParams();
-    const response = useQuery(['get-data-policy', _search], async () => {
-        const data = await axios.get(`${api.policies.get_all_data}/?search=${_search}&type=${searchParams.get('type')}`)
+    const response = useQuery(['get-data-policy', _search, page], async () => {
+        const data = await axios.get(`${api.policies.get_all_data}/?search=${_search}&page=${page}&type=${searchParams.get('type')}`)
         return data
     }, { staleTime: 3000 })
 
@@ -53,6 +53,7 @@ export default function Policies() {
             <div className='p-10'>
                 <Table thead={thead} tbody={
                     response?.data?.data?.results?.map((g, i) => {
+                        console.log(g.mod_file_path);
                         return (
                             <tr className='p-10 mt-1 table-wrapper' key={i}>
                                 <td >{g.policy_name}</td>
@@ -98,12 +99,12 @@ const UploadFiles = ({ invalidateData }) => {
             if (tktFiles[0]) {
                 const response = await axios.post(api.policies.create_data, formData)
                 if (response.data.status == 200) {
-                    setSnackBarPopUp({ state: true, message: "Budgeted Created", severity: 's' })
+                    setSnackBarPopUp({ state: true, message: "Policy Created", severity: 's' })
                     setBtnSaving(true)
                     invalidateData()
                     setTimeout(() => {
                         setDialogStatus(false)
-                        setSnackBarPopUp({ state: false, message: "", })
+                        setSnackBarPopUp({ state: false, message: "s", })
                         setBtnSaving(false)
                         setTKTFiles([])
                     }, 1500)
@@ -112,7 +113,7 @@ const UploadFiles = ({ invalidateData }) => {
         }
         catch (error) {
             console.log(error);
-            setSnackBarPopUp({ state: true, message: "Please Upload Correct File", severity: 'e' })
+            setSnackBarPopUp({ state: true, message: `Please Upload Correct File: ${error}`, severity: 'e' })
         }
     }
     const deleteFiles = (g) => {
