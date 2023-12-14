@@ -40,6 +40,10 @@ const IMAGES = {
     afternoon: new URL('../Image/afternoon.png', import.meta.url).href,
     no_data: new URL('../Image/no-data.png', import.meta.url).href,
 
+    girl_login_img: new URL('../Image/girl-login.png', import.meta.url).href,
+    mobile_login_bg: new URL('../Image/bile-login-bg.png', import.meta.url).href,
+
+
 }
 
 export default IMAGES

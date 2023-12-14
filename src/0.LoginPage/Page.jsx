@@ -26,16 +26,19 @@ export default function Page() {
 
     return (
         <div>
-
             <div >
-                <div id="element" className='flex justify-center mt-[5rem] '>
-                    <div className='w-[75%] '>
-                        {!imageLoaded && <img loading='lazy' onLoad={() => handleImageLoad} className=' z-[10] rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px] w-[100%]' src={IMAGES.login_img} />}
+                <div id="element" className='flex justify-center mt-[5rem] relative p-5'>
+                    <div className='w-[85rem] hidden  sm:block md:block lg:block xl:block 2xl:block'>
+                        {!imageLoaded && <img loading='lazy' className='rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]' src={IMAGES.login_img} />}
                     </div>
-                    <div className=' ml-[-30rem] '>
+
+                    <div className='absolute sm:right-[.2rem] sm:top-[-3rem] md:right-[1rem] md:top-[-1rem] lg:right-[5rem] lg:top-[1rem] xl:right-[5rem] 2xl:right-[20rem]'>
                         <LoginBody />
                     </div>
                 </div>
+            </div>
+            <div className='block overflow-hidden h-[20rem] bottom-0 sm:hidden absolute z-[-1]'>
+                <img src={IMAGES.mobile_login_bg} />
             </div>
         </div>
     )
@@ -78,7 +81,7 @@ function LoginBody() {
 
 
     return (
-        <div className=''>
+        <div className='scale-[80%] sm:scale-[70%] md:scale-[80%] lg:scale-100 xl:scale-100 2xl:scale-100'>
             <div  >
                 <div className='flex justify-center p-5 gap-5 mb-9'>
                     <div className='flex justify-center'>
@@ -108,10 +111,10 @@ function LoginBody() {
                         </div>
                         <div>
                             <Typography className='text-[#212529]'>Password</Typography>
-                            <TextField helperText={error} error={error && true} className='w-[25rem]' size='small' placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
+                            <TextField helperText={error} error={error && true} className='w-[25rem] ' size='small' placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
                         </div>
                         <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
-                            Forgot password? Contact HUB Admin
+                            Forgot password? Contact ADORHUB Admin
                         </span>
                     </div>
 

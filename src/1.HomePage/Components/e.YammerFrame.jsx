@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { api } from '../../Helper Components/Api'
@@ -34,6 +34,17 @@ export default function YammerFrame() {
 
 
 function ICarousels({ data }) {
+
+    data?.data?.data?.map(async (x, i) => {
+        console.log(x?.image[0]?.sharepoint_web_url);
+        // const response = await axios.get(x.image[0].sharepoint_web_url, {
+        //     headers: {
+        //         'Authorization': `Bearer ${import.meta.env.VITE_YAMMER_AUTH}`
+        //     }
+        // })
+
+    })
+
     return (
         data?.data?.data?.map((x, i) => {
             return (

@@ -33,7 +33,7 @@ function QuickLinks() {
                     <Divider />
                 </div>
             </div>
-            <div className='grid grid-cols-[repeat(3,1fr)] grid-rows-[repeat(4,14.5vh)] mt-4 p-3'>
+            <div className='grid grid-cols-[repeat(3,1fr)] grid-rows-[repeat(4,15vh)] mt-4 p-3'>
                 {quick_link.map((x, i) => {
                     return (
                         <div onClick={() => handleNav(x.link)} key={i} className='hover-element active:bg-[#e6e6e6] cursor-pointer border border-solid border-[#e3e5ec] flex justify-center pop py-3 ' >
@@ -42,7 +42,7 @@ function QuickLinks() {
                                     {x.img_name === "ador_star_logo" ? <img loading='lazy' src={x.img} width="55" /> : (x.img_name === "ador_logo" ? <img src={x.img} width="100" className='mt-4' /> : <img src={x.img} width="70" />)}
                                 </div>
                                 <div className='flex justify-center'>
-                                    <span className='text-center text-xs font-[600] px-2' style={{ wordBreak: "break-word" }}>{x.label}</span>
+                                    <span className='text-center text-xs font-[600] px-2' >{x.label}</span>
                                 </div>
                             </div>
                         </div>
