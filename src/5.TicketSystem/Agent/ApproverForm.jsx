@@ -179,8 +179,9 @@ export default function ApproverForm() {
                             {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
                                 return (
                                     <div className=''>
-                                        <div key={i} className='flex gap-1 cursor-pointer '>
+                                        <div key={i} className='flex flex-wrap gap-1 cursor-pointer '>
                                             <strong>{i + 1}.</strong>
+                                            <strong>{g.mod_file_path}.</strong>
                                             <span className='hover:underline hover:text-[blue]' onClick={() => downloadWithAxios(g.mod_file_path, g.mod_file_name)}>{g.mod_file_name}</span>
                                         </div>
                                     </div>)
