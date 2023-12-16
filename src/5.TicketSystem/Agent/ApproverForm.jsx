@@ -124,6 +124,7 @@ export default function ApproverForm() {
     }
 
     const downloadWithAxios = async (url, file_name) => {
+        console.log(url);
         try {
             const response = await axios.get(url, { responseType: 'arraybuffer' })
             forceDownload(response, file_name)
