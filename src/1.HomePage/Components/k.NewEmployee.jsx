@@ -63,7 +63,7 @@ export default function NewEmployee() {
                                         {x.gender === "F" ? <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._girl_}></Avatar>
                                             : <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._boy_}></Avatar>}
                                     </ListItemAvatar>
-                                    <ListItemText primary={<span className='text-[13px] font-bold text-[#555259]'>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department !== "null" && x.department}</span>} />
+                                    <ListItemText className='whitespace-nowrap overflow-hidden text-ellipsis' primary={<span className='text-[13px] font-bold text-[#555259] '>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department !== "null" && x.department}</span>} />
                                     <div>
                                         <ButtonComponent onClick={() => handleWishes(x)} icon={<FaCakeCandles size={15} color='#ED1C24' />} btnName={"Send wishes"} />
                                     </div>
@@ -86,7 +86,7 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         <div
             onClick={onClick}
             {...props}
-            className=' no-underline rounded-xl py-1 h-fit border-[3px] border-solid border-[#ED1C24] bg-[#ffffff] flex justify-between px-2 cursor-pointer hover:bg-[#e7e7e7] active:bg-[#eeeeee] transition-[1s]'>
+            className='whitespace-nowrap no-underline rounded-xl py-1 h-fit border-[3px] border-solid border-[#ED1C24] bg-[#ffffff] flex justify-between px-2 cursor-pointer hover:bg-[#e7e7e7] active:bg-[#eeeeee] transition-[1s]'>
             {icon && <div className='no-underline mt-[0.4rem]'>
                 {icon}
             </div>}

@@ -32,29 +32,29 @@ export default function WeatherAndTemp() {
     const image = imgGen()
 
     return (
-        <div className='w-fit h-fit'>
+        <div className='w-fit h-fit '>
             <img loading='lazy' className='' src={image} />
             <div className='rounded-xl flex justify-between px-2 py-3  mt-[-7.5rem]' style={{ color: "white" }}>
                 <div className='grid grid-cols-1'>
                     <div className='grid grid-cols-1 '>
                         <span className='text-[1.6rem] mb-[-0.5rem] mt-[1rem]'>{moment().format("HH:MM")}</span>
                         <span className=''>
-                            <span className='text-[1rem] font-bold'>{String(moment().format('dddd')).toUpperCase()}</span>
+                            <span className='text-[1vw] font-bold'>{String(moment().format('dddd')).toUpperCase()}</span>
                             <span className=''>,</span>
                             <span className=''>{" "}</span>
-                            <span className='text-[1.0rem] font-bold'>{moment().format('D')}</span>
+                            <span className='text-[1vw] font-bold'>{moment().format('D')}</span>
                             <span className=''>{" "}</span>
-                            <span className='text-[0.8rem]'>{String(moment().format('MMMM')).toUpperCase()}</span>
+                            <span className='text-[0.8vw]'>{String(moment().format('MMMM')).toUpperCase()}</span>
                         </span>
                     </div>
                     <div>
-                        <span className='text-[0.8rem] '>{String(data?.data?.data?.place).toUpperCase()}</span>
+                        <span className='text-[0.8vw] '>{String(data?.data?.data?.place).toUpperCase()}</span>
                     </div>
                 </div>
-                <div className='grid grid-cols-1 mt-[1rem]'>
+                <div className='grid grid-cols-1 mt-[1vw]'>
                     <span>{String(data?.data?.data?.weather).toUpperCase()}</span>
                     <div>
-                        <span className='text-[2.5rem] font-bold'>{data?.data?.data?.temp}°</span><span className='text-[2rem]'>c</span>
+                        <span className='text-[2.5vw] font-bold'>{data?.data?.data?.temp}°</span><span className='text-[2vw]'>c</span>
                     </div>
                 </div>
             </div>

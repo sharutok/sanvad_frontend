@@ -20,9 +20,9 @@ export default function HomePage() {
                         <div className='h-[85vh] overflow-y-auto grid gap-5 rounded-xl'>
                             <YammerFrame />
                         </div>
-                        <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1 h-fit'>
+                        <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1  h-fit'>
                             <ShortCutBtn />
-                            <div className='grid gap-5 grid-cols-[repeat(2,1fr)] p-1 h-fit '>
+                            <div className='grid gap-5 grid-cols-[repeat(2,1fr)]  p-1 h-fit '>
                                 <div className='grid grid-cols-[repeat(1,1fr)] '>
                                     <QuickLinks />
                                 </div>

@@ -391,7 +391,7 @@ const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
         <div
             onClick={onClick}
             {...props}
-            className=' no-underline rounded-full p-2 h-fit border-[#ffffff] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+            className='whitespace-nowrap no-underline rounded-full p-2 h-fit border-[#ffffff] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
             <div className='no-underline'>
                 {icon}
             </div>

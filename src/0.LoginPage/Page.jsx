@@ -31,13 +31,12 @@ export default function Page() {
                     <div className='w-[85rem] hidden  sm:block md:block lg:block xl:block 2xl:block'>
                         {!imageLoaded && <img loading='lazy' className='rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]' src={IMAGES.login_img} />}
                     </div>
-
                     <div className='absolute sm:right-[.2rem] sm:top-[-3rem] md:right-[1rem] md:top-[-1rem] lg:right-[5rem] lg:top-[1rem] xl:right-[5rem] 2xl:right-[20rem]'>
                         <LoginBody />
                     </div>
                 </div>
             </div>
-            <div className='block overflow-hidden h-[20rem] bottom-0 sm:hidden absolute z-[-1]'>
+            <div className='block overflow-clip h-[20rem] bottom-0 sm:hidden absolute z-[-1]'>
                 <img src={IMAGES.mobile_login_bg} />
             </div>
         </div>
@@ -97,15 +96,15 @@ function LoginBody() {
                         <div>
                             <Typography className='text-[#212529]'>Email Address</Typography>
                             <div className='flex'>
-                                <TextField helperText={error} error={error && true} name="email" size='small' placeholder="Email Address" variant="outlined" required onChange={handleOnChange} />
+                                <TextField className='w-[13rem]' helperText={error} error={error && true} name="email" size='small' placeholder="Email Address" variant="outlined" required onChange={handleOnChange} />
                                 <Autocomplete
+                                    className='w-[12rem]'
                                     defaultValue={static_val.prefix_email_id[0]}
                                     disablePortal
                                     id="combo-box-demo"
                                     onChange={(e, i) => setPrefix(i)}
                                     options={data}
-                                    className='w-[12rem]'
-                                    renderInput={(params) => <TextField {...params} size='small' />}
+                                    renderInput={(params) => <TextField  {...params} size='small' />}
                                 />
                             </div>
                         </div>

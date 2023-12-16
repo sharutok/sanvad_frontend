@@ -40,17 +40,17 @@ export default function ShortCutBtn() {
                 </div>
             </div>
             <div className='flex justify-center'>
-                <div className='flex gap-9 '>
+                <div className='flex gap-6 '>
                     <div className='grid grid-cols-4 gap-4'>
                         {ModulesIcons.map((_icon, i) => {
                             return (
                                 <div key={i} className='flex justify-center '>
                                     <div style={{ cursor: `${_icon.iconTitle === "Raise Capex" ? (isPermissionToView("capex:create") ? "pointer" : "not-allowed") : "pointer"}` }} onClick={() => _icon.iconTitle === "Raise Capex" ? isPermissionToView("capex:create") ? window.open(_icon.path) : "" : window.open(_icon.path)} key={i} className=' text-center cursor-pointer hover-element px-3 py-1 rounded-xl '>
                                         <div className='flex justify-center '>
-                                            < _icon.icons size={45} color='#ED1C24' />
+                                            < _icon.icons size={40} color='#ED1C24' />
                                         </div>
                                         <div className='mt-1'>
-                                            <span className='sm:text-sm md:text-md lg:text-md  font-bold text-[#555259]'>{_icon.iconTitle}</span>
+                                            <span className='text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -60,16 +60,16 @@ export default function ShortCutBtn() {
                     <div className='p-3'>
                         <Divider sx={{ borderColor: "#AEB1B8" }} orientation='vertical' />
                     </div>
-                    <div className='grid grid-cols-2 gap-10 '>
+                    <div className='grid grid-cols-2 gap-7 '>
                         {IconsIcons.map((_icon, i) => {
                             return (
                                 <div key={i} className='flex justify-center hover-element px-3 py-1 rounded-xl'>
                                     <div onClick={() => window.open(_icon.path)} key={i} className='text-center'>
                                         <div className='flex justify-center '>
-                                            < _icon.icons className='' size={45} color='#ED1C24' />
+                                            < _icon.icons size={40} color='#ED1C24' />
                                         </div>
                                         <div className='mt-1'>
-                                            <span className='sm:text-sm md:text-md lg:text-md font-bold text-[#555259]'>{_icon.iconTitle}</span>
+                                            <span className='text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
                                         </div>
                                     </div>
                                 </div>
