@@ -124,9 +124,8 @@ export default function ApproverForm() {
     }
 
     const downloadWithAxios = async (url, file_name) => {
-        console.log("url", url);
         try {
-            const response = await axios.get(url, { responseType: 'arraybuffer' })
+            const response = await axios.get(url, { responseType: 'blob' })
             forceDownload(response, file_name)
         }
         catch (error) {
@@ -179,9 +178,8 @@ export default function ApproverForm() {
                             {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
                                 return (
                                     <div className=''>
-                                        <div key={i} className='flex flex-wrap gap-1 cursor-pointer '>
+                                        <div key={i} className='grid grid-cols-1 gap-1 cursor-pointer '>
                                             <strong>{i + 1}.</strong>
-                                            <strong>{g.mod_file_path}.</strong>
                                             <span className='hover:underline hover:text-[blue]' onClick={() => downloadWithAxios(g.mod_file_path, g.mod_file_name)}>{g.mod_file_name}</span>
                                         </div>
                                     </div>)
