@@ -176,6 +176,7 @@ export default function ApproverForm() {
                         <strong>Uploaded files</strong>
                         <div className='grid grid-cols-4 gap-1 '>
                             {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
+                                console.log(g.mod_file_path);
                                 return (
                                     <div className=''>
                                         <div key={i} className='flex gap-1 cursor-pointer '>
