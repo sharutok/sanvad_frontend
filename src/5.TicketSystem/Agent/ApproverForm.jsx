@@ -123,16 +123,16 @@ export default function ApproverForm() {
         })
     }
 
-    const downloadWithAxios = async (url, file_name) => {
-        try {
-            const response = await axios.get(url, { responseType: 'blob' })
-            forceDownload(response, file_name)
-        }
-        catch (error) {
-            console.log("error in getting file", error)
-        }
+    // const downloadWithAxios = async (url, file_name) => {
+    //     try {
+    //         const response = await axios.get(url, { responseType: 'blob' })
+    //         forceDownload(response, file_name)
+    //     }
+    //     catch (error) {
+    //         console.log("error in getting file", error)
+    //     }
 
-    }
+    // }
 
     if (response.isLoading) {
         return (
@@ -180,7 +180,8 @@ export default function ApproverForm() {
                                     <div className=''>
                                         <div key={i} className='grid grid-cols-1 gap-1 cursor-pointer '>
                                             <strong>{i + 1}.</strong>
-                                            <span className='hover:underline hover:text-[blue]' onClick={() => downloadWithAxios(g.mod_file_path, g.mod_file_name)}>{g.mod_file_name}</span>
+                                            <a href={g.mod_file_path}>{g.mod_file_name}</a>
+                                            {/* <span className='hover:underline hover:text-[blue]' onClick={() => downloadWithAxios(g.mod_file_path, g.mod_file_name)}>{g.mod_file_name}</span> */}
                                         </div>
                                     </div>)
                             })}
