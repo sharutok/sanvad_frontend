@@ -125,8 +125,8 @@ function CreateUserForm() {
                 {/* <Divider sx={{ borderColor: "red" }} /> */}
                 <Divider textAlign='left'></Divider>
                 <div className='flex flex-wrap gap-7'>
-                    <CustomDate label={"End Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
-                    <CustomDate label={"Start Date*"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
+                    <CustomDate label={"End Date"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
+                    <CustomDate label={"Start Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
                     <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
                     <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={plant_dept?.data?.data?.plant_data || []} />
