@@ -27,6 +27,7 @@ import { FiSave } from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import IMAGES from '../assets/Image/Image';
 import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
+import { org } from '../Static/StaticValues';
 
 
 function CreateUserForm() {
@@ -133,7 +134,7 @@ function CreateUserForm() {
                     <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
                     {/* <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} /> */}
                     <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
-                    <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={['0', "1", "2", "3", "4"]} />
+                    <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={org} />
                 </div>
                 <Divider textAlign='left'></Divider>
                 <div className='flex flex-wrap gap-7'>

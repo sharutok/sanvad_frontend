@@ -20,7 +20,7 @@ export const static_val = {
 
 export const severity = ['Low🔥', "Medium🔥🔥", "High🔥🔥🔥"]
 
-
+export const org=["ADOR WELDING", "ADOR FONTECH", "FLASH"]
 
 export const user_permission = [
 

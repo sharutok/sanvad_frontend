@@ -62,7 +62,7 @@ export default function CreateVisitorMangement() {
 
     async function handleAddVisitor() {
         try {
-            ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
+            ["v_name", "v_mobile_no", "v_desig",].map((val) => {
                 obj[val] = getValues(val)
                 return
             })
@@ -76,7 +76,7 @@ export default function CreateVisitorMangement() {
                 v_name: yup.string().required("All Fields Required").max(20),
                 v_mobile_no: yup.string().required('All Fields Required').matches(/^[0-9]+$/, 'Mobile No must be numbers only').test('len', 'Mobile No must be exactly 10 characters', val => val && val.length === 10),
                 v_desig: yup.string().required("All Fields Required"),
-                v_asset: yup.string().required("All Fields Required"),
+                // v_asset: yup.string().required("All Fields Required"),
 
             });
 
@@ -97,13 +97,6 @@ export default function CreateVisitorMangement() {
         catch (error) {
             console.log("error", error);
         }
-
-
-
-
-
-
-
     }
 
     const deleteFiles = (g) => {
@@ -136,8 +129,31 @@ export default function CreateVisitorMangement() {
                                 <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Contact Info" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No" />
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
+                                <div >
+                                    <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
+                                        <FormControl error={!!errors.ppe}>
+                                            <FormLabel id="demo-row-radio-buttons-group-label"><span className='text-[black]'>Safety Shoes and Helmet required is only applicable for POWERGEN and FPED</span></FormLabel>
+                                            <RadioGroup
+                                                defaultValue="1"
+                                                {...register('ppe')}
+                                                row
+                                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                                name="row-radio-buttons-group"
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                                value={value}>
+                                                <FormControlLabel value="0" control={<Radio size='small' />} label="Yes" />
+                                                <FormControlLabel value="1" control={<Radio size='small' />} label="No" />
+                                            </RadioGroup>
+                                            <FormHelperText>{errors.ppe && errors.ppe.message}</FormHelperText>
+                                        </FormControl>
+                                    )}
+                                        name="ppe"
+                                        control={control}
+                                        rules={{ required: true }}
+                                    />
+                                </div>
                             </div>
-
                         </div>
                         <div className='grid gap-5'>
                             <Divider textAlign='left'></Divider>

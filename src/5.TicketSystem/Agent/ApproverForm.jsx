@@ -27,6 +27,7 @@ import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSna
 import { AppContext } from '../../App';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
+import moment from 'moment';
 
 export default function ApproverForm() {
     const emp_id = getCookies()[0]
@@ -178,7 +179,7 @@ export default function ApproverForm() {
                             {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
                                 return (
                                     <div className=''>
-                                        <div key={i} className='grid grid-cols-1 gap-1 cursor-pointer '>
+                                        <div key={i} className='flex flex-wrap gap-1 cursor-pointer '>
                                             <strong>{i + 1}.</strong>
                                             <a href={g.mod_file_path}>{g.mod_file_name}</a>
                                             {/* <span className='hover:underline hover:text-[blue]' onClick={() => downloadWithAxios(g.mod_file_path, g.mod_file_name)}>{g.mod_file_name}</span> */}
@@ -238,7 +239,6 @@ export default function ApproverForm() {
                     </div>}
                     {componentAccess.comments_box && <CustomTextFieldWithIcon uploadDocuments={componentAccess.upload_documents} tktFiles={tktFiles} setTKTFiles={setTKTFiles} multiline={4} label={"Comments*"} name={"approver_comment"} errors={errors} register={register} watch={watch} />}
                     <div>
-                        {/* <strong>Uploaded Files{" "}</strong> */}
                         <div className='max-h-[8rem] overflow-y-scroll'>
                             {tktFiles?.map((g, i) => {
                                 return (
@@ -280,7 +280,7 @@ function VerticalLinearStepper({ response }) {
                         <StepContent>
                             <Typography>{step.comments}</Typography>
                             <div className='flex justify-end'>
-                                <span className='font-[500] uppercase'>{step.time}</span>
+                                <span className='font-[500] uppercase'>{moment(step.time).format("DD/MM/YYYY, hh:MM a")}</span>
                             </div>
                         </StepContent>
                     </Step >

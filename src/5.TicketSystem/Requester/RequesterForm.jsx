@@ -59,7 +59,7 @@ function RequesterForm() {
             const response = await axios.post(api.ticket_system.create, formData)
             if (response.data.status === 200) {
                 setBtnSaving(true)
-                setSnackBarPopUp({ state: true, message: "Created ticket", severity: "s" })
+                setSnackBarPopUp({ state: true, message: "Updated Ticket", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
                     window.location.href = "/ticket/sys/list"
@@ -78,11 +78,11 @@ function RequesterForm() {
 
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(`${api.dynamic_values.tkt_type}`)
-    }, { staleTime: "300000" })
+    })
 
     const req_type_lists = useQuery(['req-type-lists', tktType.index], async () => {
         return await axios.post(`${api.dynamic_values.requirement_type}`, { index: Number(tktType.index) })
-    }, { staleTime: "300000" })
+    })
 
 
     function tkt_type_op(e) {

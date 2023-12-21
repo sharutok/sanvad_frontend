@@ -33,11 +33,6 @@ import moment from 'moment';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import BarSnack from '../../Helper Components/BarSnack';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
-
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
@@ -153,6 +148,8 @@ export default function ApproveVisitorManagement() {
         }
     }
 
+
+
     if (data.isLoading) {
         return (
             <LoadingSpinner />
@@ -241,7 +238,6 @@ export default function ApproveVisitorManagement() {
             {componentAccess.camera_component && <div className='-scale-x-100'>
                 <div className='grid gap-5 p-5 '>
                     <Webcam
-
                         className='rounded-md'
                         audio={false}
                         height={400}

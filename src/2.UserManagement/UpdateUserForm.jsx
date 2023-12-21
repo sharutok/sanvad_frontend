@@ -27,6 +27,7 @@ import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack'
 import BarSnack from '../Helper Components/BarSnack';
 import { useQuery } from '@tanstack/react-query';
 import { MdOutlineLockReset } from 'react-icons/md';
+import { org } from '../Static/StaticValues';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -191,7 +192,7 @@ export default function UpdateUserForm() {
           <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
           {/* <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} /> */}
           <CustomAutoComplete control={control} errors={errors} name={"job_status"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
-          <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={["ADOR WELDING", "ADOR FONTECH", "FLASH"]} />
+          <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={org} />
         </div>
         <Divider textAlign='left'></Divider>
         <div className='flex flex-wrap gap-7'>
