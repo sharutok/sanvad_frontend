@@ -62,7 +62,7 @@ export default function CreateVisitorMangement() {
 
     async function handleAddVisitor() {
         try {
-            ["v_name", "v_mobile_no", "v_desig",].map((val) => {
+            ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
                 obj[val] = getValues(val)
                 return
             })
