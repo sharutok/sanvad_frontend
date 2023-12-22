@@ -44,6 +44,8 @@ const IMAGES = {
 
     girl_login_img: new URL('../Image/girl-login.png', import.meta.url).href,
     mobile_login_bg: new URL('../Image/bile-login-bg.png', import.meta.url).href,
+    flash_logo_dash_1: new URL('../Image/flash-image-home.png', import.meta.url).href,
+    flash_logo_dash_2: new URL('../Image/flash-image-home-2.png', import.meta.url).href,
 
 
 }
