@@ -24,8 +24,9 @@ export default function YammerFrame() {
                     <Divider />
                 </div>
             </div>
-            <div className='p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border '>
+            <div className='p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border h-[100%] '>
                 {!isLoading && <ICarousels data={data} />}
+                {/* <iframe name="embed-feed" title="Viva Engage" src="https://web.yammer.com/embed/feed?header=false&footer=false&theme=light" style={{ width: "100%", height: "100%" }}></iframe> */}
             </div>
         </div>
     )

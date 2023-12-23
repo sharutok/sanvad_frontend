@@ -19,8 +19,7 @@ export default function HomePage() {
                     </div>
                     <div className=' grid gap-5 grid-cols-[1.5fr_2fr] p-1 mt-20 '>
                         <div className='h-[85vh] overflow-y-auto grid gap-5 rounded-xl'>
-                            <iframe name="embed-feed" title="Viva Engage" src="https://web.yammer.com/embed/feed?header=true&footer=false&hideNetworkName=false&theme=light" style={{ width: "100%", height: "100%" }}></iframe>
-                            {/* <YammerFrame /> */}
+                            <YammerFrame />
                         </div>
                         {/* <div className='h-[85vh] overflow-y-auto grid gap-5'>
                             <img className='rounded-xl' src={IMAGES.flash_logo_dash_1} />
