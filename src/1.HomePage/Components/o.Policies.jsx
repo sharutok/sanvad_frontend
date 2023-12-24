@@ -179,7 +179,7 @@ const UploadFiles = ({ invalidateData }) => {
                                                 </Stack>
                                             </Typography>
                                             <Typography sx={{ fontStyle: "italic" }} className="ts-card-typo abs" variant="body2">
-                                                Upload files that are less than 30mb in size.
+                                                Upload files that are less than 10mb in size.
                                             </Typography>
                                         </CardContent>
                                     </Card>

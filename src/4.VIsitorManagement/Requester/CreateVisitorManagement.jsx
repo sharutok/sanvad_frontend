@@ -36,7 +36,10 @@ export default function CreateVisitorMangement() {
         resolver: yupResolver(VisitorMangErrorSchema),
         defaultValues: {
             start_date_time: "",
-            end_date_time: ""
+            end_date_time: "",
+            more_info: null,
+            veh_no: null
+
         }
     })
 
@@ -73,9 +76,9 @@ export default function CreateVisitorMangement() {
             })
 
             const jsonDataSchema = yup.object({
-                v_name: yup.string().required("All Fields Required").max(20),
-                v_mobile_no: yup.string().required('All Fields Required').matches(/^[0-9]+$/, 'Mobile No must be numbers only').test('len', 'Mobile No must be exactly 10 characters', val => val && val.length === 10),
-                v_desig: yup.string().required("All Fields Required"),
+                v_name: yup.string().required("Visitor's Name is Required").matches(/^[A-Za-z\s]+$/, "Visitor's Name should be Only alphabets").max(20),
+                v_mobile_no: yup.string().required("Visitor's Mobile No is Required").matches(/^[0-9]+$/, 'Mobile No must be numbers only').test('len', "Visitor's Mobile No must be exactly 10 characters", val => val && val.length === 10),
+                v_desig: yup.string().required("Visitor's designation is Required"),
                 // v_asset: yup.string().required("All Fields Required"),
 
             });
@@ -126,7 +129,7 @@ export default function CreateVisitorMangement() {
                                 <CustomDateTime register={register} name={"start_date_time"} label={"Start Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomEndDateTime getValues={getValues} register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
-                                <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Contact Info" />
+                                <CustomTextFieldMoreInfo errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Company Mobile No" />
                                 <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No" />
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
                                 <div >
@@ -165,7 +168,7 @@ export default function CreateVisitorMangement() {
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_name" label="Visitor's Name*" />
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_desig" label="Visitor's Designation*" />
-                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets*" />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets" />
                                         <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
                                         <ButtonComponent onClick={clearAll} icon={<MdRefresh color='white' size={"23"} />} btnName={"Clear All"} />
 
@@ -228,6 +231,7 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
                     minDate={dayjs(moment().format("YYYY-MM-DD"))}
+                    closeOnSelect={false}
                     disabled={disabled || false}
                     sx={{ width: "20rem" }}
                     format='DD/MM/YYYY hh:mm A'
@@ -304,6 +308,7 @@ function CustomEndDateTime({ register, name, label, errors, control, watch, disa
                     disabled={!getValues('start_date_time') ? true : false}
                     minDateTime={dayjs(getValues('start_date_time'))}
                     sx={{ width: "20rem" }}
+                    closeOnSelect={false}
                     format='DD/MM/YYYY hh:mm A'
                     timeSteps={{ minutes: 15 }}
                     slotProps={{
@@ -326,5 +331,22 @@ function CustomEndDateTime({ register, name, label, errors, control, watch, disa
             control={control}
             rules={{ required: true }}
         />
+    )
+}
+
+const CustomTextFieldMoreInfo = ({ name, label, errors, register, watch, multiline }) => {
+    return (
+        <TextField
+            type='number'
+            sx={{ width: "20rem" }}
+            multiline={multiline ? true : false}
+            rows={multiline}
+            key={label}
+            value={watch(name)}
+            label={label}
+            size={"small"}
+            {...register(name)}
+            error={!!errors[name]}
+            helperText={errors[name] && errors[name].message} />
     )
 }

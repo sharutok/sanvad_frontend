@@ -158,7 +158,7 @@ function RequesterForm() {
                                 </Stack>
                             </Typography>
                             <Typography sx={{ mt: 1, fontStyle: "italic" }} className="ts-card-typo abs" variant="body2">
-                                Upload files that are less than 30mb in size.
+                                Upload files that are less than 10mb in size.
                             </Typography>
                         </CardContent>
                     </Card>

@@ -43,7 +43,6 @@ const videoConstraints = {
     facingMode: 'user',
 };
 
-
 export default function ApproveVisitorManagement() {
     const { setDialogStatus, dialogStatus, setVisitors, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
     const { id } = useParams()
@@ -170,7 +169,7 @@ export default function ApproveVisitorManagement() {
                             <CustomEndDateTime getValues={getValues} register={register} name={"end_date_time"} label={"End Date Time"} errors={errors} control={control} watch={watch} />
                             <div className='grid grid-cols-[repeat(2,auto)] gap-5'>
                                 <CustomTextField multiline={4} errors={errors} register={register} watch={watch} name="reason_for_visit" label="Visitor's Reason For Visit" />
-                                <div className='grid grid-cols-[repeat(2,1fr)] gap-5'>
+                                <div className='flex flex-wrap gap-5'>
                                     <CustomTextField errors={errors} register={register} watch={watch} name="v_company" label="Visitor's Company*" />
                                     <CustomTextField errors={errors} register={register} watch={watch} name="more_info" label="Visitor's Contact Info*" />
                                     <CustomTextField errors={errors} register={register} watch={watch} name="veh_no" label="Visitor's Vehicle No*" />
@@ -240,9 +239,9 @@ export default function ApproveVisitorManagement() {
                     <Webcam
                         className='rounded-md'
                         audio={false}
-                        height={400}
+                        height={500}
                         screenshotFormat="image/jpeg"
-                        width={700}
+                        width={1200}
                         videoConstraints={videoConstraints}
                         ref={webcamRef}
                     />
@@ -379,6 +378,7 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
                                             <IconButton>
                                                 <AiOutlineCamera color='#555259' size={70} />
                                             </IconButton>
+                                            <b>Click Photo </b>
                                         </div>
                                     </div>)
                                 }

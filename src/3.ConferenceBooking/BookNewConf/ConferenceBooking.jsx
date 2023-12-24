@@ -79,7 +79,7 @@ function ConferenceBooking({ fetchData }) {
             <div className='grid grid-cols-1 gap-5'>
                 <div className='grid grid-cols-1 gap-5'>
                     <TextField className="w-full" defaultValue={confTemp.conf_room} label="Conference Name*" size={"small"} disabled />
-                    <TextField value={data.meeting_about} onChange={(e) => setData({ ...data, meeting_about: e.target.value })} fullWidth multiline={true} rows={2} className='textfield' label="Meeting About" size={"small"} required />
+                    <TextField inputProps={{ maxLength: 40 }} value={data.meeting_about} onChange={(e) => setData({ ...data, meeting_about: e.target.value })} fullWidth multiline={true} rows={2} className='textfield' label="Meeting About" size={"small"} required />
                 </div>
                 <TextField name='start_date' fullWidth className='w-max' defaultValue={`${confTemp.conf_room_start_date} ${confTemp.conf_room_start_time}`} label="Start Date Time*" size={"small"} disabled />
                 <div className='flex gap-4'>

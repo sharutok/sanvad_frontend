@@ -50,14 +50,6 @@ export default function ListsView() {
         }
     }
 
-    if (isLoading) {
-        return (
-            <>
-                <LoadingSpinner />
-            </>
-        )
-    }
-
     return (
         <div >
             <div className='flex justify-between mt-20'>
@@ -75,7 +67,7 @@ export default function ListsView() {
                     {isPermissionToView("usermanagement:export") && <ButtonComponent onClick={() => exportData()} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />}
                 </div>
             </div>
-            {!false ?
+            {!isLoading ?
                 <div className='mt-10 mx-10'>
                     <Table thead={thead} tbody={
                         data?.data.results.map((g, i) => {

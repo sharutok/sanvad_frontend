@@ -65,7 +65,7 @@ function PrintBody() {
         <div>
             {
                 visitors?.length && visitors?.map((y, i) => {
-                    const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset.toUpperCase() })
+                    const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset ? h.v_asset.toUpperCase() : "" })
                     const assets = t_assets.join(', ')
                     // console.log(assets);
                     return (
