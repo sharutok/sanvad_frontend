@@ -1,3 +1,4 @@
+import Skeleton from '@mui/material/Skeleton';
 import React, { useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -27,7 +28,17 @@ export default function Frame() {
                     <div>
                         <FlashFrame />
                     </div>
-                : <div className='w-[100%] h-[100%] bg-[#fff] rounded-lg '>
+                : <div className='w-[100%] h-[100%] bg-[#fff] rounded-lg p-3 grid gap-3'>
+                    <div>
+                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                    </div>
+                    <Skeleton variant="rounded" style={{ height: '20rem' }} />
+                    <br />
+                    <Skeleton variant="rounded" style={{ height: '20rem' }} />
                 </div>}
         </>
 
