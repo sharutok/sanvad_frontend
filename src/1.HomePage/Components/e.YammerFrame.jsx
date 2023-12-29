@@ -15,7 +15,7 @@ export default function Frame() {
     const response = useQuery(['which-frame'], async () => {
         const data = await axios.get(`${api.utils.which_frame}/?woosee=${getCookies()[0]}`)
         return data
-    })
+    }, { staleTime: Infinity })
 
     return (
         <>
