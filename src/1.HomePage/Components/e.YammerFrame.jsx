@@ -21,7 +21,7 @@ export default function Frame() {
         <>
             {!response.isLoading ?
                 response?.data?.data?.response ?
-                    <div className='h-[88vh] overflow-y-auto grid gap-5 rounded-xl'>
+                    <div className='h-[90vh] overflow-y-auto grid gap-5 rounded-xl'>
                         <YammerFrame />
                     </div> :
                     <div>

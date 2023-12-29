@@ -45,7 +45,7 @@ export default function ShortCutBtn() {
                         {ModulesIcons.map((_icon, i) => {
                             return (
                                 <div key={i} className='flex justify-center '>
-                                    <div style={{ cursor: `${_icon.iconTitle === "Raise Capex" ? (isPermissionToView("capex:create") ? "pointer" : "not-allowed") : "pointer"}` }} onClick={() => _icon.iconTitle === "Raise Capex" ? isPermissionToView("capex:create") ? window.open(_icon.path) : "" : window.open(_icon.path)} key={i} className=' text-center cursor-pointer hover-element px-3 py-1 rounded-xl '>
+                                    <div style={{ cursor: `${_icon.iconTitle === "Raise Capex" ? (isPermissionToView("capex:create") ? "pointer" : "not-allowed") : "pointer"}` }} onClick={() => _icon.iconTitle === "Raise Capex" ? isPermissionToView("capex:create") ? window.open(_icon.path, "_self") : "" : window.open(_icon.path, "_self")} key={i} className=' text-center cursor-pointer hover-element px-3 py-1 rounded-xl '>
                                         <div className='flex justify-center '>
                                             < _icon.icons size={40} color='#ED1C24' />
                                         </div>
@@ -64,7 +64,7 @@ export default function ShortCutBtn() {
                         {IconsIcons.map((_icon, i) => {
                             return (
                                 <div key={i} className='flex justify-center hover-element px-3 py-1 rounded-xl'>
-                                    <div onClick={() => window.open(_icon.path)} key={i} className='text-center'>
+                                    <div onClick={() => window.open(_icon.path, "_self")} key={i} className='text-center'>
                                         <div className='flex justify-center '>
                                             < _icon.icons size={40} color='#ED1C24' />
                                         </div>
