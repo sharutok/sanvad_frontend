@@ -7,9 +7,56 @@ import LoadingSpinner from '../../Helper Components/LoadingSpinner'
 import Avatar from '@mui/material/Avatar';
 import IMAGES from '../../assets/Image/Image'
 import { Divider } from '@mui/material'
+import { getCookies } from '../../Helper Components/CustomCookies'
 
 
-export default function YammerFrame() {
+export default function Frame() {
+
+    const response = useQuery(['which-frame'], async () => {
+        const data = await axios.get(`${api.utils.which_frame}/?woosee=${getCookies()[0]}`)
+        return data
+    })
+
+    return (
+        <>
+            {!response.isLoading ?
+                response?.data?.data?.response ?
+                    <div className='h-[88vh] overflow-y-auto grid gap-5 rounded-xl'>
+                        <YammerFrame />
+                    </div> :
+                    <div>
+                        <FlashFrame />
+                    </div>
+                : <div className='w-[100%] h-[100%] bg-[#fff] rounded-lg '>
+                </div>}
+        </>
+
+    )
+
+}
+
+function FlashFrame() {
+    return (
+        <div className='grid bg-[#fff] rounded-lg p-3 h-[100%]'>
+            <span className='text-[1.2rem] font-extrabold text-[#555259]'>About Us</span>
+            <div className='mt-[-1rem]'>
+                <Divider />
+            </div>
+            <div className='grid gap-3'>
+                <span>Flash Orthodontics is a subsidiary of ADOR Group, and a part of 3D Future Technologies Pvt. Ltd.,
+                    a start-up that aims to meet the fundamental 3D printing needs of the healthcare industry. Our driving force,
+                    ADOR Group with a 109-year legacy in India, dominates the core industry sectors where it participates.
+                    Flash Orthodontics is built on their objective to nurture businesses for select industrial segments,
+                    with the aim of attaining market leadership</span>
+                <img onClick={() => window.location.href = flash_link} className='rounded-xl hover:cursor-pointer' src={IMAGES.flash_logo_dash_1} />
+                <img onClick={() => window.location.href = flash_link} className='rounded-xl hover:cursor-pointer' src={IMAGES.flash_logo_dash_2} />
+            </div>
+        </div>
+    )
+}
+
+
+function YammerFrame() {
     const { isLoading, error, data } = useQuery(['sales-data'], async () => { return await axios.get(api.yammer.get_data) }, { staleTime: "300000" })
     if (isLoading) {
         return (
@@ -30,7 +77,6 @@ export default function YammerFrame() {
         </div>
     )
 }
-
 
 
 function ICarousels({ data }) {

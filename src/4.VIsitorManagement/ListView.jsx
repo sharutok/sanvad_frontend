@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import BackArrow from '../Helper Components/SideComponent'
 import CPagination from '../Helper Components/Pagination'
 import { FaInfoCircle } from "react-icons/fa";
-
+import { Divider, FormControlLabel, IconButton, Stack, Switch, Typography } from '@mui/material'
 import { MdClear, MdDeleteOutline } from 'react-icons/md'
 import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
 import { IoIosPaper } from 'react-icons/io'
@@ -20,13 +20,14 @@ import { getCookies } from '../Helper Components/CustomCookies'
 import LoadingSpinner from '../Helper Components/LoadingSpinner'
 
 export default function VisitManagementListView() {
-    const thead = ["Visitor Company", "Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Visitor Count", "Visitor's Status"]
+    const thead = ["Visitor Company", "Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Main Visitor's Name", "Visitor Count", "Visitor's Status"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const queryClient = useQueryClient()
+    const [_date, _setDate] = useState(true)
 
-    const { data, isLoading } = useQuery(["visitor-list", page, _search], async () => {
-        return axios.get(`${api.visitor_management.get_data}/?page=${page}&search=${_search}&woosee=${getCookies()[0]}`)
+    const { data, isLoading } = useQuery(["visitor-list", page, _search, _date], async () => {
+        return axios.get(`${api.visitor_management.get_data}/?page=${page}&search=${_search}&date=${_date}&woosee=${getCookies()[0]}`)
     })
     const list_access_permission = useQuery(["list-access-permission", page, _search], async () => {
         const response = axios.get(`${api.visitor_management.list_access}/?woosee=${getCookies()[0]}`)
@@ -62,6 +63,12 @@ export default function VisitManagementListView() {
                 <div className='flex gap-4 mt-3 mr-20'>
                     <BarSnack />
                     <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
+                    <Divider orientation='vertical' />
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography >All Visitors</Typography>
+                        <FormControlLabel checked={_date} onChange={() => _setDate(!_date)} color="#555259" control={<Switch />} />
+                        <Typography >Today's Visitors</Typography>
+                    </Stack>
                     <ButtonComponent onClick={() => { window.location.href = "/vistors/management/new" }} icon={<AiOutlineUserAdd color='white' size={"23"} />} btnName={"Add Visitor"} />
                     {isPermissionToView("visitormanagement:export") && <ButtonComponent onClick={() => exportData()} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />}
                 </div>
@@ -82,7 +89,7 @@ export default function VisitManagementListView() {
                                     <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
                                         {moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual Out Time", g.punch_out_date_time)}
                                     </div></td>
-
+                                    <td>{JSON.parse(g.visitors) && JSON.parse(g.visitors)[0]?.["v_name"]}</td>
                                     <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors).length}</td>
                                     <td onClick={() => handleNav(g)} >{VisitorStatus(g.visitor_status)}</td>
                                     {!list_access_permission?.data?.data.delete_btn &&

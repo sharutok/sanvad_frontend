@@ -32,7 +32,7 @@ export default function ConferenceBookingListView() {
     }, [])
 
     const all_conference_rooms = useQuery(['all-conference-rooms'], async () => {
-        return await axios.get(api.dynamic_values.conference_rooms)
+        return await axios.get(`${api.dynamic_values.conference_rooms}/?woosee=${getCookies()[0]}`)
     }, { staleTime: Infinity })
 
     const _conferences = () => {

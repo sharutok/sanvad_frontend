@@ -86,7 +86,7 @@ export default function ApproverForm() {
             })
             formData.append('user_info', emp_id)
 
-            const _response = await axios.put(api.ticket_system.by_id + id, formData)
+            const _response = await axios.put(api.ticket_system.by_id + `${id}/?woosee=${getCookies()[0]}`, formData)
             if (_response.data.status_code === 200) {
                 setBtnSaving(true)
                 setSnackBarPopUp({ state: true, message: "Created ticket", severity: "s" })
@@ -154,7 +154,7 @@ export default function ApproverForm() {
                             return (
                                 <div key={i} className='flex gap-1'>
                                     <label className='font-bold'>{u[0]}</label>
-                                    <label >{u[1]}</label>
+                                    <label >{u[0] === "Ticket Date" ? moment(u[1]).format("DD-MM-YYYY hh:mm a") : u[1]}</label>
                                 </div>
                             )
                         }))}
@@ -280,7 +280,7 @@ function VerticalLinearStepper({ response }) {
                         <StepContent>
                             <Typography>{step.comments}</Typography>
                             <div className='flex justify-end'>
-                                <span className='font-[500] uppercase'>{moment(step.time).format("DD/MM/YYYY, hh:MM a")}</span>
+                                <span className='font-[500] uppercase'>{moment(step.time).format("DD-MM-YYYY, hh:mm a")}</span>
                             </div>
                         </StepContent>
                     </Step >

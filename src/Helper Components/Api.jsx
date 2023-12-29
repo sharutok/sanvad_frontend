@@ -37,7 +37,7 @@ export const api = {
     dynamic_values: {
         tkt_type: `${link}/tkt-sys/tkt_type/`,
         requirement_type: `${link}/tkt-sys/req_type/`,
-        conference_rooms: `${link}/conf-book/conference-rooms/`
+        conference_rooms: `${link}/conf-book/conference-rooms`
     },
     visitor_management: {
         create: `${link}/visitor-manage/create/`,
@@ -60,7 +60,8 @@ export const api = {
         serve_files: `${link}/utils/serve/file/`,
         announcements: `${link}/utils/add/announsment/`,
         dept_plant: `${link}/utils/list/dept-plant/`,
-        birthday_wish: `${link}/utils/birthday/wish`
+        birthday_wish: `${link}/utils/birthday/wish`,
+        which_frame: `${link}/utils/which/frame`
     },
     wf: {
         it_system_ticket_wf: `${link}/wf/ticket/systems/`,

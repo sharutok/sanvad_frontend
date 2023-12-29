@@ -8,6 +8,6 @@ export const VisitorMangErrorSchema = yup.object().shape({
     // more_info: yup.string().matches(/^[0-9]+$/, 'Mobile No must be numbers only').max(10).notRequired(),
 })
 export const ApproverVisitorMangErrorSchema = yup.object().shape({
-    ppe: yup.string().required('Required Field'),
+    // ppe: yup.string().required('Required Field') ,
 })
 

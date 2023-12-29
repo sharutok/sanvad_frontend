@@ -79,6 +79,7 @@ function App() {
   })
 
   const [visitors, setVisitors] = useState([])
+  const [visitorPass, setVisitorPass] = useState([])
   const [assets, setAssets] = useState([])
 
   const [cookie, setCookie] = useState({
@@ -93,7 +94,7 @@ function App() {
 
   const contextValue = {
     momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, budget, setBudget, userLogin, setUserLogin, dialogStatus, setDialogStatus, confTemp, setConfTemp
-    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets, setAssets, collapse, setCollapse, open, setOpen, drawerStatus, setDrawerStatus
+    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets, setAssets, collapse, setCollapse, open, setOpen, drawerStatus, setDrawerStatus, visitorPass, setVisitorPass
   }
 
 

@@ -20,7 +20,9 @@ export const static_val = {
 
 export const severity = ['Low🔥', "Medium🔥🔥", "High🔥🔥🔥"]
 
-export const org=["ADOR WELDING", "ADOR FONTECH", "FLASH"]
+export const org = ["ADOR WELDING", "ADOR FONTECH", "FLASH"]
+
+export const flash_link = "https://flashaligners.in/"
 
 export const user_permission = [
 

@@ -20,6 +20,7 @@ body {
 /* For Webkit based browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
   width: 7px; /* Width of the scrollbar */
+  height: 7px; /* Width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {

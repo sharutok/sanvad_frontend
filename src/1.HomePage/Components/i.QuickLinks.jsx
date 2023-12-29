@@ -26,29 +26,29 @@ function QuickLinks() {
     }
 
     return (
-        <div className='bg-[#fff] rounded-xl '>
+        <div className='bg-[#fff] rounded-xl  overflow-y-auto'>
             <div className='p-3'>
                 <span className='text-[1.2rem] font-extrabold text-[#555259]'>Quick Links</span>
                 <div >
                     <Divider />
                 </div>
             </div>
-            <div className='grid grid-cols-[repeat(3,1fr)] grid-rows-[repeat(4,1fr)]  p-2'>
+            <div className='grid grid-cols-[repeat(3,1fr)] grid-rows-[repeat(4,1fr)]  p-2 '>
                 {quick_link.map((x, i) => {
                     return (
-                        <div onClick={() => handleNav(x.link)} key={i} className='hover-element active:bg-[#e6e6e6] cursor-pointer border border-solid border-[#e3e5ec] flex justify-center pop py-1' >
-                            <div className='grid grid-cols-[repeat(1,7vw)] grid-rows-[repeat(1,6vw)]  w-fit place-items-center'>
+                        <div onClick={() => handleNav(x.link)} key={i} className='hover-element active:bg-[#e6e6e6] cursor-pointer border border-solid border-[#e3e5ec] flex justify-center pop py-1 ' >
+                            <div className='grid grid-cols-[repeat(1,7vw)] grid-rows-[repeat(1,6vw)] w-fit h-fit place-items-center overflow-auto min-w-8'>
                                 <div className='flex justify-center'>
                                     {x.img_name === "ador_logo_ring" ?
-                                        <div className='w-[3vw]'>
+                                        <div className='w-[3.5rem]'>
                                             <img loading='lazy' src={x.img} />
                                         </div>
                                         : (x.img_name === "ador_logo_" ?
-                                            <div className='w-[3vw]'>
+                                            <div className='w-[3.5rem]'>
                                                 <img src={x.img} />
                                             </div>
                                             :
-                                            <div className='w-[3vw]'>
+                                            <div className='w-[3.5rem]'>
                                                 <img src={x.img} />
                                             </div>
                                         )}

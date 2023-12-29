@@ -59,15 +59,15 @@ export const FunctionalComponentToPrint = React.forwardRef((props, ref) => {
 
 
 function PrintBody() {
-    const { visitors } = React.useContext(AppContext)
-
+    const { visitors, visitorPass } = React.useContext(AppContext)
     return (
         <div>
             {
-                visitors?.length && visitors?.map((y, i) => {
+                visitorPass?.length && visitorPass?.map((y, i) => {
+                    console.log(y['visitors']);
                     const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset ? h.v_asset.toUpperCase() : "" })
-                    const assets = t_assets.join(', ')
-                    // console.log(assets);
+                    const assets = t_assets.join(', ') && []
+                    console.log(assets);
                     return (
                         <div key={i} className="border-[10px] border-solid border-[black] ">
                             <div className="flex justify-between p-2">
@@ -162,6 +162,7 @@ function PrintBody() {
                                 <span className="border-t-[black] border-t border-solid">Visitor's Sign</span>
                                 <span className="border-t-[black] border-t border-solid">Employee InCharge Sign</span>
                                 <p className="border-t-[black] border-t border-solid">Security Sign</p>
+                                <span className="border-t-[black] border-t border-solid">In Time</span>
                                 <span className="border-t-[black] border-t border-solid">Out Time</span>
                             </div>
                             <div className="flex flex-wrap gap-2 p-5">
@@ -169,10 +170,11 @@ function PrintBody() {
                                 <span><strong>a.</strong>To declare material at the Security Gate.</span>
                                 <span><strong>b.</strong>Not to go about places other than the place of work in the factory.</span>
                                 <span><strong>c.</strong>To return this pass and badge at the gate at the time of departure.</span>
-                                <strong>*Photography is strictly Prohibited*</strong>
+                                <strong>*<i>Photography is strictly Prohibited</i>*</strong>
                             </div>
 
-                        </div>)
+                        </div>
+                    )
                 })
 
 

@@ -5,10 +5,12 @@ import dayjs from 'dayjs';
 import { yupResolver } from '@hookform/resolvers/yup'
 import Avatar from '@mui/material/Avatar';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { HiOutlineViewGrid } from "react-icons/hi";
 import { CiBoxList } from "react-icons/ci";
+import * as yup from 'yup'
 import {
     Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, IconButton,
 } from '@mui/material'
@@ -18,7 +20,7 @@ import BackArrow from '../../Helper Components/SideComponent';
 import { BsCamera } from 'react-icons/bs';
 import { AppContext } from '../../App';
 import Table from '../../Helper Components/Table';
-import { MdDeleteOutline } from 'react-icons/md';
+import { MdDeleteOutline, MdRefresh } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import { saveAs } from 'file-saver';
@@ -44,9 +46,10 @@ const videoConstraints = {
 };
 
 export default function ApproveVisitorManagement() {
-    const { setDialogStatus, dialogStatus, setVisitors, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
+    const { setDialogStatus, dialogStatus, setVisitorPass, visitors, setVisitors, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
     const { id } = useParams()
     const webcamRef = useRef(null);
+    const [validError, setValidError] = useState("")
     const [componentAccess, setComponentAccess] = useState({})
     const queryClient = useQueryClient()
 
@@ -74,7 +77,8 @@ export default function ApproveVisitorManagement() {
             setValue(x[0], x[1])
         })
         setComponentAccess(response?.data?.view_access);
-        setVisitors(response?.data?.data)
+        setVisitorPass(response?.data?.data)
+        setVisitors(JSON.parse(response?.data?.data[0]?.visitors))
         return data
     }
     )
@@ -90,14 +94,16 @@ export default function ApproveVisitorManagement() {
                 ...data,
                 end_date_time: moment(data['end_date_time'].$d || data['end_date_time']).format(),
                 start_date_time: moment(data['start_date_time'].$d || data['start_date_time']).format(),
+                visitors: JSON.stringify(visitors)
             }
+            console.log(_data);
             const response = await axios.put(api.visitor_management.by_id + id, _data)
             if (response.data.status_code === 200) {
                 setBtnSaving(true)
                 setSnackBarPopUp({ state: true, message: "Updated Pass", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "", severity: "s" })
-                    window.location.href = "/vistors/management/list"
+                    // window.location.href = "/vistors/management/list"
                 }, 2000)
             }
 
@@ -107,9 +113,48 @@ export default function ApproveVisitorManagement() {
         }
     }
 
-    function handleAddVisitor() {
-        setDialogStatus(!dialogStatus)
+    let obj = {}
+    async function handleAddVisitor() {
+        try {
+            ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
+                obj[val] = getValues(val)
+                return
+            })
+            let logs = []
+
+            Object.values(obj).map(x => {
+                logs.push(x)
+            })
+
+            const jsonDataSchema = yup.object({
+                v_name: yup.string().required("Visitor's Name is Required").matches(/^[A-Za-z\s]+$/, "Visitor's Name should be Only alphabets").max(20),
+                v_mobile_no: yup.string().required("Visitor's Mobile No is Required").matches(/^[0-9]+$/, 'Mobile No must be numbers only').test('len', "Visitor's Mobile No must be exactly 10 characters", val => val && val.length === 10),
+                v_desig: yup.string().required("Visitor's designation is Required"),
+                // v_asset: yup.string().required("All Fields Required"),
+
+            });
+
+            try {
+                // Validate the JSON data against the schema
+                const resp = await jsonDataSchema.validate(obj)
+                if (Object.keys(errors).map(x => { return x }).length == 0 && !logs.includes("")) {
+                    setVisitors(() => [...visitors, obj]),
+                        clearAll(),
+                        setValidError("")
+                }
+            }
+            catch (error) {
+                console.log(error);
+                setValidError(error.errors[0])
+            }
+
+
+        }
+        catch (error) {
+            console.log("error", error);
+        }
     }
+
 
     const captureImage = async (image_name) => {
         try {
@@ -147,7 +192,12 @@ export default function ApproveVisitorManagement() {
         }
     }
 
+    function clearAll() {
+        ["v_name", "v_mobile_no", "v_desig", "v_asset"].map((val) => {
+            setValue(val, "")
+        })
 
+    }
 
     if (data.isLoading) {
         return (
@@ -199,9 +249,27 @@ export default function ApproveVisitorManagement() {
                                 rules={{ required: true }}
                             />
                         </div>
+                        {!componentAccess.camera_component && <div className='grid gap-5'>
+                            <Divider textAlign='left'></Divider>
+                            <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Add Visitors"}</span>
+                            {validError && <span className='text-[#ff3838]'>{validError}</span>}
+                            <div className='w-fit'>
+                                <div className='w-fit flex'>
+                                    <div className='flex flex-wrap gap-5 '>
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_name" label="Visitor's Name*" />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_mobile_no" label="Visitor's Mobile No*" />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_desig" label="Visitor's Designation*" />
+                                        <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets" />
+                                        <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
+                                        <ButtonComponent onClick={clearAll} icon={<MdRefresh color='white' size={"23"} />} btnName={"Clear All"} />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
                         <div className='grid gap-5 w-fit'>
                             <span style={{ fontFamily: "Brandon Grotesque" }} className='text-[1.5rem]'>{"Visitor List"}</span>
-                            <VisitorListing visitorPhoto={visitor_pic_data?.data?.data?.data} componentAccess={componentAccess} captureImage={captureImage} visitors={getValues("visitors") && JSON.parse(getValues("visitors"))} />
+                            <VisitorListing visitorPhoto={visitor_pic_data?.data?.data?.data} componentAccess={componentAccess} captureImage={captureImage} visitors={visitors} />
                         </div>
                     </div>
                     <div className='w-fit p-10'>
@@ -316,7 +384,6 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
         "Assets",
     ]
 
-
     return (<div className=''>
         <ToggleButtonGroup
             value={alignment}
@@ -364,7 +431,6 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
 
             {alignment && <div className='flex flex-wrap gap-5'>
                 {visitors?.length && visitors?.map((g, i) => {
-                    console.log(visitorPhoto[i]?.mod_image);
                     return (
                         <div className='grid gap-2 shadow-[rgba(0,0,0,0.24)_0px_3px_8px] p-4 rounded-lg  w-[15rem] h-[16rem]' key={i}>
                             <div>
@@ -430,5 +496,18 @@ function CustomEndDateTime({ register, name, label, errors, control, watch, disa
             control={control}
             rules={{ required: true }}
         />
+    )
+}
+const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
+    return (
+        <div
+            onClick={onClick}
+            {...props}
+            className='whitespace-nowrap no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+            <div className='no-underline'>
+                {icon}
+            </div>
+            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
+        </div>
     )
 }

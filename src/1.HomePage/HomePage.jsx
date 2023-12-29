@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Divider from '@mui/material/Divider';
 import YammerFrame from './Components/e.YammerFrame'
 import ShortCutBtn from './Components/f.ShortCutBtn'
 import '../../Style/comman.css'
@@ -8,6 +9,8 @@ import QuickLinks from './Components/i.QuickLinks'
 import Announsments from './Components/l.Announsments'
 import WeatherAndTemp from './Components/m.WeatherAndTemp'
 import IMAGES from '../assets/Image/Image'
+import { flash_link } from '../Static/StaticValues';
+import Frame from './Components/e.YammerFrame';
 
 export default function HomePage() {
     return (
@@ -18,13 +21,7 @@ export default function HomePage() {
                         <SideBar />
                     </div>
                     <div className=' grid gap-5 grid-cols-[1.5fr_2fr] p-1 mt-20 '>
-                        <div className='h-[85vh] overflow-y-auto grid gap-5 rounded-xl'>
-                            <YammerFrame />
-                        </div>
-                        {/* <div className='h-[85vh] overflow-y-auto grid gap-5'>
-                            <img className='rounded-xl' src={IMAGES.flash_logo_dash_1} />
-                            <img className='rounded-xl' src={IMAGES.flash_logo_dash_2} />
-                        </div> */}
+                        <Frame />
                         <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1  h-fit'>
                             <ShortCutBtn />
                             <div className='grid gap-5 grid-cols-[repeat(2,1fr)]  p-1 h-fit '>

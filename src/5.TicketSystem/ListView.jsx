@@ -89,7 +89,7 @@ export default function TicketSystemListView() {
                                             <td onClick={() => handleNav(g)} className='align-middle'>{severityArrow(g.severity)}</td>
                                             <td onClick={() => handleNav(g)} >{g.created_at}</td>
                                             <td onClick={() => handleNav(g)} className='align-middle'>{status(g.tkt_status)}</td>
-                                            <td onClick={() => handleNav(g)}>{g.tkt_current_at}</td>
+                                            <td onClick={() => handleNav(g)}>{g.tkt_current_at} {g.role && <b>({g.role})</b>}</td>
                                             {/* {String(getCookies()[0]) === String(g.requester_emp_no) && <td className='delete'>
                                                 <TipTool body={< >
                                                     <IconButton onClick={() => handleDelete(g.id)}>
