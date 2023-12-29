@@ -48,8 +48,8 @@ function FlashFrame() {
                     ADOR Group with a 109-year legacy in India, dominates the core industry sectors where it participates.
                     Flash Orthodontics is built on their objective to nurture businesses for select industrial segments,
                     with the aim of attaining market leadership</span>
-                <img onClick={() => window.location.href = flash_link} className='rounded-xl hover:cursor-pointer' src={IMAGES.flash_logo_dash_1} />
-                <img onClick={() => window.location.href = flash_link} className='rounded-xl hover:cursor-pointer' src={IMAGES.flash_logo_dash_2} />
+                <img loading='lazy' onClick={() => window.location.href = flash_link} className='rounded-xl hover:cursor-pointer' src={IMAGES.flash_logo_dash_1} />
+                <img loading='lazy' onClick={() => window.location.href = flash_link} className='rounded-xl hover:cursor-pointer' src={IMAGES.flash_logo_dash_2} />
             </div>
         </div>
     )
