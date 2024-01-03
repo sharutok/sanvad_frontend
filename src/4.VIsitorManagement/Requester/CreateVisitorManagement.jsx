@@ -86,10 +86,10 @@ export default function CreateVisitorMangement() {
             try {
                 // Validate the JSON data against the schema
                 const resp = await jsonDataSchema.validate(obj)
-                // console.log(resp);
-                if (Object.keys(errors).map(x => { return x }).length == 0 && !logs.includes("")) {
-                    setVisitors([...visitors, obj]), clearAll(), setValidError("")
-                }
+                console.log(resp);
+                setVisitors([...visitors, obj]), clearAll(), setValidError("")
+                // if (Object.keys(errors).map(x => { return x }).length == 0 && !logs.includes("")) {
+                // }
             }
             catch (error) {
                 console.log(error.errors);

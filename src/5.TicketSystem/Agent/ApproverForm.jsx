@@ -175,7 +175,7 @@ export default function ApproverForm() {
                     </div>
                     <div className='p-5' >
                         <strong>Uploaded files</strong>
-                        <div className='grid grid-cols-4 gap-1 '>
+                        <div className='grid grid-cols-1 gap-1 '>
                             {!response.isLoading && response?.data?.data?.upload_data?.map((g, i) => {
                                 return (
                                     <div className=''>
