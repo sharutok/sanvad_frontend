@@ -1,28 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Table from '../Helper Components/Table'
+import Table from '../../Helper Components/Table'
 import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2'
-import CPagination from '../Helper Components/Pagination'
-import BackArrow from '../Helper Components/SideComponent'
+import CPagination from '../../Helper Components/Pagination'
 import { Fab, IconButton, TextField, Tooltip } from '@mui/material'
-import TipTool from '../Helper Components/TipTool'
-import { MdClear, MdDeleteOutline } from 'react-icons/md'
-import { FiSearch } from 'react-icons/fi'
-import { AiOutlineDownload, AiOutlineUserAdd } from 'react-icons/ai'
-import { IoIosPaper } from 'react-icons/io'
+import { MdAttachFile } from "react-icons/md";
 import { useQuery, useQueryClient, } from '@tanstack/react-query'
 import axios from 'axios'
-import { api } from '../Helper Components/Api'
-import { AppContext } from '../App'
-import BarSnack from '../Helper Components/BarSnack'
-import { Link } from 'react-router-dom'
-import LoadingSpinner from '../Helper Components/LoadingSpinner'
-import { getCookies } from '../Helper Components/CustomCookies'
+import { api } from '../../Helper Components/Api'
+import { AppContext } from '../../App'
+import BarSnack from '../../Helper Components/BarSnack'
+import LoadingSpinner from '../../Helper Components/LoadingSpinner'
+import { getCookies } from '../../Helper Components/CustomCookies'
 import moment from 'moment'
-import { exportToCSV, isPermissionToView } from '../Static/StaticValues'
+import { exportToCSV, isPermissionToView } from '../../Static/StaticValues'
 
-export default function TicketSystemListView() {
+export default function TicketSystemListView({ _search }) {
     const { setSnackBarPopUp, count, setCount, page, setPage } = useContext(AppContext)
-    const [_search, _setSearch] = useState("")
+    // const [_search, _setSearch] = useState("")
     const emp_no = getCookies()[0]
     const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Severity", "Ticket Date", "Status", "Current At"]
     const queryClient = useQueryClient()
@@ -63,25 +57,25 @@ export default function TicketSystemListView() {
     }
 
     return (
-        <div>
+        <div className='mt-2'>
             <BarSnack />
             <div>
-                <div className='flex justify-between mt-20'>
-                    <BackArrow location={"/home"} title={"Ticketing System - Listing"} />
-                    <div className='flex gap-4  mr-10'>
+                <div className='flex justify-between'>
+                    {/* <BackArrow location={"/home"} title={"Ticketing System - Listing"} /> */}
+                    {/* <div className='flex gap-4  mr-10'>
                         <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                         <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />
                         {isPermissionToView("ticketsystem:export") && <ButtonComponent onClick={() => exportData()} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />}
-                    </div>
+                    </div> */}
                 </div>
-                {!ticket_listing.isLoading ? <div className='mt-20 mx-10'>
+                {!ticket_listing.isLoading ? <div className=' mx-10'>
                     <Table thead={thead}
                         tbody={
                             ticket_listing?.data?.data?.results.map((g, i) => {
                                 return (
                                     <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                         <tr className='table-wrapper' >
-                                            <td onClick={() => handleNav(g)}>{g.ticket_no}</td>
+                                            <td onClick={() => handleNav(g)}><p className='flex justify-center gap-2'>{g.total_file_uploads > 0 && <MdAttachFile size={20} color='#bd0000' className='rotate-45' />}{g.ticket_no}</p></td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_title}</td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_type}</td>
                                             <td onClick={() => handleNav(g)}>{g.req_type}</td>
@@ -90,6 +84,12 @@ export default function TicketSystemListView() {
                                             <td onClick={() => handleNav(g)} >{g.created_at}</td>
                                             <td onClick={() => handleNav(g)} className='align-middle'>{status(g.tkt_status)}</td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_current_at} {g.role && <b>({g.role})</b>}</td>
+                                            {/* <td onClick={() => handleNav(g)}>
+                                                {g.closed_by && <p>
+                                                    <>{g.closed_by}</> on <>{moment(g.closed_date).format("DD-MM-YYYY")}</>
+                                                </p>}
+
+                                            </td> */}
                                             {/* {String(getCookies()[0]) === String(g.requester_emp_no) && <td className='delete'>
                                                 <TipTool body={< >
                                                     <IconButton onClick={() => handleDelete(g.id)}>

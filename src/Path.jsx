@@ -11,7 +11,7 @@ import CForm from './6.Capex/Requester/Form';
 import Page from './0.LoginPage/Page';
 import UserManagementListView from './2.UserManagement/ListView';
 import ConferenceBookingListView from './3.ConferenceBooking/BookNewConf/ListView';
-import TicketSystemListView from './5.TicketSystem/ListView';
+import TicketSystemListView from './5.TicketSystem/ListTab/ListView';
 import VisitManagementListView from './4.VIsitorManagement/ListView';
 import HeaderMegaMenu from './1.HomePage/Components/b.Header';
 import TicketSys from './7.ModuleConfig/TicketSys';
@@ -24,6 +24,7 @@ import CWorkFlow from './8.WorkFlow/CapexWorkFlow/WorkFlow';
 import TWorkFlow from './8.WorkFlow/TicketWorkFlow/WorkFlow';
 import Policies from './1.HomePage/Components/o.Policies';
 import { getCookies } from './Helper Components/CustomCookies';
+import TabList from './5.TicketSystem/ListTab/TabList';
 export default function Path() {
 
     if (!getCookies()[0]) {
@@ -60,7 +61,8 @@ export default function Path() {
                         <Route path='/vistors/management/:id' element={<ApproveVisitorManagement />} />
                         <Route path='/vistors/management/list' element={<VisitManagementListView />} />
 
-                        <Route path='/ticket/sys/list' element={<TicketSystemListView />} />
+                        <Route path='/ticket/sys/list' element={<TabList />} />
+                        {/* <Route path='/ticket/sys/list' element={<TicketSystemListView />} /> */}
                         <Route path='/ticket/sys/new' element={<TRequesterForm />} />
                         <Route path='/ticket/sys/:id' element={<TApproverForm />} />
 

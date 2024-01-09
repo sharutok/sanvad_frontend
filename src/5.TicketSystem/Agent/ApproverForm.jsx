@@ -21,8 +21,8 @@ import * as yup from 'yup'
 
 import { AiOutlineUpload } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
-import { useParams } from 'react-router-dom';
-import { forceDownload, severity } from '../../Static/StaticValues';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { severity } from '../../Static/StaticValues';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import { AppContext } from '../../App';
 import { getCookies } from '../../Helper Components/CustomCookies';
@@ -32,6 +32,7 @@ import moment from 'moment';
 export default function ApproverForm() {
     const emp_id = getCookies()[0]
     const { setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
+    const [searchParams, setSearchParams] = useSearchParams();
     const [componentAccess, setComponentAccess] = useState({})
     const [tktFiles, setTKTFiles] = useState([])
     const [assignTKT, setAssignTKT] = useState()
@@ -42,7 +43,7 @@ export default function ApproverForm() {
     const { id } = useParams()
 
     const response = useQuery(['get-ticket-data'], async () => {
-        const data = await axios.get(api.ticket_system.by_id + id + `?woosee=${getCookies()[0]}`)
+        const data = await axios.get(api.ticket_system.by_id + id + `?woosee=${getCookies()[0]}&qreuecs=${searchParams.get('qreuecs') ? searchParams.get('qreuecs') : ""}`)
         Object.entries(data?.data?.form_data).map(x => {
             setValue(x[0], x[1])
             x[0] === "severity" && setValue(x[0], severity[x[1]])
@@ -89,7 +90,7 @@ export default function ApproverForm() {
             const _response = await axios.put(api.ticket_system.by_id + `${id}/?woosee=${getCookies()[0]}`, formData)
             if (_response.data.status_code === 200) {
                 setBtnSaving(true)
-                setSnackBarPopUp({ state: true, message: "Created ticket", severity: "s" })
+                setSnackBarPopUp({ state: true, message: "Updated ticket", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
                     window.location.href = "/ticket/sys/list"

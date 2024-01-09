@@ -30,6 +30,7 @@ export const api = {
     },
     ticket_system: {
         get_data: `${link}/tkt-sys/all`,
+        view_all_data: `${link}/tkt-sys/view/all`,
         create: `${link}/tkt-sys/create/`,
         by_id: `${link}/tkt-sys/`,
         get_all_user_list: `${link}/tkt-sys/get-all-users/`
@@ -52,7 +53,8 @@ export const api = {
     user: {
         log_check: `${link}/user-manage/login/check/`,
         birthday_list: `${link}/user-manage/birthday/list/`,
-        user_permissions: `${link}/user-manage/user/permission/list/`
+        user_permissions: `${link}/user-manage/user/permission/list/`,
+        manager_list: `${link}/user-manage/list/manager`
     },
     utils: {
         download_excel: `${link}/utils/download/excel/`,

@@ -9,7 +9,8 @@ import Avatar from '@mui/material/Avatar';
 import IMAGES from '../../assets/Image/Image'
 import { Divider } from '@mui/material'
 import { getCookies } from '../../Helper Components/CustomCookies'
-
+const url = import.meta.env.VITE_BACKEND_URL
+const port = import.meta.env.VITE_BACKEND_PORT
 
 export default function Frame() {
 
@@ -105,13 +106,13 @@ function ICarousels({ data }) {
                         </div>
                         <div className='text-center my-3 mx-1' style={{ wordBreak: "break-word" }}>
                             <p className='text-lg text-left '>{x.message}</p>
-                            {/* <p className='text-lg '>{x.message}</p> */}
+                            <p className='text-lg '>{x.image[0].name}</p>
                         </div>
 
                         <div className='flex justify-center '>
-                            {x?.image[0]?.type === "image" && <img loading='lazy' style={{ width: "400px" }} src={x.image[0].sharepoint_web_url} />}
+                            {x?.image[0]?.type === "image" && <img loading='lazy' style={{ width: "400px" }} src={`${url}:${port}/media/yammer/${x.image[0].name}`} />}
                             {x?.image[0]?.type === "file" && <video loop style={{ width: "400px" }} controls>
-                                <source src={x?.image[0]?.sharepoint_web_url} type="video/mp4" />
+                                <source src={`${url}:${port}/media/yammer/${x.image[0].name}`} type="video/mp4" />
                             </video>}
                         </div>
                         <div>

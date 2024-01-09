@@ -33,6 +33,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function UpdateUserForm() {
   const { id } = useParams()
+  const [managerList, setManagerList] = useState([])
   const { usermanagement, setUsermanagement, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
   const ErrorSchema = UserErrorSchema
 
@@ -134,6 +135,14 @@ export default function UpdateUserForm() {
     return data
   })
 
+
+
+  const manager_list = useQuery(['manager_list'], async () => {
+    const data = await axios.get(`${api.user.manager_list}/?department=${getValues('department')}`)
+    setManagerList([...data?.data.map(x => { return x.name })])
+  }, { staleTime: Infinity })
+
+
   if (response.isLoading) {
     return (
       <>
@@ -187,9 +196,9 @@ export default function UpdateUserForm() {
           <CustomDate label={"End Date"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
           <CustomDate label={"Start Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
           <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
-          <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={_plant_dept?.data?.data?.department || []} />
+          <CustomAutoCompleteDepartment control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
           <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={_plant_dept?.data?.data?.plant_data || []} />
-          <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
+          <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={managerList} />
           {/* <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} /> */}
           <CustomAutoComplete control={control} errors={errors} name={"job_status"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
           <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={org} />
@@ -334,5 +343,41 @@ const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
       </div>
       {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
     </div>
+  )
+}
+
+
+
+const CustomAutoCompleteDepartment = ({ name, label, options, control, errors }) => {
+  return (
+    <Controller
+      key={name}
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <Autocomplete
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          key={name}
+          className="w-[20rem]"
+          disablePortal
+          id="combo-box-demo"
+          {...field}
+          options={options}
+          renderInput={(params) => (
+            <TextField
+              key={name}
+              {...params}
+              size={"small"}
+              label={label}
+              variant="outlined"
+              error={errors[name]} helperText={errors[name] && errors[name].message}
+            />
+          )}
+          onChange={(e, selectedValue) => {
+            field.onChange(selectedValue);
+          }}
+        />
+      )}
+    />
   )
 }

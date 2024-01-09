@@ -32,6 +32,7 @@ import { org } from '../Static/StaticValues';
 
 function CreateUserForm() {
     const { usermanagement, setUsermanagement, setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
+    const [managerList, setManagerList] = useState([])
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
@@ -41,15 +42,17 @@ function CreateUserForm() {
 
     const user_perm = useQuery(["user-permission"], async () => {
         return await axios.get(api.user.user_permissions)
-    })
+    }, { staleTime: Infinity })
 
     const plant_dept = useQuery(['plant_dept'], async () => {
         const data = axios.get(api.utils.dept_plant)
         return data
-    })
+    }, { staleTime: Infinity })
 
-
-
+    const manager_list = useQuery(['manager_list'], async () => {
+        const data = await axios.get(`${api.user.manager_list}/?department=${getValues('department')}`)
+        setManagerList([...data?.data.map(x => { return x.name })])
+    }, { staleTime: Infinity })
 
 
 
@@ -123,16 +126,14 @@ function CreateUserForm() {
                         rules={{ required: true }}
                     />
                 </div>
-                {/* <Divider sx={{ borderColor: "red" }} /> */}
                 <Divider textAlign='left'></Divider>
                 <div className='flex flex-wrap gap-7'>
                     <CustomDate label={"End Date"} name={"end_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomDate label={"Start Date*"} name={"start_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomTextField label={"Employment Number*"} name={"emp_no"} errors={errors} register={register} watch={watch} />
-                    <CustomAutoComplete control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
+                    <CustomAutoCompleteDepartment control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
                     <CustomAutoComplete control={control} errors={errors} name={"plant_name"} label={"Plant Name"} options={plant_dept?.data?.data?.plant_data || []} />
-                    <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={['0', "1", "2", "3", "4"]} />
-                    {/* <CustomAutoComplete control={control} errors={errors} name={"employment_type"} label={"Employment Type"} options={['0', "1", "2", "3", "4"]} /> */}
+                    <CustomAutoComplete control={control} errors={errors} name={"manager"} label={"Manager"} options={managerList} />
                     <CustomAutoComplete control={control} errors={errors} name={"job_type"} label={"Job Type"} options={['0', "1", "2", "3", "4"]} />
                     <CustomAutoComplete control={control} errors={errors} name={"organization"} label={"Organization"} options={org} />
                 </div>
@@ -186,16 +187,55 @@ function CreateUserForm() {
             </div>
             <div>
             </div>
-            {/* <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
-                <img loading='lazy' width={"200px"} src={IMAGES.user_man_i} />
-            </div> */}
         </form>
     )
 }
 
 export default CreateUserForm
 
+function handleOnChange() {
+    const manager_list = useQuery(['manager_list'], async () => {
+        const data = axios.get(`${api.user.manager_list}/?department=${getValues('department')}`)
+        return data
+    }, { staleTime: Infinity })
+}
+
 const CustomAutoComplete = ({ name, label, options, control, errors }) => {
+    return (
+        <Controller
+            key={name}
+            name={name}
+            control={control}
+            render={({ field }) => (
+                <Autocomplete
+                    isOptionEqualToValue={(option, value) => option.value === value.value}
+                    key={name}
+                    className="w-[20rem]"
+                    disablePortal
+                    id="combo-box-demo"
+                    {...field}
+                    options={options}
+                    renderInput={(params) => (
+                        <TextField
+                            key={name}
+                            {...params}
+                            size={"small"}
+                            label={label}
+                            variant="outlined"
+                            error={errors[name]} helperText={errors[name] && errors[name].message}
+                        />
+                    )}
+                    onChange={(e, selectedValue) => {
+                        field.onChange(selectedValue);
+                    }}
+                />
+            )}
+        />
+
+    )
+}
+const CustomAutoCompleteDepartment = ({ name, label, options, control, errors }) => {
+
     return (
         <Controller
             key={name}
