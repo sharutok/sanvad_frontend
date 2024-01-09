@@ -106,7 +106,6 @@ function ICarousels({ data }) {
                         </div>
                         <div className='text-center my-3 mx-1' style={{ wordBreak: "break-word" }}>
                             <p className='text-lg text-left '>{x.message}</p>
-                            <p className='text-lg '>{x.image[0].name}</p>
                         </div>
 
                         <div className='flex justify-center '>
