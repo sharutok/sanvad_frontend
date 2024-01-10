@@ -60,7 +60,7 @@ export default function NewEmployee() {
                             <div key={i} >
                                 <ListItem className='flex justify-between'>
                                     <ListItemAvatar>
-                                        {x.gender === "F" ? <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._girl_}></Avatar>
+                                        {x.gender === "0" ? <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._girl_}></Avatar>
                                             : <Avatar sx={{ width: 50, height: 50 }} src={IMAGES._boy_}></Avatar>}
                                     </ListItemAvatar>
                                     <ListItemText className='whitespace-nowrap overflow-hidden text-ellipsis' primary={<span className='text-[13px] font-bold text-[#555259] '>{x.first_name + " " + x.last_name}</span>} secondary={<span className='text-[12px]'>{x.department !== "null" && x.department}</span>} />
