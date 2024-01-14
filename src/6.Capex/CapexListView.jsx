@@ -52,6 +52,7 @@ export default function CapexListView({ _search, _setSearch }) {
                             <td>{i.return_on_investment}</td>
                             <td>{i.budget_type}</td>
                             <td>{i.capex_raised_by}</td>
+
                             <td>{i.capex_current_at}</td>
                             <td>{i.created_at}</td>
                             <td>{status(i.capex_status)}</td>
