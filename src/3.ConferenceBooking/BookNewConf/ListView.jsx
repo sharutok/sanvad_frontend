@@ -16,8 +16,7 @@ import ConferenceBooking from './ConferenceBooking'
 import { IoMdArrowBack, IoMdRefresh } from 'react-icons/io'
 import LoadingSpinner from '../../Helper Components/LoadingSpinner'
 import Drawer from '@mui/material/Drawer';
-import IMAGES from '../../assets/Image/Image'
-import { MdDeleteOutline } from 'react-icons/md'
+
 import dayjs from 'dayjs'
 import { getCookies } from '../../Helper Components/CustomCookies'
 
@@ -87,9 +86,10 @@ export default function ConferenceBookingListView() {
         </>)
     }
 
-    let end_date__start_date = []
+    let end_date_coll = []
     const booked_dates = !prev_booked_list.isLoading && (prev_booked_list?.data?.data?.data?.map(x => {
         const _24_to_12hr = (val) => moment(val, "HH:mm").format("hh:mm A")
+        end_date_coll.push(_24_to_12hr(x.conf_end_time))
         return ({
             diff_numbered: diff_numbered(value.indexOf(_24_to_12hr(x.conf_end_time)), value.indexOf(_24_to_12hr(x.conf_start_time)))
         });
@@ -99,27 +99,46 @@ export default function ConferenceBookingListView() {
     let _flag = []
     let _temp = []
     let _flag_ = []
+    let temp = []
+
     booked_dates && booked_dates.map(y => {
         _flag.push(...y.diff_numbered)
-        _flag_ = _flag.sort(function (a, b) {
-            return a.localeCompare(b);
-        });
-
-        let temp = []
-        const rev_count_val = value.indexOf((_flag_[_flag_.length - 1]))
-        for (let i = rev_count_val; i <= 40; i++) {
-            temp.push(moment("06/23/2023 08:00").add(15 * (i), 'minute').format("hh:mm A"))
-        }
-
-        _temp = [...temp]
     })
 
+    function getAllDisabledTime(selected_time) {
+        console.log(selected_time);
+
+        const parsed_end_date_coll = end_date_coll.map(x => {
+            return value.indexOf(x)
+        })
+        console.log(parsed_end_date_coll);
+
+        const index_of_selected_time = (value.indexOf(selected_time));
+        let result = null;
+
+        for (let i = index_of_selected_time; i <= 41; i++) {
+            if (parsed_end_date_coll.includes(i)) {
+                result = i;
+                break;
+            }
+        }
+        // console.log(result)
+        if (result) {
+            for (let i = result; i <= 40; i++) {
+                temp.push(moment("06/23/2023 08:00").add(15 * (i), 'minute').format("hh:mm A"))
+            }
+        }
+        _temp = [...temp]
+        // console.log(_temp);
+        // console.log(_flag);
+    }
+
     function handleDilogBox(selected_time) {
-        const last_booked_time = _flag_[_flag_.length - 1]
+        getAllDisabledTime(selected_time)
         if (!confTemp.conf_room_start_date || !confTemp.conf_room) {
             setError1(true)
         } else {
-            selected_time.localeCompare(last_booked_time) !== 1 ? setDisabledOptions([..._flag, ..._temp]) : setDisabledOptions([..._flag])
+            _temp.length ? setDisabledOptions([..._flag, ..._temp]) : setDisabledOptions([..._flag])
             setDrawerStatus(true)
             setError1(false)
             setMomentTime(value)
