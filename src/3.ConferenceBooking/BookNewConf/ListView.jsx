@@ -75,9 +75,6 @@ export default function ConferenceBookingListView() {
                                 <Divider sx={{ borderColor: "#555259" }} orientation='vertical' />
                             </div>
                             <span className=''>{x.department}</span>
-                            {/* {String(x.conf_by) === String(getCookies()[0]) && <div className='cursor-pointer mt-[0.1rem]'>
-                                <MdDeleteOutline onClick={() => { console.log("Hi"); }} color='#f08080' size={20} />
-                            </div>} */}
                         </div>
                     </div>
                 )
@@ -90,7 +87,7 @@ export default function ConferenceBookingListView() {
         </>)
     }
 
-
+    let end_date__start_date = []
     const booked_dates = !prev_booked_list.isLoading && (prev_booked_list?.data?.data?.data?.map(x => {
         const _24_to_12hr = (val) => moment(val, "HH:mm").format("hh:mm A")
         return ({
@@ -98,18 +95,31 @@ export default function ConferenceBookingListView() {
         });
     }));
 
-    let _flag = []
 
+    let _flag = []
+    let _temp = []
+    let _flag_ = []
     booked_dates && booked_dates.map(y => {
         _flag.push(...y.diff_numbered)
+        _flag_ = _flag.sort(function (a, b) {
+            return a.localeCompare(b);
+        });
+
+        let temp = []
+        const rev_count_val = value.indexOf((_flag_[_flag_.length - 1]))
+        for (let i = rev_count_val; i <= 40; i++) {
+            temp.push(moment("06/23/2023 08:00").add(15 * (i), 'minute').format("hh:mm A"))
+        }
+
+        _temp = [...temp]
     })
 
-    function handleDilogBox() {
-        console.log(confTemp.conf_room_start_date, confTemp.conf_room);
+    function handleDilogBox(selected_time) {
+        const last_booked_time = _flag_[_flag_.length - 1]
         if (!confTemp.conf_room_start_date || !confTemp.conf_room) {
             setError1(true)
         } else {
-            setDisabledOptions([..._flag])
+            selected_time.localeCompare(last_booked_time) !== 1 ? setDisabledOptions([..._flag, ..._temp]) : setDisabledOptions([..._flag])
             setDrawerStatus(true)
             setError1(false)
             setMomentTime(value)
@@ -178,7 +188,7 @@ export default function ConferenceBookingListView() {
                                     }
                                     else {
                                         return (
-                                            <div key={i} className='w-[100%] hover:bg-red-100 cursor-pointer' onClick={handleDilogBox}>
+                                            <div key={i} className='w-[100%] hover:bg-red-100 cursor-pointer' onClick={() => handleDilogBox(x)}>
                                                 <Divider orientation='horizontal' />
                                                 <p className='p-[1rem] text-sm font-medium' onClick={() =>
                                                     setConfTemp({ ...confTemp, conf_room_start_time: x })}

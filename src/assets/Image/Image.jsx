@@ -48,6 +48,7 @@ const IMAGES = {
     flash_logo_dash_2: new URL('../Image/flash-image-home-2.png', import.meta.url).href,
 
 
+
 }
 
 export default IMAGES

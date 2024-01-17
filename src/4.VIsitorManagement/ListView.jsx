@@ -20,7 +20,16 @@ import { getCookies } from '../Helper Components/CustomCookies'
 import LoadingSpinner from '../Helper Components/LoadingSpinner'
 
 export default function VisitManagementListView() {
-    const thead = ["Visitor Company", "Reason For Vist", "Raised By", "Department", "Start Date-time", "End Date-Time", "Main Visitor's Name", "Visitor Count", "Visitor's Status"]
+    const thead = [
+        "Raised By",
+        "Department",
+        "Main Visitor's Name",
+        "Visitor Company",
+        "Start Date-time",
+        "End Date-Time",
+        "Reason For Vist",
+        "Visitor Count",
+        "Visitor's Status"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const queryClient = useQueryClient()
@@ -79,17 +88,17 @@ export default function VisitManagementListView() {
                         return (
                             <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
-                                    <td onClick={() => handleNav(g)} >{g.v_company}</td>
-                                    <td onClick={() => handleNav(g)} >{g.reason_for_visit}</td>
                                     <td onClick={() => handleNav(g)} >{g.name}</td>
                                     <td onClick={() => handleNav(g)} >{g.department}</td>
+                                    <td>{JSON.parse(g.visitors) && JSON.parse(g.visitors)[0]?.["v_name"]}</td>
+                                    <td onClick={() => handleNav(g)} >{g.v_company}</td>
                                     <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
                                         {moment(g.start_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual In Time", g.punch_in_date_time)}
                                     </div></td>
                                     <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
                                         {moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual Out Time", g.punch_out_date_time)}
                                     </div></td>
-                                    <td>{JSON.parse(g.visitors) && JSON.parse(g.visitors)[0]?.["v_name"]}</td>
+                                    <td onClick={() => handleNav(g)} >{g.reason_for_visit}</td>
                                     <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors).length}</td>
                                     <td onClick={() => handleNav(g)} >{VisitorStatus(g.visitor_status)}</td>
                                     {!list_access_permission?.data?.data.delete_btn &&
