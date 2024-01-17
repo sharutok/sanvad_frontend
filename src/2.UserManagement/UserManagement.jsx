@@ -62,7 +62,6 @@ export default function UserManagement() {
             <BackArrow title={"User Management - Create New User"} />
 
             <div className='user-management-container'>
-                {/* <Divider className='divider' textAlign="left">PERSONAL DETAILS</Divider> */}
                 <div className='user-managment-component'>
                     <TextField className="textfield" label="First Name*" size={"small"}  {...register('first_name')} error={!!errors.first_name} helperText={errors.first_name && errors.first_name.message} />
                     <TextField className="textfield" label="Last Name*" size={"small"} {...register('last_name')} error={!!errors.last_name} helperText={errors.last_name && errors.last_name.message} />
