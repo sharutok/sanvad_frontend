@@ -106,12 +106,9 @@ export default function ConferenceBookingListView() {
     })
 
     function getAllDisabledTime(selected_time) {
-        console.log(selected_time);
-
         const parsed_end_date_coll = end_date_coll.map(x => {
             return value.indexOf(x)
         })
-        console.log(parsed_end_date_coll);
 
         const index_of_selected_time = (value.indexOf(selected_time));
         let result = null;
