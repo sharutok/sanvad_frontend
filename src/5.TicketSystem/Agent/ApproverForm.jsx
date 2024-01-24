@@ -281,7 +281,7 @@ function VerticalLinearStepper({ response }) {
                         <StepContent>
                             <Typography>{step.comments}</Typography>
                             <div className='flex justify-end'>
-                                <span className='font-[500] uppercase'>{moment(step.time).format("DD-MM-YYYY, hh:mm a")}</span>
+                                <span className='font-[500] uppercase'>{moment(step.time).format("DD-MM-YYYY")}</span>
                             </div>
                         </StepContent>
                     </Step >
