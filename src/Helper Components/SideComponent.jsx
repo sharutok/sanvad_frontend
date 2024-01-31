@@ -3,7 +3,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 
+
+
 export default function BackArrow({ title, location }) {
+
     return (
         <div className='flex gap-2'>
             <Link to={location || "/home"}>

@@ -11,8 +11,16 @@ import WeatherAndTemp from './Components/m.WeatherAndTemp'
 import IMAGES from '../assets/Image/Image'
 import { flash_link } from '../Static/StaticValues';
 import Frame from './Components/e.YammerFrame';
+import { useAtom } from 'jotai'
+import { atomWithStorage, RESET } from 'jotai/utils'
+import { searchAtom } from '../Helper Components/CustomCookies';
 
 export default function HomePage() {
+    const [searchVariable, setSearchVariable] = useAtom(searchAtom)
+
+    useEffect(() => {
+        setSearchVariable(RESET)
+    })
     return (
         <div className='bg-[#f0f0f0]  p-0 m-0 '>
             <div className='grid mr-5 '>

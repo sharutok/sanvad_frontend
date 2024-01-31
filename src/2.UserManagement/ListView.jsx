@@ -10,18 +10,21 @@ import LoadingSpinner from '../Helper Components/LoadingSpinner'
 import { AiOutlineUserAdd } from 'react-icons/ai'
 import CPagination from '../Helper Components/Pagination'
 import { AppContext } from '../App'
-import { Link } from 'react-router-dom'
+import { useAtom } from 'jotai'
+import { searchAtom } from '../Helper Components/CustomCookies'
 
 export default function UserManagementListView() {
     const { count, setCount, page, setPage } = useContext(AppContext)
-    const [_search, _setSearch] = useState("")
+
+    const [searchVariable, setSearchVariable] = useAtom(searchAtom)
     const thead = ["Employee Code", "Function", "Location", "First Name", "Last Name", "Department", "Plant", "Organization", "User Status", "Date of joining"]
 
     async function get_user_data() {
-        return await axios.get(`${api.user_management.get_data}/?page=${page}&search=${_search}`)
+        // return await axios.get(`${api.user_management.get_data}/?page=${page}&search=${_search || getCookies()[3]}`)
+        return await axios.get(`${api.user_management.get_data}/?page=${page}&search=${searchVariable}`)
     }
 
-    const { isLoading, error, data } = useQuery(['user-data-list', page, _search], async () => {
+    const { isLoading, error, data } = useQuery(['user-data-list', page, searchVariable], async () => {
         return await get_user_data()
     })
 
@@ -31,7 +34,8 @@ export default function UserManagementListView() {
     })
 
     function handleNav(g) {
-        window.location.href = `/user/management/indvi/${g.id}`
+        // window.location.href = `/user/management/indvi/${g.id}`
+        window.open(`/user/management/indvi/${g.id}`, '_blank')
     }
 
     return (
@@ -39,7 +43,7 @@ export default function UserManagementListView() {
             <div className='flex justify-between mt-20'>
                 <BackArrow location={"/home"} title={"User Management - Listing"} />
                 <div className='flex gap-4 mt-3 mr-10'>
-                    <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
+                    <TextField value={searchVariable} onChange={(e) => { setSearchVariable(e.target.value) }} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                     <ButtonComponent onClick={() => { window.location.href = "/user/management/new" }} icon={<AiOutlineUserAdd color='white' size={"23"} />} btnName={"Add User"} />
                 </div>
             </div>

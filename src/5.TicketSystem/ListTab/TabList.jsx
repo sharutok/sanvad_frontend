@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { IoIosPaper } from 'react-icons/io'
 import { FiSearch } from 'react-icons/fi'
 import { MdClear, MdDeleteOutline } from 'react-icons/md'
+import { AiOutlineDownload } from 'react-icons/ai'
 import { Fab, IconButton, TextField, Tooltip } from '@mui/material'
 import PropTypes from 'prop-types';
+import axios from 'axios'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -11,7 +13,9 @@ import Box from '@mui/material/Box';
 import AllTicketsView from './AllTicketsView';
 import TicketSystemListView from './ListView';
 import BackArrow from '../../Helper Components/SideComponent';
-import { isPermissionToView } from '../../Static/StaticValues';
+import { exportToCSV, isPermissionToView } from '../../Static/StaticValues';
+import { api } from '../../Helper Components/Api';
+import moment from 'moment';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -43,6 +47,15 @@ function a11yProps(index) {
         id: `simple-tab-${index}`,
         'aria-controls': `simple-tabpanel-${index}`,
     };
+}
+
+async function exportData() {
+    try {
+        const data = await axios.post(api.utils.download_excel, { "data_module": "ticket" })
+        exportToCSV(data?.data?.data, `Ticket Export ${moment().format("DD_MM_YYYY")}`)
+    } catch (error) {
+        console.log("error in exporting", error);
+    }
 }
 
 export default function TabList() {

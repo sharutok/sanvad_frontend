@@ -11,7 +11,6 @@ import CForm from './6.Capex/Requester/Form';
 import Page from './0.LoginPage/Page';
 import UserManagementListView from './2.UserManagement/ListView';
 import ConferenceBookingListView from './3.ConferenceBooking/BookNewConf/ListView';
-import TicketSystemListView from './5.TicketSystem/ListTab/ListView';
 import VisitManagementListView from './4.VIsitorManagement/ListView';
 import HeaderMegaMenu from './1.HomePage/Components/b.Header';
 import TicketSys from './7.ModuleConfig/TicketSys';

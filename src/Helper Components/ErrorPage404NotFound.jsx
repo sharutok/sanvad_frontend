@@ -19,13 +19,13 @@ export function NotFoundTitle() {
                 <span className="text-center text-[3rem] font-semibold font-sans text-[#585858]">You have found a secret place.</span>
                 <span className="text-center font-sans">
                     Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has
-                    been moved to another URL.
+                    been moved to another URL, or session is expired.
                 </span>
                 <div >
                     <Button style={{
                         backgroundColor: "#acacac",
                     }} variant="contained" onClick={() => take_me_back_to_home_page()}>
-                        Take me back to login page
+                        Click Me, Take me back to login page
                     </Button>
                 </div>
             </div>

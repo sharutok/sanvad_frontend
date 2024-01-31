@@ -44,7 +44,8 @@ export default function TicketSystemListView({ _search }) {
     }
 
     function handleNav(g) {
-        window.location.href = `/ticket/sys/${g.id}`
+        // window.location.href = `/ticket/sys/${g.id}`
+        window.open(`/ticket/sys/${g.id}`, '_blank')
     }
 
     async function exportData() {

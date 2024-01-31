@@ -48,7 +48,8 @@ export default function VisitManagementListView() {
     })
 
     function handleNav(g) {
-        window.location.href = "/vistors/management/" + g.id
+        // window.location.href = "/vistors/management/" + g.id
+        window.open("/vistors/management/" + g.id, '_blank')
     }
 
     async function handleDelete(id) {
