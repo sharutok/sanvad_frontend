@@ -13,13 +13,17 @@ import { flash_link } from '../Static/StaticValues';
 import Frame from './Components/e.YammerFrame';
 import { useAtom } from 'jotai'
 import { atomWithStorage, RESET } from 'jotai/utils'
-import { searchAtom } from '../Helper Components/CustomCookies';
+import { searchAtom, CapexTab, TicketTab } from '../Helper Components/CustomCookies';
 
 export default function HomePage() {
     const [searchVariable, setSearchVariable] = useAtom(searchAtom)
+    const [capexTabIndex, setCapexTabIndex] = useAtom(CapexTab)
+    const [TicketTabIndex, setTicketTabIndex] = useAtom(TicketTab)
 
     useEffect(() => {
         setSearchVariable(RESET)
+        setCapexTabIndex(RESET)
+        setTicketTabIndex(RESET)
     })
     return (
         <div className='bg-[#f0f0f0]  p-0 m-0 '>

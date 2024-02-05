@@ -18,7 +18,6 @@ export default function SideBar() {
                             </IconButton>
                         </Tooltip>
                     </div>
-
                 </div>
                 <div>
                     <NavbarLinksGroup />

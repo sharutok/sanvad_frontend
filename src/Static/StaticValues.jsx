@@ -154,3 +154,19 @@ export const forceDownload = (response, file) => {
 export const isPermissionToView = (component) => {
     return getCookies()[1].includes(component)
 }
+
+
+
+
+export function abbriviation(data, limit) {
+    return (
+        <>
+            {data.length >= limit ?
+                <abbr title={data}>{data.substring(0, limit)} .....</abbr> :
+                <>
+                    {data}
+                </>
+            }
+        </>
+    )
+}

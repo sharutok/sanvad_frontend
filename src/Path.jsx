@@ -32,7 +32,7 @@ export default function Path() {
                 <Routes>
                     <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route path='/login' element={<Page />} />
-                    <Route path='*' element={<ErrorPage404NotFound />} />
+                    <Route path='*' element={<Page />} />
                 </Routes>
             </Router>
         </>
@@ -77,7 +77,7 @@ export default function Path() {
 
                         <Route path='/policies' element={<Policies />} />
 
-                        <Route path='*' element={<ErrorPage404NotFound />} />
+                        <Route path='*' element={<Page />} />
                     </Routes>
                 </Router>
             </div>

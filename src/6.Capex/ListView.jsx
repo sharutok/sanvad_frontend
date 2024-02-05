@@ -20,13 +20,14 @@ import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack'
 import { exportToCSV, isPermissionToView } from '../Static/StaticValues';
 import { AiOutlineDownload } from 'react-icons/ai';
 import moment from 'moment';
-import EditBudget from './EditBudget';
-import { getCookies } from '../Helper Components/CustomCookies';
-
+import { CapexTab } from '../Helper Components/CustomCookies'
+import { useAtom } from 'jotai'
 
 
 export default function ListView() {
     const { dialogStatus, setDialogStatus } = useContext(AppContext)
+
+
     const [_search, _setSearch] = useState("")
     const inputFile = useRef(null)
 
@@ -59,31 +60,34 @@ export default function ListView() {
 
 
 function BasicTabs({ _search, _setSearch }) {
-    const [value, setValue] = React.useState(0);
+    // const [value, setValue] = React.useState(0);
     const { count, setCount, page, setPage, setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
+    const [capexTabIndex, setCapexTabIndex] = useAtom(CapexTab)
 
     const handleChange = (event, newValue) => {
+        setCapexTabIndex(newValue)
         setCount(1)
         setPage(1)
-        setValue(newValue);
+        // setValue(newValue);
+
     };
 
     return (
         <Box sx={{ width: '100%' }}>
             {/* <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}> */}
             <Box sx={{ px: 3 }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
+                <Tabs value={capexTabIndex} onChange={handleChange} aria-label="basic tabs example" >
                     {isPermissionToView("capex:list:budget") && <Tab label="Budget List" {...a11yProps(0)} />}
                     {isPermissionToView("capex:list:capex") && <Tab label="Capex List" {...a11yProps(1)} />}
                 </Tabs>
             </Box>
             {
-                isPermissionToView("capex:list:budget") && <CustomTabPanel value={value} index={0}>
+                isPermissionToView("capex:list:budget") && <CustomTabPanel value={capexTabIndex} index={0}>
                     <BudgetListVIew _search={_search} _setSearch={_setSearch} />
                 </CustomTabPanel>
             }
             {
-                isPermissionToView("capex:list:capex") && <CustomTabPanel value={value} index={1}>
+                isPermissionToView("capex:list:capex") && <CustomTabPanel value={capexTabIndex} index={1}>
                     <CapexListView _search={_search} _setSearch={_setSearch} />
                 </CustomTabPanel>
             }

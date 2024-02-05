@@ -8,6 +8,8 @@ import { atomWithStorage, RESET } from 'jotai/utils'
 const cookies = new Cookies()
 export const searchAtom = atomWithStorage('searchVariable', null)
 export const paginationAtom = atomWithStorage('_pagination', '')
+export const TicketTab = atomWithStorage('ticket_tab', 0)
+export const CapexTab = atomWithStorage('capex_tab', 1)
 
 
 let cookieName = ["emp_code", "user_role", "initials", "_search", '_page']
@@ -15,7 +17,7 @@ let cookieName = ["emp_code", "user_role", "initials", "_search", '_page']
 export const setCookies = (cookieValues) => {
     cookieName.map((x, i) => {
         cookies.set(x, cookieValues[i], {
-            path: "/", expires: new Date(Date.now() + 3600000)
+            path: "/", expires: new Date(Date.now() + 28800000)
         },)
     })
 }

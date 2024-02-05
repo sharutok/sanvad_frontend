@@ -40,9 +40,9 @@ function SideLinkTag() {
 
     return (
         <div className='h-max grid grid-cols-1 gap-3 px-5'>
-            {links.map(x => {
+            {links.map((x, i) => {
                 return (
-                    <div>
+                    <div key={i}>
                         {isPermissionToView(x.index) && <div>
                             {!x.links ? <div onClick={() => handleNavigation(x.mainlink)} className='w-100 '>
                                 <div className=' hover:bg-[#f7f7f7] cursor-pointer rounded-lg flex gap-3'>
