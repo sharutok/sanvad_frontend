@@ -50,7 +50,7 @@ export default function UserManagementListView() {
             {!isLoading ?
                 <div className='mt-10 px-10'>
                     <Table thead={thead} tbody={
-                        data?.data.results.map((g, i) => {
+                        data?.data?.results?.map((g, i) => {
                             return (
                                 <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                     <tr className='p-10 mt-1 table-wrapper' >

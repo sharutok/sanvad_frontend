@@ -15,7 +15,7 @@ import { AppContext } from '../App'
 import TipTool from '../Helper Components/TipTool'
 import moment from 'moment'
 import BarSnack from '../Helper Components/BarSnack'
-import { exportToCSV, isPermissionToView } from '../Static/StaticValues'
+import { abbriviation, exportToCSV, isPermissionToView } from '../Static/StaticValues'
 import { getCookies } from '../Helper Components/CustomCookies'
 import LoadingSpinner from '../Helper Components/LoadingSpinner'
 
@@ -92,14 +92,14 @@ export default function VisitManagementListView() {
                                     <td onClick={() => handleNav(g)} >{g.name}</td>
                                     <td onClick={() => handleNav(g)} >{g.department}</td>
                                     <td>{JSON.parse(g.visitors) && JSON.parse(g.visitors)[0]?.["v_name"]}</td>
-                                    <td onClick={() => handleNav(g)} >{g.v_company}</td>
+                                    <td onClick={() => handleNav(g)} >{abbriviation(g.v_company, 25)}</td>
                                     <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
                                         {moment(g.start_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual In Time", g.punch_in_date_time)}
                                     </div></td>
                                     <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
                                         {moment(g.end_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual Out Time", g.punch_out_date_time)}
                                     </div></td>
-                                    <td onClick={() => handleNav(g)} >{g.reason_for_visit}</td>
+                                    <td onClick={() => handleNav(g)} >{abbriviation(g.reason_for_visit, 25)}</td>
                                     <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors).length}</td>
                                     <td onClick={() => handleNav(g)} >{VisitorStatus(g.visitor_status)}</td>
                                     {!list_access_permission?.data?.data.delete_btn &&

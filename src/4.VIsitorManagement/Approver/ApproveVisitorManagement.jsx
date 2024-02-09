@@ -127,10 +127,9 @@ export default function ApproveVisitorManagement() {
             })
 
             const jsonDataSchema = yup.object({
-                v_name: yup.string().required("Visitor's Name is Required").matches(/^[A-Za-z\s]+$/, "Visitor's Name should be Only alphabets").max(20),
+                v_name: yup.string().required("Visitor's Name is Required").matches(/^[A-Za-z\s]+$/, "Visitor's Name should be Only alphabets").max(30),
                 v_mobile_no: yup.string().required("Visitor's Mobile No is Required").matches(/^[0-9]+$/, 'Mobile No must be numbers only').test('len', "Visitor's Mobile No must be exactly 10 characters", val => val && val.length === 10),
                 v_desig: yup.string().required("Visitor's designation is Required"),
-                // v_asset: yup.string().required("All Fields Required"),
 
             });
 
@@ -262,7 +261,6 @@ export default function ApproveVisitorManagement() {
                                         <CustomTextField errors={errors} register={register} watch={watch} name="v_asset" label="Visitor's Assets" />
                                         <ButtonComponent onClick={() => handleAddVisitor()} btnName={"Add Visitor"} icon={<AiOutlineUserAdd color='white' size={"23"} />} />
                                         <ButtonComponent onClick={clearAll} icon={<MdRefresh color='white' size={"23"} />} btnName={"Clear All"} />
-
                                     </div>
                                 </div>
                             </div>
