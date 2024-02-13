@@ -15,7 +15,7 @@ import { abbriviation } from '../Static/StaticValues'
 
 export default function CapexListView({ _search, _setSearch }) {
     const thead = [
-        'SL No',
+        'Capex No',
         "Purpose code",
         "Nature of requirement",
         "Total Cost (₹ in Lakhs)",
@@ -54,7 +54,7 @@ export default function CapexListView({ _search, _setSearch }) {
                 data?.data?.results?.map(i => {
                     return (
                         <tr className='table-wrapper' key={i}>
-                            <td>{(i.capex_no)}</td>
+                            <td>{abbriviation(i.capex_no, 10)}</td>
                             <td>{i.purpose_code}</td>
                             <td>{abbriviation(i.nature_of_requirement, 50)}</td>
                             <td>{i.total_cost}</td>

@@ -1,4 +1,4 @@
-#element {
+.element {
   -webkit-animation: 1s ease 0s normal forwards 1 fadein;
   animation: 1s ease 0s normal forwards 1 fadein;
 }

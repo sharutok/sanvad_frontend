@@ -1,18 +1,18 @@
-.center-align{
-    width: 50px;
-        height: 50px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -25px 0 0 -25px;      
-    }
-.animation{
-    animation: mymove 1.5s infinite;
+.center-align {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+}
 
+.animation {
+  animation: mymove 1.5s infinite;
 }
 
 @keyframes mymove {
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }

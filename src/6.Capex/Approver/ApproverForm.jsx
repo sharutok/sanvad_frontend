@@ -67,7 +67,8 @@ export default function Form() {
     })
     const onSubmit = async (submit) => {
         const data = {
-            budget_id, capex_id,
+            budget_id,
+            capex_id,
             approver_status: getValues('capex_status'),
             approver_comment: getValues('comments'),
             user_no: getCookies()[0]
@@ -87,6 +88,8 @@ export default function Form() {
     function invalidateData() {
         queryClient.invalidateQueries(['capex-data'])
     }
+
+
 
 
     const downloadWithAxios = async (url, file_name) => {
