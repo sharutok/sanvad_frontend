@@ -22,7 +22,6 @@ import { AiOutlineDownload } from 'react-icons/ai';
 import moment from 'moment';
 import { CapexTab } from '../Helper Components/CustomCookies'
 import { useAtom } from 'jotai'
-import RespectiveDepartmentCapex from './RespectiveDepartmentCapex';
 
 
 export default function ListView() {
