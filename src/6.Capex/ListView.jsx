@@ -22,6 +22,7 @@ import { AiOutlineDownload } from 'react-icons/ai';
 import moment from 'moment';
 import { CapexTab } from '../Helper Components/CustomCookies'
 import { useAtom } from 'jotai'
+import RespectiveDepartmentCapex from './RespectiveDepartmentCapex';
 
 
 export default function ListView() {
@@ -79,6 +80,9 @@ function BasicTabs({ _search, _setSearch }) {
                 <Tabs value={capexTabIndex} onChange={handleChange} aria-label="basic tabs example" >
                     {isPermissionToView("capex:list:budget") && <Tab label="Budget List" {...a11yProps(0)} />}
                     {isPermissionToView("capex:list:capex") && <Tab label="Capex List" {...a11yProps(1)} />}
+                    {isPermissionToView('capex:list:department:view') && <Tab label="Your Department's Capex List" {...a11yProps(2)} />}
+                    {isPermissionToView('capex:list:all:view') && <Tab label="All Capex List" {...a11yProps(3)} />}
+
                 </Tabs>
             </Box>
             {
@@ -88,7 +92,17 @@ function BasicTabs({ _search, _setSearch }) {
             }
             {
                 isPermissionToView("capex:list:capex") && <CustomTabPanel value={capexTabIndex} index={1}>
-                    <CapexListView _search={_search} _setSearch={_setSearch} />
+                    <CapexListView _search={_search} _setSearch={_setSearch} view={"approve_capex_view"} />
+                </CustomTabPanel>
+            }
+            {isPermissionToView('capex:list:department:view') &&
+                <CustomTabPanel value={capexTabIndex} index={2}>
+                    <CapexListView _search={_search} _setSearch={_setSearch} view={"dept_capex_view"} />
+                </CustomTabPanel>
+            }
+            {isPermissionToView('capex:list:all:view') &&
+                <CustomTabPanel value={capexTabIndex} index={3}>
+                    <CapexListView _search={_search} _setSearch={_setSearch} view={"admin_capex_view"} />
                 </CustomTabPanel>
             }
         </Box >

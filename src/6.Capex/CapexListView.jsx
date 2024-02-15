@@ -13,7 +13,7 @@ import { getCookies } from '../Helper Components/CustomCookies'
 import BarSnack from '../Helper Components/BarSnack'
 import { abbriviation } from '../Static/StaticValues'
 
-export default function CapexListView({ _search, _setSearch }) {
+export default function CapexListView({ _search, view }) {
     const thead = [
         'Capex No',
         "Purpose code",
@@ -28,8 +28,9 @@ export default function CapexListView({ _search, _setSearch }) {
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const queryClient = useQueryClient()
     const { isLoading, error, data } = useQuery(['capex-data', page, _search], async () => {
-        return await axios.get(`${api.capex.get_capex_data}/?page=${page}&search=${_search}&woosee=${getCookies()[0]}`)
-    }, { staleTime: 3000 })
+        console.log(view);
+        return await axios.get(`${api.capex.get_capex_data}/?page=${page}&search=${_search}&woosee=${getCookies()[0]}&view=${view}`)
+    })
 
     useEffect(() => {
         setCount(Math.ceil(data?.data?.count / 10))

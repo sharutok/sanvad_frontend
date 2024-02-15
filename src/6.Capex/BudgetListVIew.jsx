@@ -14,11 +14,11 @@ import EditBudget from './EditBudget';
 import { Box, Drawer, Tooltip } from '@mui/material';
 import { IoMdArrowBack } from 'react-icons/io';
 import IMAGES from '../assets/Image/Image';
-import { isPermissionToView } from '../Static/StaticValues';
+import { abbriviation, isPermissionToView } from '../Static/StaticValues';
 import { getCookies } from '../Helper Components/CustomCookies';
 
 export default function BudgetListVIew({ _search, _setSearch }) {
-    const thead = ["Budget No", "Purpose code", "Line No", "Purpose", "Department", "Capex Group", "Category", "No. Of Capex ", "Budget (Consumed v/s Remaining)", "Final Budget", "Budget Status"]
+    const thead = ["Budget No", "Purpose code", "Line No", "Purpose", "Department", "Capex Group", "Purpose Description", "Category", "No. Of Capex ", "Budget (Consumed v/s Remaining)", "Final Budget", "Budget Status"]
     const [budgetData, setBudgetData] = useState({})
     const { count, setCount, page, setDrawerStatus, drawerStatus, setSnackBarPopUp } = useContext(AppContext)
     const { isLoading, error, data } = useQuery(['budget-data', page, _search], async () => {
@@ -63,11 +63,10 @@ export default function BudgetListVIew({ _search, _setSearch }) {
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.budget_no}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.purpose_code}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.line_no}</td>
-                                    <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.purpose_description}</td>
+                                    <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{abbriviation(c.purpose_description, 20)}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.dept}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.capex_group}</td>
-                                    {/* <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.capex_class}</td> */}
-                                    <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.asset_description}</td>
+                                    <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{abbriviation(c.asset_description, 20)}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.category}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)} >{c.no_of_capex}</td>
                                     <td onClick={() => isPermissionToView("capex:update") && handleSideDrawer(c)}  >{<CProgressBar no_of_capex={c.no_of_capex} consumed={c.consumed} final_budget={c.final_budget} budget_remaining={c.budget_remaining} />}</td>

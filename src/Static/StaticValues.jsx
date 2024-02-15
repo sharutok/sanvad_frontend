@@ -40,7 +40,6 @@ export const user_permission = [
     "capex:list:budget",
     "capex:list:capex",
     "capex:delete",
-    "capex:admin",
     "capex:approver",
     "capex:uploadexcel",
 
