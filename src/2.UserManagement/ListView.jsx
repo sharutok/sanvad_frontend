@@ -34,8 +34,8 @@ export default function UserManagementListView() {
     })
 
     function handleNav(g) {
-        // window.location.href = `/user/management/indvi/${g.id}`
-        window.open(`/user/management/indvi/${g.id}`, '_blank')
+        window.location.href = `/user/management/indvi/${g.id}`
+        // window.open(`/user/management/indvi/${g.id}`, '_blank')
     }
 
     return (
