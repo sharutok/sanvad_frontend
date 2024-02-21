@@ -220,6 +220,7 @@ const MoreInformation = ({ details }) => {
                         <div className='flex flex-wrap gap-5 p-5 '>
                             <CustomValueTextField className="w-[20rem]" label={"Requisition Date"} value={c.requisition_date} />
                             <CustomValueTextField className="w-[20rem]" label={"Payback Period"} value={c.payback_period} />
+                            <CustomValueTextField className="w-[20rem]" label={"Capex For Which Department"} value={c.capex_for_which_department} />
                             <CustomValueTextField className="w-[20rem]" label={"Return On Investment"} value={c.return_on_investment} />
                             <CustomValueTextField className="w-[20rem]" label={"Site Delivery Date*"} value={c.site_delivery_date} />
                             <CustomValueTextField className="w-[20rem]" label={"Installation Date*"} value={c.installation_date} />

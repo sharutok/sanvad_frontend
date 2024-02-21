@@ -13,7 +13,7 @@ import { getCookies } from '../Helper Components/CustomCookies';
 export const static_val = {
     prefix_email_id: [
         "@adorians.com",
-        "@adorfontech.com",
+        "@adorfon.com",
         "@flashorthodontics.in",
     ]
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import '../../Style/LoginPage.css'
 
 import IMAGES from '../assets/Image/Image';
@@ -8,27 +8,31 @@ import moment from 'moment';
 import { static_val } from '../Static/StaticValues';
 import axios from 'axios';
 import { api } from '../Helper Components/Api';
-import { setCookies } from '../Helper Components/CustomCookies';
+import { getCookies, setCookies } from '../Helper Components/CustomCookies';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import RememberMe from '../Helper Components/RememberMe';
 
 
 const data = static_val.prefix_email_id
 
 export default function Page() {
-    const [imageLoaded, setImageLoaded] = useState(false);
-    const handleImageLoad = () => {
-        setImageLoaded(true);
-    };
+
+    // useEffect(() => {
+    //     const remember_me = getCookies()[3]
+    //     // await axios.get()
+    //     console.log(remember_me);
+    //     remember_me && (window.location.href = "/home")
+    // }, [])
 
     return (
         <div>
             <div >
                 <div id="element" className='flex justify-center mt-[5rem] relative p-5'>
                     <div className='w-[85rem] hidden  sm:block md:block lg:block xl:block 2xl:block'>
-                        {!imageLoaded && <img loading='lazy' className='rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]' src={IMAGES.login_img} />}
+                        {<img loading='lazy' className='rounded-3xl shadow-[rgba(149,157,165,0.2)_0px_8px_24px]' src={IMAGES.login_img} />}
                     </div>
                     <div className='absolute sm:right-[.2rem] sm:top-[-3rem] md:right-[1rem] md:top-[-1rem] lg:right-[5rem] lg:top-[1rem] xl:right-[5rem] 2xl:right-[20rem]'>
                         <LoginBody />
@@ -46,20 +50,24 @@ export default function Page() {
 
 function LoginBody() {
     const [prefix, setPrefix] = useState(static_val.prefix_email_id[0])
-    const { btnSaving, setBtnSaving, userLogin, setUserLogin } = useContext(AppContext)
+    const { btnSaving, rememberCheck, userLogin, setUserLogin } = useContext(AppContext)
     const [error, setError] = useState("")
+
+
 
 
     async function onSubmit(e) {
         e.preventDefault()
         try {
+
             userLogin["prefix"] = prefix
-            const response = await axios.post(api.user.log_check, userLogin)
+            const response = await axios.post(api.user.log_check, { ...userLogin, remember_me: rememberCheck })
             if (response?.data?.status === 200) {
                 const emp_no = response?.data?.emp_no
                 const module_permission = response?.data?.module_permission
                 const initials = response?.data?.initials
-                setCookies([emp_no, module_permission, initials])
+                const remember_me = response?.data?.remember_me
+                setCookies([emp_no, module_permission, initials, remember_me])
                 setError("")
                 window.location.href = "/home"
             } else {
@@ -111,11 +119,11 @@ function LoginBody() {
                             <Typography className='text-[#212529]'>Password</Typography>
                             <TextField helperText={error} error={error && true} className='w-[25rem] ' size='small' placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
                         </div>
+                        {/* <RememberMe /> */}
                         <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
                             Forgot password? Contact ADORHUB Admin
                         </span>
                     </div>
-
                     <div className='mt-5' >
                         <LoadingButton
                             fullWidth

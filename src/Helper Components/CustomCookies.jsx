@@ -12,13 +12,11 @@ export const TicketTab = atomWithStorage('ticket_tab', 0)
 export const CapexTab = atomWithStorage('capex_tab', 1)
 
 
-let cookieName = ["emp_code", "user_role", "initials", "_search", '_page']
+let cookieName = ["emp_code", "user_role", "initials", 'remember_me']
 
 export const setCookies = (cookieValues) => {
     cookieName.map((x, i) => {
-        cookies.set(x, cookieValues[i], {
-            path: "/", expires: new Date(Date.now() + 28800000)
-        },)
+        x !== 'remember_me' ? cookies.set(x, cookieValues[i], { path: "/", expires: new Date(Date.now() + 28800000) }) : cookies.set(x, cookieValues[i], { path: "/", expires: new Date(Date.now() + 28800000 * 7) })
     })
 }
 

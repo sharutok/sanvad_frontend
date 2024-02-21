@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { api } from '../Helper Components/Api';
 import axios from 'axios'
-import LoadingSpinner from '../Helper Components/LoadingSpinner';
+import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
 // import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState, useRef } from 'react'
@@ -9,23 +9,13 @@ import { CloudUpload } from 'tabler-icons-react';
 import {
     styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, InputAdornment, IconButton
 } from '@mui/material'
-
 import { useForm, Controller, get } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import '../../Style/UserManagement.css'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Switch from '@mui/material/Switch';
 import { AppContext } from '../App'
-import BackArrow from '../Helper Components/SideComponent'
 import { CapexErrorSchema } from '../Form Error Schema/CapexErrorSchema'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import PreFilledSubForm from './PreFilledSubForm';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import Table from '../Helper Components/Table';
 import {
     TbMoneybag
@@ -57,6 +47,7 @@ export default function EditBudget({ invalidateData, capexDetail }) {
             nature_of_requirement: "",
             purpose: "",
             payback_period: "",
+            capex_for_which_department: "",
             return_on_investment: "",
             budget_type: "",
             requisition_date: "",
@@ -143,6 +134,10 @@ export default function EditBudget({ invalidateData, capexDetail }) {
         setTKTFiles(files);
     };
 
+    const _plant_dept = useQuery(['plant_dept'], async () => {
+        const data = axios.get(api.utils.dept_plant)
+        return data
+    })
 
     return (
         <div className='mt-5'>
@@ -150,7 +145,7 @@ export default function EditBudget({ invalidateData, capexDetail }) {
                 <form className='flex flex-wrap gap-5 p-4' onSubmit={handleSubmit(onSubmit)}>
                     <CustomTextField label={"Nature Of Requirement"} name={"nature_of_requirement"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Purpose"} name={"purpose"} errors={errors} register={register} watch={watch} />
-                    {/* <CustomDate label={"Requisition Date*"} name={"requisition_date"} errors={errors} control={control} watch={watch} register={register} /> */}
+                    <CustomAutoComplete control={control} errors={errors} label={"Capex For Which Department"} name={"capex_for_which_department"} options={_plant_dept?.data?.data?.plant_data || []} />
                     <CustomAutoComplete control={control} errors={errors} label={"Payback Period"} name={"payback_period"} options={payback_period_return_of_investment} />
                     <CustomAutoComplete control={control} errors={errors} label={"Return On Investment"} name={"return_on_investment"} options={payback_period_return_of_investment} />
                     <CustomAutoComplete control={control} errors={errors} label={"Budget Type"} name={"budget_type"} options={budgeted_type} />

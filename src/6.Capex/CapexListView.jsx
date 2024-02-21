@@ -26,9 +26,9 @@ export default function CapexListView({ _search, view }) {
         "Capex Raised Date",
         "Capex Status"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
+    console.log(view);
     const queryClient = useQueryClient()
     const { isLoading, error, data } = useQuery(['capex-data', page, _search], async () => {
-        console.log(view);
         return await axios.get(`${api.capex.get_capex_data}/?page=${page}&search=${_search}&woosee=${getCookies()[0]}&view=${view}`)
     })
 
@@ -70,11 +70,6 @@ export default function CapexListView({ _search, view }) {
                                     <TipTool title={"View Capex"} body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200 w-fit'><MdOutlineOpenInNew color='#f08080' size={22} /></div>} />
                                 </Link>
                             </td>
-                            {/* <td onClick={() => handleDelete(i.capex_id)} className='delete'>
-                                <TipTool body={<div className='hover:bg-[#f5f5f5] p-2 rounded-2xl active:bg-gray-200 w-fit'>
-                                    <MdDeleteOutline color='#f08080' size={22} />
-                                </div>} title={"Delete"} />
-                            </td> */}
                         </tr>
                     )
                 })

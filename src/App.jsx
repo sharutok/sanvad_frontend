@@ -50,6 +50,8 @@ function App() {
     module_permission: []
   })
 
+
+
   const [budget, setBudget] = useState([])
 
   const [userLogin, setUserLogin] = useState({
@@ -91,10 +93,13 @@ function App() {
   const [collapse, setCollapse] = useState(true)
   const [open, setOpen] = useState(false)
 
-
+  const [rememberCheck, setRememberCheck] = useState(false)
+  const [capexTypeList, setCapexTypeList] = useState("");
   const contextValue = {
-    momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, budget, setBudget, userLogin, setUserLogin, dialogStatus, setDialogStatus, confTemp, setConfTemp
-    , disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets, setAssets, collapse, setCollapse, open, setOpen, drawerStatus, setDrawerStatus, visitorPass, setVisitorPass
+    momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, budget, setBudget, userLogin, setUserLogin,
+    dialogStatus, setDialogStatus, confTemp, setConfTemp, capexTypeList, setCapexTypeList,
+    disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets,
+    setAssets, collapse, setCollapse, open, setOpen, drawerStatus, setDrawerStatus, visitorPass, setVisitorPass, rememberCheck, setRememberCheck
   }
 
 

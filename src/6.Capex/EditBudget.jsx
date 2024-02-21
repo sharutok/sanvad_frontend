@@ -52,10 +52,12 @@ export default function EditBudget({ data, invalidateData }) {
             console.log(error);
         }
     }
+
     const _plant_dept = useQuery(['plant_dept'], async () => {
         const data = axios.get(api.utils.dept_plant)
         return data
     })
+
     useEffect(() => {
         Object.entries(data).map(x => {
             setValue(x[0], x[1])

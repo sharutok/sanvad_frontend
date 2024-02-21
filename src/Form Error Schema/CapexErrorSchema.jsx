@@ -4,6 +4,7 @@ export const CapexErrorSchema = yup.object().shape({
     purpose: yup.string().required('Required Field'),
     payback_period: yup.string().required('Required Field'),
     return_on_investment: yup.string().required('Required Field'),
+    capex_for_which_department: yup.string().required('Required Field'),
     budget_type: yup.string().required('Required Field'),
     requisition_date: yup.string().required('Required Field'),
     total_cost: yup.number().typeError('Please enter a valid number').required('Required Field'),
