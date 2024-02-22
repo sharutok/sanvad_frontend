@@ -82,7 +82,6 @@ export default function UpdateUserForm() {
   })
 
   const onSubmit = async (submitData) => {
-    console.log(getValues('start_date').$d);
     const value = {
       ...usermanagement,
       first_name: getValues('first_name'),
@@ -110,7 +109,6 @@ export default function UpdateUserForm() {
 
     try {
       const response = await axios.put(`${api.user_management.get_data_id}/${id}/`, value)
-      console.log(value);
       if (response.data.status_code === 200) {
         setBtnSaving(true)
         setSnackBarPopUp({ state: true, message: "User Updated", severity: "s" })
@@ -135,8 +133,6 @@ export default function UpdateUserForm() {
     return data
   })
 
-
-
   const manager_list = useQuery(['manager_list'], async () => {
     const data = await axios.get(`${api.user.manager_list}/?department=${getValues('department')}`)
     setManagerList([...data?.data.map(x => { return x.name })])
@@ -155,6 +151,10 @@ export default function UpdateUserForm() {
     <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
       <BackArrow title={"User Management - Update User"} location={'/user/management/list'} />
       <BarSnack />
+      <div className='flex justify-end gap-2 px-2'>
+        <b>Last Updated at:</b>
+        <b>{moment(getValues('updated_at')).format("DD/MM/YYYY hh:mm a")}</b>
+      </div>
       <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
         <div className='flex flex-wrap gap-7'>
           <CustomTextField label={"First Name*"} name={"first_name"} errors={errors} register={register} watch={watch} />

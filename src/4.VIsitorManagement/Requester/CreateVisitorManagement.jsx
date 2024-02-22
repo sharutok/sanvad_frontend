@@ -76,7 +76,7 @@ export default function CreateVisitorMangement() {
             })
 
             const jsonDataSchema = yup.object({
-                v_name: yup.string().required("Visitor's Name is Required").matches(/^[A-Za-z\s]+$/, "Visitor's Name should be Only alphabets").max(20),
+                v_name: yup.string().required("Visitor's Name is Required").matches(/^[A-Za-z. ]+$/, "Visitor's Name should contain only alphabets").max(20),
                 v_mobile_no: yup.string().required("Visitor's Mobile No is Required").matches(/^[0-9]+$/, 'Mobile No must be numbers only').test('len', "Visitor's Mobile No must be exactly 10 characters", val => val && val.length === 10),
                 v_desig: yup.string().required("Visitor's designation is Required"),
                 // v_asset: yup.string().required("All Fields Required"),

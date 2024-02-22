@@ -26,7 +26,6 @@ export default function CapexListView({ _search, view }) {
         "Capex Raised Date",
         "Capex Status"]
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
-    console.log(view);
     const queryClient = useQueryClient()
     const { isLoading, error, data } = useQuery(['capex-data', page, _search], async () => {
         return await axios.get(`${api.capex.get_capex_data}/?page=${page}&search=${_search}&woosee=${getCookies()[0]}&view=${view}`)

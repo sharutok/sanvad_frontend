@@ -67,26 +67,26 @@ function PrintBody() {
                     console.log(y['visitors']);
                     const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset ? h.v_asset.toUpperCase() : "" })
                     const assets = t_assets.join(', ') && []
-                    console.log(assets);
                     return (
                         <div key={i} className="border-[10px] border-solid border-[black] ">
-                            <div className="flex justify-between p-2">
+                            <div className="flex justify-between p-2 w-full">
                                 <div className='flex gap-2'>
-                                    <img src={IMAGES.ador_logo} alt="Ador" width={"80"} />
+                                    <img src={IMAGES.ador_logo} alt="Ador" width={"85"} />
                                 </div>
                                 <strong className="text-2xl">VISITOR PASS</strong>
-                                <div>
-                                    <div className="grid grid-cols-2 gap-2 ">
-                                        <span className="font-bold">Visitor ID</span>
-                                        <label>{(y.id).slice(-3)}</label>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-2 w-fit">
-                                        <span className="font-bold">Visitor Pass</span>
-                                        <label>{moment(y.created_at).format("DDMMYYYY")}</label>
-                                    </div>
-                                </div>
+                                <div></div>
                             </div>
                             <Divider />
+                            <div className="flex justify-start px-5">
+                                <div className="flex gap-2 ">
+                                    <span className="font-bold">Visitor Ref No:</span>
+                                    <b>{(y.id)}</b>
+                                </div>
+                                {/* <div className="flex gap-2">
+                                    <span className="font-bold">Visitor Pass</span>
+                                    <span>{moment(y.created_at).format("DDMMYYYY")}</span>
+                                </div> */}
+                            </div>
                             <div className="grid grid-cols-2 p-5 mt-5 justify-around">
                                 <div className="w-[25rem]">
                                     <div className="grid grid-cols-2 ">
@@ -117,7 +117,7 @@ function PrintBody() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="grid justify-around mb-5">
+                            <div className="grid justify-around mb-3">
                                 <div className="grid grid-cols-2 gap-20 w-100%">
                                     <div className="border border-solid border-[black] rounded-xl">
                                         <div className="grid grid-cols-2 w-100% ">

@@ -21,6 +21,7 @@ import LoadingSpinner from '../Helper Components/LoadingSpinner'
 
 export default function VisitManagementListView() {
     const thead = [
+        "Visitor Ref No",
         "Raised By",
         "Department",
         "Main Visitor's Name",
@@ -89,6 +90,8 @@ export default function VisitManagementListView() {
                         return (
                             <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                 <tr className='p-10 mt-1 table-wrapper' key={i}>
+
+                                    <td onClick={() => handleNav(g)} >{abbriviation(g.id, 10)}</td>
                                     <td onClick={() => handleNav(g)} >{g.name}</td>
                                     <td onClick={() => handleNav(g)} >{g.department}</td>
                                     <td>{JSON.parse(g.visitors) && JSON.parse(g.visitors)[0]?.["v_name"]}</td>

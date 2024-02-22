@@ -53,29 +53,28 @@ export default function Form() {
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
         defaultValues: {
-            nature_of_requirement: "",
-            purpose: "",
-            payback_period: "",
-            return_on_investment: "",
-            budget_type: "",
+            nature_of_requirement: "soup",
+            purpose: "soup",
+            payback_period: "soup",
+            return_on_investment: "soup",
             requisition_date: moment().format("YYYY-MM-DD"),
-            capex_for_which_department: "",
-            total_cost: "",
-            site_delivery_date: "",
-            installation_date: "",
-            comment1: "",
-            comment2: "",
-            comment3: "",
-            comment4: "",
-            comment5: "",
-            comment6: "",
-            comment7: "",
-            nature_of_assets: "",
-            asset_type: "",
-            requirement: "",
-            justification: "",
-            present_status: "",
-            specification: "",
+            capex_for_which_department: "soup",
+            total_cost: "1",
+            site_delivery_date: null,
+            installation_date: null,
+            comment1: "soup",
+            comment2: "soup",
+            comment3: "soup",
+            comment4: "soup",
+            comment5: "soup",
+            comment6: "soup",
+            comment7: "soup",
+            // nature_of_assets: "",
+            // asset_type: "",
+            // requirement: "",
+            // justification: "",
+            // present_status: "",
+            // specification: "",
         }
     })
 
@@ -91,6 +90,7 @@ export default function Form() {
                 installation_date: moment(submit.installation_date).format("YYYY-MM-DD"),
                 asset_listings: JSON.stringify(assets),
             });
+            console.log(JSON.stringify(data))
             tktFiles.forEach((file, index) => {
                 formData.append(`user_file`, file);
                 formData.append(`file${index + 1}`, file);
@@ -100,6 +100,7 @@ export default function Form() {
                 formData.append(x[0], x[1])
             })
             const res = await axios.post(api.capex.create_capex, formData)
+            console.log({ res });
             if (res.data.status === 200) {
                 setSnackBarPopUp({ state: true, message: "Capex Added", severity: 's' })
                 setBtnSaving(true)
@@ -159,10 +160,10 @@ export default function Form() {
                     <CustomTextField label={"Nature Of Requirement"} name={"nature_of_requirement"} errors={errors} register={register} watch={watch} />
                     <CustomTextField label={"Purpose"} name={"purpose"} errors={errors} register={register} watch={watch} />
                     <RequestionDate disabled={true} label={"Requisition Date*"} name={"requisition_date"} errors={errors} control={control} watch={watch} register={register} />
-                    {/* <CustomAutoComplete control={control} errors={errors} label={"Capex For Which Department"} name={"capex_for_which_department"} options={_plant_dept?.data?.data?.plant_data || []} /> */}
+                    <CustomAutoComplete control={control} errors={errors} label={"Capex For Which Department"} name={"capex_for_which_department"} options={_plant_dept?.data?.data?.plant_data || []} />
                     <CustomAutoComplete control={control} errors={errors} label={"Payback Period"} name={"payback_period"} options={payback_period_return_of_investment} />
                     <CustomAutoComplete control={control} errors={errors} label={"Return On Investment"} name={"return_on_investment"} options={payback_period_return_of_investment} />
-                    <CustomAutoComplete control={control} errors={errors} label={"Budget Type"} name={"budget_type"} options={budgeted_type} />
+                    {/* <CustomAutoComplete control={control} errors={errors} label={"Budget Type"} name={"budget_type"} options={budgeted_type} /> */}
                     <CustomTextField label={"Total Cost (₹ in Lakhs)"} name={"total_cost"} errors={errors} register={register} watch={watch} />
                     <CustomDate label={"Site Delivery Date*"} name={"site_delivery_date"} errors={errors} control={control} watch={watch} register={register} />
                     <CustomDate label={"Installation Date*"} name={"installation_date"} errors={errors} control={control} watch={watch} register={register} />

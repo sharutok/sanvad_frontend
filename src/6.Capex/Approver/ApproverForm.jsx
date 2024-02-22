@@ -73,6 +73,7 @@ export default function Form() {
             approver_comment: getValues('comments'),
             user_no: getCookies()[0]
         };
+        console.log(data);
 
         const res = await axios.put(`${api.capex.capex_by_id}/${capex_id}/`, data)
         if (res.data.status_code === 200) {
@@ -120,6 +121,7 @@ export default function Form() {
                                 <CustomValueTextField size={true} label={"Nature Of Requirement"} value={c.nature_of_requirement} />
                                 <CustomValueTextField size={true} label={"Purpose"} value={c.purpose} />
                                 <CustomValueTextField size={true} label={"Raised By"} value={capex_raised_by} />
+                                <CustomValueTextField size={true} label={"Capex for Which Department"} value={c.capex_for_which_department} />
                                 <CustomValueTextField size={true} label={"Plant"} value={c.plant} />
                                 <CustomValueTextField size={true} label={"Department"} value={c.dept} />
                                 <CustomValueTextField size={true} label={"Budgeted Type"} value={c.budget_type} />
