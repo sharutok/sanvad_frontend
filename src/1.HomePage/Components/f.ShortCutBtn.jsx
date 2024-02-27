@@ -10,16 +10,16 @@ export default function ShortCutBtn() {
 
     const ModulesIcons = [
         {
-            icons: FaUsersLine, iconTitle: "Book Conference", path: "/conference/booking/new"
+            icons: FaUsersLine, iconTitle: "Book Conference", path: "/conference/booking/new", name: "module:conferencebooking",
         },
         {
-            icons: FaClipboardCheck, iconTitle: "Raise a Ticket", path: "/ticket/sys/new",
+            icons: FaClipboardCheck, iconTitle: "Raise a Ticket", path: "/ticket/sys/new", name: "module:ticketsystem",
         },
         {
-            icons: FaRegIdBadge, iconTitle: "Add Visitor", path: "/vistors/management/new"
+            icons: FaRegIdBadge, iconTitle: "Add Visitor", path: "/vistors/management/new", name: "module:visitormanagement",
         },
         {
-            icons: FaFileInvoiceDollar, iconTitle: "Raise Capex", path: "/capex/list",
+            icons: FaFileInvoiceDollar, iconTitle: "Raise Capex", path: "/capex/list", name: "module:capex",
         },
     ]
     const IconsIcons = [
@@ -45,7 +45,10 @@ export default function ShortCutBtn() {
                         {ModulesIcons.map((_icon, i) => {
                             return (
                                 <div key={i} className='flex justify-center '>
-                                    <div style={{ cursor: `${_icon.iconTitle === "Raise Capex" ? (isPermissionToView("capex:create") ? "pointer" : "not-allowed") : "pointer"}` }} onClick={() => _icon.iconTitle === "Raise Capex" ? isPermissionToView("capex:create") ? window.open(_icon.path, "_self") : "" : window.open(_icon.path, "_self")} key={i} className=' text-center cursor-pointer hover-element px-3 py-1 rounded-xl '>
+                                    <div style={{
+                                        cursor: `${(isPermissionToView(_icon.name) ? "pointer" : "not-allowed")}`
+                                    }}
+                                        onClick={() => isPermissionToView(_icon.name) ? window.open(_icon.path, "_self") : ""} key={i} className=' text-center cursor-pointer hover-element px-3 py-1 rounded-xl '>
                                         <div className='flex justify-center '>
                                             < _icon.icons size={40} color='#ED1C24' />
                                         </div>

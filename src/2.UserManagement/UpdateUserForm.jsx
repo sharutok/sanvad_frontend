@@ -74,7 +74,7 @@ export default function UpdateUserForm() {
       user_status: getValues('user_status'), module_permission: [...getValues('module_permission')],
     })
     return data
-  })
+  }, { staleTime: Infinity })
 
   const plant_dept = useQuery(['plant_dept'], async () => {
     const data = axios.get(api.utils.dept_plant)

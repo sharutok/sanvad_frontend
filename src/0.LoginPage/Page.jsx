@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import '../../Style/LoginPage.css'
+import IconButton from '@mui/material/IconButton';
 
 import IMAGES from '../assets/Image/Image';
 import { LoadingButton } from '@mui/lab';
@@ -13,8 +14,9 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import RememberMe from '../Helper Components/RememberMe';
-
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const data = static_val.prefix_email_id
 
@@ -46,15 +48,17 @@ export default function Page() {
     )
 }
 
-
-
 function LoginBody() {
     const [prefix, setPrefix] = useState(static_val.prefix_email_id[0])
     const { btnSaving, rememberCheck, userLogin, setUserLogin } = useContext(AppContext)
     const [error, setError] = useState("")
+    const [showPassword, setShowPassword] = useState(false)
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     async function onSubmit(e) {
         e.preventDefault()
@@ -83,7 +87,6 @@ function LoginBody() {
         let value = e.target.value
         setUserLogin({ ...userLogin, [name]: value })
     }
-
 
 
     return (
@@ -117,7 +120,26 @@ function LoginBody() {
                         </div>
                         <div>
                             <Typography className='text-[#212529]'>Password</Typography>
-                            <TextField helperText={error} error={error && true} className='w-[25rem] ' size='small' placeholder="Password" type='password' variant="outlined" required onChange={handleOnChange} name="password" />
+                            <TextField
+                                helperText={error}
+                                error={error && true}
+                                className='w-[25rem]'
+                                size='small'
+                                placeholder="Password"
+                                type={showPassword ? 'text' : 'password'}
+                                variant="outlined" InputProps={{
+                                    endAdornment: <InputAdornment position="start">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="start"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }}
+                                required onChange={handleOnChange} name="password" />
                         </div>
                         {/* <RememberMe /> */}
                         <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
