@@ -9,7 +9,7 @@ import moment from 'moment';
 import { static_val } from '../Static/StaticValues';
 import axios from 'axios';
 import { api } from '../Helper Components/Api';
-import { getCookies, setCookies } from '../Helper Components/CustomCookies';
+import { deleteCookies, getCookies, setCookies } from '../Helper Components/CustomCookies';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
@@ -17,17 +17,29 @@ import Divider from '@mui/material/Divider';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
+import RememberMe from '../Helper Components/RememberMe';
 
 const data = static_val.prefix_email_id
 
 export default function Page() {
+    const remember_me = getCookies()[3];
+    const fetchData = async () => {
+        ;
+        try {
+            const response = await axios.get(`${api.user.validate_token}?token=${remember_me}`);
+            if (response?.data?.mess === 200) {
+                const { emp_no, module_permission, initials } = (response?.data?.data);
+                setCookies([emp_no, module_permission, initials, remember_me])
+                window.location.href = "/home";
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    // useEffect(() => {
-    //     const remember_me = getCookies()[3]
-    //     // await axios.get()
-    //     console.log(remember_me);
-    //     remember_me && (window.location.href = "/home")
-    // }, [])
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <div>
@@ -141,7 +153,7 @@ function LoginBody() {
                                 }}
                                 required onChange={handleOnChange} name="password" />
                         </div>
-                        {/* <RememberMe /> */}
+                        <RememberMe />
                         <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
                             Forgot password? Contact ADORHUB Admin
                         </span>

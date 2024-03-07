@@ -21,8 +21,8 @@ export default function UserManagement() {
 
     const { umStatus, setUMStatus } = useContext(AppContext)
     const [empID, setEmpID] = useState("")
-
     const ErrorSchema = UserErrorSchema
+
 
 
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues } = useForm({
@@ -60,7 +60,6 @@ export default function UserManagement() {
     return (
         <form className='p-4' onSubmit={handleSubmit(onSubmit)}>
             <BackArrow title={"User Management - Create New User"} />
-
             <div className='user-management-container'>
                 <div className='user-managment-component'>
                     <TextField className="textfield" label="First Name*" size={"small"}  {...register('first_name')} error={!!errors.first_name} helperText={errors.first_name && errors.first_name.message} />

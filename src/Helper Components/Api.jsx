@@ -54,7 +54,8 @@ export const api = {
         log_check: `${link}/user-manage/login/check/`,
         birthday_list: `${link}/user-manage/birthday/list/`,
         user_permissions: `${link}/user-manage/user/permission/list/`,
-        manager_list: `${link}/user-manage/list/manager`
+        manager_list: `${link}/user-manage/list/manager`,
+        validate_token: `${link}/user-manage/validate/token/`,
     },
     utils: {
         download_excel: `${link}/utils/download/excel/`,

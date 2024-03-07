@@ -2,7 +2,7 @@ import { api } from '../Helper Components/Api';
 import axios from 'axios'
 import moment from 'moment';
 import dayjs from 'dayjs';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useMemo } from 'react'
 import {
     Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Checkbox, Divider
 } from '@mui/material'
@@ -23,9 +23,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab';
 const ErrorSchema = UserErrorSchema
-import { FiSave } from "react-icons/fi";
-import { Link } from 'react-router-dom';
-import IMAGES from '../assets/Image/Image';
 import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
 import { org } from '../Static/StaticValues';
 
@@ -48,6 +45,8 @@ function CreateUserForm() {
         const data = axios.get(api.utils.dept_plant)
         return data
     }, { staleTime: Infinity })
+
+
 
     const manager_list = useQuery(['manager_list'], async () => {
         const data = await axios.get(`${api.user.manager_list}/?department=${getValues('department')}`)
@@ -156,7 +155,9 @@ function CreateUserForm() {
                             multiple
                             limitTags={5}
                             id="checkboxes-tags-demo"
-                            options={!user_perm.isLoading ? [...user_perm?.data?.data] : []}
+                            options={
+                                !user_perm.isLoading ? [...user_perm?.data?.data] : []
+                            }
                             disableCloseOnSelect
                             getOptionLabel={(option) => option}
                             onChange={(e, x) => {
