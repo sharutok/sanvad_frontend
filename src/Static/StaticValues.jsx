@@ -1,11 +1,10 @@
 import { IconCalendarStats } from '@tabler/icons-react';
 import { FaUsers, FaIdBadge, } from "react-icons/fa";
 import { IoIosPaper } from "react-icons/io";
-import { MdCurrencyExchange, MdSettingsApplications, MdPolicy } from "react-icons/md";
+import { PiFlowArrowFill } from "react-icons/pi"
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
-import { PiFlowArrowBold } from "react-icons/pi";
-
+import { IoMdSettings } from "react-icons/io";
 import { FaUsersLine, FaClipboardCheck, FaRegIdBadge, FaFileInvoiceDollar } from 'react-icons/fa6'
 import { FaUserCog } from 'react-icons/fa'
 import { getCookies } from '../Helper Components/CustomCookies';
@@ -107,12 +106,12 @@ export const links = [
 
     },
     {
-        label: 'Workflow Configurations',
-        icon: PiFlowArrowBold,
+        label: 'Workflow Configs',
+        icon: IoMdSettings,
         mainlink: "",
         links: [
-            { label: 'Ticketing System', link: '/workflow/ticket-system' },
-            { label: 'Capex', link: '/workflow/capex-system' },
+            { icon: PiFlowArrowFill, label: 'Ticketing System', link: '/workflow/ticket-system' },
+            { icon: PiFlowArrowFill, label: 'Capex', link: '/workflow/capex-system' },
         ],
         index: "module:workflowconfig",
 

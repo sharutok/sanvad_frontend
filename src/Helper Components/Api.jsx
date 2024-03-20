@@ -19,7 +19,8 @@ export const api = {
         capex_by_id: `${link}/capex/data-capex`,
         create_capex: `${link}/capex/create/`,
         upload_budget_excel: `${link}/capex/read-data-excel/`,
-        update_capex_only: `${link}/capex/update/only/`
+        update_capex_only: `${link}/capex/update/only/`,
+        capex_flow_manager: `${link}/capex/user/list/wf`
     },
     conference_booking: {
         get_data: `${link}/conf-book/all`,
@@ -71,6 +72,7 @@ export const api = {
         it_infra_ticket_wf: `${link}/wf/ticket/infra/`,
         capex_wf_corporate: `${link}/wf/capex/corporate/`,
         capex_wf_plant: `${link}/wf/capex/plant/`,
+        capex_create: `${link}/wf/capex/op/`,
     },
     policies: {
         get_all_data: `${link}/policy/get-all-data`,

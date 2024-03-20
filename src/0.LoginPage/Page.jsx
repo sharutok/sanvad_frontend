@@ -23,23 +23,23 @@ const data = static_val.prefix_email_id
 
 export default function Page() {
     const remember_me = getCookies()[3];
-    // const fetchData = async () => {
-    //     ;
-    //     try {
-    //         const response = await axios.get(`${api.user.validate_token}?token=${remember_me}`);
-    //         if (response?.data?.mess === 200) {
-    //             const { emp_no, module_permission, initials } = (response?.data?.data);
-    //             setCookies([emp_no, module_permission, initials, remember_me])
-    //             window.location.href = "/home";
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const fetchData = async () => {
+        ;
+        try {
+            const response = await axios.get(`${api.user.validate_token}?token=${remember_me}`);
+            if (response?.data?.mess === 200) {
+                const { emp_no, module_permission, initials } = (response?.data?.data);
+                setCookies([emp_no, module_permission, initials, remember_me])
+                window.location.href = "/home";
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <div>
@@ -153,8 +153,8 @@ function LoginBody() {
                                 }}
                                 required onChange={handleOnChange} name="password" />
                         </div>
-                        {/* <RememberMe /> */}
-                        <span className='text-center mt-5 mb-10 underline text-[#868E96] text-[0.8rem]' >
+                        <RememberMe />
+                        <span className='text-center mb-5  text-[#868E96] text-[0.8rem]' >
                             Forgot password? Contact ADORHUB Admin
                         </span>
                     </div>
@@ -162,7 +162,11 @@ function LoginBody() {
                         <LoadingButton
                             fullWidth
                             size="small"
-                            sx={{ bgcolor: "#555259" }}
+                            sx={{
+                                bgcolor: "#555259", '&:hover': {
+                                    background: "#555259",
+                                },
+                            }}
                             variant="contained"
                             type="submit"
                             loading={btnSaving}

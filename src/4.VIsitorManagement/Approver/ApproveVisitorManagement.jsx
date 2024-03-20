@@ -96,7 +96,6 @@ export default function ApproveVisitorManagement() {
                 start_date_time: moment(data['start_date_time'].$d || data['start_date_time']).format(),
                 visitors: JSON.stringify(visitors)
             }
-            console.log(_data);
             const response = await axios.put(api.visitor_management.by_id + id, _data)
             if (response.data.status_code === 200) {
                 setBtnSaving(true)
