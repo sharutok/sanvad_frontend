@@ -86,7 +86,6 @@ export default function CreateVisitorMangement() {
             try {
                 // Validate the JSON data against the schema
                 const resp = await jsonDataSchema.validate(obj)
-                console.log(resp);
                 setVisitors([...visitors, obj]), clearAll(), setValidError("")
                 // if (Object.keys(errors).map(x => { return x }).length == 0 && !logs.includes("")) {
                 // }
@@ -211,7 +210,6 @@ const CustomTextField = ({ name, label, errors, register, watch, multiline }) =>
 const CustomTextFieldMobileNo = ({ name, label, errors, register, watch, multiline }) => {
     return (
         <TextField
-            onChange={() => console.log("fff")}
             sx={{ width: "20rem" }}
             multiline={multiline ? true : false}
             rows={multiline}

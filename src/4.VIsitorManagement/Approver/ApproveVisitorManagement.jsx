@@ -177,7 +177,6 @@ export default function ApproveVisitorManagement() {
         };
         try {
             const response = await axios.put(`${api.visitor_management.punch}/?id=${id}`, data)
-            console.log(response.data.status_code);
             if (response.data.status_code === 200) {
                 setSnackBarPopUp({ state: true, message: "Updated Pass", severity: "s" })
                 queryClient.invalidateQueries(['visitor-data'])
@@ -427,7 +426,7 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
                 />}
 
             {alignment && <div className='flex flex-wrap gap-5'>
-                {visitors?.length && visitors?.map((g, i) => {
+                {Number(visitors?.length) > 0 && visitors?.map((g, i) => {
                     return (
                         <div className='grid gap-2 shadow-[rgba(0,0,0,0.24)_0px_3px_8px] p-4 rounded-lg  w-[15rem] h-[16rem]' key={i}>
                             <div>

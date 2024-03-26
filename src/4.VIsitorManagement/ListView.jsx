@@ -34,7 +34,7 @@ export default function VisitManagementListView() {
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const queryClient = useQueryClient()
-    const [_date, _setDate] = useState(true)
+    const [_date, _setDate] = useState(false)
 
     const { data, isLoading } = useQuery(["visitor-list", page, _search, _date], async () => {
         return axios.get(`${api.visitor_management.get_data}/?page=${page}&search=${_search}&date=${_date}&woosee=${getCookies()[0]}`)
@@ -94,7 +94,7 @@ export default function VisitManagementListView() {
                                     <td onClick={() => handleNav(g)} >{abbriviation(g.id, 10)}</td>
                                     <td onClick={() => handleNav(g)} >{g.name}</td>
                                     <td onClick={() => handleNav(g)} >{g.department}</td>
-                                    <td>{JSON.parse(g.visitors) && JSON.parse(g.visitors)[0]?.["v_name"]}</td>
+                                    <td onClick={() => handleNav(g)} >{JSON.parse(g.visitors) && JSON.parse(g.visitors)[0]?.["v_name"]}</td>
                                     <td onClick={() => handleNav(g)} >{abbriviation(g.v_company, 25)}</td>
                                     <td onClick={() => handleNav(g)} ><div className='flex justify-center gap-5'>
                                         {moment(g.start_date_time).format("DD-MM-YYYY hh:mm a")}{MorInfo("Actual In Time", g.punch_in_date_time)}

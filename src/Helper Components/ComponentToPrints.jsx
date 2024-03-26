@@ -64,8 +64,7 @@ function PrintBody() {
         <div>
             {
                 visitorPass?.length && visitorPass?.map((y, i) => {
-                    console.log(y['visitors']);
-                    const t_assets = JSON.parse(y['visitors']).map(h => { return h.v_asset ? h.v_asset.toUpperCase() : "" })
+                    const t_assets = JSON.parse(y['visitors'])?.map(h => { return h?.v_asset ? h?.v_asset?.toUpperCase() : "" })
                     const assets = t_assets.join(', ') && []
                     return (
                         <div key={i} className="border-[10px] border-solid border-[black] ">

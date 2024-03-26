@@ -44,7 +44,7 @@ function SideLinkTag() {
                                     </div>}
                                     {!collapse && <span className='text-[#555259] p-3'>{x.label}</span>}
                                 </div>
-                            </div> : <AdvDropdown x={x} collapse={collapse} />}
+                            </div> : <AdvDropdown x={x} />}
                         </div>}
                     </div>
                 )
