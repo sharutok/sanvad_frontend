@@ -34,7 +34,7 @@ export default function VisitManagementListView() {
     const { count, setCount, page, setSnackBarPopUp } = useContext(AppContext)
     const [_search, _setSearch] = useState("")
     const queryClient = useQueryClient()
-    const [_date, _setDate] = useState(false)
+    const [_date, _setDate] = useState(true)
 
     const { data, isLoading } = useQuery(["visitor-list", page, _search, _date], async () => {
         return axios.get(`${api.visitor_management.get_data}/?page=${page}&search=${_search}&date=${_date}&woosee=${getCookies()[0]}`)
