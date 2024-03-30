@@ -1,9 +1,9 @@
 import * as yup from 'yup'
 export const RequestTicketErrorSchema = yup.object().shape({
-    tkt_title: yup.string().required('Required Field'),
+    tkt_title: yup.string().required('Required Field').max(350),
     tkt_type: yup.string().required('Required Field'),
     req_type: yup.string().required('Required Field'),
-    tkt_description: yup.string().required('Required Field'),
+    tkt_description: yup.string().required('Required Field').max(900),
 
 })
 export const ApproverTicketErrorSchema = yup.object().shape({
@@ -13,6 +13,6 @@ export const ApproverTicketErrorSchema = yup.object().shape({
     tkt_title: yup.string().required('Required Field'),
     tkt_type: yup.string().required('Required Field'),
     req_type: yup.string().required('Required Field'),
-    tkt_description: yup.string().required('Required Field'),
+    tkt_description: yup.string().required('Required Field').max(900),
 
 })
