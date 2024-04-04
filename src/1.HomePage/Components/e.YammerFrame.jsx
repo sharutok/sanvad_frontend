@@ -1,5 +1,5 @@
 import Skeleton from '@mui/material/Skeleton';
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { api } from '../../Helper Components/Api'
@@ -13,17 +13,24 @@ const url = import.meta.env.VITE_BACKEND_URL
 const port = import.meta.env.VITE_BACKEND_PORT
 
 export default function Frame() {
-
+    const [innerHeight, setInnerHeight] = useState("")
     const response = useQuery(['which-frame'], async () => {
         const data = await axios.get(`${api.utils.which_frame}/?woosee=${getCookies()[0]}`)
         return data
     }, { staleTime: Infinity })
 
+    useEffect(() => {
+        setInnerHeight(window.innerHeight)
+        console.log(window.innerHeight);
+    }, [window.innerHeight])
+
+
     return (
         <>
             {!response.isLoading ?
                 response?.data?.data?.response ?
-                    <div className='h-[90vh] overflow-y-auto grid gap-5 rounded-xl'>
+                    <div className='overflow-y-auto grid gap-5 rounded-xl' style={{ height: innerHeight - 100 }} >
+                        {/* <div className='h-[90vh] overflow-y-auto grid gap-5 rounded-xl'> */}
                         <YammerFrame />
                     </div> :
                     <div>

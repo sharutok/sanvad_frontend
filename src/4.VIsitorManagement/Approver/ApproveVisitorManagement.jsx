@@ -395,7 +395,7 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
             </ToggleButton>
         </ToggleButtonGroup>
         <div className='mt-5'>
-            {!alignment &&
+            {/* {!alignment &&
                 <Table thead={thead}
                     tbody={
                         visitors?.length && visitors?.map((g, i) => {
@@ -423,18 +423,18 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
                             )
                         })
                     }
-                />}
+                />} */}
 
-            {alignment && <div className='flex flex-wrap gap-5'>
+            {<div className='flex flex-wrap gap-5'>
                 {Number(visitors?.length) > 0 && visitors?.map((g, i) => {
                     return (
                         <div className='grid gap-2 shadow-[rgba(0,0,0,0.24)_0px_3px_8px] p-4 rounded-lg  w-[15rem] h-[16rem]' key={i}>
                             <div>
-                                {visitorPhoto[i] && visitorPhoto[i]?.mod_image &&
+                                {visitorPhoto?.[i] && visitorPhoto?.[i]?.mod_image &&
                                     <>{
-                                        <img className='rounded-lg' src={visitorPhoto[i]?.mod_image} alt="" width={300} />
+                                        <img className='rounded-lg' src={visitorPhoto?.[i]?.mod_image} alt="" width={300} />
                                     }</>}
-                                {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
+                                {componentAccess.camera_component && (!visitorPhoto?.[i]?.mod_image &&
                                     <div onClick={() => { captureImage(`${id}__${i}`) }} className='flex justify-center '>
                                         <div className='grid grid-cols-1' >
                                             <IconButton>

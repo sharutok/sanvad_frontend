@@ -22,6 +22,7 @@ export default function NewEmployee() {
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(api.user.birthday_list)
     })
+    console.log(tkt_type_lists.data);
 
     async function handleWishes(x) {
         try {

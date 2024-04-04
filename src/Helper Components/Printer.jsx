@@ -63,7 +63,6 @@ export default function CustomPrint() {
         <div >
             <div className="grid grid-cols-1 gap-5 p-5 w-100%">
                 <div className="w-fit">
-
                     <ButtonComponent onClick={handlePrint} btnName={loading ? <p className="indicator">Getting Ready...</p> : "Print"} icon={<BsPrinter size={22} color='#fff' />} />
                 </div>
                 <ComponentToPrint ref={componentRef} text={text} />

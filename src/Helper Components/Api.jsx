@@ -20,7 +20,9 @@ export const api = {
         create_capex: `${link}/capex/create/`,
         upload_budget_excel: `${link}/capex/read-data-excel/`,
         update_capex_only: `${link}/capex/update/only/`,
-        capex_flow_manager: `${link}/capex/user/list/wf`
+        capex_flow_manager: `${link}/capex/user/list/wf`,
+        generate_capex_final_pdf: `${link}/capex/final/approved/pdf`,
+
     },
     conference_booking: {
         get_data: `${link}/conf-book/all`,

@@ -1,11 +1,11 @@
 import { useParams, useSearchParams } from 'react-router-dom'
 import { api } from '../../Helper Components/Api';
 import axios from 'axios'
+import { FaFilePdf } from "react-icons/fa6";
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
-import moment from 'moment';
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useState, } from 'react'
 import {
-    styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, InputAdornment, FormControlLabel, Checkbox, FormControl, FormLabel, RadioGroup, FormHelperText, Radio, Drawer
+    styled, Typography, TextField, Divider, FormControlLabel, FormControl, FormLabel, RadioGroup, FormHelperText, Radio, Drawer
 } from '@mui/material'
 import { useForm, Controller, get } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,7 +20,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
-import { BiChevronDown } from 'react-icons/bi';
 import PreFilledSubForm from '../PreFilledSubForm';
 import { MdBrowserUpdated, MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from 'react-icons/md';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -30,7 +29,6 @@ import { getCookies } from '../../Helper Components/CustomCookies';
 import { forceDownload } from '../../Static/StaticValues';
 import EditCapex from '../EditCapex';
 import { IoMdArrowBack } from 'react-icons/io';
-import IMAGES from '../../assets/Image/Image';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -65,6 +63,7 @@ export default function Form() {
             comments: ""
         }
     })
+
     const onSubmit = async (submit) => {
         const data = {
             budget_id,
@@ -73,7 +72,6 @@ export default function Form() {
             approver_comment: getValues('comments'),
             user_no: getCookies()[0]
         };
-        console.log(data);
 
         const res = await axios.put(`${api.capex.capex_by_id}/${capex_id}/`, data)
         if (res.data.status_code === 200) {
@@ -91,8 +89,6 @@ export default function Form() {
     }
 
 
-
-
     const downloadWithAxios = async (url, file_name) => {
         try {
             const response = await axios.get(url, { responseType: 'arraybuffer' })
@@ -101,8 +97,26 @@ export default function Form() {
         catch (error) {
             console.log("error in getting file", error)
         }
-
     }
+
+    const generatePDF = async () => {
+        try {
+            const response = await axios.get(`${api.capex.generate_capex_final_pdf}/?budget_id=${budget_id}&capex_id=${capex_id}&raised_by=${capex_raised_by}`, {
+                responseType: 'blob',
+            });
+            const file = new Blob([response.data], { type: 'application/pdf' });
+            const fileURL = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.href = fileURL;
+            link.download = 'output.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error fetching or downloading PDF:', error);
+        }
+    }
+
 
     if (response?.isLoading) {
         return (
@@ -142,6 +156,7 @@ export default function Form() {
                         </div>
                     </div>
                     <div className='flex gap-5'>
+                        <ButtonComponent onClick={() => generatePDF()} icon={<FaFilePdf color='#fff' size={22} />} btnName={"Form to PDF"} />
                         {preFilled ?
                             <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowUp color='#fff' size={22} />} btnName={"Click for Less Information"} />
                             :
@@ -214,7 +229,6 @@ const MoreInformation = ({ details }) => {
                 </div>
             </div>
             {details.map((c, x) => {
-                console.log(c);
                 return (
                     <div key={x} className='grid grid-cols-1 gap-3'>
                         <Divider />
@@ -368,10 +382,6 @@ const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multili
     )
 }
 
-
-
-
-
 function TemporaryDrawer({ body }) {
     const { drawerStatus, setDrawerStatus } = useContext(AppContext)
 
@@ -406,19 +416,3 @@ function TemporaryDrawer({ body }) {
         </div>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
