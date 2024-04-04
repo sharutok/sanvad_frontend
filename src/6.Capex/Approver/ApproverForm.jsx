@@ -156,7 +156,7 @@ export default function Form() {
                         </div>
                     </div>
                     <div className='flex gap-5'>
-                        <ButtonComponent onClick={() => generatePDF()} icon={<FaFilePdf color='#fff' size={22} />} btnName={"Form to PDF"} />
+                        {/* <ButtonComponent onClick={() => generatePDF()} icon={<FaFilePdf color='#fff' size={22} />} btnName={"Form to PDF"} /> */}
                         {preFilled ?
                             <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowUp color='#fff' size={22} />} btnName={"Click for Less Information"} />
                             :
