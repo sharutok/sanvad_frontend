@@ -9,7 +9,7 @@ import moment from 'moment';
 import { static_val } from '../Static/StaticValues';
 import axios from 'axios';
 import { api } from '../Helper Components/Api';
-import { deleteCookies, getCookies, setCookies } from '../Helper Components/CustomCookies';
+import { getCookies, setCookies } from '../Helper Components/CustomCookies';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
