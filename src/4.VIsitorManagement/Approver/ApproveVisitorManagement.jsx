@@ -96,17 +96,18 @@ export default function ApproveVisitorManagement() {
                 start_date_time: moment(data['start_date_time'].$d || data['start_date_time']).format(),
                 visitors: JSON.stringify(visitors)
             }
+            setBtnSaving(true)
             const response = await axios.put(api.visitor_management.by_id + id, _data)
             if (response.data.status_code === 200) {
-                setBtnSaving(true)
                 setSnackBarPopUp({ state: true, message: "Updated Pass", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "", severity: "s" })
-                    // window.location.href = "/vistors/management/list"
+                    window.location.href = "/vistors/management/list"
                 }, 2000)
             }
 
         } catch (error) {
+            setBtnSaving(false)
             console.log(error)
 
         }
@@ -226,7 +227,7 @@ export default function ApproveVisitorManagement() {
                         <div >
                             <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
                                 <FormControl error={!!errors.ppe}>
-                                    <FormLabel id="demo-row-radio-buttons-group-label">Personal Protective Equipment</FormLabel>
+                                    <FormLabel id="demo-row-radio-buttons-group-label">Safety Shoes and Helmet required is only applicable for POWERGEN and FPED</FormLabel>
                                     <RadioGroup
                                         {...register('ppe')}
                                         row

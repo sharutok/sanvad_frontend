@@ -56,16 +56,17 @@ function RequesterForm() {
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
+            setBtnSaving(true)
             const response = await axios.post(api.ticket_system.create, formData)
             if (response.data.status === 200) {
-                setBtnSaving(true)
-                setSnackBarPopUp({ state: true, message: "Updated Ticket", severity: "s" })
+                setSnackBarPopUp({ state: true, message: "Created Ticket", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
                     window.location.href = "/ticket/sys/list"
                 }, 2000)
             }
         } catch (error) {
+            setBtnSaving(false)
             console.log("error in uploading ", error);
         }
     }

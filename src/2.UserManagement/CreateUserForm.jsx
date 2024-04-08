@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState, useMemo } from 'react'
 import {
     Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Checkbox, Divider
 } from '@mui/material'
-import { useForm, Controller, get } from 'react-hook-form'
+import { useForm, Controller, } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import '../../Style/UserManagement.css'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -66,18 +66,17 @@ function CreateUserForm() {
                 module_permission: usermanagement.module_permission
             });
             const response = await axios.post(api.user_management.post_data, data)
-            console.log(response?.data);
+            setBtnSaving(true)
             if (response?.data.status == 200) {
                 setSnackBarPopUp({ state: true, message: "User Cretaed", severity: 's' })
-                setBtnSaving(true)
                 setTimeout(() => {
                     window.location.href = "/user/management/list"
                     setSnackBarPopUp({ state: false, message: "", severity: 's' })
-                    setBtnSaving(false)
                 }, 1 * 1000)
             }
 
         } catch (error) {
+            setBtnSaving(false)
             console.log("err", error);
         }
     }

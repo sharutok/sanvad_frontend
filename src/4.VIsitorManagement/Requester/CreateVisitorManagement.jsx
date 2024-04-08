@@ -45,19 +45,24 @@ export default function CreateVisitorMangement() {
 
     const onSubmit = async (data) => {
         data["visitors"] = visitors
-        if (visitors.length >= 1) {
-            data["start_date_time"] = moment(getValues("start_date_time")["$d"]).format()
-            data["end_date_time"] = moment(getValues("end_date_time")["$d"]).format()
-            data["raised_by"] = getCookies()[0]
-            const response = await axios.post(api.visitor_management.create, data)
-            if (response.data.status == 200) {
+        try {
+            if (visitors.length >= 1) {
+                data["start_date_time"] = moment(getValues("start_date_time")["$d"]).format()
+                data["end_date_time"] = moment(getValues("end_date_time")["$d"]).format()
+                data["raised_by"] = getCookies()[0]
                 setBtnSaving(true)
-                setSnackBarPopUp({ state: true, message: "Created Visitor Pass", severity: "s" })
-                window.history.back()
+                const response = await axios.post(api.visitor_management.create, data)
+                if (response.data.status == 200) {
+                    setSnackBarPopUp({ state: true, message: "Created Visitor Pass", severity: "s" })
+                    window.history.back()
+                }
+            }
+            else {
+                return setSnackBarPopUp({ state: true, message: "Add Atlest 1 visitor Details", severity: 'e' })
             }
         }
-        else {
-            return setSnackBarPopUp({ state: true, message: "Add Atlest 1 visitor Details", severity: 'e' })
+        catch (e) {
+            setBtnSaving(false)
         }
     }
 

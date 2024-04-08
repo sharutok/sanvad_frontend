@@ -41,17 +41,17 @@ function ConferenceBooking({ fetchData }) {
                 end_date_time: `${moment(data.end_date || data.start_date, "DD/MM/YYYY").format("YYYY-MM-DD")} ${data.end_time}`,
                 conf_by: getCookies()[0]
             }
-            console.log(_data);
+            setBtnSaving(true)
             const response = await axios.post(api.conference_booking.create, _data)
             if (response.data.status === 200) {
-                setBtnSaving(true)
                 setSnackBarPopUp({ state: true, message: "Booked Conference", severity: "s" })
                 window.location.href = "/conference/booking/list"
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
-                }, 2000)
+                }, 1000)
             }
         } catch (error) {
+            setBtnSaving(false)
             console.log(error);
         }
     }

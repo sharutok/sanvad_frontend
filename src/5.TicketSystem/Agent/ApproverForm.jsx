@@ -87,9 +87,9 @@ export default function ApproverForm() {
             })
             formData.append('user_info', emp_id)
 
+            setBtnSaving(true)
             const _response = await axios.put(api.ticket_system.by_id + `${id}/?woosee=${getCookies()[0]}`, formData)
             if (_response.data.status_code === 200) {
-                setBtnSaving(true)
                 setSnackBarPopUp({ state: true, message: "Updated ticket", severity: "s" })
                 setTimeout(() => {
                     setSnackBarPopUp({ state: false, message: "" })
@@ -97,6 +97,7 @@ export default function ApproverForm() {
                 }, 2000)
             }
         } catch (error) {
+            setBtnSaving(false)
             console.log("error in uploading", error);
         }
     }

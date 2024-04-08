@@ -65,22 +65,25 @@ export default function Form() {
     })
 
     const onSubmit = async (submit) => {
-        const data = {
-            budget_id,
-            capex_id,
-            approver_status: getValues('capex_status'),
-            approver_comment: getValues('comments'),
-            user_no: getCookies()[0]
-        };
-
-        const res = await axios.put(`${api.capex.capex_by_id}/${capex_id}/`, data)
-        if (res.data.status_code === 200) {
-            setSnackBarPopUp({ state: true, message: "Submitted", severity: "s" })
+        try {
+            const data = {
+                budget_id,
+                capex_id,
+                approver_status: getValues('capex_status'),
+                approver_comment: getValues('comments'),
+                user_no: getCookies()[0]
+            };
             setBtnSaving(true)
-            setTimeout(() => {
-                setSnackBarPopUp({ state: false, message: "" })
-                window.location.href = "/capex/list"
-            }, 2000)
+            const res = await axios.put(`${api.capex.capex_by_id}/${capex_id}/`, data)
+            if (res.data.status_code === 200) {
+                setSnackBarPopUp({ state: true, message: "Submitted", severity: "s" })
+                setTimeout(() => {
+                    setSnackBarPopUp({ state: false, message: "" })
+                    window.location.href = "/capex/list"
+                }, 2000)
+            }
+        } catch (e) {
+            setBtnSaving(false)
         }
     }
 
@@ -156,7 +159,7 @@ export default function Form() {
                         </div>
                     </div>
                     <div className='flex gap-5'>
-                        {/* <ButtonComponent onClick={() => generatePDF()} icon={<FaFilePdf color='#fff' size={22} />} btnName={"Form to PDF"} /> */}
+                        {componentAccess.field_to_form && <ButtonComponent onClick={() => generatePDF()} icon={<FaFilePdf color='#fff' size={22} />} btnName={"Form to PDF"} />}
                         {preFilled ?
                             <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowUp color='#fff' size={22} />} btnName={"Click for Less Information"} />
                             :

@@ -12,7 +12,7 @@ import BarSnack from '../../Helper Components/BarSnack'
 import LoadingSpinner from '../../Helper Components/LoadingSpinner'
 import { getCookies } from '../../Helper Components/CustomCookies'
 import moment from 'moment'
-import { exportToCSV, isPermissionToView } from '../../Static/StaticValues'
+import { abbriviation, exportToCSV, isPermissionToView } from '../../Static/StaticValues'
 
 
 export default function AllTicketsView({ _search }) {
@@ -50,7 +50,7 @@ export default function AllTicketsView({ _search }) {
                                     <Tooltip key={i} title={"Click to view more"} arrow disableInteractive followCursor={false} placement='top'>
                                         <tr className='table-wrapper' >
                                             <td onClick={() => handleNav(g)}><p className='flex justify-center gap-2'>{g.total_file_uploads > 0 && <MdAttachFile size={20} color='#bd0000' className='rotate-45' />}{g.ticket_no}</p></td>
-                                            <td onClick={() => handleNav(g)}>{g.tkt_title}</td>
+                                            <td onClick={() => handleNav(g)}>{abbriviation(g.tkt_title, 100)}</td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_type}</td>
                                             <td onClick={() => handleNav(g)}>{g.req_type}</td>
                                             <td onClick={() => handleNav(g)}>{g.requester_emp_name}</td>

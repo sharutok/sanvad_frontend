@@ -109,16 +109,16 @@ export default function UpdateUserForm() {
 
     try {
       const response = await axios.put(`${api.user_management.get_data_id}/${id}/`, value)
+      setBtnSaving(true)
       if (response.data.status_code === 200) {
-        setBtnSaving(true)
         setSnackBarPopUp({ state: true, message: "User Updated", severity: "s" })
         setTimeout(() => {
           window.history.back()
-          setBtnSaving(false)
           setSnackBarPopUp({ state: false, message: "", severity: "s" })
         }, 1000)
       }
     } catch (error) {
+      setBtnSaving(false)
       console.log(error);
     }
   }

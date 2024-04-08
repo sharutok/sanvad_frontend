@@ -22,7 +22,6 @@ export default function NewEmployee() {
     const tkt_type_lists = useQuery(['tkt-type-lists'], async () => {
         return await axios.get(api.user.birthday_list)
     })
-    console.log(tkt_type_lists.data);
 
     async function handleWishes(x) {
         try {
@@ -55,7 +54,7 @@ export default function NewEmployee() {
             </div>
             <BarSnack />
             <List sx={{ width: '100%', height: "12rem" }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
-                {tkt_type_lists?.data?.data?.data.length !== 0 ? <div>
+                {tkt_type_lists?.data?.data?.data?.length !== 0 ? <div>
                     {tkt_type_lists?.data?.data?.data?.map((x, i) => {
                         return (
                             <div key={i} >

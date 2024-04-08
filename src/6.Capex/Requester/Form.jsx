@@ -99,11 +99,10 @@ export default function Form() {
             Object.entries(data).map((x) => {
                 formData.append(x[0], x[1])
             })
+            setBtnSaving(true)
             const res = await axios.post(api.capex.create_capex, formData)
-            console.log({ res });
             if (res.data.status === 200) {
                 setSnackBarPopUp({ state: true, message: "Capex Added", severity: 's' })
-                setBtnSaving(true)
                 setTimeout(() => {
                     window.location.href = "/capex/list"
                     setBtnSaving(false)
@@ -111,6 +110,7 @@ export default function Form() {
                 }, 1000)
             }
         } catch (e) {
+            setBtnSaving(false)
             console.log("error in sending data", e);
         }
     }
