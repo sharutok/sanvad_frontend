@@ -28,7 +28,7 @@ export default function Frame({ view }) {
         <>
             {!response.isLoading ?
                 response?.data?.data?.response ?
-                    <div className='overflow-y-auto grid gap-5 rounded-xl' style={{ height: view ? (innerHeight - 700) : (innerHeight - 100) }} >
+                    <div className='overflow-y-auto grid gap-5 rounded-xl' style={{ height: view ? (innerHeight / 3) : (innerHeight - 100) }} >
                         <YammerFrame />
                     </div> :
                     <div>
