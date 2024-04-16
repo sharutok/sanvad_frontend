@@ -14,11 +14,11 @@ import Notification from './q.Notification';
 
 export default function HeaderMegaMenu() {
     return (
-        <div className='fixed top-0 w-[100%] bg-[#ffff] overflow-y-hidden z-[10]'>
+        <div className='fixed top-0 w-[100%] bg-[#ffff] overflow-y-hidden z-[60]'>
             <div className=' border-b-[.5px] border-solid border-[#e9e9e9] p-2'>
                 <div className='flex justify-between h-fit'  >
                     <div onClick={() => window.location.href = '/home'} className='flex gap-4 cursor-pointer ml-5'>
-                        <div className='py-2'>
+                        <div className='py-2 '>
                             <img loading='lazy' src={IMAGES.ador_star_logo} alt="Ador" width={"30"} />
                         </div>
                         <div className='py-3'>

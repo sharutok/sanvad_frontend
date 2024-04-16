@@ -115,8 +115,8 @@ function ICarousels({ data }) {
                             </div>
 
                             <div className='flex justify-center '>
-                                {x?.image[0]?.type === "image" && <img loading='lazy' style={{ minWidth: "400px" }} src={`${url}:${port}/media/yammer/${x.image[0].name}`} />}
-                                {x?.image[0]?.type === "file" && <video loop style={{ minWidth: "400px" }} controls>
+                                {x?.image[0]?.type === "image" && <img loading='lazy' style={{ width: "100%", maxWidth: "300px" }} src={`${url}:${port}/media/yammer/${x.image[0].name}`} />}
+                                {x?.image[0]?.type === "file" && <video loop style={{ width: "100%", maxWidth: "300px" }} controls>
                                     <source src={`${url}:${port}/media/yammer/${x.image[0].name}`} type="video/mp4" />
                                 </video>}
                             </div>

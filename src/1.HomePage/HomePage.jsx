@@ -40,7 +40,7 @@ const DesktopView = () => {
             <div className='bg-[#fff]'>
                 <SideBar />
             </div>
-            <div className=' grid gap-5 grid-cols-[1.5fr_2fr] mt-20 '>
+            <div className=' grid gap-5 grid-cols-[1.5fr_2fr] ml-[6rem] mt-20 '>
                 <Frame />
                 <div className='grid gap-5 grid-cols-[repeat(1,1fr)] p-1  h-fit'>
                     <ShortCutBtn view={false} />
@@ -67,7 +67,7 @@ const MobileView = () => {
             <div className='bg-[#fff]'>
                 <SideBar />
             </div>
-            <div className=' grid gap-5 grid-col-1 mt-20 '>
+            <div className=' grid gap-5 grid-col-1 mt-20 ml-[6rem] '>
                 <Frame view={true} />
                 <div className='grid gap-5 grid-cols-1 h-fit'>
                     <ShortCutBtn view={true} />
