@@ -1,21 +1,19 @@
-import { useState } from 'react';
-import { IoIosPaper } from 'react-icons/io'
-import { FiSearch } from 'react-icons/fi'
-import { MdClear, MdDeleteOutline } from 'react-icons/md'
-import { AiOutlineDownload } from 'react-icons/ai'
-import { Fab, IconButton, TextField, Tooltip } from '@mui/material'
-import PropTypes from 'prop-types';
-import axios from 'axios'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
+import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
+import { useContext, useState } from 'react';
+import { AiOutlineDownload } from 'react-icons/ai';
+import { IoIosPaper } from 'react-icons/io';
+import { AppContext } from '../../App';
+import ExportXL from '../../Helper Components/ExportXL';
+import BackArrow from '../../Helper Components/SideComponent';
+import { isPermissionToView } from '../../Static/StaticValues';
 import AllTicketsView from './AllTicketsView';
 import TicketSystemListView from './ListView';
-import BackArrow from '../../Helper Components/SideComponent';
-import { exportToCSV, isPermissionToView } from '../../Static/StaticValues';
 import { api } from '../../Helper Components/Api';
-import moment from 'moment';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -49,10 +47,12 @@ function a11yProps(index) {
     };
 }
 
-async function exportData() {
+async function exportData(setDialogStatus) {
     try {
-        const data = await axios.post(api.utils.download_excel, { "data_module": "ticket" })
-        exportToCSV(data?.data?.data, `Ticket Export ${moment().format("DD_MM_YYYY")}`)
+        console.log("lllllllllll");
+        setDialogStatus(true)
+        // const data = await axios.post(api.utils.download_excel, { "data_module": "ticket" })
+        // exportToCSV(data?.data?.data, `Ticket Export ${moment().format("DD_MM_YYYY")}`)
     } catch (error) {
         console.log("error in exporting", error);
     }
@@ -61,6 +61,8 @@ async function exportData() {
 export default function TabList() {
     const [value, setValue] = useState(0);
     const [_search, _setSearch] = useState("")
+
+    const { setDialogStatus } = useContext(AppContext)
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -74,7 +76,11 @@ export default function TabList() {
                     <div className='flex gap-4  mr-10'>
                         <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                         <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />
-                        {isPermissionToView("ticketsystem:export") && <ButtonComponent onClick={() => exportData()} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />}
+                        {isPermissionToView("ticketsystem:export") &&
+                            // <ButtonComponent onClick={() => exportData(setDialogStatus)} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
+                            <ExportXL api={api.utils.download_excel} request={{ "data_module": "ticket" }} />
+
+                        }
                     </div>
                 </div>
                 <div className='px-10 mt-5'>

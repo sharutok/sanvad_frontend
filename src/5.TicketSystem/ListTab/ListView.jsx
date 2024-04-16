@@ -1,18 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Table from '../../Helper Components/Table'
-import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2'
-import CPagination from '../../Helper Components/Pagination'
-import { Fab, IconButton, TextField, Tooltip } from '@mui/material'
-import { MdAttachFile } from "react-icons/md";
+import { Tooltip } from '@mui/material'
 import { useQuery, useQueryClient, } from '@tanstack/react-query'
 import axios from 'axios'
-import { api } from '../../Helper Components/Api'
-import { AppContext } from '../../App'
-import BarSnack from '../../Helper Components/BarSnack'
-import LoadingSpinner from '../../Helper Components/LoadingSpinner'
-import { getCookies } from '../../Helper Components/CustomCookies'
 import moment from 'moment'
-import { abbriviation, exportToCSV, isPermissionToView } from '../../Static/StaticValues'
+import React, { useContext, useEffect } from 'react'
+import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2'
+import { MdAttachFile } from "react-icons/md"
+import { AppContext } from '../../App'
+import { api } from '../../Helper Components/Api'
+import BarSnack from '../../Helper Components/BarSnack'
+import { getCookies } from '../../Helper Components/CustomCookies'
+import LoadingSpinner from '../../Helper Components/LoadingSpinner'
+import CPagination from '../../Helper Components/Pagination'
+import Table from '../../Helper Components/Table'
+import { abbriviation, exportToCSV } from '../../Static/StaticValues'
+import BackArrow from '../../Helper Components/SideComponent'
 
 export default function TicketSystemListView({ _search }) {
     const { setSnackBarPopUp, count, setCount, page, setPage } = useContext(AppContext)
@@ -62,7 +63,6 @@ export default function TicketSystemListView({ _search }) {
             <BarSnack />
             <div>
                 <div className='flex justify-between'>
-                    {/* <BackArrow location={"/home"} title={"Ticketing System - Listing"} /> */}
                     {/* <div className='flex gap-4  mr-10'>
                         <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                         <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />

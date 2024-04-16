@@ -36,7 +36,8 @@ export const api = {
         view_all_data: `${link}/tkt-sys/view/all`,
         create: `${link}/tkt-sys/create/`,
         by_id: `${link}/tkt-sys/`,
-        get_all_user_list: `${link}/tkt-sys/get-all-users/`
+        get_all_user_list: `${link}/tkt-sys/get-all-users/`,
+        get_ticket_info_notifications_by_emp_id: `${link}/tkt-sys/notification/all`
     },
     dynamic_values: {
         tkt_type: `${link}/tkt-sys/tkt_type/`,

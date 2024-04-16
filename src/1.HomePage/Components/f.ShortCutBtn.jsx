@@ -6,7 +6,7 @@ import { IoIosPaper } from "react-icons/io";
 import { MdOutlinePolicy } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { isPermissionToView } from '../../Static/StaticValues';
-export default function ShortCutBtn() {
+export default function ShortCutBtn({ view }) {
 
     const ModulesIcons = [
         {
@@ -34,7 +34,11 @@ export default function ShortCutBtn() {
     return (
         <div className=' bg-[white] rounded-lg h-fit px-2 py-2 '>
             <div className='p-1'>
-                <span className='text-[1.2rem] font-extrabold text-[#555259]'>Modules & Policies</span>
+                <span className='text-[1.2rem] font-extrabold text-[#555259]'>{!view ? <>
+                    Modules & Policies
+                </> : <>
+                    Modules
+                </>}</span>
                 <div >
                     <Divider />
                 </div>
@@ -60,25 +64,27 @@ export default function ShortCutBtn() {
                             )
                         })}
                     </div>
-                    <div className='p-3'>
-                        <Divider sx={{ borderColor: "#AEB1B8" }} orientation='vertical' />
-                    </div>
-                    <div className='grid grid-cols-2 gap-7 '>
-                        {IconsIcons.map((_icon, i) => {
-                            return (
-                                <div key={i} className='flex justify-center hover-element px-3 py-1 rounded-xl'>
-                                    <div onClick={() => window.open(_icon.path, "_self")} key={i} className='text-center'>
-                                        <div className='flex justify-center '>
-                                            < _icon.icons size={40} color='#ED1C24' />
-                                        </div>
-                                        <div className='mt-1'>
-                                            <span className='text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
+                    {!view && <>
+                        <div className='p-3'>
+                            <Divider sx={{ borderColor: "#AEB1B8" }} orientation='vertical' />
+                        </div>
+                        <div className='grid grid-cols-2 gap-7 '>
+                            {IconsIcons.map((_icon, i) => {
+                                return (
+                                    <div key={i} className='flex justify-center hover-element px-3 py-1 rounded-xl'>
+                                        <div onClick={() => window.open(_icon.path, "_self")} key={i} className='text-center'>
+                                            <div className='flex justify-center '>
+                                                < _icon.icons size={40} color='#ED1C24' />
+                                            </div>
+                                            <div className='mt-1'>
+                                                <span className='text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
-                    </div>
+                                )
+                            })}
+                        </div>
+                    </>}
                 </div>
             </div>
         </div>
