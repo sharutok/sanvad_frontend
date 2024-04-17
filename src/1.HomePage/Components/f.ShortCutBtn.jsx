@@ -48,7 +48,6 @@ export default function ShortCutBtn({ view }) {
                     <div className='grid grid-cols-4 gap-4'>
                         {ModulesIcons.map((_icon, i) => {
                             return (
-
                                 <div key={i} style={{ cursor: `${(isPermissionToView(_icon.name) ? "pointer" : "not-allowed")}` }}
                                     onClick={() => isPermissionToView(_icon.name) ? window.open(_icon.path, "_self") : ""} className='grid justify-center text-center cursor-pointer hover-element px-3 py-1 rounded-xl '>
                                     <div className='flex justify-center'>
@@ -68,15 +67,12 @@ export default function ShortCutBtn({ view }) {
                         <div className='grid grid-cols-2 gap-7 '>
                             {IconsIcons.map((_icon, i) => {
                                 return (
-                                    <>
-                                        <div onClick={() => window.open(_icon.path, "_self")} key={i} className='grid hover-element px-3 py-1 rounded-xl'>
-                                            <div className='flex justify-center'>
-                                                <_icon.icons size={40} color='#ED1C24' />
-                                            </div>
-                                            <span className='inline-block max-w-xs truncate text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
+                                    <div onClick={() => window.open(_icon.path, "_self")} key={i} className='grid hover-element px-3 py-1 rounded-xl'>
+                                        <div className='flex justify-center'>
+                                            <_icon.icons size={40} color='#ED1C24' />
                                         </div>
-
-                                    </>
+                                        <span className='inline-block max-w-xs truncate text-[1rem] font-bold text-[#555259]'>{_icon.iconTitle}</span>
+                                    </div>
                                 )
                             })}
                         </div>
