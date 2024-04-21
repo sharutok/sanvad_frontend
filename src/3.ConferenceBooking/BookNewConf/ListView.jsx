@@ -1,23 +1,24 @@
-import React, { useContext, useMemo, useRef, useState } from 'react'
-import BackArrow from '../../Helper Components/SideComponent'
-import { TextField, Divider, Autocomplete, Box } from '@mui/material'
-import { AiOutlineInfoCircle } from 'react-icons/ai'
-import moment from 'moment'
-import '../../../Style/conferenceListView.css'
-import { api } from '../../Helper Components/Api'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { Autocomplete, Box, Divider, TextField } from '@mui/material'
+import Drawer from '@mui/material/Drawer'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { AppContext } from '../../App'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { User } from 'tabler-icons-react'
-import ConferenceBooking from './ConferenceBooking'
+import moment from 'moment'
+import React, { useContext, useMemo, useState } from 'react'
+import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { IoMdArrowBack, IoMdRefresh } from 'react-icons/io'
+import { User } from 'tabler-icons-react'
+import '../../../Style/conferenceListView.css'
+import { AppContext } from '../../App'
+import { api } from '../../Helper Components/Api'
 import LoadingSpinner from '../../Helper Components/LoadingSpinner'
-import Drawer from '@mui/material/Drawer';
+import BackArrow from '../../Helper Components/SideComponent'
+import ConferenceBooking from './ConferenceBooking'
 
 import dayjs from 'dayjs'
+import ButtonComponent from '../../Helper Components/ButtonComponent'
 import { getCookies } from '../../Helper Components/CustomCookies'
 
 export default function ConferenceBookingListView() {
@@ -159,7 +160,9 @@ export default function ConferenceBookingListView() {
             <div className='flex gap-5 mx-10 my-5'>
                 <div className='w-fit px-4 bg-[#eeeeee] rounded-lg shadow-[rgba(149,157,165,0.2)_0px_8px_24px]'>
                     <div className='w-fit'>
-                        <ButtonComponent onClick={handleClearBtn} icon={<IoMdRefresh color='white' size={"15"} />} btnName={"Clear All"} />
+                        <div className='w-fit mt-5'>
+                            <ButtonComponent onClick={handleClearBtn} icon={<IoMdRefresh color='white' size={"15"} />} btnName={"Clear All"} />
+                        </div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateCalendar
                                 defaultValue={dayjs(moment().format("YYYY-MM-DD"))}
@@ -272,20 +275,6 @@ const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, contro
     )
 }
 
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap w-fit mt-5 no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline mt-1'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
-
 function TemporaryDrawer({ body }) {
     const { drawerStatus, setDrawerStatus } = useContext(AppContext)
 
@@ -294,13 +283,12 @@ function TemporaryDrawer({ body }) {
             role="presentation"
         >
             <div className='flex gap-5 ml-5'>
-                <ButtonComponent icon={<IoMdArrowBack color='white' size={"15"} />} btnName={"Back"} onClick={() => setDrawerStatus(false)} />
+                <div className='mt-5'>
+                    <ButtonComponent icon={<IoMdArrowBack color='white' size={"15"} />} btnName={"Back"} onClick={() => setDrawerStatus(false)} />
+                </div>
                 <span className='text-3xl mt-5'>Book a Conference</span>
             </div>
             {body}
-            {/* <div className='absolute right-0 bottom-0 p-6 lg:hidden xl:block' >
-                <img loading='lazy' width={"300px"} src={IMAGES.conf_img_i} />
-            </div> */}
         </Box>
     );
 

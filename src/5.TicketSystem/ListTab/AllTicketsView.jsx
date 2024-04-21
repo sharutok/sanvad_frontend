@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Table from '../../Helper Components/Table'
-import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2'
-import CPagination from '../../Helper Components/Pagination'
+import { Tooltip } from '@mui/material';
+import { useQuery, useQueryClient, } from '@tanstack/react-query';
+import axios from 'axios';
+import moment from 'moment';
+import React, { useContext, useEffect } from 'react';
+import { HiMiniArrowSmallDown, HiMiniArrowSmallRight, HiMiniArrowSmallUp } from 'react-icons/hi2';
 import { MdAttachFile } from "react-icons/md";
-import { Fab, IconButton, TextField, Tooltip } from '@mui/material'
-import { useQuery, useQueryClient, } from '@tanstack/react-query'
-import axios from 'axios'
-import { api } from '../../Helper Components/Api'
-import { AppContext } from '../../App'
-import BarSnack from '../../Helper Components/BarSnack'
-import LoadingSpinner from '../../Helper Components/LoadingSpinner'
-import { getCookies } from '../../Helper Components/CustomCookies'
-import moment from 'moment'
-import { abbriviation, exportToCSV, isPermissionToView } from '../../Static/StaticValues'
+import { AppContext } from '../../App';
+import { api } from '../../Helper Components/Api';
+import BarSnack from '../../Helper Components/BarSnack';
+import { getCookies } from '../../Helper Components/CustomCookies';
+import LoadingSpinner from '../../Helper Components/LoadingSpinner';
+import CPagination from '../../Helper Components/Pagination';
+import Table from '../../Helper Components/Table';
+import { abbriviation } from '../../Static/StaticValues';
 
 
 export default function AllTicketsView({ _search }) {
@@ -84,20 +84,7 @@ export default function AllTicketsView({ _search }) {
     )
 }
 
-const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            onChange={onChange}
-            {...props}
-            className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
+
 
 function status(val) {
     if (val === "INPROGRESS") {

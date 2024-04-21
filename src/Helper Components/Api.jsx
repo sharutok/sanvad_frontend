@@ -76,6 +76,7 @@ export const api = {
         capex_wf_corporate: `${link}/wf/capex/corporate/`,
         capex_wf_plant: `${link}/wf/capex/plant/`,
         capex_create: `${link}/wf/capex/op/`,
+        all_wf_capex_list: `${link}/wf/all/capex-wf/list`
     },
     policies: {
         get_all_data: `${link}/policy/get-all-data`,

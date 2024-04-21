@@ -8,6 +8,11 @@ import { IoMdSettings } from "react-icons/io";
 import { FaUsersLine, FaClipboardCheck, FaRegIdBadge, FaFileInvoiceDollar } from 'react-icons/fa6'
 import { FaUserCog } from 'react-icons/fa'
 import { getCookies } from '../Helper Components/CustomCookies';
+import { IoMenuOutline } from "react-icons/io5";
+import { FaRegBell } from "react-icons/fa";
+import { GoHome } from "react-icons/go";
+
+import { FaHouseChimney, FaBars, FaBell } from "react-icons/fa6";
 
 export const static_val = {
     prefix_email_id: [
@@ -117,6 +122,32 @@ export const links = [
 
     },
 ];
+export const TabBarlinks = [
+    {
+        label: 'Home',
+        icon: GoHome,
+        mainlink: "/ticket/sys/list",
+        index: 0,
+        // whichFunction: (func) => { func() }
+    },
+    {
+        label: 'Menu',
+        icon: IoMenuOutline,
+        mainlink: "/user/management/list",
+        index: 1,
+        // whichFunction: (func) => { func() }
+    },
+    {
+        label: 'Notification',
+        icon: FaRegBell,
+        mainlink: "/conference/booking/list",
+        index: 2,
+        // whichFunction: (func) => { func() }
+    },
+    ,
+];
+
+
 
 
 

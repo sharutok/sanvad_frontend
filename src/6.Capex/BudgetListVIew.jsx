@@ -16,6 +16,7 @@ import { IoMdArrowBack } from 'react-icons/io';
 import IMAGES from '../assets/Image/Image';
 import { abbriviation, isPermissionToView } from '../Static/StaticValues';
 import { getCookies } from '../Helper Components/CustomCookies';
+import ButtonComponent from '../Helper Components/ButtonComponent';
 
 export default function BudgetListVIew({ _search, _setSearch }) {
     const thead = ["Budget No", "Purpose code", "Line No", "Purpose", "Department", "Capex Group", "Purpose Description", "Category", "No. Of Capex ", "Budget (Consumed v/s Remaining)", "Final Budget", "Budget Status"]
@@ -130,7 +131,9 @@ function TemporaryDrawer({ body }) {
             role="presentation"
         >
             <div className='flex gap-5 ml-5'>
-                <ButtonComponent icon={<IoMdArrowBack color='white' size={"15"} />} btnName={"Back"} onClick={() => setDrawerStatus(false)} />
+                <div className='mt-5'>
+                    <ButtonComponent icon={<IoMdArrowBack color='white' size={"15"} />} btnName={"Back"} onClick={() => setDrawerStatus(false)} />
+                </div>
                 <span className='text-3xl mt-5'>Update Budget</span>
             </div>
             {body}
@@ -157,16 +160,16 @@ function TemporaryDrawer({ body }) {
     );
 }
 
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap w-fit mt-5 no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline mt-1'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
+// const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
+//     return (
+//         <div
+//             onClick={onClick}
+//             {...props}
+//             className='whitespace-nowrap w-fit mt-5 no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+//             <div className='no-underline mt-1'>
+//                 {icon}
+//             </div>
+//             {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
+//         </div>
+//     )
+// }

@@ -1,34 +1,45 @@
-import { useParams, useSearchParams } from 'react-router-dom'
-import { api } from '../../Helper Components/Api';
-import axios from 'axios'
-import { FaFilePdf } from "react-icons/fa6";
-import LoadingSpinner from '../../Helper Components/LoadingSpinner';
-import React, { useContext, useState, } from 'react'
-import {
-    styled, Typography, TextField, Divider, FormControlLabel, FormControl, FormLabel, RadioGroup, FormHelperText, Radio, Drawer
-} from '@mui/material'
-import { useForm, Controller, get } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import '../../../Style/UserManagement.css'
-import BackArrow from '../../Helper Components/SideComponent'
-import { ApproverCapexErrorSchema } from '../../Form Error Schema/CapexErrorSchema'
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { yupResolver } from '@hookform/resolvers/yup';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import Table from '../../Helper Components/Table';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import {
+    Divider,
+    Drawer,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    FormLabel,
+    Radio,
+    RadioGroup,
+    styled,
+    TextField,
+    Typography
+} from '@mui/material';
 import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
-import PreFilledSubForm from '../PreFilledSubForm';
-import { MdBrowserUpdated, MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from 'react-icons/md';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import React, { useContext, useState, } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { FaFilePdf } from "react-icons/fa6";
+import { IoMdArrowBack } from 'react-icons/io';
+import { MdBrowserUpdated, MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from 'react-icons/md';
+import { useParams, useSearchParams } from 'react-router-dom';
+import '../../../Style/UserManagement.css';
 import { AppContext } from '../../App';
-import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import { ApproverCapexErrorSchema } from '../../Form Error Schema/CapexErrorSchema';
+import { api } from '../../Helper Components/Api';
 import { getCookies } from '../../Helper Components/CustomCookies';
+import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import LoadingSpinner from '../../Helper Components/LoadingSpinner';
+import BackArrow from '../../Helper Components/SideComponent';
+import Table from '../../Helper Components/Table';
 import { forceDownload } from '../../Static/StaticValues';
 import EditCapex from '../EditCapex';
-import { IoMdArrowBack } from 'react-icons/io';
+import PreFilledSubForm from '../PreFilledSubForm';
+import ButtonComponent from '../../Helper Components/ButtonComponent';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -299,25 +310,7 @@ const CustomValueTextField = ({ label, value, multiline, size, className, ...pro
     )
 }
 
-const CustomTextField = ({ name, label, errors, register, watch, multiline, rows }) => {
-    return (
-        <TextField multiline={multiline || false} rows={rows || 2} key={label} value={watch(name)} label={label} size={"small"}  {...register(name)} error={!!errors[name]} helperText={errors[name] && errors[name].message} />
-    )
-}
 
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap w-fit mt-5 no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline '>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
 
 
 function VerticalLinearStepper({ response }) {

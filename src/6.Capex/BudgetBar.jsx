@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AppContext } from '../App';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 
 

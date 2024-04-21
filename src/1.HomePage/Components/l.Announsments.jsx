@@ -47,7 +47,7 @@ export default function Announsments() {
                     <Divider />
                 </div>
             </div>
-            <List sx={{ width: '100%', maxHeight: "10rem" }} className=' overflow-y-scroll rounded-b-xl bg-[#fff] '>
+            <List sx={{ width: '100%' }} className=' overflow-y-scroll rounded-b-xl bg-[#fff] '>
                 {getAllAnnouncements?.data?.data?.data.length ? getAllAnnouncements?.data?.data?.data?.map((x, i) => {
                     return (
                         <div key={i} >

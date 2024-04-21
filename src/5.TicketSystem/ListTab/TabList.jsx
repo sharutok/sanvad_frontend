@@ -5,15 +5,15 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
-import { AiOutlineDownload } from 'react-icons/ai';
 import { IoIosPaper } from 'react-icons/io';
 import { AppContext } from '../../App';
+import { api } from '../../Helper Components/Api';
 import ExportXL from '../../Helper Components/ExportXL';
 import BackArrow from '../../Helper Components/SideComponent';
 import { isPermissionToView } from '../../Static/StaticValues';
 import AllTicketsView from './AllTicketsView';
 import TicketSystemListView from './ListView';
-import { api } from '../../Helper Components/Api';
+import ButtonComponent from '../../Helper Components/ButtonComponent';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -47,16 +47,6 @@ function a11yProps(index) {
     };
 }
 
-async function exportData(setDialogStatus) {
-    try {
-        console.log("lllllllllll");
-        setDialogStatus(true)
-        // const data = await axios.post(api.utils.download_excel, { "data_module": "ticket" })
-        // exportToCSV(data?.data?.data, `Ticket Export ${moment().format("DD_MM_YYYY")}`)
-    } catch (error) {
-        console.log("error in exporting", error);
-    }
-}
 
 export default function TabList() {
     const [value, setValue] = useState(0);
@@ -77,7 +67,6 @@ export default function TabList() {
                         <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
                         <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />
                         {isPermissionToView("ticketsystem:export") &&
-                            // <ButtonComponent onClick={() => exportData(setDialogStatus)} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />
                             <ExportXL api={api.utils.download_excel} request={{ "data_module": "ticket" }} />
 
                         }
@@ -100,18 +89,4 @@ export default function TabList() {
             </Box>
         </div>
     );
-}
-const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            onChange={onChange}
-            {...props}
-            className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
 }

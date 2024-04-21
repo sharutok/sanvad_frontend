@@ -46,6 +46,7 @@ function UpdateCapexFlowForm() {
         defaultValues: {
             id: "",
             department: "",
+            plant: "",
             which_flow: 0,
             first_approver: "",
             second_approver: "",
@@ -72,27 +73,32 @@ function UpdateCapexFlowForm() {
 
 
     async function getData(department) {
-        const response = await axios.get(`${api.wf.capex_create}?department=${department}`)
-        let obj = {}
-        response?.data?.data.map(x => {
-            obj = { ...x }
-        })
-        setUsermanagement({ ...usermanagement, module_permission: obj.notify_user })
-        setValue('which_flow', obj.which_flow)
-        setValue("id", obj.id)
-        if (Number(obj.which_flow) === 0) {
-            setFouthApprover(false)
-            setValue("first_approver", obj.approver[0])
-            setValue("second_approver", obj.approver[1])
-            setValue("third_approver", obj.approver[2])
-            setValue("fourth_approver", obj.approver[3])
-        } else {
-            setFouthApprover(true)
-            setValue("first_approver", obj.approver[0])
-            setValue("second_approver", obj.approver[1])
-            setValue("third_approver", obj.approver[2])
-            setValue("fourth_approver", "")
-
+        if (department) {
+            const response = await axios.get(`${api.wf.capex_create}?department=${department}`)
+            console.log(response?.data?.data);
+            let obj = {}
+            if (response?.data?.data.length > 0) {
+                response?.data?.data.map(x => {
+                    obj = { ...x }
+                })
+            }
+            // setUsermanagement({ ...usermanagement, module_permission: obj.notify_user })
+            // setValue('plant', obj?.plant)
+            // setValue('which_flow', obj?.which_flow)
+            // setValue("id", obj?.id)
+            // if (Number(obj?.which_flow) === 0) {
+            //     setFouthApprover(false)
+            //     setValue("first_approver", obj?.approver[0])
+            //     setValue("second_approver", obj?.approver[1])
+            //     setValue("third_approver", obj?.approver[2])
+            //     setValue("fourth_approver", obj?.approver[3])
+            // } else {
+            //     setFouthApprover(true)
+            //     setValue("first_approver", obj?.approver[0])
+            //     setValue("second_approver", obj?.approver[1])
+            //     setValue("third_approver", obj?.approver[2])
+            //     setValue("fourth_approver", "")
+            // }
         }
     }
 
@@ -117,12 +123,14 @@ function UpdateCapexFlowForm() {
     }
 
     return (
-        // <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
         <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
             <BackArrow title={"Update Workflow - Capex"} location={'/workflow/capex-system'} />
             <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
                 <div className='grid gap-7'>
-                    <CustomAutoCompleteDepartment getData={getData} control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
+                    <div className='flex gap-5'>
+                        <CustomAutoCompleteDepartment getData={getData} control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
+                        <CustomAutoComplete control={control} errors={errors} name={"plant"} label={"Plant"} options={plant_dept?.data?.data?.plant_data || []} />
+                    </div>
                     <Controller
                         render={({ field: { onChange, onBlur, value, name, ref },
                             fieldState: { isTouched, isDirty, error },

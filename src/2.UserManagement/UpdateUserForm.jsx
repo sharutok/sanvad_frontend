@@ -1,32 +1,38 @@
-import { useParams } from 'react-router-dom'
-import { api } from '../Helper Components/Api';
-import axios from 'axios'
-import LoadingSpinner from '../Helper Components/LoadingSpinner';
-import {
-  Divider
-} from '@mui/material'
-import moment from 'moment';
-import dayjs from 'dayjs';
-import React, { useContext, useEffect, useState } from 'react'
-import {
-  Box, Button, FormHelperText, TextField, Autocomplete, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormGroup, Checkbox
-} from '@mui/material'
-import { useForm, Controller, get } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import '../../Style/UserManagement.css'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Switch from '@mui/material/Switch';
-import { AppContext } from '../App'
-import BackArrow from '../Helper Components/SideComponent'
-import { UserErrorSchema } from '../Form Error Schema/UserErrorSchema'
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { yupResolver } from '@hookform/resolvers/yup';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
-import BarSnack from '../Helper Components/BarSnack';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import {
+  Autocomplete,
+  Checkbox,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Radio, RadioGroup,
+  TextField
+} from '@mui/material';
+import Switch from '@mui/material/Switch';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import moment from 'moment';
+import React, { useContext, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { MdOutlineLockReset } from 'react-icons/md';
+import { useParams } from 'react-router-dom';
+import '../../Style/UserManagement.css';
+import { AppContext } from '../App';
+import { UserErrorSchema } from '../Form Error Schema/UserErrorSchema';
+import { api } from '../Helper Components/Api';
+import BarSnack from '../Helper Components/BarSnack';
+import ButtonComponent from '../Helper Components/ButtonComponent';
+import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
+import LoadingSpinner from '../Helper Components/LoadingSpinner';
+import BackArrow from '../Helper Components/SideComponent';
 import { org } from '../Static/StaticValues';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -331,20 +337,20 @@ const CustomDate = ({ register, name, label, errors, control, watch }) => {
     />
   )
 }
-const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
-  return (
-    <div
-      onClick={onClick}
-      onChange={onChange}
-      {...props}
-      className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-      <div className='no-underline'>
-        {icon}
-      </div>
-      {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-    </div>
-  )
-}
+// const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
+//   return (
+//     <div
+//       onClick={onClick}
+//       onChange={onChange}
+//       {...props}
+//       className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+//       <div className='no-underline'>
+//         {icon}
+//       </div>
+//       {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
+//     </div>
+//   )
+// }
 
 
 

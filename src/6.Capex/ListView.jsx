@@ -22,6 +22,7 @@ import { AiOutlineDownload } from 'react-icons/ai';
 import moment from 'moment';
 import { CapexTab } from '../Helper Components/CustomCookies'
 import { useAtom } from 'jotai'
+import ButtonComponent from '../Helper Components/ButtonComponent';
 
 
 export default function ListView() {
@@ -105,19 +106,7 @@ function BasicTabs({ _search, _setSearch }) {
         </Box >
     );
 }
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap w-fit no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
+
 const UploadFiles = ({ inputFile }) => {
     const { setSnackBarPopUp, setBtnSaving, setDialogStatus } = useContext(AppContext)
     const [tktFiles, setTKTFiles] = useState([])

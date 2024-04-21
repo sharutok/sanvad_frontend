@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Table from '../Helper Components/Table'
-import BackArrow from '../Helper Components/SideComponent'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { IconButton, TextField, Tooltip } from '@mui/material'
-import { api } from '../Helper Components/Api'
-import { AiOutlineDownload } from 'react-icons/ai'
+import { TextField, Tooltip } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import LoadingSpinner from '../Helper Components/LoadingSpinner'
-import { AiOutlineUserAdd } from 'react-icons/ai'
-import CPagination from '../Helper Components/Pagination'
-import { AppContext } from '../App'
 import { useAtom } from 'jotai'
+import React, { useContext, useEffect } from 'react'
+import { AiOutlineUserAdd } from 'react-icons/ai'
+import { AppContext } from '../App'
+import { api } from '../Helper Components/Api'
 import { searchAtom } from '../Helper Components/CustomCookies'
+import LoadingSpinner from '../Helper Components/LoadingSpinner'
+import CPagination from '../Helper Components/Pagination'
+import BackArrow from '../Helper Components/SideComponent'
+import Table from '../Helper Components/Table'
+import ButtonComponent from '../Helper Components/ButtonComponent'
 
 export default function UserManagementListView() {
     const { count, setCount, page, setPage } = useContext(AppContext)
@@ -20,7 +20,6 @@ export default function UserManagementListView() {
     const thead = ["Employee Code", "Function", "Location", "First Name", "Last Name", "Department", "Plant", "Organization", "User Status", "Date of joining"]
 
     async function get_user_data() {
-        // return await axios.get(`${api.user_management.get_data}/?page=${page}&search=${_search || getCookies()[3]}`)
         return await axios.get(`${api.user_management.get_data}/?page=${page}&search=${searchVariable}`)
     }
 
@@ -35,7 +34,6 @@ export default function UserManagementListView() {
 
     function handleNav(g) {
         window.location.href = `/user/management/indvi/${g.id}`
-        // window.open(`/user/management/indvi/${g.id}`, '_blank')
     }
 
     return (
@@ -88,19 +86,19 @@ function UserStatus(val) {
 }
 
 
-const ButtonComponent = ({ onClick, icon, btnName, ...props }) => {
-    return (
+// const ButtonComponent = ({ onClick, icon, btnName, ...props }) => {
+//     return (
 
-        <div
-            onClick={onClick}
-            {...props}
-            className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
+//         <div
+//             onClick={onClick}
+//             {...props}
+//             className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+//             <div className='no-underline'>
+//                 {icon}
+//             </div>
+//             {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
+//         </div>
+//     )
+// }
 
 

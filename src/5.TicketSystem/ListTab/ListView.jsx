@@ -13,11 +13,9 @@ import LoadingSpinner from '../../Helper Components/LoadingSpinner'
 import CPagination from '../../Helper Components/Pagination'
 import Table from '../../Helper Components/Table'
 import { abbriviation, exportToCSV } from '../../Static/StaticValues'
-import BackArrow from '../../Helper Components/SideComponent'
 
 export default function TicketSystemListView({ _search }) {
     const { setSnackBarPopUp, count, setCount, page, setPage } = useContext(AppContext)
-    // const [_search, _setSearch] = useState("")
     const emp_no = getCookies()[0]
     const thead = ["TIcket ID", "Ticket Title", "Ticket Type", "Requirement Type", "Requester", "Severity", "Ticket Date", "Status", "Current At"]
     const queryClient = useQueryClient()
@@ -27,25 +25,11 @@ export default function TicketSystemListView({ _search }) {
         return data
     })
 
-
     useEffect(() => {
         setCount(Math.ceil(ticket_listing?.data?.data.count / 10))
     })
 
-
-    async function handleDelete(id) {
-        try {
-            const response = await axios.delete(api.ticket_system.by_id + id)
-            response.data.status_code === 200 && setSnackBarPopUp({ state: true, message: "Deleted Entry", severity: "s" })
-            queryClient.invalidateQueries(['ticket-listing'])
-        }
-        catch (error) {
-            console.log("error", error);
-        }
-    }
-
     function handleNav(g) {
-        // window.location.href = `/ticket/sys/${g.id}`
         window.open(`/ticket/sys/${g.id}`, '_blank')
     }
 
@@ -63,11 +47,6 @@ export default function TicketSystemListView({ _search }) {
             <BarSnack />
             <div>
                 <div className='flex justify-between'>
-                    {/* <div className='flex gap-4  mr-10'>
-                        <TextField onChange={(e) => _setSearch(e.target.value)} sx={{ width: "20rem" }} id="outlined-basic" label="Search" variant="outlined" size='small' placeholder='Press Enter to search' />
-                        <ButtonComponent onClick={() => { window.location.href = "/ticket/sys/new" }} icon={<IoIosPaper color='white' size={"23"} />} btnName={"New Ticket"} />
-                        {isPermissionToView("ticketsystem:export") && <ButtonComponent onClick={() => exportData()} icon={<AiOutlineDownload color='white' size={"23"} />} btnName={"Export"} />}
-                    </div> */}
                 </div>
                 {!ticket_listing.isLoading ? <div className=' mx-10'>
                     <Table thead={thead}
@@ -85,19 +64,6 @@ export default function TicketSystemListView({ _search }) {
                                             <td onClick={() => handleNav(g)} >{g.created_at}</td>
                                             <td onClick={() => handleNav(g)} className='align-middle'>{status(g.tkt_status)}</td>
                                             <td onClick={() => handleNav(g)}>{g.tkt_current_at} {g.role && <b>({g.role})</b>}</td>
-                                            {/* <td onClick={() => handleNav(g)}>
-                                                {g.closed_by && <p>
-                                                    <>{g.closed_by}</> on <>{moment(g.closed_date).format("DD-MM-YYYY")}</>
-                                                </p>}
-
-                                            </td> */}
-                                            {/* {String(getCookies()[0]) === String(g.requester_emp_no) && <td className='delete'>
-                                                <TipTool body={< >
-                                                    <IconButton onClick={() => handleDelete(g.id)}>
-                                                        <MdDeleteOutline color='#f08080' size={22} />
-                                                    </IconButton>
-                                                </>} title={"Delete"} />
-                                            </td>} */}
                                         </tr>
                                     </Tooltip>
                                 )
@@ -110,22 +76,6 @@ export default function TicketSystemListView({ _search }) {
         </div>
     )
 }
-
-const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            onChange={onChange}
-            {...props}
-            className=' no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
-
 function status(val) {
     if (val === "INPROGRESS") {
         return (<div className=' font-extrabold  text-xs  px-2 py-1 rounded-xl text-yellow-500'><p className='mt-[0.1rem]'>{val}</p></div>)

@@ -25,6 +25,7 @@ import { getCookies } from './Helper Components/CustomCookies';
 import TabList from './5.TicketSystem/ListTab/TabList';
 import CreateFlowForm from './8.WorkFlow/CapexWorkFlow/CapexFlowForm';
 import UpdateCapexFlowForm from './8.WorkFlow/CapexWorkFlow/UpdateCapexFlowForm';
+import TabBar from './1.HomePage/Components/r.CustomTabBar';
 export default function Path() {
 
     if (!getCookies()[0]) {
@@ -81,6 +82,7 @@ export default function Path() {
                     </Routes>
                 </Router>
             </div>
+
         </>
     )
 }

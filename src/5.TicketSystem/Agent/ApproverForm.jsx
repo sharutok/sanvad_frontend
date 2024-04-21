@@ -1,33 +1,43 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
-    styled, Stack, Typography, TextField, Divider, Button, Autocomplete, Checkbox, FormControlLabel, InputAdornment, FormControl, FormLabel, RadioGroup, Radio, FormHelperText
+    Autocomplete,
+    Divider,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    FormLabel,
+    Radio,
+    RadioGroup,
+    styled,
+    TextField,
+    Typography
 } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import Box from '@mui/material/Box';
+import Step from '@mui/material/Step';
+import StepContent from '@mui/material/StepContent';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { ApproverTicketErrorSchema } from '../../Form Error Schema/TicketSysytemErrorSchema';
-import BackArrow from '../../Helper Components/SideComponent';
+import React, { useContext, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
 import { api } from '../../Helper Components/Api';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
+import BackArrow from '../../Helper Components/SideComponent';
 const Input = styled('input')({
     display: 'none',
 });
-import * as yup from 'yup'
 
+import moment from 'moment';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { severity } from '../../Static/StaticValues';
-import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import { AppContext } from '../../App';
+import ButtonComponent from '../../Helper Components/ButtonComponent';
 import { getCookies } from '../../Helper Components/CustomCookies';
+import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
-import moment from 'moment';
+import { severity } from '../../Static/StaticValues';
 
 export default function ApproverForm() {
     const emp_id = getCookies()[0]
@@ -389,19 +399,7 @@ const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multili
     )
 }
 
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap no-underline rounded-full p-2 h-fit border-[#ffffff] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
+
 
 function severityArrow(val) {
     if (val === "0") {

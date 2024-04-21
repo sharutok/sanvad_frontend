@@ -26,6 +26,7 @@ import { asset_type, budgeted_type, nature_of_assets, payback_period_return_of_i
 import { RxCross2 } from 'react-icons/rx';
 import { getCookies } from '../Helper Components/CustomCookies';
 import LoadingButtonWithSnack from '../Helper Components/LoadingButtonWithSnack';
+import ButtonComponent from '../Helper Components/ButtonComponent';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const Input = styled('input')({
@@ -344,77 +345,5 @@ const CustomTextField = ({ name, label, errors, register, watch, multiline, rows
         <TextField multiline={multiline || false} rows={rows || 2} key={label} className="w-[20rem]" value={watch(name)} label={label} size={"small"}  {...register(name)} error={!!errors[name]} helperText={errors[name] && errors[name].message} />
     )
 }
-// const CustomDate = ({ register, name, label, errors, control, watch }) => {
-//     return (
-//         <Controller render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { isTouched, isDirty, error }, }) => (
-//             <LocalizationProvider dateAdapter={AdapterDayjs}>
-//                 <DatePicker
-//                     className='w-[20rem]'
-//                     format="DD/MM/YYYY"
-//                     slotProps={{
-//                         textField:
-//                         {
-//                             size: 'small',
-//                             helperText: errors[name] && errors[name].message,
-//                             error: !!errors[name]
-//                         },
-//                     }}
-//                     {...register(name)}
-//                     label={label}
-//                     value={dayjs(watch(name))}
-//                     onChange={onChange}
-//                     onBlur={onBlur}
-//                 />
-//             </LocalizationProvider>
-//         )}
-//             name={name}
-//             control={control}
-//             rules={{ required: true }}
-//         />
-
-//     )
-// }
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap w-fit mt-5 no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline '>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

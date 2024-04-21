@@ -3,8 +3,6 @@ import Cookies from "universal-cookie";
 import { AppContext } from '../App';
 import { atomWithStorage, RESET } from 'jotai/utils'
 
-
-
 const cookies = new Cookies()
 export const searchAtom = atomWithStorage('searchVariable', null)
 export const paginationAtom = atomWithStorage('_pagination', '')

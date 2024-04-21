@@ -44,6 +44,7 @@ function CreateFlowForm() {
     })),
     defaultValues: {
       department: "",
+      plant: "",
       which_flow: 0,
       first_approver: "",
       second_approver: "",
@@ -59,9 +60,9 @@ function CreateFlowForm() {
     return data
   }, { staleTime: Infinity })
 
-  const user_perm = useQuery(["user-permission"], async () => {
-    return await axios.get(api.user.user_permissions)
-  }, { staleTime: Infinity })
+  // const user_perm = useQuery(["user-permission"], async () => {
+  //   return await axios.get(api.user.user_permissions)
+  // }, { staleTime: Infinity })
 
   const plant_dept = useQuery(['plant_dept'], async () => {
     const data = axios.get(api.utils.dept_plant)
@@ -71,31 +72,36 @@ function CreateFlowForm() {
 
 
   const onSubmit = async (data) => {
-    try {
-      const response = await axios.post(api.wf.capex_create, { ...data, notify_user: usermanagement.module_permission })
-      setCapexMess(response?.data?.mess)
-      if (response?.data.status == 200) {
-        setSnackBarPopUp({ state: true, message: "WF Created", severity: 's' })
+    if (data) {
+      try {
+        const response = await axios.post(api.wf.capex_create, { ...data, notify_user: usermanagement.module_permission })
+        if (response?.data?.status === 400) { throw new Error((response?.data?.mess)) }
         setBtnSaving(true)
-        setTimeout(() => {
-          window.location.href = "/workflow/capex-system"
-          setSnackBarPopUp({ state: false, message: "", severity: 's' })
-          setBtnSaving(false)
-        }, 1 * 1000)
+        if (response?.data.status === 200) {
+          setSnackBarPopUp({ state: true, message: "WF Created", severity: 's' })
+          setTimeout(() => {
+            window.location.href = "/workflow/capex-system"
+            setSnackBarPopUp({ state: false, message: "", severity: 's' })
+            setBtnSaving(false)
+          }, 1 * 1000)
+        }
+      } catch (error) {
+        setBtnSaving(false)
+        console.log("err", ((error)));
+        setCapexMess(String(error))
       }
-
-    } catch (error) {
-      console.log("err", error);
     }
   }
-
   return (
     // <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
     <form className='mt-20' onSubmit={handleSubmit(onSubmit)}>
       <BackArrow title={"Create Workflow - Capex"} location={'/workflow/capex-system'} />
       <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
         <div className='grid gap-7'>
-          <CustomAutoCompleteDepartment control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
+          <div className='flex gap-5'>
+            <CustomAutoCompleteDepartment control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
+            <CustomAutoCompletePlant control={control} errors={errors} name={"plant"} label={"Plant"} options={plant_dept?.data?.data?.plant_data || []} />
+          </div>
           <Controller
             render={({ field: { onChange, onBlur, value, name, ref },
               fieldState: { isTouched, isDirty, error },
@@ -164,10 +170,10 @@ function CreateFlowForm() {
           </div>
         </div>
         <LoadingButtonWithSnack beforeName={"Create Flow"} afterName={"Creating...."} />
-      </div>
+      </div >
       <div>
       </div>
-    </form>
+    </form >
   )
 }
 
@@ -193,6 +199,7 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
               key={name}
               {...params}
               size={"small"}
+              required
               label={label}
               variant="outlined"
               error={errors[name]} helperText={errors[name] && errors[name].message}
@@ -208,7 +215,6 @@ const CustomAutoComplete = ({ name, label, options, control, errors }) => {
   )
 }
 const CustomAutoCompleteDepartment = ({ name, label, options, control, errors }) => {
-
   return (
     <Controller
       key={name}
@@ -224,14 +230,7 @@ const CustomAutoCompleteDepartment = ({ name, label, options, control, errors })
           {...field}
           options={options}
           renderInput={(params) => (
-            <TextField
-              key={name}
-              {...params}
-              size={"small"}
-              label={label}
-              variant="outlined"
-              error={errors[name]} helperText={errors[name] && errors[name].message}
-            />
+            <TextField required key={name} {...params} size={"small"} label={label} variant="outlined" error={errors[name]} helperText={errors[name] && errors[name].message} />
           )}
           onChange={(e, selectedValue) => {
             field.onChange(selectedValue);
@@ -242,3 +241,33 @@ const CustomAutoCompleteDepartment = ({ name, label, options, control, errors })
 
   )
 }
+const CustomAutoCompletePlant = ({ name, label, options, control, errors }) => {
+  return (
+    <Controller
+      key={name}
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <Autocomplete
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          key={name}
+          className="w-[20rem]"
+          disablePortal
+          id="combo-box-demo"
+          {...field}
+          options={options}
+          renderInput={(params) => (
+            <TextField key={name} {...params} size={"small"}
+              label={label}
+              placeholder='Leave empty if there'
+              variant="outlined" error={errors[name]} helperText={errors[name] && errors[name].message} />
+          )}
+          onChange={(e, selectedValue) => {
+            field.onChange(selectedValue);
+          }}
+        />
+      )}
+    />
+
+  )
+} 

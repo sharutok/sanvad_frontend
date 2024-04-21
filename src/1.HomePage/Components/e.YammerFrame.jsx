@@ -100,7 +100,7 @@ function ICarousels({ data }) {
     return (
         data?.data?.data?.map((x, i) => {
             return (
-                <div key={i} className='grid mb-6 '>
+                <div key={i} className='grid mb-6'>
                     <div className='shadow-[rgba(50,50,93,0.25)_0px_2px_5px_-1px,rgba(0,0,0,0.3)_0px_1px_3px_-1px] p-2 grid rounded-xl '>
                         <>
                             <div className='flex gap-2 p-1'>

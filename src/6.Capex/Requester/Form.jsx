@@ -1,40 +1,49 @@
-import { useParams } from 'react-router-dom'
-import { api } from '../../Helper Components/Api';
-import axios from 'axios'
-import moment from 'moment';
-import { useQuery } from '@tanstack/react-query';
-import dayjs from 'dayjs';
-import React, { useContext, useEffect, useState, useRef } from 'react'
-import { CloudUpload } from 'tabler-icons-react';
 import {
-    styled, Stack, Typography, Card, CardContent, TextField, Divider, Button, Autocomplete, InputAdornment, IconButton
-} from '@mui/material'
+    Autocomplete,
+    Button,
+    Card, CardContent,
+    Divider,
+    IconButton,
+    Stack,
+    styled,
+    TextField,
+    Typography
+} from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import moment from 'moment';
+import React, { useContext, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { CloudUpload } from 'tabler-icons-react';
+import { api } from '../../Helper Components/Api';
 
-import { useForm, Controller, get } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import '../../../Style/UserManagement.css'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AppContext } from '../../App'
-import BackArrow from '../../Helper Components/SideComponent'
-import { CapexErrorSchema } from '../../Form Error Schema/CapexErrorSchema'
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { yupResolver } from '@hookform/resolvers/yup';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import PreFilledSubForm from '../PreFilledSubForm';
-import BudgetBar from '../BudgetBar';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import Table from '../../Helper Components/Table';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Controller, useForm } from 'react-hook-form';
+import { MdDeleteOutline, MdRefresh } from 'react-icons/md';
+import { RxCross2 } from 'react-icons/rx';
 import {
     TbMoneybag
 } from 'react-icons/tb';
-import TipTool from '../../Helper Components/TipTool';
-import { MdDeleteOutline, MdRefresh } from 'react-icons/md';
-import { asset_type, budgeted_type, nature_of_assets, payback_period_return_of_investment, static_val } from '../../Static/StaticValues';
-import { RxCross2 } from 'react-icons/rx';
+import '../../../Style/UserManagement.css';
+import { AppContext } from '../../App';
+import { CapexErrorSchema } from '../../Form Error Schema/CapexErrorSchema';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
+import BackArrow from '../../Helper Components/SideComponent';
+import Table from '../../Helper Components/Table';
+import TipTool from '../../Helper Components/TipTool';
+import { asset_type, nature_of_assets, payback_period_return_of_investment } from '../../Static/StaticValues';
+import BudgetBar from '../BudgetBar';
+import PreFilledSubForm from '../PreFilledSubForm';
+import ButtonComponent from '../../Helper Components/ButtonComponent';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const Input = styled('input')({
@@ -53,22 +62,22 @@ export default function Form() {
         mode: "onTouched",
         resolver: yupResolver(ErrorSchema),
         defaultValues: {
-            nature_of_requirement: "",
-            purpose: "",
-            payback_period: "",
-            return_on_investment: "",
+            nature_of_requirement: "q",
+            purpose: "q",
+            payback_period: "q",
+            return_on_investment: "q",
             requisition_date: moment().format("YYYY-MM-DD"),
-            capex_for_which_department: "",
-            total_cost: "",
-            site_delivery_date: "",
-            installation_date: "",
-            comment1: "",
-            comment2: "",
-            comment3: "",
-            comment4: "",
-            comment5: "",
-            comment6: "",
-            comment7: "",
+            capex_for_which_department: "q",
+            total_cost: "1",
+            site_delivery_date: moment().format("YYYY-MM-DD"),
+            installation_date: moment().format("YYYY-MM-DD"),
+            comment1: "1",
+            comment2: "1",
+            comment3: "1",
+            comment4: "1",
+            comment5: "1",
+            comment6: "1",
+            comment7: "1",
             // nature_of_assets: "",
             // asset_type: "",
             // requirement: "",
@@ -420,19 +429,6 @@ const RequestionDate = ({ register, name, label, errors, control, watch, disable
             rules={{ required: true }}
         />
 
-    )
-}
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap no-underline rounded-full p-2 h-fit border-[#ffffff] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#fff] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
     )
 }
 

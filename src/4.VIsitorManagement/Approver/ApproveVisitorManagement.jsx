@@ -37,6 +37,7 @@ import BarSnack from '../../Helper Components/BarSnack';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ButtonComponent from '../../Helper Components/ButtonComponent';
 
 const ErrorSchema = ApproverVisitorMangErrorSchema
 const videoConstraints = {
@@ -495,16 +496,16 @@ function CustomEndDateTime({ register, name, label, errors, control, watch, disa
         />
     )
 }
-const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-    return (
-        <div
-            onClick={onClick}
-            {...props}
-            className='whitespace-nowrap no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-            <div className='no-underline'>
-                {icon}
-            </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-        </div>
-    )
-}
+// const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
+//     return (
+//         <div
+//             onClick={onClick}
+//             {...props}
+//             className='whitespace-nowrap no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
+//             <div className='no-underline'>
+//                 {icon}
+//             </div>
+//             {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
+//         </div>
+//     )
+// }

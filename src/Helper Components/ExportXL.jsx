@@ -71,7 +71,7 @@ const ButtonComponent = ({ onChange, icon, btnName, onClick, ...props }) => {
             <div className='no-underline'>
                 {icon}
             </div>
-            {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
+            {btnName && <span className='text-[#ebebeb]  text-[15px] no-underline ml-2'>{btnName}</span>}
         </div>
     )
 }
