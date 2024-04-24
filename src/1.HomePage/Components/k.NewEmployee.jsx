@@ -45,15 +45,15 @@ export default function NewEmployee() {
     }
 
     return (
-        <div className='h-fit'>
-            <div className='p-3 bg-[#fff] rounded-t-xl '>
+        <div >
+            < div className='p-3 bg-[#fff] rounded-t-xl ' >
                 <span className='text-[1.2rem] font-extrabold text-[#555259] '>Birthdays</span>
                 <div >
                     <Divider />
                 </div>
-            </div>
+            </ div>
             <BarSnack />
-            <List sx={{ width: '100%' }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
+            <List sx={{ width: '100%', maxHeight: '10rem' }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
                 {tkt_type_lists?.data?.data?.data?.length !== 0 ? <div>
                     {tkt_type_lists?.data?.data?.data?.map((x, i) => {
                         return (
@@ -78,7 +78,7 @@ export default function NewEmployee() {
                     </Stack>
                 </div>}
             </List>
-        </div>
+        </div >
     );
 }
 const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {

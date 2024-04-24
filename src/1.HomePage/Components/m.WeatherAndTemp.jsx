@@ -31,8 +31,8 @@ export default function WeatherAndTemp() {
     const image = imgGen()
 
     return (
-        <div className='w-fit h-fit '>
-            <img loading='lazy' className='' src={image} />
+        <div className='h-[100%] w-[100%]'>
+            <img loading='lazy' className='h-[100%] w-[100%]' src={image} />
             <div className='rounded-xl flex justify-between px-2 py-3  mt-[-7.5rem]' style={{ color: "white" }}>
                 <div className='grid grid-cols-1'>
                     <div className='grid grid-cols-1 '>

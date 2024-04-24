@@ -136,17 +136,6 @@ export default function ApproverForm() {
         })
     }
 
-    // const downloadWithAxios = async (url, file_name) => {
-    //     try {
-    //         const response = await axios.get(url, { responseType: 'blob' })
-    //         forceDownload(response, file_name)
-    //     }
-    //     catch (error) {
-    //         console.log("error in getting file", error)
-    //     }
-
-    // }
-
     if (response.isLoading) {
         return (
             <>

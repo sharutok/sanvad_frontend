@@ -27,7 +27,7 @@ export default function Announsments() {
         queryClient.invalidateQueries(['get-announcements'])
     }
     return (
-        <div className='h-fit'>
+        <div >
             <DialogsBox title={"Add Announcments"} body={<AddForm invalidateData={invalidateData} />} />
             <div className='p-3 bg-[#fff] rounded-t-xl  '>
                 <div className='flex justify-between'>
@@ -47,8 +47,8 @@ export default function Announsments() {
                     <Divider />
                 </div>
             </div>
-            <List sx={{ width: '100%' }} className=' overflow-y-scroll rounded-b-xl bg-[#fff] '>
-                {getAllAnnouncements?.data?.data?.data.length ? getAllAnnouncements?.data?.data?.data?.map((x, i) => {
+            <List sx={{ width: '100%', maxHeight: '10rem' }} className=' overflow-y-scroll rounded-b-xl bg-[#fff] '>
+                {getAllAnnouncements?.data?.data?.data?.length ? getAllAnnouncements?.data?.data?.data?.map((x, i) => {
                     return (
                         <div key={i} >
                             <ListItem className='flex justify-between'>

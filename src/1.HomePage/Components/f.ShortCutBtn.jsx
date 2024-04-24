@@ -62,8 +62,6 @@ export default function ShortCutBtn({ view }) {
                         <div className='p-3'>
                             <Divider sx={{ borderColor: "#AEB1B8" }} orientation='vertical' />
                         </div>
-
-
                         <div className='grid grid-cols-2 gap-7 '>
                             {IconsIcons.map((_icon, i) => {
                                 return (

@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
 import '../../../Style/UserManagement.css';
 import { AppContext } from '../../App';
@@ -33,6 +34,10 @@ function UpdateCapexFlowForm() {
     const [fouthApprover, setFouthApprover] = useState(false)
     const [capexMess, setCapexMess] = useState("")
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
+
+
     const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
         mode: "onTouched",
         resolver: yupResolver(yup.object().shape({
@@ -44,14 +49,14 @@ function UpdateCapexFlowForm() {
             fourth_approver: !fouthApprover ? yup.string().required('Required Field') : "",
         })),
         defaultValues: {
-            id: "",
-            department: "",
-            plant: "",
-            which_flow: 0,
-            first_approver: "",
-            second_approver: "",
-            third_approver: "",
-            fourth_approver: "",
+            id: searchParams.get('id') || "",
+            department: searchParams.get('department') || "",
+            plant: searchParams.get('plant') || "",
+            which_flow: searchParams.get('which_flow') || "",
+            first_approver: searchParams.get('first')?.replace('~', '#') || "",
+            second_approver: searchParams.get('second')?.replace('~', '#') || "",
+            third_approver: searchParams.get('third')?.replace('~', '#') || "",
+            fourth_approver: searchParams.get('fourth')?.replace('~', '#') || "",
         },
     })
 
@@ -70,38 +75,6 @@ function UpdateCapexFlowForm() {
         const data = axios.get(api.utils.dept_plant)
         return data
     }, { staleTime: Infinity })
-
-
-    async function getData(department) {
-        if (department) {
-            const response = await axios.get(`${api.wf.capex_create}?department=${department}`)
-            console.log(response?.data?.data);
-            let obj = {}
-            if (response?.data?.data.length > 0) {
-                response?.data?.data.map(x => {
-                    obj = { ...x }
-                })
-            }
-            // setUsermanagement({ ...usermanagement, module_permission: obj.notify_user })
-            // setValue('plant', obj?.plant)
-            // setValue('which_flow', obj?.which_flow)
-            // setValue("id", obj?.id)
-            // if (Number(obj?.which_flow) === 0) {
-            //     setFouthApprover(false)
-            //     setValue("first_approver", obj?.approver[0])
-            //     setValue("second_approver", obj?.approver[1])
-            //     setValue("third_approver", obj?.approver[2])
-            //     setValue("fourth_approver", obj?.approver[3])
-            // } else {
-            //     setFouthApprover(true)
-            //     setValue("first_approver", obj?.approver[0])
-            //     setValue("second_approver", obj?.approver[1])
-            //     setValue("third_approver", obj?.approver[2])
-            //     setValue("fourth_approver", "")
-            // }
-        }
-    }
-
 
     const onSubmit = async (data) => {
         try {
@@ -128,7 +101,7 @@ function UpdateCapexFlowForm() {
             <div className='grid grid-cols-[repeat(1,1fr)] gap-10 p-[3rem]'>
                 <div className='grid gap-7'>
                     <div className='flex gap-5'>
-                        <CustomAutoCompleteDepartment getData={getData} control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
+                        <CustomAutoCompleteDepartment control={control} errors={errors} name={"department"} label={"Department"} options={plant_dept?.data?.data?.department || []} />
                         <CustomAutoComplete control={control} errors={errors} name={"plant"} label={"Plant"} options={plant_dept?.data?.data?.plant_data || []} />
                     </div>
                     <Controller
@@ -270,8 +243,6 @@ const CustomAutoCompleteDepartment = ({ name, label, options, control, errors, g
                     )}
                     onChange={(e, selectedValue) => {
                         field.onChange(selectedValue);
-                        getData(selectedValue)
-                        console.log(selectedValue);
                     }}
                 />
             )}

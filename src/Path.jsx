@@ -23,7 +23,7 @@ import TWorkFlow from './8.WorkFlow/TicketWorkFlow/WorkFlow';
 import Policies from './1.HomePage/Components/o.Policies';
 import { getCookies } from './Helper Components/CustomCookies';
 import TabList from './5.TicketSystem/ListTab/TabList';
-import CreateFlowForm from './8.WorkFlow/CapexWorkFlow/CapexFlowForm';
+import CreateFlowForm from './8.WorkFlow/CapexWorkFlow/CreateCapexFlowForm';
 import UpdateCapexFlowForm from './8.WorkFlow/CapexWorkFlow/UpdateCapexFlowForm';
 import TabBar from './1.HomePage/Components/r.CustomTabBar';
 export default function Path() {

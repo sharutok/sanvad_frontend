@@ -1,35 +1,29 @@
-import Skeleton from '@mui/material/Skeleton';
-import React, { useEffect, useRef, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
-import { api } from '../../Helper Components/Api'
-import moment from 'moment'
-import LoadingSpinner from '../../Helper Components/LoadingSpinner'
+import { Divider } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import IMAGES from '../../assets/Image/Image'
-import { Divider } from '@mui/material'
-import { getCookies } from '../../Helper Components/CustomCookies'
+import Skeleton from '@mui/material/Skeleton';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import IMAGES from '../../assets/Image/Image';
+import { api } from '../../Helper Components/Api';
+import { getCookies } from '../../Helper Components/CustomCookies';
+import LoadingSpinner from '../../Helper Components/LoadingSpinner';
 const url = import.meta.env.VITE_BACKEND_URL
 const port = import.meta.env.VITE_BACKEND_PORT
 
 export default function Frame({ view }) {
-    const [innerHeight, setInnerHeight] = useState("")
     const response = useQuery(['which-frame'], async () => {
         const data = await axios.get(`${api.utils.which_frame}/?woosee=${getCookies()[0]}`)
         return data
     }, { staleTime: Infinity })
 
-    useEffect(() => {
-        setInnerHeight(window.innerHeight)
-    }, [window.innerHeight])
-
-
     return (
         <>
             {!response.isLoading ?
                 response?.data?.data?.response ?
-                    <div className='overflow-y-auto grid gap-5 rounded-xl' style={{ height: view ? (innerHeight / 3) : (innerHeight - 100) }} >
-                        <YammerFrame />
+                    <div >
+                        <YammerFrame view={view} />
                     </div> :
                     <div>
                         <FlashFrame />
@@ -73,7 +67,13 @@ function FlashFrame() {
 }
 
 
-function YammerFrame() {
+function YammerFrame({ view }) {
+    const [innerHeight, setInnerHeight] = useState("")
+
+    useEffect(() => {
+        setInnerHeight(window.innerHeight)
+    }, [window.innerHeight])
+
     const { isLoading, error, data } = useQuery(['sales-data'], async () => { return await axios.get(api.yammer.get_data) }, { staleTime: "300000" })
     if (isLoading) {
         return (
@@ -81,14 +81,16 @@ function YammerFrame() {
         )
     }
     return (
-        <div >
+        <div  >
             <div className='p-3 bg-[#fff] rounded-t-xl'>
                 <span className='text-[1.2rem] font-extrabold text-[#555259] '>Yammer Posts</span>
                 <div >
                     <Divider />
                 </div>
             </div>
-            <div className='p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl border h-[100%] '>
+            <div
+                style={{ height: view ? (innerHeight / 2) : (innerHeight - 150) }}
+                className='p-4 bg-[#fff] border-solid border-[#ffffff] rounded-b-xl overflow-y-auto'>
                 {!isLoading && <ICarousels data={data} />}
             </div>
         </div>

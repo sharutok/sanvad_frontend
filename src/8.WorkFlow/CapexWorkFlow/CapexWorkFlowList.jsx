@@ -28,6 +28,9 @@ function CapexWorkFlowList() {
             </>
         )
     }
+    const handleNav = (x) => {
+        window.location.href = `/capex/wf/update/?department=${x.department}&first=${x._first}&fourth=${x._fourth}&plant=${x.plant}&role=${x.role}&second=${x._second}&third=${x._third}&which_flow=${x.which_flow}&id=${x.id}`
+    }
 
     return (
         <>
@@ -35,11 +38,11 @@ function CapexWorkFlowList() {
                 <Table thead={tbody} tbody={
                     ticket_listing?.data?.data?.results?.map((x, i) => {
                         return (
-                            <tr key={i}>
-                                <td>{x.department}</td>
-                                <td >{x.plant}</td>
-                                <td>{x.role}</td>
-                                <td><Approver x={x} /></td>
+                            <tr key={i} className='table-wrapper'>
+                                <td onClick={() => handleNav(x)}>{x.department}</td>
+                                <td onClick={() => handleNav(x)} >{x.plant || "ALL"}</td>
+                                <td onClick={() => handleNav(x)}>{x.role}</td>
+                                <td onClick={() => handleNav(x)}><Approver x={x} /></td>
                             </tr>
                         )
                     })

@@ -12,21 +12,6 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const CWorkFlow = () => {
-    // const capex_wf_corporate = useQuery(['it-plant'], async () => {
-    //     return await axios.get(api.wf.capex_wf_corporate)
-    // })
-
-    // const capex_wf_plant = useQuery(['it-corporate'], async () => {
-    //     return await axios.get(api.wf.capex_wf_plant)
-    // })
-
-    // if (capex_wf_corporate?.isLoading || capex_wf_plant?.isLoading) {
-    //     return (
-    //         <>
-    //             <LoadingSpinner />
-    //         </>
-    //     )
-    // }
     return (
         <>
             <div className='mt-20'>
@@ -34,7 +19,6 @@ const CWorkFlow = () => {
                     <BackArrow location={"/home"} title={"Capex WorkFlow Configuration"} />
                     <div className='flex gap-4 mt-3 mr-10'>
                         <ButtonComponent onClick={() => { window.location.href = "/capex/wf/create" }} icon={<IoAdd color='white' size={"23"} />} btnName={"Create Capex Flow"} />
-                        <ButtonComponent onClick={() => { window.location.href = '/capex/wf/update' }} icon={<MdBrowserUpdated color='white' size={"23"} />} btnName={"Update Capex Flow"} />
                     </div>
                 </div>
             </div>

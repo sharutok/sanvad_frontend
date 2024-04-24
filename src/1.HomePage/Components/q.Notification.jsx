@@ -1,19 +1,20 @@
-import React from 'react'
-import { FaRegBell } from 'react-icons/fa';
-import { IoTicketOutline } from 'react-icons/io5';
-import { GrCurrency } from 'react-icons/gr';
 import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Logout from '@mui/icons-material/Logout';
-import Divider from '@mui/material/Divider';
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import React, { useCallback, useEffect } from 'react';
+import { FaRegBell } from 'react-icons/fa';
+import { IoTicketOutline } from 'react-icons/io5';
 import { api } from '../../Helper Components/Api';
 import { getCookies } from '../../Helper Components/CustomCookies';
+import LoadingSpinner from '../../Helper Components/LoadingSpinner';
+import { Badge } from '@mui/material';
+import moment from 'moment';
+
 function Notification() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -23,12 +24,29 @@ function Notification() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const queryClient = useQueryClient();
 
-    const { isLoading, error, data } = useQuery(['tkt-otification'], async () => { return await axios.get(`${api.ticket_system.get_ticket_info_notifications_by_emp_id}/?emp_id=${getCookies()[0]}`) }
+    useEffect(() => {
+        queryClient.invalidateQueries('tkt-notification');
+    }, [anchorEl, queryClient]);
+
+    const { isLoading, data } = useQuery(['tkt-notification'], async () => {
+        return await axios.get(`${api.ticket_system.get_ticket_info_notifications_by_emp_id}/?emp_id=${getCookies()[0]}`)
+    }
     )
+    const handleTicketNav = async (key) => {
+        const ticket_id = key.split(":")[1]
+        await handleTicketRemoveFromNotification(key)
+        window.location.href = `/ticket/sys/${ticket_id}`
+    }
 
-    console.log(data);
-
+    const handleTicketRemoveFromNotification = async (key) => {
+        try {
+            await axios.delete(`${api.ticket_system.get_ticket_info_notifications_by_emp_id}/?key=${key}`)
+        } catch (error) {
+            console.log("error in handleTicketRemoveFromNotification", error)
+        }
+    }
     return (
         <div >
             <div sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -39,9 +57,12 @@ function Notification() {
                         sx={{ ml: 2 }}
                         aria-controls={open ? 'account-menu' : undefined}
                         aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                    >
-                        <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}><FaRegBell /></Avatar>
+                        aria-expanded={open ? 'true' : undefined}>
+                        <Badge color='primary' badgeContent={Number(data?.data?.length) || 0}>
+                            <Avatar sx={{ width: 35, height: 35, backgroundColor: "#555259" }}>
+                                <FaRegBell />
+                            </Avatar>
+                        </Badge>
                     </IconButton>
                 </Tooltip>
             </div>
@@ -81,46 +102,34 @@ function Notification() {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <div className='max-h-[15rem] overflow-scroll'>
-                    {[...Array(5).keys()].map((x, i) => {
+                    {!isLoading ? data?.data?.map((x, i) => {
+                        const { ticket_no, created_at, requester_emp_no, } = JSON.parse(x.value)
                         return (
                             <div key={i}>
-                                <MenuItem onClick={handleClose}>
-                                    <div className='flex gap-1'>
-                                        <IoTicketOutline color="black" size={25} className='m-3' />
-                                        <Divider orientation='vertical' />
-                                        <div className='grid-cols-1'>
-                                            <span>Toss out that granular state management</span>
-                                            <h1 className='text-right text-[#ED1C24]'> date</h1>
-                                        </div>
-                                    </div>
-                                </MenuItem>
-                                <div className='px-3'>
-                                    <Divider />
+                                <div className='px-2'>
+                                    {Number(i) !== 0 && <Divider />}
                                 </div>
-                            </div>
-                        )
-                    })}
-                    {/* {[...Array(5).keys()].map((x, i) => {
-                        return (
-                            <div key={i}>
-                                <MenuItem nuItem onClick={handleClose}>
-                                    <div className='flex gap-3'>
-                                        <GrCurrency size={25} className='mt-3' />
-                                        <Divider orientation='vertical' />
-                                        <div className='grid-cols-1'>
-                                            <span>Toss out that granular state management</span>
-                                            <div className='flex justify-end'>
-                                                <h1 className='text-[#ED1C24]'> date</h1>
+                                <MenuItem onClick={handleClose}>
+                                    <div onClick={() => handleTicketNav(x.key)} className='flex'>
+                                        <div className='grid grid-cols-1 gap-1'>
+                                            <div className='flex items-center gap-3'>
+                                                <IoTicketOutline color="black" size={25} />
+                                                <span className='font-bold text-sm inline-block max-w-xs truncate'>{ticket_no} </span> |
+                                                <span className='text-sm inline-block max-w-xs truncate gap-3'><span className='font-bold'>Raised By: </span>{requester_emp_no}</span> |
+                                                <span className='text-sm text-[#4768ff]'> {moment(created_at.substring(0, 10), "YYYY-MM-DD").format("DD-MM-YYYY")}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </MenuItem>
-                                <div className='px-3'>
-                                    <Divider />
-                                </div>
                             </div>
                         )
-                    })} */}
+                    }) :
+                        <MenuItem>
+                            <div className='m-20'>
+                                <LoadingSpinner />
+                            </div>
+                        </MenuItem>
+                    }
                 </div>
             </Menu>
         </div>

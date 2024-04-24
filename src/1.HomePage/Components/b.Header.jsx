@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import IMAGES from '../../assets/Image/Image';
 import '../../../Style/Header.css'
 import Avatar from '@mui/material/Avatar';
@@ -13,6 +13,8 @@ import Divider from '@mui/material/Divider';
 import Notification from './q.Notification';
 
 export default function HeaderMegaMenu() {
+    const parsedUrl = new URL(document.URL);
+
     return (
         <div className='fixed top-0 w-[100%] bg-[#ffff] overflow-y-hidden z-[60]'>
             <div className=' border-b-[.5px] border-solid border-[#e9e9e9] p-2'>
@@ -27,7 +29,8 @@ export default function HeaderMegaMenu() {
                         <span align="center" style={{ fontFamily: "Archive" }} className='py-1 text-[1.3rem] mt-1 text-[#555259] font-extrabold'>ADOR<span style={{ fontFamily: "Archive" }} className='text-red-600 font-bold'>HUB</span></span>
                     </div>
                     <div className='flex mr-5' >
-                        {/* <Notification /> */}
+                        {/* {['/home', '/ticket/sys/list'].includes(parsedUrl.pathname) && < Notification />} */}
+                        {< Notification />}
                         <AccountMenu />
                     </div>
                 </div>

@@ -68,16 +68,16 @@ export default function Form() {
             return_on_investment: "q",
             requisition_date: moment().format("YYYY-MM-DD"),
             capex_for_which_department: "q",
-            total_cost: "1",
+            total_cost: "10",
             site_delivery_date: moment().format("YYYY-MM-DD"),
             installation_date: moment().format("YYYY-MM-DD"),
-            comment1: "1",
-            comment2: "1",
-            comment3: "1",
-            comment4: "1",
-            comment5: "1",
-            comment6: "1",
-            comment7: "1",
+            comment1: "p",
+            comment2: "p",
+            comment3: "p",
+            comment4: "p",
+            comment5: "p",
+            comment6: "p",
+            comment7: "p",
             // nature_of_assets: "",
             // asset_type: "",
             // requirement: "",
@@ -99,7 +99,7 @@ export default function Form() {
                 installation_date: moment(submit.installation_date).format("YYYY-MM-DD"),
                 asset_listings: JSON.stringify(assets),
             });
-            console.log(JSON.stringify(data))
+
             tktFiles.forEach((file, index) => {
                 formData.append(`user_file`, file);
                 formData.append(`file${index + 1}`, file);
@@ -110,6 +110,7 @@ export default function Form() {
             })
             setBtnSaving(true)
             const res = await axios.post(api.capex.create_capex, formData)
+            console.log(res?.data?.status);
             if (res.data.status === 200) {
                 setSnackBarPopUp({ state: true, message: "Capex Added", severity: 's' })
                 setTimeout(() => {
@@ -117,6 +118,9 @@ export default function Form() {
                     setBtnSaving(false)
                     setSnackBarPopUp({ state: false, message: "" })
                 }, 1000)
+            }
+            else {
+                throw new Error("Error")
             }
         } catch (e) {
             setBtnSaving(false)
