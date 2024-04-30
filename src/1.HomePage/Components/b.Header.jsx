@@ -30,7 +30,7 @@ export default function HeaderMegaMenu() {
                     </div>
                     <div className='flex mr-5' >
                         {/* {['/home', '/ticket/sys/list'].includes(parsedUrl.pathname) && < Notification />} */}
-                        {< Notification />}
+                        {/* {< Notification />} */}
                         <AccountMenu />
                     </div>
                 </div>

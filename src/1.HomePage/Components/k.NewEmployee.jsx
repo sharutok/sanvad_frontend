@@ -53,7 +53,7 @@ export default function NewEmployee() {
                 </div>
             </ div>
             <BarSnack />
-            <List sx={{ width: '100%', maxHeight: '10rem' }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
+            <List sx={{ width: '100%', maxHeight: '20rem' }} className='overflow-y-scroll rounded-b-xl bg-[#fff]'>
                 {tkt_type_lists?.data?.data?.data?.length !== 0 ? <div>
                     {tkt_type_lists?.data?.data?.data?.map((x, i) => {
                         return (
