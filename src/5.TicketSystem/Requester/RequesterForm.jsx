@@ -12,11 +12,9 @@ import { api } from '../../Helper Components/Api';
 import axios from 'axios';
 import { RxCross2 } from 'react-icons/rx'
 import { RequestTicketErrorSchema } from '../../Form Error Schema/TicketSysytemErrorSchema';
-import { LoadingButton } from '@mui/lab';
 import { AppContext } from '../../App';
 import BarSnack from '../../Helper Components/BarSnack';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
-import IMAGES from '../../assets/Image/Image';
 import { getCookies } from '../../Helper Components/CustomCookies';
 const Input = styled('input')({
     display: 'none',
@@ -34,7 +32,9 @@ function RequesterForm() {
     const ErrorSchema = RequestTicketErrorSchema
 
     const handleFileChange = (e) => {
+        console.log(e.target.files);
         const files = Array.from(e.target.files);
+        console.log(files);
         setTKTFiles(files);
     };
 
