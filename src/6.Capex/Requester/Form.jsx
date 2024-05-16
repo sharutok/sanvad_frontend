@@ -66,7 +66,7 @@ export default function Form() {
             purpose: "",
             payback_period: "",
             return_on_investment: "",
-            requisition_date: null,
+            requisition_date: moment().format("YYYY-MM-DD"),
             capex_for_which_department: "",
             total_cost: "",
             site_delivery_date: null,
