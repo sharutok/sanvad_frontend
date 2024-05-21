@@ -32,9 +32,8 @@ function RequesterForm() {
     const ErrorSchema = RequestTicketErrorSchema
 
     const handleFileChange = (e) => {
-        console.log(e.target.files);
         const files = Array.from(e.target.files);
-        setTKTFiles([...files,...tktFiles]);
+        setTKTFiles(files);
     };
 
 
