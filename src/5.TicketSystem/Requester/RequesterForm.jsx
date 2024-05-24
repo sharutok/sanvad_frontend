@@ -33,7 +33,7 @@ function RequesterForm() {
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        setTKTFiles(files);
+        setTKTFiles([...files, ...tktFiles]);
     };
 
 

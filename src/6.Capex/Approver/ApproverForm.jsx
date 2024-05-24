@@ -31,6 +31,7 @@ import '../../../Style/UserManagement.css';
 import { AppContext } from '../../App';
 import { ApproverCapexErrorSchema } from '../../Form Error Schema/CapexErrorSchema';
 import { api } from '../../Helper Components/Api';
+import ButtonComponent from '../../Helper Components/ButtonComponent';
 import { getCookies } from '../../Helper Components/CustomCookies';
 import LoadingButtonWithSnack from '../../Helper Components/LoadingButtonWithSnack';
 import LoadingSpinner from '../../Helper Components/LoadingSpinner';
@@ -39,7 +40,6 @@ import Table from '../../Helper Components/Table';
 import { forceDownload } from '../../Static/StaticValues';
 import EditCapex from '../EditCapex';
 import PreFilledSubForm from '../PreFilledSubForm';
-import ButtonComponent from '../../Helper Components/ButtonComponent';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -49,10 +49,9 @@ const Input = styled('input')({
 
 export default function Form() {
     const { budget_id, capex_id } = useParams()
-    const { budget, setDrawerStatus, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
+    const { budget, setDrawerStatus, setBtnSaving, setSnackBarPopUp,  } = useContext(AppContext)
     const [searchParams, setSearchParams] = useSearchParams();
     const capex_raised_by = searchParams.get('raised_by');
-
     const ErrorSchema = ApproverCapexErrorSchema
     const [preFilled, setPreFilled] = useState(true)
     const [capexDetail, setCapexDetail] = useState([])
@@ -113,25 +112,6 @@ export default function Form() {
         }
     }
 
-    const generatePDF = async () => {
-        try {
-            const response = await axios.get(`${api.capex.generate_capex_final_pdf}/?budget_id=${budget_id}&capex_id=${capex_id}&raised_by=${capex_raised_by}`, {
-                responseType: 'blob',
-            });
-            const file = new Blob([response.data], { type: 'application/pdf' });
-            const fileURL = URL.createObjectURL(file);
-            const link = document.createElement('a');
-            link.href = fileURL;
-            link.download = 'output.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch (error) {
-            console.error('Error fetching or downloading PDF:', error);
-        }
-    }
-
-
     if (response?.isLoading) {
         return (
             <LoadingSpinner />
@@ -170,7 +150,7 @@ export default function Form() {
                         </div>
                     </div>
                     <div className='flex gap-5'>
-                        {componentAccess.field_to_form && <ButtonComponent onClick={() => generatePDF()} icon={<FaFilePdf color='#fff' size={22} />} btnName={"Form to PDF"} />}
+                        {componentAccess.field_to_form && <ButtonComponent onClick={() => window.location.href = `/capex/pdf/download/?budget_id=${budget_id}&capex_id=${capex_id}&raised_by=${capex_raised_by}`} icon={<FaFilePdf color='#fff' size={22} />} btnName={"Form to PDF"} />}
                         {preFilled ?
                             <ButtonComponent onClick={() => setPreFilled(!preFilled)} icon={<MdKeyboardDoubleArrowUp color='#fff' size={22} />} btnName={"Click for Less Information"} />
                             :

@@ -26,6 +26,7 @@ import TabList from './5.TicketSystem/ListTab/TabList';
 import CreateFlowForm from './8.WorkFlow/CapexWorkFlow/CreateCapexFlowForm';
 import UpdateCapexFlowForm from './8.WorkFlow/CapexWorkFlow/UpdateCapexFlowForm';
 import TabBar from './1.HomePage/Components/r.CustomTabBar';
+import CapexPDF from './6.Capex/Requester/CapexPDF';
 export default function Path() {
 
     if (!getCookies()[0]) {
@@ -75,6 +76,7 @@ export default function Path() {
                         <Route path='/workflow/capex-system' element={<CWorkFlow />} />
                         <Route path='/capex/wf/create' element={<CreateFlowForm />} />
                         <Route path='/capex/wf/update' element={<UpdateCapexFlowForm />} />
+                        <Route path='/capex/pdf/download' element={<CapexPDF />} />
 
                         <Route path='/policies' element={<Policies />} />
 

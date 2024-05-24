@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import moment from 'moment'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState,useRef } from 'react'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { IoMdArrowBack, IoMdRefresh } from 'react-icons/io'
 import { User } from 'tabler-icons-react'
@@ -22,8 +22,10 @@ import ButtonComponent from '../../Helper Components/ButtonComponent'
 import { getCookies } from '../../Helper Components/CustomCookies'
 
 export default function ConferenceBookingListView() {
-    const { setMomentTime, dialogStatus, setDrawerStatus, confTemp, setConfTemp, disabledOptions, setDisabledOptions } = useContext(AppContext)
+    const { setMomentTime,  setDrawerStatus, confTemp, setConfTemp, setDisabledOptions } = useContext(AppContext)
     const [error1, setError1] = useState(false)
+
+    const conf_room_default_value=useRef("")
 
     const value = useMemo(() => {
         return (Array.from(Array(41).keys()).map(x => {
@@ -45,9 +47,10 @@ export default function ConferenceBookingListView() {
 
     const fetchData = async () => {
         const data = await axios.post(api.conference_booking.get_by_date_and_conf_room, {
-            "conf_end_date": confTemp.conf_room_start_date ? moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
-            "conf_room": confTemp.conf_room ? confTemp.conf_room : "MULA"
+            "conf_end_date": moment(confTemp.conf_room_start_date, "DD/MM/YYYY").format("YYYY-MM-DD") ,
+            "conf_room": confTemp.conf_room 
         })
+        console.log(data);
         return data
     }
 
@@ -99,7 +102,6 @@ export default function ConferenceBookingListView() {
 
     let _flag = []
     let _temp = []
-    let _flag_ = []
     let temp = []
 
     booked_dates && booked_dates.map(y => {
@@ -144,7 +146,11 @@ export default function ConferenceBookingListView() {
     }
 
     function handleClearBtn() {
-        Object.keys(confTemp).map(x => setConfTemp({ [x]: "" }));
+        Object.keys(confTemp).map(x => setConfTemp({
+            conf_room_start_date: moment().format("DD/MM/YYYY"),
+            conf_room_start_time: "",
+            conf_room: ""
+        }));
     }
 
     function handleDataChange(a) {
@@ -174,11 +180,11 @@ export default function ConferenceBookingListView() {
                         </LocalizationProvider>
                     </div>
                     <div >
-                        <CustomAutoCompleteWithIcon control={""} errors={""} name={"conference_rooms"} label={"Conference Rooms"} options={_conferences()} />
+                        <CustomAutoCompleteWithIcon conf_room_default_value={conf_room_default_value} control={""} errors={""} name={"conference_rooms"} label={"Conference Rooms"} options={_conferences()} />
                     </div>
                     {(error1) && <div className='rounded-md mt-5 flex justify-center bg-[#d8d8d8]'>
                         <AiOutlineInfoCircle color='#ff0000cc' size={"20"} className='mt-1' />
-                        <span className='  p-1 text-sm   '>Select both<strong> Date</strong> and<strong> Conference Room</strong></span>
+                        <span className='p-1 text-sm'>Select both<strong> Date</strong> and<strong> Conference Room</strong></span>
                     </div>}
                 </div>
                 <>
@@ -229,27 +235,21 @@ export default function ConferenceBookingListView() {
             </div>
         </div>
     )
-
-
 }
 
-
-
-const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, control, options }) => {
+const CustomAutoCompleteWithIcon = ({ register, errors, name, label, obj, control, options, conf_room_default_value }) => {
     const { confTemp, setConfTemp } = useContext(AppContext)
     return (
         <Autocomplete
             className='w-full'
             disablePortal
+            ref={conf_room_default_value}
             id="combo-box-demo"
-            value={options && options[0].conf}
             options={options}
             getOptionLabel={(obj) => obj.conf}
             renderOption={(props, obj) => (
                 <Box style={{ display: "flex", justifyContent: "space-between" }} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                    <div>
-                        {obj.conf}
-                    </div>
+                    <div>{obj.conf}</div>
                     <Box style={{ display: "flex", justifyContent: "space-between" }}>
                         <User />
                         <div >

@@ -52,7 +52,7 @@ const Input = styled('input')({
 
 export default function Form() {
     const { budget_id } = useParams()
-    const { assets, setAssets, setBtnSaving, setSnackBarPopUp } = useContext(AppContext)
+    const { assets, setAssets, setBtnSaving, setSnackBarPopUp ,capexForPdf, setCapexForPdf} = useContext(AppContext)
     const ErrorSchema = CapexErrorSchema
     const inputFile = useRef(null)
     const [preFilled, setPreFilled] = useState(true)

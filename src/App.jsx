@@ -5,6 +5,7 @@ export const AppContext = React.createContext()
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 const queryClient = new QueryClient()
 import './App.css'
+import moment from 'moment';
 
 
 const theme = createTheme({
@@ -67,10 +68,11 @@ function App() {
   const [drawerStatus, setDrawerStatus] = useState(false)
 
   const [confTemp, setConfTemp] = useState({
-    conf_room_start_date: "",
+    conf_room_start_date: moment().format("DD/MM/YYYY") ,
     conf_room_start_time: "",
     conf_room: ""
   })
+  const [capexForPdf, setCapexForPdf] = useState({})
 
   const [momentTime, setMomentTime] = useState([])
   // const [disabledOptions, setDisabledOptions] = useState(["08:00 AM"])
@@ -99,7 +101,7 @@ function App() {
     momentTime, setMomentTime, usermanagement, setUsermanagement, count, setCount, page, setPage, btnSaving, setBtnSaving, budget, setBudget, userLogin, setUserLogin,
     dialogStatus, setDialogStatus, confTemp, setConfTemp, capexTypeList, setCapexTypeList,
     disabledOptions, setDisabledOptions, snackBarPopUp, setSnackBarPopUp, visitors, setVisitors, cookie, setCookie, assets,
-    setAssets, collapse, setCollapse, open, setOpen, drawerStatus, setDrawerStatus, visitorPass, setVisitorPass, rememberCheck, setRememberCheck
+    setAssets, collapse, setCollapse, open, setOpen, drawerStatus, setDrawerStatus, visitorPass, setVisitorPass, rememberCheck, setRememberCheck,capexForPdf, setCapexForPdf
   }
 
 

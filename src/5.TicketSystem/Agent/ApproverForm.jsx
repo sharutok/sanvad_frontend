@@ -343,7 +343,7 @@ const CustomTextField = ({ name, label, errors, register, watch, multiline, disa
             helperText={errors[name] && errors[name].message} />
     )
 }
-const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline, uploadDocuments, setTKTFiles, }) => {
+const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multiline, uploadDocuments, setTKTFiles, tktFiles }) => {
     const inputFile = useRef(null)
 
     const onButtonClick = () => {
@@ -352,7 +352,7 @@ const CustomTextFieldWithIcon = ({ name, label, errors, register, watch, multili
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        setTKTFiles(files);
+        setTKTFiles([...files,...tktFiles]);
     };
 
     return (
