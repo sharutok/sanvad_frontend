@@ -77,9 +77,7 @@ export default function Path() {
                         <Route path='/capex/wf/create' element={<CreateFlowForm />} />
                         <Route path='/capex/wf/update' element={<UpdateCapexFlowForm />} />
                         <Route path='/capex/pdf/download' element={<CapexPDF />} />
-
                         <Route path='/policies' element={<Policies />} />
-
                         <Route path='*' element={<Page />} />
                     </Routes>
                 </Router>

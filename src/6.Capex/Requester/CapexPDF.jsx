@@ -50,7 +50,7 @@ function CapexPDF() {
   return (
       <div>
           <div className='mt-20'>
-              <BackArrow location={"/home"} title={"Back"} />
+              <BackArrow location={`/capex/appr/${budget_id}/${capex_id}/?raised_by=${capex_raised_by}`} title={"Back"} />
               <div className='w-fit mt-10 ml-10'>
               <ButtonComponent onClick={_generatePDF } icon={<AiFillFilePdf color='white' size={"23"} />} btnName={"Print"} />
               </div>
