@@ -45,8 +45,7 @@ function CapexPDF() {
         useEffect(() => {
             fetchData()  
         },[])
-
-    const headers = ["Key User", "Department", "Capex Group", "Nature of Requirement", "Purpose", "Location", "Functional Utility / Performance / Usefulness", "Description Of Asset", "Supplier's Name with Address", "Total Landed Cost(Rs.in Lacs)", "Expected Date of Delivery at Site", "Budget Type"]
+    
   return (
       <div>
           <div className='mt-20'>
@@ -60,12 +59,12 @@ function CapexPDF() {
           <img src={IMAGES.ador_logo_} alt="Ador" width={"85"} />
               <div >
                   <div className='flex items-center gap-2'>
-                  <p className='text-[red] font-bold text-2xl'>Capex No :
+                  <p className='text-[red] font-bold text-2xl'>CAPEX NO :
                    </p>
                           <p className='font-bold text-2xl'>{String(capexForPdf.Capex_Id)?.split("-")[0]}</p>
                   </div>
                   <div className='flex items-center gap-2'>
-                  <p className='text-[red] font-bold text-2xl'>Date :
+                  <p className='text-[red] font-bold text-2xl'>DATE :
                    </p>
                           <p className='font-bold text-2xl'>{capexForPdf.Date}</p>
                   </div>
@@ -73,51 +72,51 @@ function CapexPDF() {
               <p className='border-b-[red] border-b border-solid w-[100%] h-[100%] my-5'></p>
               <div className='grid grid-cols-1 gap-5'>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl '>Key User: </p>
+<p className='text-[red] text-2xl'>KEY USER: </p>
 <p className='text-2xl'>{capexForPdf['Key User']}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Department: </p>
+<p className='text-[red] text-2xl'>DEPARTMENT: </p>
 <p className='text-2xl'>{capexForPdf['Department']}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Capex Group: </p>
+<p className='text-[red] text-2xl'>CAPEX GROUP: </p>
 <p className='text-2xl'>{capexForPdf['Capex Group']?.replace("_"," ")}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Nature of Requirement: </p>
+<p className='text-[red] text-2xl'>NATURE OF REQUIREMENT: </p>
 <p className='text-2xl'>{capexForPdf["Nature of Requirement"]}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Purpose: </p>
+<p className='text-[red] text-2xl'>PURPOSE: </p>
 <p className='text-2xl'>{capexForPdf["Purpose"]}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Location: </p>
+<p className='text-[red] text-2xl'>LOCATION: </p>
 <p className='text-2xl'>{capexForPdf["Location"]}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Functional Utility / Performance / Usefulness: </p>
+<p className='text-[red] text-2xl'>FUNCTIONAL UTILITY / PERFORMANCE / USEFULNESS: </p>
 <p className='text-2xl'>{capexForPdf["Functional Utility / Performance / Usefulness"]}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Description Of Asset: </p>
+<p className='text-[red] text-2xl'>DESCRIPTION OF ASSET: </p>
 <p className='text-2xl'>{capexForPdf["Description Of Asset"]}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Supplier's Name with Address: </p>
+<p className='text-[red] text-2xl'>SUPPLIER'S NAME WITH ADDRESS: </p>
 <p className='text-2xl'>{capexForPdf["Supplier's Name with Address"]}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Total Landed Cost(Rs.in Lacs: )</p>
-<p className='text-2xl'>{capexForPdf["Total Landed Cost(Rs.in Lacs"]}</p>
+<p className='text-[red] text-2xl'>TOTAL LANDED COST(RS.IN LACS: )</p>
+                          <p className='text-2xl'>{capexForPdf['total_cost']}</p>
 </div>
 <div className="flex items-center gap-2">
-<p className='text-[red] text-2xl'>Expected Date of Delivery at Site: </p>
+<p className='text-[red] text-2xl'>EXPECTED DATE OF DELIVERY AT SITE: </p>
 <p className='text-2xl'>{capexForPdf["Expected Date of Delivery at Site"]}</p>
 </div>
 <div className="flex items-center gap-2">
-              <p className='text-[red] text-2xl'>Budget Type: </p>
+              <p className='text-[red] text-2xl'>BUDGET TYPE: </p>
               <p className='text-2xl'>{capexForPdf["Budget Type"]}</p>
 </div>
           </div>

@@ -67,8 +67,6 @@ export default function Path() {
                         {/* <Route path='/ticket/sys/list' element={<TicketSystemListView />} /> */}
                         <Route path='/ticket/sys/new' element={<TRequesterForm />} />
                         <Route path='/ticket/sys/:id' element={<TApproverForm />} />
-
-
                         <Route path='/capex/:budget_id' element={<CForm />} />
                         <Route path='/capex/appr/:budget_id/:capex_id' element={<CApproverForm />} />
                         <Route path='/capex/list' element={<CListView />} />
