@@ -86,6 +86,7 @@ export default function ApproveVisitorManagement() {
 
     const visitor_pic_data = useQuery(["visitor-pic"], async () => {
         const data = await axios.get(`${api.visitor_management.get_image}/?id=${id}`)
+        console.log(data);
         return data
     })
 
@@ -158,8 +159,10 @@ export default function ApproveVisitorManagement() {
 
     const captureImage = async (image_name) => {
         try {
-            const imageSrc = webcamRef.current.getScreenshot();
-            const data = await axios.post(api.visitor_management.save_image, { byteArray: imageSrc, image_name })
+            const imageSrc = webcamRef.current.getScreenshot(); 
+            const data = await axios.post(api.visitor_management.save_image, {
+                byteArray: imageSrc, image_name
+            })
             if (data?.data.status_code === 200) {
                 setSnackBarPopUp({ state: true, message: "Image Taken", severity: "s" })
                 queryClient.invalidateQueries(['visitor-pic'])
@@ -382,61 +385,16 @@ const VisitorListing = ({ captureImage, visitors, componentAccess, visitorPhoto 
         "Assets",
     ]
 
-    return (<div className=''>
-        <ToggleButtonGroup
-            value={alignment}
-            exclusive
-            onChange={handleAlignment}
-            aria-label="text alignment"
-        >
-            <ToggleButton value={true} aria-label="left aligned">
-                <HiOutlineViewGrid size={28} />
-            </ToggleButton>
-            <ToggleButton value={false} aria-label="centered">
-                <CiBoxList size={28} />
-            </ToggleButton>
-        </ToggleButtonGroup>
+    return (<div>
         <div className='mt-5'>
-            {/* {!alignment &&
-                <Table thead={thead}
-                    tbody={
-                        visitors?.length && visitors?.map((g, i) => {
-                            return (
-                                <tr className='table-wrapper' key={i}>
-                                    <td>{g.v_name}</td>
-                                    <td>{g.v_mobile_no}</td>
-                                    <td>{g.v_desig}</td>
-                                    <td>{g.v_asset}</td>
-                                    {visitorPhoto[i] && visitorPhoto[i]?.mod_image && <td className='delete'>{
-                                        <Avatar src={visitorPhoto[i]?.mod_image} sx={{ width: 50, height: 50 }} />
-                                    }
-                                    </td>}
-                                    {componentAccess.camera_component && (!visitorPhoto[i]?.mod_image &&
-                                        <td onClick={() => { captureImage(`${id}__${i}`) }} className='delete '>
-                                            <TipTool body={
-                                                <IconButton>
-                                                    <AiOutlineCamera color='#555259' size={22} />
-                                                </IconButton>
-                                            } title={"Click Photo"} />
-                                        </td>)
-                                    }
-
-                                </tr>
-                            )
-                        })
-                    }
-                />} */}
-
             {<div className='flex flex-wrap gap-5'>
                 {Number(visitors?.length) > 0 && visitors?.map((g, i) => {
                     return (
                         <div className='grid gap-2 shadow-[rgba(0,0,0,0.24)_0px_3px_8px] p-4 rounded-lg  w-[15rem] h-[16rem]' key={i}>
                             <div>
-                                {visitorPhoto?.[i] && visitorPhoto?.[i]?.mod_image &&
-                                    <>{
-                                        <img className='rounded-lg' src={visitorPhoto?.[i]?.mod_image} alt="" width={300} />
-                                    }</>}
-                                {componentAccess.camera_component && (!visitorPhoto?.[i]?.mod_image &&
+                                {visitorPhoto[id + "__" + i] &&
+                                    <img className='rounded-lg' src={visitorPhoto[id + "__" + i]} alt="" width={300} />}
+                                {componentAccess.camera_component && (!visitorPhoto[id + "__" + i] &&
                                     <div onClick={() => { captureImage(`${id}__${i}`) }} className='flex justify-center '>
                                         <div className='grid grid-cols-1' >
                                             <IconButton>

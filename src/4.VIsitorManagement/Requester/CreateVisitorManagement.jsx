@@ -243,6 +243,7 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
                     slotProps={{
                         textField:
                         {
+                            autoComplete:'off',
                             size: 'small',
                             helperText: errors[name] && errors[name].message,
                             error: !!errors[name]
@@ -263,19 +264,6 @@ const CustomDateTime = ({ register, name, label, errors, control, watch, disable
     )
 }
 
-// const ButtonComponent = ({ icon, btnName, onClick, ...props }) => {
-//     return (
-//         <div
-//             onClick={onClick}
-//             {...props}
-//             className='whitespace-nowrap no-underline rounded-full p-2 h-fit border-[#c7c7c7] bg-[#555259] flex justify-between px-4 cursor-pointer hover:bg-[#2c2c2c] active:bg-[#000000] transition-[1s]'>
-//             <div className='no-underline'>
-//                 {icon}
-//             </div>
-//             {btnName && <span className='text-[#ebebeb] text-[15px] no-underline ml-2'>{btnName}</span>}
-//         </div>
-//     )
-// }
 
 const VisitorListing = ({ deleteFiles }) => {
     const { visitors, setVisitors } = useContext(AppContext)
