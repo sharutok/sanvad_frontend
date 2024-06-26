@@ -10,7 +10,7 @@ import CPagination from '../../Helper Components/Pagination';
 
 
 function CapexWorkFlowList() {
-    const { count, setCount, page, setPage } = useContext(AppContext)
+    const { setCount, page } = useContext(AppContext)
     const tbody = ['Department', 'Plant', 'Flow Type', 'Approvers']
     const ticket_listing = useQuery(['capex-flow-list', page,], async () => {
         const data = await axios.get(`${api.wf.all_wf_capex_list}/?page=${page}`)
@@ -29,7 +29,7 @@ function CapexWorkFlowList() {
         )
     }
     const handleNav = (x) => {
-        window.location.href = `/capex/wf/update/?department=${x.department}&first=${x._first}&fourth=${x._fourth}&plant=${x.plant}&role=${x.role}&second=${x._second}&third=${x._third}&which_flow=${x.which_flow}&id=${x.id}`
+        window.location.href = `/capex/wf/update/?department=${x.department}&first=${x._first}&fourth=${x._fourth}&fifth=${x._fifth}&plant=${x.plant}&role=${x.role}&second=${x._second}&third=${x._third}&which_flow=${x.which_flow}&id=${x.id}`
     }
 
     return (
@@ -53,13 +53,14 @@ function CapexWorkFlowList() {
     )
 }
 function Approver({ x }) {
-    const { first, second, third, fourth } = x
+    const { first, second, third, fourth,fifth } = x
     return (
         <div className='flex justify-center'>
             <div className="mr-2 flex items-center gap-1">{first}<BsArrowRight color='black' /></div>
             <div className="mr-2 flex items-center gap-1">{second}<BsArrowRight color='black' /></div>
-            <div className="mr-2 flex items-center gap-1">{third}{fourth && <BsArrowRight color='black' />}</div>
-            {fourth && <div className="mr-2 flex items-center gap-1">{fourth}</div>}
+            <div className="mr-2 flex items-center gap-1">{third} <BsArrowRight color='black' /></div>
+            <div className="mr-2 flex items-center gap-1">{fourth}{fifth && <BsArrowRight color='black' />}</div>
+            {fifth && <div className="mr-2 flex items-center gap-1">{fifth}</div>}
         </div>
     )
 }

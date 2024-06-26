@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -31,14 +31,16 @@ const ErrorSchema = CapexFlowErrorSchema
 function UpdateCapexFlowForm() {
     const { usermanagement, setUsermanagement, setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
     const [managerList, setManagerList] = useState([])
-    const [fouthApprover, setFouthApprover] = useState(false)
+    const [fifthApprover, setFifthApprover] = useState(false)
     const [capexMess, setCapexMess] = useState("")
-
     const [searchParams, setSearchParams] = useSearchParams();
 
 
+    useEffect(() => {
+        setFifthApprover(searchParams.get('fifth')?.replace('~', '#') ? false:true)
+    },[])
 
-    const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
+    const { register, handleSubmit, formState: { errors }, control, getValues} = useForm({
         mode: "onTouched",
         resolver: yupResolver(yup.object().shape({
             department: yup.string().required('Required Field'),
@@ -46,7 +48,8 @@ function UpdateCapexFlowForm() {
             first_approver: yup.string().required('Required Field'),
             second_approver: yup.string().required('Required Field'),
             third_approver: yup.string().required('Required Field'),
-            fourth_approver: !fouthApprover ? yup.string().required('Required Field') : "",
+            fourth_approver: yup.string().required('Required Field'), 
+            fifth_approver: !fifthApprover ? yup.string().required('Required Field') : "",
         })),
         defaultValues: {
             id: searchParams.get('id') || "",
@@ -57,6 +60,7 @@ function UpdateCapexFlowForm() {
             second_approver: searchParams.get('second')?.replace('~', '#') || "",
             third_approver: searchParams.get('third')?.replace('~', '#') || "",
             fourth_approver: searchParams.get('fourth')?.replace('~', '#') || "",
+            fifth_approver: searchParams.get('fifth')?.replace('~', '#') || "",
         },
     })
 
@@ -118,7 +122,7 @@ function UpdateCapexFlowForm() {
                                     name="row-radio-buttons-group"
                                     onChange={(event) => {
                                         onChange(event),
-                                            setFouthApprover(Boolean(Number(event.target.value)))
+                                            setFifthApprover(Boolean(Number(event.target.value)))
                                     }
                                     }
                                     onBlur={onBlur}
@@ -137,7 +141,8 @@ function UpdateCapexFlowForm() {
                 <CustomAutoComplete control={control} errors={errors} name={"first_approver"} label={"First Approver"} options={managerList} />
                 <CustomAutoComplete control={control} errors={errors} name={"second_approver"} label={"Second Approver"} options={managerList} />
                 <CustomAutoComplete control={control} errors={errors} name={"third_approver"} label={"Third Approver"} options={managerList} />
-                {!fouthApprover && <CustomAutoComplete control={control} errors={errors} name={"fourth_approver"} label={"Fourth Approver"} options={managerList} />}
+                <CustomAutoComplete control={control} errors={errors} name={"fourth_approver"} label={"Fourth Approver"} options={managerList} />
+                {!fifthApprover && <CustomAutoComplete control={control} errors={errors} name={"fifth_approver"} label={"Fifth Approver"} options={managerList} />}
                 <div className='max-w-[30rem]'>
                     <Autocomplete
                         multiple

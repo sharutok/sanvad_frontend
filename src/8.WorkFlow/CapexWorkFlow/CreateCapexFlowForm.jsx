@@ -29,7 +29,7 @@ const ErrorSchema = CapexFlowErrorSchema
 function CreateFlowForm() {
   const { usermanagement, setUsermanagement, setSnackBarPopUp, setBtnSaving } = useContext(AppContext)
   const [managerList, setManagerList] = useState([])
-  const [fouthApprover, setFouthApprover] = useState(false)
+  const [fifthApprover, setFifthApprover] = useState(false)
   const [capexMess, setCapexMess] = useState("")
 
   const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
@@ -40,7 +40,8 @@ function CreateFlowForm() {
       first_approver: yup.string().required('Required Field'),
       second_approver: yup.string().required('Required Field'),
       third_approver: yup.string().required('Required Field'),
-      fourth_approver: !fouthApprover ? yup.string().required('Required Field') : "",
+      fourth_approver:yup.string().required('Required Field'),
+      fifth_approver:!fifthApprover ? yup.string().required('Required Field') : "",
     })),
     defaultValues: {
       department: "",
@@ -50,6 +51,7 @@ function CreateFlowForm() {
       second_approver: "",
       third_approver: "",
       fourth_approver: "",
+      fifth_approver: "",
     },
   })
 
@@ -73,6 +75,7 @@ function CreateFlowForm() {
 
   const onSubmit = async (data) => {
     if (data) {
+      console.log(data);
       try {
         const response = await axios.post(api.wf.capex_create, { ...data, notify_user: usermanagement.module_permission })
         if (response?.data?.status === 400) { throw new Error((response?.data?.mess)) }
@@ -116,7 +119,7 @@ function CreateFlowForm() {
                   name="row-radio-buttons-group"
                   onChange={(event) => {
                     onChange(event),
-                      setFouthApprover(Boolean(Number(event.target.value)))
+                      setFifthApprover(Boolean(Number(event.target.value)))
                   }
                   }
                   onBlur={onBlur}
@@ -135,7 +138,8 @@ function CreateFlowForm() {
         <CustomAutoComplete control={control} errors={errors} name={"first_approver"} label={"First Approver"} options={managerList} />
         <CustomAutoComplete control={control} errors={errors} name={"second_approver"} label={"Second Approver"} options={managerList} />
         <CustomAutoComplete control={control} errors={errors} name={"third_approver"} label={"Third Approver"} options={managerList} />
-        {!fouthApprover && <CustomAutoComplete control={control} errors={errors} name={"fourth_approver"} label={"Fourth Approver"} options={managerList} />}
+        <CustomAutoComplete control={control} errors={errors} name={"fourth_approver"} label={"Fourth Approver"} options={managerList} />
+        {!fifthApprover && <CustomAutoComplete control={control} errors={errors} name={"fifth_approver"} label={"Fifth Approver"} options={managerList} />}
         <div className='max-w-[30rem]'>
           <Autocomplete
             multiple
